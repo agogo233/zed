@@ -200,8 +200,21 @@ function MakeAppx {
     }
     Copy-Item -Path "$manifestFile" -Destination "$innoDir\make_appx\AppxManifest.xml"
     # Add makeAppx.exe to Path
-    $sdk = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64"
-    $env:Path += ';' + $sdk
+    $windowsKitsBin = "${env:ProgramFiles(x86)}\Windows Kits\10\bin"
+    $sdkVersions = Get-ChildItem -Path $windowsKitsBin -Directory -ErrorAction SilentlyContinue | Sort-Object Name -Descending
+    $makeAppxDir = $null
+    foreach ($version in $sdkVersions) {
+        $candidate = Join-Path $version.FullName "x64"
+        if (Test-Path (Join-Path $candidate "makeappx.exe")) {
+            $makeAppxDir = $candidate
+            break
+        }
+    }
+    if (-not $makeAppxDir) {
+        Write-Error "makeappx.exe not found in Windows Kits"
+        exit 1
+    }
+    $env:Path += ';' + $makeAppxDir
     makeAppx.exe pack /d "$innoDir\make_appx" /p "$innoDir\zed_explorer_command_injector.appx" /nv
 }
 
@@ -212,6 +225,17 @@ function SignZedAndItsFriends {
 
     $files = "$innoDir\Zed.exe,$innoDir\cli.exe,$innoDir\auto_update_helper.exe,$innoDir\zed_explorer_command_injector.dll,$innoDir\zed_explorer_command_injector.appx"
     & "$innoDir\sign.ps1" $files
+}
+
+function InstallTrustedSigningModule {
+    if (-not $env:CI) {
+        return
+    }
+    if (Get-Module -ListAvailable -Name TrustedSigning) {
+        return
+    }
+    Write-Output "Installing TrustedSigning module..."
+    Install-Module -Name TrustedSigning -Force -Scope CurrentUser -AllowClobber -ErrorAction Stop
 }
 
 function DownloadAMDGpuServices {
@@ -377,6 +401,7 @@ GenerateLicenses
 BuildZedAndItsFriends
 BuildRemoteServer
 MakeAppx
+InstallTrustedSigningModule
 SignZedAndItsFriends
 ZipZedAndItsFriendsDebug
 DownloadAMDGpuServices

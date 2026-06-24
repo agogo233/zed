@@ -23,8 +23,10 @@ jobs:
     runs-on: windows-2022
     env:
       CARGO_INCREMENTAL: 0
-      CARGO_HOME: D:\.cargo
+      CARGO_HOME: D:/.cargo
       CARGO_NET_GIT_FETCH_WITH_CLI: 'true'
+      RUSTC_WRAPPER: sccache
+      SCCACHE_GHA_ENABLED: 'true'
       ZED_CLIENT_CHECKSUM_SEED: ${{ secrets.ZED_CLIENT_CHECKSUM_SEED }}
       ZED_MINIDUMP_ENDPOINT: ${{ secrets.ZED_SENTRY_MINIDUMP_ENDPOINT }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_SIGNING_TENANT_ID }}
@@ -41,6 +43,10 @@ jobs:
       uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
       with:
         clean: false
+    - name: steps::install_sccache
+      uses: taiki-e/install-action@v2
+      with:
+        tool: sccache@0.9.1
     - name: steps::setup_sentry
       uses: matbour/setup-sentry-cli@3e938c54b3018bdd019973689ef984e033b0454b
       with:

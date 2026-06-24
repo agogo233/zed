@@ -23,6 +23,7 @@ jobs:
     runs-on: windows-2022
     env:
       CARGO_INCREMENTAL: 0
+      CARGO_BUILD_JOBS: 4
       CARGO_HOME: D:/.cargo
       CARGO_NET_GIT_FETCH_WITH_CLI: 'true'
       RUSTC_WRAPPER: sccache
@@ -43,6 +44,7 @@ jobs:
       uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
       with:
         clean: false
+        fetch-depth: 1
     - name: steps::install_sccache
       uses: taiki-e/install-action@v2
       with:

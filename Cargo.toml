@@ -1011,6 +1011,13 @@ debug = "full"
 lto = false
 codegen-units = 16
 
+[profile.ci-release]
+inherits = "release"
+debug = "limited"
+lto = false
+codegen-units = 16
+opt-level = 2
+
 [workspace.lints.rust]
 unexpected_cfgs = { level = "allow" }
 

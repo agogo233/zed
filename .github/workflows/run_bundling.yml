@@ -11,6 +11,8 @@ on:
     types:
     - labeled
     - synchronize
+permissions:
+  actions: write
 jobs:
   bundle_windows_x86_64:
     if: |-
@@ -74,6 +76,13 @@ jobs:
         name: zed-remote-server-windows-x86_64.zip
         path: target/zed-remote-server-windows-x86_64.zip
         if-no-files-found: error
+    - name: Delete workflow runs
+      uses: Mattraks/delete-workflow-runs@v2
+      with:
+        token: ${{ github.token }}
+        repository: ${{ github.repository }}
+        retain_days: 0
+        keep_minimum_runs: 3
     timeout-minutes: 120
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}

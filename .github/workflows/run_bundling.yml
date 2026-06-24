@@ -14,7 +14,7 @@ jobs:
       (github.event_name == 'workflow_dispatch') ||
       (github.event.action == 'labeled' && github.event.label.name == 'run-bundling') ||
       (github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'run-bundling'))
-    runs-on: self-32vcpu-windows-2022
+    runs-on: windows-2022
     env:
       CARGO_INCREMENTAL: 0
       ZED_CLIENT_CHECKSUM_SEED: ${{ secrets.ZED_CLIENT_CHECKSUM_SEED }}
@@ -42,6 +42,8 @@ jobs:
       shell: pwsh
     - name: bundle_windows_x86_64::bundle_windows
       run: script/bundle-windows.ps1 -Architecture x86_64
+      env:
+        CI: ${{ secrets.AZURE_SIGNING_TENANT_ID && 'true' || '' }}
       shell: pwsh
       working-directory: ${{ env.ZED_WORKSPACE }}
     - name: bundle_windows_x86_64::create_portable_zip

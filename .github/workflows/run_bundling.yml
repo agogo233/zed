@@ -24,6 +24,7 @@ jobs:
     env:
       CARGO_INCREMENTAL: 0
       CARGO_HOME: D:\.cargo
+      CARGO_NET_GIT_FETCH_WITH_CLI: 'true'
       ZED_CLIENT_CHECKSUM_SEED: ${{ secrets.ZED_CLIENT_CHECKSUM_SEED }}
       ZED_MINIDUMP_ENDPOINT: ${{ secrets.ZED_SENTRY_MINIDUMP_ENDPOINT }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_SIGNING_TENANT_ID }}
@@ -46,6 +47,11 @@ jobs:
         token: ${{ secrets.SENTRY_AUTH_TOKEN }}
     - name: steps::clear_target_dir_if_large
       run: ./script/clear-target-dir-if-larger-than.ps1 350 200
+      shell: pwsh
+    - name: steps::enable_long_paths
+      run: |
+        New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
+        git config --system core.longpaths true
       shell: pwsh
     - name: bundle_windows_x86_64::bundle_windows
       run: script/bundle-windows.ps1 -Architecture x86_64

@@ -26,7 +26,7 @@ $Architecture = if ($Architecture) {
     $OSArchitecture
 }
 
-$CargoOutDir = "./target/$Architecture-pc-windows-msvc/release"
+$CargoOutDir = "./target/$Architecture-pc-windows-msvc/ci-release"
 
 function Get-VSArch {
     param(

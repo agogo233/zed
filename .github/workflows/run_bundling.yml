@@ -68,10 +68,8 @@ jobs:
       shell: pwsh
     - name: bundle_windows_x86_64::create_portable_zip
       run: |
-        Compress-Archive `
-          -Path "crates\zed\resources\windows\*" `
-          -DestinationPath "target\Zed-x86_64-portable.zip" `
-          -Force
+        Set-Location inno\x86_64
+        Compress-Archive -Path * -DestinationPath ..\..\target\Zed-x86_64-portable.zip -Force
       shell: pwsh
     - name: bundle_windows_x86_64::upload_portable_zip
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a

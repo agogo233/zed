@@ -23,7 +23,7 @@ jobs:
     runs-on: windows-2022
     env:
       CARGO_INCREMENTAL: 0
-      CARGO_BUILD_JOBS: 4
+      CARGO_BUILD_JOBS: 8
       CARGO_HOME: D:/.cargo
       CARGO_NET_GIT_FETCH_WITH_CLI: 'true'
       RUSTC_WRAPPER: sccache
@@ -49,6 +49,14 @@ jobs:
       uses: taiki-e/install-action@v2
       with:
         tool: sccache@0.9.1
+    - name: steps::restore_sccache_cache
+      uses: actions/cache@v4
+      with:
+        path: D:/.sccache
+        key: sccache-windows-x86_64-${{ runner.os }}-${{ github.ref }}
+        restore-keys: |
+          sccache-windows-x86_64-${{ runner.os }}-main
+          sccache-windows-x86_64-${{ runner.os }}-
     - name: steps::setup_sentry
       uses: matbour/setup-sentry-cli@3e938c54b3018bdd019973689ef984e033b0454b
       with:

@@ -59,4 +59,10 @@ crates/docs_preprocessor/actions.json
 # NixOS integration test state
 .nixos-test-history
 
+# Performance profiling artifacts
+perf.data
+perf.data.old
+performance_profile.miniprof
+flamegraph.svg
+
 .local*

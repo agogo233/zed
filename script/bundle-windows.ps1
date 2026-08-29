@@ -27,7 +27,7 @@ $Architecture = if ($Architecture) {
     $OSArchitecture
 }
 
-$CargoOutDir = "./target/$Architecture-pc-windows-msvc/release"
+$CargoOutDir = "./target/$Architecture-pc-windows-msvc/ci-release"
 
 function Get-VSArch {
     param(
@@ -41,7 +41,13 @@ function Get-VSArch {
 }
 
 Push-Location
-& "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\Launch-VsDevShell.ps1" -Arch (Get-VSArch -Arch $Architecture) -HostArch (Get-VSArch -Arch $OSArchitecture)
+$vsWherePath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+$vsInstallPath = & $vsWherePath -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+if (-not $vsInstallPath) {
+    Write-Error "Visual Studio 2022 with C++ tools not found"
+    exit 1
+}
+. "$vsInstallPath\Common7\Tools\Launch-VsDevShell.ps1" -Arch (Get-VSArch -Arch $Architecture) -HostArch (Get-VSArch -Arch $OSArchitecture)
 Pop-Location
 
 $target = "$Architecture-pc-windows-msvc"
@@ -115,29 +121,28 @@ function GenerateLicenses {
 
 function BuildZedAndItsFriends {
     Write-Output "Building Zed and its friends, for channel: $channel"
-    # Build zed.exe, cli.exe and auto_update_helper.exe
-    cargo build --release --package zed --package cli --package auto_update_helper --target $target
+    # Build zed.exe, cli.exe, auto_update_helper.exe and remote_server.exe in a single pass
+    cargo build --profile ci-release --package zed --package cli --package auto_update_helper --package remote_server --target $target
     Copy-Item -Path ".\$CargoOutDir\zed.exe" -Destination "$innoDir\Zed.exe" -Force
     Copy-Item -Path ".\$CargoOutDir\cli.exe" -Destination "$innoDir\cli.exe" -Force
     Copy-Item -Path ".\$CargoOutDir\auto_update_helper.exe" -Destination "$innoDir\auto_update_helper.exe" -Force
     # Build explorer_command_injector.dll
     switch ($channel) {
         "stable" {
-            cargo build --release --features stable --no-default-features --package explorer_command_injector --target $target
+            cargo build --profile ci-release --features stable --no-default-features --package explorer_command_injector --target $target
         }
         "preview" {
-            cargo build --release --features preview --no-default-features --package explorer_command_injector --target $target
+            cargo build --profile ci-release --features preview --no-default-features --package explorer_command_injector --target $target
         }
         default {
-            cargo build --release --package explorer_command_injector --target $target
+            cargo build --profile ci-release --package explorer_command_injector --target $target
         }
     }
     Copy-Item -Path ".\$CargoOutDir\explorer_command_injector.dll" -Destination "$innoDir\zed_explorer_command_injector.dll" -Force
 }
 
 function BuildRemoteServer {
-    Write-Output "Building remote_server for $target"
-    cargo build --release --package remote_server --target $target
+    Write-Output "Packaging remote_server for $target"
 
     # Create zipped remote server binary
     $remoteServerSrc = (Resolve-Path ".\$CargoOutDir\remote_server.exe").Path
@@ -151,7 +156,7 @@ function BuildRemoteServer {
     Write-Output "Compressing remote_server to $remoteServerDst"
     Compress-Archive -Path $remoteServerSrc -DestinationPath $remoteServerDst -Force
 
-    Write-Output "Remote server compressed successfully"
+    Write-Output "Remote server packaged successfully"
 }
 
 function ZipZedAndItsFriendsDebug {
@@ -208,8 +213,21 @@ function MakeAppx {
     }
     Copy-Item -Path "$manifestFile" -Destination "$innoDir\make_appx\AppxManifest.xml"
     # Add makeAppx.exe to Path
-    $sdk = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64"
-    $env:Path += ';' + $sdk
+    $windowsKitsBin = "${env:ProgramFiles(x86)}\Windows Kits\10\bin"
+    $sdkVersions = Get-ChildItem -Path $windowsKitsBin -Directory -ErrorAction SilentlyContinue | Sort-Object Name -Descending
+    $makeAppxDir = $null
+    foreach ($version in $sdkVersions) {
+        $candidate = Join-Path $version.FullName "x64"
+        if (Test-Path (Join-Path $candidate "makeappx.exe")) {
+            $makeAppxDir = $candidate
+            break
+        }
+    }
+    if (-not $makeAppxDir) {
+        Write-Error "makeappx.exe not found in Windows Kits"
+        exit 1
+    }
+    $env:Path += ';' + $makeAppxDir
     makeAppx.exe pack /d "$innoDir\make_appx" /p "$innoDir\zed_explorer_command_injector.appx" /nv
 }
 
@@ -220,6 +238,17 @@ function SignZedAndItsFriends {
 
     $files = "$innoDir\Zed.exe,$innoDir\cli.exe,$innoDir\auto_update_helper.exe,$innoDir\zed_explorer_command_injector.dll,$innoDir\zed_explorer_command_injector.appx"
     & "$innoDir\sign.ps1" $files
+}
+
+function InstallTrustedSigningModule {
+    if (-not $env:CI) {
+        return
+    }
+    if (Get-Module -ListAvailable -Name TrustedSigning) {
+        return
+    }
+    Write-Output "Installing TrustedSigning module..."
+    Install-Module -Name TrustedSigning -Force -Scope CurrentUser -AllowClobber -ErrorAction Stop
 }
 
 function DownloadAMDGpuServices {
@@ -387,6 +416,7 @@ GenerateLicenses
 BuildZedAndItsFriends
 BuildRemoteServer
 MakeAppx
+InstallTrustedSigningModule
 SignZedAndItsFriends
 ZipZedAndItsFriendsDebug
 DownloadAMDGpuServices

@@ -211,17 +211,8 @@ impl Telemetry {
             subscribers: Vec::new(),
         }));
 
-        cx.background_spawn({
-            let state = state.clone();
-            let os_version = os_version();
-            state.lock().os_version = Some(os_version);
-            async move {
-                if let Some(tempfile) = File::create(Self::log_file_path()).ok() {
-                    state.lock().log_file = Some(tempfile);
-                }
-            }
-        })
-        .detach();
+        let os_version = os_version();
+        state.lock().os_version = Some(os_version);
 
         cx.observe_global::<SettingsStore>({
             let state = state.clone();
@@ -669,6 +660,9 @@ impl Telemetry {
 
             let mut json_bytes = Vec::new();
 
+            if state.log_file.is_none() {
+                state.log_file = File::create(Self::log_file_path()).ok();
+            }
             if let Some(file) = &mut state.log_file {
                 for event in &events {
                     json_bytes.clear();

@@ -14,7 +14,7 @@ use workspace::{AppState, OpenResult, OpenVisible, Workspace};
 actions!(
     journal,
     [
-        /// Creates a new journal entry for today.
+        /// 为今天创建新的日志条目
         NewJournalEntry
     ]
 );

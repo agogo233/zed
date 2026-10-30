@@ -76,9 +76,9 @@ impl AgentTool for CopyPathTool {
         if let Ok(input) = input {
             let src = MarkdownInlineCode(&input.source_path);
             let dest = MarkdownInlineCode(&input.destination_path);
-            format!("Copy {src} to {dest}").into()
+            format!("将 {src} 复制到 {dest}").into()
         } else {
-            "Copy path".into()
+            "复制路径".into()
         }
     }
 

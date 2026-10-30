@@ -35,7 +35,7 @@ pub fn parse_model_catalog(
     let catalog = serde_json::from_str::<serde_json::Value>(catalog)?;
     let provider = catalog
         .get(provider_key)
-        .ok_or_else(|| anyhow!("OpenCode catalog is missing {provider_key}"))?;
+        .ok_or_else(|| anyhow!("OpenCode 目录中缺少 {provider_key}"))?;
     let provider = serde_json::from_value::<CatalogProvider>(provider.clone())?;
     let model_ids = available_models.map_or_else(
         || {
@@ -127,7 +127,7 @@ pub fn parse_model_catalog(
         })
         .collect::<Vec<_>>();
     if compatible_candidate_count > 0 && models.is_empty() {
-        bail!("OpenCode model metadata did not contain any compatible models");
+        bail!("OpenCode 模型元数据中不包含任何兼容模型");
     }
     Ok(models)
 }

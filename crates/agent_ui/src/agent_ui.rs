@@ -294,118 +294,118 @@ pub(crate) fn agent_sidebar_side(cx: &App) -> &'static str {
 actions!(
     agent,
     [
-        /// Toggles the menu to create new agent threads.
+        /// 切换新建智能体会话的菜单
         ToggleNewThreadMenu,
-        /// Toggles the options menu for agent settings and preferences.
+        /// 切换智能体设置和偏好的选项菜单
         ToggleOptionsMenu,
-        /// Toggles the profile or mode selector for switching between agent profiles.
+        /// 切换配置文件或模式选择器，用于在智能体配置文件之间切换
         ToggleProfileSelector,
-        /// Cycles through available session modes.
+        /// 循环切换可用的会话模式
         CycleModeSelector,
-        /// Cycles through favorited models in the ACP model selector.
+        /// 在 ACP 模型选择器中循环切换收藏的模型
         CycleFavoriteModels,
-        /// Expands the message editor to full size.
+        /// 将消息编辑器展开至完整大小
         ExpandMessageEditor,
-        /// Archives the currently selected thread.
+        /// 归档当前选中的会话
         ArchiveSelectedThread,
-        /// Removes the currently selected thread.
+        /// 移除当前选中的会话
         RemoveSelectedThread,
-        /// Renames the currently selected thread.
+        /// 重命名当前选中的会话
         RenameSelectedThread,
-        /// Starts a chat conversation with follow-up enabled.
+        /// 开始一个启用跟进的聊天会话
         ChatWithFollow,
-        /// Cycles to the next inline assist suggestion.
+        /// 切换到下一个内联辅助建议
         CycleNextInlineAssist,
-        /// Cycles to the previous inline assist suggestion.
+        /// 切换到上一个内联辅助建议
         CyclePreviousInlineAssist,
-        /// Moves focus up in the interface.
+        /// 将焦点在界面中向上移动
         FocusUp,
-        /// Moves focus down in the interface.
+        /// 将焦点在界面中向下移动
         FocusDown,
-        /// Moves focus left in the interface.
+        /// 将焦点在界面中向左移动
         FocusLeft,
-        /// Moves focus right in the interface.
+        /// 将焦点在界面中向右移动
         FocusRight,
-        /// Opens the active thread as a markdown file.
+        /// 将当前会话作为 Markdown 文件打开
         OpenActiveThreadAsMarkdown,
-        /// Opens the agent diff view to review changes.
+        /// 打开智能体差异视图以查看更改
         OpenAgentDiff,
-        /// Copies the current thread to the clipboard as JSON for debugging.
+        /// 将当前会话以 JSON 格式复制到剪贴板（用于调试）
         CopyThreadToClipboard,
-        /// Loads a thread from the clipboard JSON for debugging.
+        /// 从剪贴板 JSON 加载会话以供调试
         LoadThreadFromClipboard,
-        /// Reruns the rules-to-skills migration.
+        /// 重新运行规则到技能的迁移
         RerunRulesToSkillsMigration,
-        /// Keeps the current suggestion or change.
+        /// 保留当前建议或更改
         Keep,
-        /// Rejects the current suggestion or change.
+        /// 拒绝当前建议或更改
         Reject,
-        /// Rejects all suggestions or changes.
+        /// 拒绝所有建议或更改
         RejectAll,
-        /// Undoes the most recent reject operation, restoring the rejected changes.
+        /// 撤销最近的拒绝操作，恢复已拒绝的更改
         UndoLastReject,
-        /// Keeps all suggestions or changes.
+        /// 保留所有建议或更改
         KeepAll,
-        /// Allow this operation only this time.
+        /// 仅此次允许此操作
         AllowOnce,
-        /// Allow this operation and remember the choice.
+        /// 允许此操作并记住选择
         AllowAlways,
-        /// Reject this operation only this time.
+        /// 仅此次拒绝此操作
         RejectOnce,
-        /// Follows the agent's suggestions.
+        /// 采纳智能体的建议
         Follow,
-        /// Resets the trial upsell notification.
+        /// 重置试用推广通知
         ResetTrialUpsell,
-        /// Resets the trial end upsell notification.
+        /// 重置试用到期推广通知
         ResetTrialEndUpsell,
-        /// Re-enables the fast mode warning for every provider and model.
+        /// 为所有提供商和模型重新启用快速模式警告
         ResetFastModeWarnings,
-        /// Opens the "Add Context" menu in the message editor.
+        /// 在消息编辑器中打开“添加上下文”菜单
         OpenAddContextMenu,
-        /// Interrupts the current generation and sends the message immediately.
+        /// 中断当前生成并立即发送消息
         SendImmediately,
-        /// Sends the next queued message immediately.
+        /// 立即发送队列中的下一条消息
         SendNextQueuedMessage,
-        /// Removes the first message from the queue (the next one to be sent).
+        /// 从队列中移除第一条消息（即下一条待发送的消息）
         RemoveFirstQueuedMessage,
-        /// Edits the first message in the queue (the next one to be sent).
+        /// 编辑队列中的第一条消息（即下一条待发送的消息）
         EditFirstQueuedMessage,
-        /// Toggles steering for the first queued message: when on, it interrupts
-        /// the agent at its next step instead of waiting for it to finish.
+        /// 切换第一条排队消息的引导模式：开启后，会在下一步中断
+        /// 智能体，而不是等待它完成。
         ToggleSteerFirstQueuedMessage,
-        /// Clears all messages from the queue.
+        /// 清除队列中的所有消息
         ClearMessageQueue,
-        /// Opens the permission granularity dropdown for the current tool call.
+        /// 打开当前工具调用的权限粒度下拉菜单
         OpenPermissionDropdown,
-        /// Toggles thinking mode for models that support extended thinking.
+        /// 切换支持扩展思考的模型的思考模式
         ToggleThinkingMode,
-        /// Cycles through available thinking effort levels for the current model.
+        /// 循环切换当前模型可用的思考力度级别
         CycleThinkingEffort,
-        /// Toggles the thinking effort selector menu open or closed.
+        /// 切换思考力度选择器菜单的开关状态
         ToggleThinkingEffortMenu,
-        /// Toggles fast mode for models that support it.
+        /// 切换支持该功能的模型的快速模式
         ToggleFastMode,
-        /// Scroll the output by one page up.
+        /// 将输出向上滚动一页
         ScrollOutputPageUp,
-        /// Scroll the output by one page down.
+        /// 将输出向下滚动一页
         ScrollOutputPageDown,
-        /// Scroll the output up by three lines.
+        /// 将输出向上滚动三行
         ScrollOutputLineUp,
-        /// Scroll the output down by three lines.
+        /// 将输出向下滚动三行
         ScrollOutputLineDown,
-        /// Scroll the output to the top.
+        /// 将输出滚动到顶部
         ScrollOutputToTop,
-        /// Scroll the output to the bottom.
+        /// 将输出滚动到底部
         ScrollOutputToBottom,
-        /// Scroll the output to the previous user message.
+        /// 将输出滚动至上一条用户消息
         ScrollOutputToPreviousMessage,
-        /// Scroll the output to the next user message.
+        /// 将输出滚动至下一条用户消息
         ScrollOutputToNextMessage,
-        /// Toggles in-thread search over the current agent thread's contents.
+        /// 切换对当前智能体会话内容的会话内搜索
         ToggleSearch,
-        /// Import agent threads from other Zed release channels (e.g. Preview, Nightly).
+        /// 从其他 Zed 发布频道（如 Preview、Nightly）导入智能体会话
         ImportThreadsFromOtherChannels,
-        /// Starts a new terminal thread.
+        /// 启动新的终端会话
         NewTerminalThread,
     ]
 );
@@ -413,15 +413,15 @@ actions!(
 actions!(
     dev,
     [
-        /// Shows metadata for the currently active thread.
+        /// 显示当前活跃会话的元数据
         ShowThreadMetadata,
-        /// Shows metadata for all threads in the sidebar.
+        /// 显示侧边栏中所有会话的元数据
         ShowAllSidebarThreadMetadata,
     ]
 );
 
-/// Action to authorize a tool call with a specific permission option.
-/// This is used by the permission granularity dropdown to authorize tool calls.
+/// 使用特定权限选项授权工具调用的操作
+/// 此项由权限粒度下拉菜单用于授权工具调用
 #[derive(Clone, PartialEq, Deserialize, JsonSchema, Action)]
 #[action(namespace = agent)]
 #[serde(deny_unknown_fields)]
@@ -439,8 +439,8 @@ pub struct AuthorizeToolCall {
     pub option_kind: String,
 }
 
-/// Action to select a permission granularity option from the dropdown.
-/// This updates the selected granularity without triggering authorization.
+/// 从下拉列表中选择权限粒度选项的操作
+/// 此操作更新所选粒度而不触发授权
 #[derive(Clone, PartialEq, Deserialize, JsonSchema, Action)]
 #[action(namespace = agent)]
 #[serde(deny_unknown_fields)]
@@ -456,7 +456,7 @@ pub struct SelectPermissionGranularity {
     pub index: usize,
 }
 
-/// Action to toggle a command pattern checkbox in the permission dropdown.
+/// 在权限下拉列表中切换命令模式复选框的操作
 #[derive(Clone, PartialEq, Deserialize, JsonSchema, Action)]
 #[action(namespace = agent)]
 #[serde(deny_unknown_fields)]
@@ -472,13 +472,13 @@ pub struct ToggleCommandPattern {
     pub pattern_index: usize,
 }
 
-/// Creates a new conversation thread, optionally based on an existing thread.
+/// 创建新会话，可选择基于现有会话
 #[derive(Default, Clone, PartialEq, Deserialize, JsonSchema, Action)]
 #[action(namespace = agent)]
 #[serde(deny_unknown_fields)]
 pub struct NewThread;
 
-/// Creates a new external agent conversation thread.
+/// 创建新的外部智能体会话
 #[derive(Clone, PartialEq, Deserialize, JsonSchema, Action)]
 #[action(namespace = agent)]
 #[serde(deny_unknown_fields)]
@@ -611,7 +611,7 @@ impl From<ExternalSourcePrompt> for AgentInitialContent {
     }
 }
 
-/// Opens the profile management interface for configuring agent tools and settings.
+/// 打开配置文件管理界面以配置智能体工具和设置
 #[derive(PartialEq, Clone, Default, Debug, Deserialize, JsonSchema, Action)]
 #[action(namespace = agent)]
 #[serde(deny_unknown_fields)]
@@ -830,7 +830,7 @@ fn rerun_rules_to_skills_migration(
             cx.update(|_window, cx| {
                 show_rules_to_skills_migration_toast(
                     &workspace,
-                    "Rules-to-skills migration rerun. Please double-check AGENTS.md and Skills for missing or duplicated prompts.",
+                    "已重新运行规则到技能的迁移。请仔细检查 AGENTS.md 和技能中是否有缺失或重复的提示词",
                     cx,
                 );
             })?;

@@ -154,7 +154,7 @@ impl AgentTool for SpawnAgentTool {
                 .get("label")
                 .and_then(|v| v.as_str())
                 .map(|s| SharedString::from(s.to_owned()))
-                .unwrap_or_else(|| "Spawning agent".into()),
+                .unwrap_or_else(|| "正在启动智能体".into()),
         }
     }
 
@@ -183,7 +183,7 @@ impl AgentTool for SpawnAgentTool {
             let (subagent, mut session_info) = cx.update(|cx| {
                 let subagent = match (session_id, model) {
                     (Some(_), Some(_)) => Err(anyhow::anyhow!(
-                        "model cannot be changed when resuming a subagent session"
+                        "恢复子智能体会话时无法更改模型"
                     )),
                     (Some(session_id), None) => self.environment.resume_subagent(session_id, cx),
                     (None, model) => {

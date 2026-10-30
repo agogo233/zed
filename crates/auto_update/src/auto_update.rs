@@ -100,11 +100,11 @@ fn linux_rsync_install_hint() -> &'static str {
 actions!(
     auto_update,
     [
-        /// Checks for available updates.
+        /// 检查可用更新
         Check,
-        /// Dismisses the update error message.
+        /// 关闭更新错误消息
         DismissMessage,
-        /// Opens the release notes for the current version in a browser.
+        /// 在浏览器中打开当前版本的发行说明
         ViewReleaseNotes,
     ]
 );
@@ -288,7 +288,7 @@ pub fn check(_: &Check, window: &mut Window, cx: &mut App) {
         gpui::PromptLevel::Info,
         "This build does not check zed.dev for updates.",
         Some(&message),
-        &["OK"],
+        &["确定"],
         cx,
     ));
 }

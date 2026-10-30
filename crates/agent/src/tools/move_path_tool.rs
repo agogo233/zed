@@ -86,12 +86,12 @@ impl AgentTool for MovePathTool {
             {
                 Some(filename) if src_path.parent() == dest_path.parent() => {
                     let filename = MarkdownInlineCode(&filename);
-                    format!("Rename {src} to {filename}").into()
+                    format!("将 {src} 重命名为 {filename}").into()
                 }
-                _ => format!("Move {src} to {dest}").into(),
+                _ => format!("将 {src} 移至 {dest}").into(),
             }
         } else {
-            "Move path".into()
+            "移动路径".into()
         }
     }
 

@@ -48,42 +48,42 @@ pub struct ProjectSettingsContent {
     #[serde(flatten)]
     pub worktree: WorktreeSettingsContent,
 
-    /// Configuration for language servers.
+    /// 语言服务器的配置
     ///
-    /// The following settings can be overridden for specific language servers:
+    /// 以下设置可针对特定语言服务器进行覆盖：
     /// - initialization_options
     ///
-    /// To override settings for a language, add an entry for that language server's
-    /// name to the lsp value.
-    /// Default: null
+    /// 若要覆盖某种语言的设置，将该语言服务器
+    /// 名称作为条目添加到 lsp 值中。
+    /// 默认值：null
     #[serde(default)]
     pub lsp: LspSettingsMap,
 
     pub terminal: Option<ProjectTerminalSettingsContent>,
 
-    /// Configuration for Debugger-related features
+    /// 调试器相关功能的配置
     #[serde(default)]
     pub dap: HashMap<Arc<str>, DapSettingsContent>,
 
-    /// Settings for context servers used for AI-related features.
+    /// 用于 AI 相关功能的上下文服务器设置
     #[serde(default)]
     pub context_servers: HashMap<Arc<str>, ContextServerSettingsContent>,
 
-    /// Default timeout in seconds for context server tool calls.
-    /// Can be overridden per-server in context_servers configuration.
+    /// 上下文服务器工具调用的默认超时时间（秒）
+    /// 可在 context_servers 配置中按服务器覆盖
     ///
     /// Default: 60
     pub context_server_timeout: Option<u64>,
 
-    /// Configuration for how direnv configuration should be loaded
+    /// direnv 配置的加载方式
     pub load_direnv: Option<DirenvSettings>,
 
-    /// The list of custom Git hosting providers.
+    /// 自定义 Git 托管提供商列表
     pub git_hosting_providers: Option<ExtendingVec<GitHostingProviderConfig>>,
 
-    /// Whether to disable all AI features in Zed.
+    /// 是否禁用 Zed 中的所有 AI 功能
     ///
-    /// Default: false
+    /// 默认值：false
     pub disable_ai: Option<SaturatingBool>,
 }
 
@@ -95,7 +95,7 @@ crate::fallible_options::flattened_deserialize!(ProjectSettingsContent {
     defaults: { lsp, dap, context_servers },
 });
 
-/// When to scan content of linked directories.
+/// 何时扫描符号链接目录的内容
 #[derive(
     Copy,
     Clone,
@@ -112,26 +112,28 @@ crate::fallible_options::flattened_deserialize!(ProjectSettingsContent {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum ScanSymlinksSetting {
-    /// Always scan symlinked directories
+    /// 始终扫描符号链接目录
+    #[strum(serialize = "始终")]
     Always,
-    /// Only scan symlinked directories when they've been expanded in the workspace
+    /// 仅在符号链接目录已在工作区中展开时扫描
     #[default]
+    #[strum(serialize = "已展开")]
     Expanded,
 }
 
 #[with_fallible_options]
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct WorktreeSettingsContent {
-    /// Whether to prevent this project from being shared in public channels.
+    /// 是否阻止此项目在公开频道中共享
     ///
-    /// Default: false
+    /// 默认值：false
     #[serde(default)]
     pub prevent_sharing_in_public_channels: bool,
 
-    /// Exclude files matching these glob patterns from file scans, file searches,
-    /// and the project file tree. Takes precedence over `file_scan_inclusions`.
+    /// 将匹配这些 glob 模式的文件排除在文件扫描、文件搜索
+    /// 以及项目文件树之外。优先级高于 `file_scan_inclusions`。
     ///
-    /// Default:
+    /// 默认值：
     ///
     /// ```json
     /// {
@@ -151,9 +153,9 @@ pub struct WorktreeSettingsContent {
     /// }
     /// ```
     ///
-    /// Use `"..."` to add patterns without repeating Zed's defaults. In project
-    /// settings, it extends the user or parent configuration value. Omit
-    /// `"..."` to replace the inherited list.
+    /// 使用 `"..."` 可在不重复 Zed 默认值的情况下添加 glob 模式。在项目
+    /// 设置中，它会扩展用户配置或父级配置的值。省略
+    /// `"..."` 则会替换继承的列表。
     ///
     /// ```json
     /// {
@@ -161,15 +163,15 @@ pub struct WorktreeSettingsContent {
     /// }
     /// ```
     ///
-    /// Inherited patterns are inserted at `"..."`, and duplicates keep their first
-    /// occurrence.
+    /// 继承的 glob 模式会插入到 `"..."` 所在位置，重复项保留
+    /// 首次出现的条目。
     pub file_scan_exclusions: Option<SplicingVec>,
 
-    /// Include files matching these glob patterns when scanning, even if ignored
-    /// by Git. Note that broad patterns can slow file scanning.
-    /// `file_scan_exclusions` takes precedence.
+    /// 扫描时包含匹配这些 glob 模式的文件，即使它们被
+    /// Git 忽略。注意，匹配范围过广的模式可能会降低文件扫描速度。
+    /// `file_scan_exclusions` 的优先级更高。
     ///
-    /// Default:
+    /// 默认值：
     ///
     /// ```json
     /// {
@@ -177,9 +179,9 @@ pub struct WorktreeSettingsContent {
     /// }
     /// ```
     ///
-    /// Use `"..."` to add patterns without repeating Zed's defaults. In project
-    /// settings, it extends the user or parent configuration value. Omit
-    /// `"..."` to replace the inherited list.
+    /// 使用 `"..."` 可在不重复 Zed 默认值的情况下添加 glob 模式。在项目
+    /// 设置中，它会扩展用户配置或父级配置的值。省略
+    /// `"..."` 则会替换继承的列表。
     ///
     /// ```json
     /// {
@@ -187,13 +189,13 @@ pub struct WorktreeSettingsContent {
     /// }
     /// ```
     ///
-    /// Inherited patterns are inserted at `"..."`, and duplicates keep their first
-    /// occurrence.
+    /// 继承的 glob 模式会插入到 `"..."` 所在位置，重复项保留
+    /// 首次出现的条目。
     pub file_scan_inclusions: Option<SplicingVec>,
 
-    /// When to scan content of linked directories.
+    /// 何时扫描符号链接目录的内容
     ///
-    /// Default: expanded
+    /// 默认值：expanded
     pub scan_symlinks: Option<ScanSymlinksSetting>,
 
     /// Maximum directory depth to eagerly index outside of git repositories;
@@ -204,19 +206,19 @@ pub struct WorktreeSettingsContent {
     /// activate on first use.
     /// `0` means no limit and activates all git repositories immediately.
     ///
-    /// Default: 5
+    /// 默认值：5
     pub file_scan_depth: Option<u32>,
 
-    /// Treat the files matching these globs as `.env` files.
+    /// 将匹配这些 glob 的文件视为 `.env` 文件
     /// Default: ["**/.env*", "**/*.pem", "**/*.key", "**/*.cert", "**/*.crt", "**/secrets.yml"]
     pub private_files: Option<ExtendingVec<String>>,
 
-    /// Treat files and folders matching these glob patterns as hidden, including
-    /// files inside matching folders. To hide these entries, run
-    /// `project panel: toggle hide hidden` from the command palette or set
-    /// `project_panel.hide_hidden` to `true`.
+    /// 将匹配这些 glob 模式的文件和文件夹视为隐藏项，包括
+    /// 匹配文件夹内的文件。要隐藏这些条目，可在命令面板中运行
+    /// `project panel: toggle hide hidden`，或将
+    /// `project_panel.hide_hidden` 设为 `true`。
     ///
-    /// Default:
+    /// 默认值：
     ///
     /// ```json
     /// {
@@ -224,9 +226,9 @@ pub struct WorktreeSettingsContent {
     /// }
     /// ```
     ///
-    /// Use `"..."` to add patterns without repeating Zed's defaults. In project
-    /// settings, it extends the user or parent configuration value. Omit
-    /// `"..."` to replace the inherited list.
+    /// 使用 `"..."` 可在不重复 Zed 默认值的情况下添加 glob 模式。在项目
+    /// 设置中，它会扩展用户配置或父级配置的值。省略
+    /// `"..."` 则会替换继承的列表。
     ///
     /// ```json
     /// {
@@ -237,15 +239,15 @@ pub struct WorktreeSettingsContent {
     /// }
     /// ```
     ///
-    /// Inherited patterns are inserted at `"..."`, and duplicates keep their first
-    /// occurrence.
+    /// 继承的 glob 模式会插入到 `"..."` 所在位置，重复项保留
+    /// 首次出现的条目。
     pub hidden_files: Option<SplicingVec>,
 
-    /// Treat files matching these glob patterns as read-only when opened. You can
-    /// view but not edit them, which is useful for build outputs, external
-    /// dependencies, or generated files.
+    /// 打开时将匹配这些 glob 模式的文件视为只读。你可以
+    /// 查看但无法编辑这些文件，这对于构建产物、外部
+    /// 依赖项或生成的文件很有用。
     ///
-    /// Default:
+    /// 默认值：
     ///
     /// ```json
     /// {
@@ -253,9 +255,9 @@ pub struct WorktreeSettingsContent {
     /// }
     /// ```
     ///
-    /// Use `"..."` to add patterns without repeating Zed's defaults. In project
-    /// settings, it extends the user or parent configuration value. Omit
-    /// `"..."` to replace the inherited list.
+    /// 使用 `"..."` 可在不重复 Zed 默认值的情况下添加 glob 模式。在项目
+    /// 设置中，它会扩展用户配置或父级配置的值。省略
+    /// `"..."` 则会替换继承的列表。
     ///
     /// ```json
     /// {
@@ -263,8 +265,8 @@ pub struct WorktreeSettingsContent {
     /// }
     /// ```
     ///
-    /// Inherited patterns are inserted at `"..."`, and duplicates keep their first
-    /// occurrence.
+    /// 继承的 glob 模式会插入到 `"..."` 所在位置，重复项保留
+    /// 首次出现的条目。
     pub read_only_files: Option<SplicingVec>,
 }
 
@@ -273,21 +275,21 @@ pub struct WorktreeSettingsContent {
 #[serde(rename_all = "snake_case")]
 pub struct LspSettings {
     pub binary: Option<BinarySettings>,
-    /// Options passed to the language server at startup.
+    /// 启动时传递给语言服务器的选项
     ///
     /// Ref: https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#initialize
     ///
-    /// Consult the documentation for the specific language server to see which settings are supported.
+    /// 查阅对应语言服务器的文档以了解支持的设置。
     pub initialization_options: Option<serde_json::Value>,
-    /// Language server settings.
+    /// 语言服务器设置
     ///
     /// Ref: https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#workspace_configuration
     ///
-    /// Consult the documentation for the specific language server to see which settings are supported.
+    /// 查阅对应语言服务器的文档以了解支持的设置。
     pub settings: Option<serde_json::Value>,
-    /// If the server supports sending tasks over LSP extensions,
-    /// this setting can be used to enable or disable them in Zed.
-    /// Default: true
+    /// 如果服务器支持通过 LSP 扩展发送任务，
+    /// 此设置可用于在 Zed 中启用或禁用它们
+    /// 默认值：true
     #[serde(default = "default_true")]
     pub enable_lsp_tasks: bool,
     pub fetch: Option<FetchSettings>,
@@ -325,41 +327,41 @@ pub struct FetchSettings {
     pub pre_release: Option<bool>,
 }
 
-/// Common language server settings.
+/// 通用语言服务器设置
 #[with_fallible_options]
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct GlobalLspSettingsContent {
-    /// Whether to show the LSP servers button in the status bar.
+    /// 是否在状态栏中显示 LSP 服务器按钮
     ///
-    /// Default: `true`
+    /// 默认值：`true`
     pub button: Option<bool>,
-    /// The maximum amount of time to wait for responses from language servers, in seconds.
-    /// A value of `0` will result in no timeout being applied (causing all LSP responses to wait indefinitely until completed).
+    /// 等待语言服务器响应的最长时间（秒）
+    /// `0` 表示不应用超时（所有 LSP 响应将无限等待直到完成）
     ///
-    /// Default: `120`
+    /// 默认值：`120`
     pub request_timeout: Option<u64>,
-    /// The maximum line length a buffer may contain before language server features are disabled for the entire buffer.
+    /// 缓冲区可包含的最大行长度，超过该长度会为整个缓冲区禁用语言服务器功能
     ///
-    /// Default: `20000`
+    /// 默认值：`20000`
     #[schemars(range(min = 1))]
     pub max_buffer_line_length: Option<u32>,
-    /// Settings for language server notifications
+    /// 语言服务器通知的设置
     pub notifications: Option<LspNotificationSettingsContent>,
-    /// Rules for rendering LSP semantic tokens.
+    /// 用于渲染 LSP 语义标记的规则
     pub semantic_token_rules: Option<SemanticTokenRules>,
 }
 
 #[with_fallible_options]
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct LspNotificationSettingsContent {
-    /// Timeout in milliseconds for automatically dismissing language server notifications.
-    /// Set to 0 to disable auto-dismiss.
+    /// 自动关闭语言服务器通知的超时时间（毫秒）。
+    /// 设为 0 可禁用自动关闭
     ///
-    /// Default: 5000
+    /// 默认值：5000
     pub dismiss_timeout_ms: Option<u64>,
 }
 
-/// Custom rules for rendering LSP semantic tokens.
+/// 用于渲染 LSP 语义标记的自定义规则
 #[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, JsonSchema)]
 #[serde(transparent)]
 pub struct SemanticTokenRules {
@@ -449,7 +451,9 @@ pub enum SemanticTokenColorOverride {
 #[serde(rename_all = "snake_case")]
 pub enum SemanticTokenFontWeight {
     #[default]
+    #[strum(serialize = "常规")]
     Normal,
+    #[strum(serialize = "粗体")]
     Bold,
 }
 
@@ -470,7 +474,9 @@ pub enum SemanticTokenFontWeight {
 #[serde(rename_all = "snake_case")]
 pub enum SemanticTokenFontStyle {
     #[default]
+    #[strum(serialize = "常规")]
     Normal,
+    #[strum(serialize = "斜体")]
     Italic,
 }
 
@@ -488,18 +494,18 @@ pub struct DapSettingsContent {
     Default, Copy, Clone, PartialEq, Eq, Debug, Serialize, Deserialize, JsonSchema, MergeFrom,
 )]
 pub struct SessionSettingsContent {
-    /// Whether or not to restore unsaved buffers on restart.
+    /// 重启时是否恢复未保存的缓冲区
     ///
-    /// If this is true, user won't be prompted whether to save/discard
-    /// dirty files when closing the application.
+    /// 如果为 true，关闭应用时不会提示用户是否保存或丢弃
+    /// 未保存文件。
     ///
-    /// Default: true
+    /// 默认值：true
     pub restore_unsaved_buffers: Option<bool>,
-    /// Whether or not to skip worktree trust checks.
-    /// When trusted, project settings are synchronized automatically,
-    /// language and MCP servers are downloaded and started automatically.
+    /// 是否跳过工作树信任检查
+    /// 信任后，项目设置将自动同步，
+    /// 语言服务器和 MCP 服务器将自动下载并启动。
     ///
-    /// Default: false
+    /// 默认值：false
     pub trust_all_worktrees: Option<bool>,
 }
 
@@ -507,50 +513,50 @@ pub struct SessionSettingsContent {
 #[serde(untagged, rename_all = "snake_case")]
 pub enum ContextServerSettingsContent {
     Stdio {
-        /// Whether the context server is enabled.
+        /// 是否启用上下文服务器
         #[serde(default = "default_true")]
         enabled: bool,
-        /// Whether to run the context server on the remote server when using remote development.
+        /// 使用远程开发时，是否在远程服务器上运行上下文服务器
         ///
-        /// If this is false, the context server will always run on the local machine.
+        /// 如果为 false，上下文服务器将始终在本地计算机上运行
         ///
-        /// Default: false
+        /// 默认值：false
         #[serde(default)]
         remote: bool,
         #[serde(flatten)]
         command: ContextServerCommand,
     },
     Http {
-        /// Whether the context server is enabled.
+        /// 是否启用上下文服务器
         #[serde(default = "default_true")]
         enabled: bool,
-        /// The URL of the remote context server.
+        /// 远程上下文服务器的 URL
         url: String,
-        /// Optional headers to send.
+        /// 要发送的可选请求头。
         #[serde(skip_serializing_if = "HashMap::is_empty", default)]
         headers: HashMap<String, String>,
-        /// Timeout for tool calls in seconds. Defaults to global context_server_timeout if not specified.
+        /// 工具调用的超时时间（秒），未指定时默认使用全局 context_server_timeout。
         timeout: Option<u64>,
-        /// Pre-registered OAuth client credentials for authorization servers that
-        /// require out-of-band client registration.
+        /// 为授权服务器提供预注册 OAuth 客户端凭据；这些服务器
+        /// 需要带外客户端注册。
         #[serde(default, skip_serializing_if = "Option::is_none")]
         oauth: Option<OAuthClientSettings>,
     },
     Extension {
-        /// Whether the context server is enabled.
+        /// 是否启用上下文服务器
         #[serde(default = "default_true")]
         enabled: bool,
-        /// Whether to run the context server on the remote server when using remote development.
+        /// 使用远程开发时，是否在远程服务器上运行上下文服务器
         ///
-        /// If this is false, the context server will always run on the local machine.
+        /// 如果为 false，上下文服务器将始终在本地计算机上运行
         ///
-        /// Default: false
+        /// 默认值：false
         #[serde(default)]
         remote: bool,
-        /// The settings for this context server specified by the extension.
+        /// 扩展所指定的上下文服务器设置
         ///
-        /// Consult the documentation for the context server to see what settings
-        /// are supported.
+        /// 查阅上下文服务器的文档以了解哪些设置
+        /// 受支持。
         #[serde(default)]
         settings: serde_json::Value,
     },
@@ -577,16 +583,16 @@ impl ContextServerSettingsContent {
     }
 }
 
-/// Pre-registered OAuth client credentials for MCP servers that don't support
-/// Dynamic Client Registration.
+/// 为不支持以下协议的 MCP 服务器提供预注册 OAuth 客户端凭据：
+/// Dynamic Client Registration。
 #[derive(Deserialize, Serialize, Clone, PartialEq, Eq, JsonSchema, MergeFrom, Debug)]
 pub struct OAuthClientSettings {
-    /// The OAuth client ID obtained from out-of-band registration with the
-    /// authorization server.
+    /// OAuth 客户端 ID 是通过带外注册从
+    /// 授权服务器获取的。
     pub client_id: String,
-    /// The OAuth client secret, if this is a confidential client. For security,
-    /// prefer providing this interactively; we will prompt and store it in
-    /// the system keychain.
+    /// OAuth 客户端密钥（如果这是一个机密客户端）。出于安全考虑，
+    /// 建议以交互方式提供；我们会提示输入并将其存储在
+    /// 系统钥匙串中
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub client_secret: Option<String>,
 }
@@ -599,7 +605,7 @@ pub struct ContextServerCommand {
     #[serde(default)]
     pub args: Vec<String>,
     pub env: Option<HashMap<String, String>>,
-    /// Timeout for tool calls in seconds. Defaults to 60 if not specified.
+    /// 工具调用的超时时间（秒），未指定时默认为 60。
     pub timeout: Option<u64>,
 }
 
@@ -631,68 +637,68 @@ impl std::fmt::Debug for ContextServerCommand {
 #[with_fallible_options]
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct GitSettings {
-    /// Whether or not to enable git integration.
+    /// 是否启用 Git 集成
     ///
-    /// Default: true
+    /// 默认值：true
     #[serde(flatten)]
     pub enabled: Option<GitEnabledSettings>,
-    /// Whether or not to show the git gutter.
+    /// 是否显示 Git 装订线
     ///
-    /// Default: tracked_files
+    /// 默认值：tracked_files
     pub git_gutter: Option<GitGutterSetting>,
-    /// Sets the debounce threshold (in milliseconds) after which changes are reflected in the git gutter.
+    /// 设置防抖阈值（毫秒），超过此时间后更改才会反映在 Git 装订线中
     ///
     /// Default: 0
     pub gutter_debounce: Option<u64>,
-    /// Whether or not to show git blame data inline in
-    /// the currently focused line.
+    /// 是否将 Git 追溯数据内联显示于
+    /// 当前聚焦的行。
     ///
-    /// Default: on
+    /// 默认值：on
     pub inline_blame: Option<InlineBlameSettings>,
-    /// Git blame settings.
+    /// Git 追溯设置
     pub blame: Option<BlameSettings>,
-    /// Which information to show in the branch picker.
+    /// 在分支选择器中显示哪些信息
     ///
-    /// Default: on
+    /// 默认值：on
     pub branch_picker: Option<BranchPickerSettingsContent>,
-    /// File diff settings.
+    /// 文件差异设置
     pub file_diff: Option<FileDiffSettingsContent>,
-    /// How hunks are displayed visually in the editor.
+    /// 区块在编辑器中的视觉显示方式
     ///
-    /// Default: staged_hollow
+    /// 默认值：staged_hollow
     pub hunk_style: Option<GitHunkStyleSetting>,
-    /// Which base git features (gutter, file colors, git::Diff) diff against.
+    /// 装订线、文件颜色、git::Diff 等 Git 功能所依据的差异基准
     ///
-    /// Default: head
+    /// 默认值：head
     pub diff_base: Option<GitDiffBaseSetting>,
-    /// How file paths are displayed in the git gutter.
+    /// 文件路径在 Git 装订线中的显示方式
     ///
-    /// Default: file_name_first
+    /// 默认值：file_name_first
     pub path_style: Option<GitPathStyle>,
-    /// Whether to show the stage and restore buttons on diff hunks.
+    /// 是否在差异区块上显示暂存和还原按钮
     ///
-    /// Default: true
+    /// 默认值：true
     pub show_stage_restore_buttons: Option<bool>,
-    /// Directory where git worktrees are created, relative to the repository
-    /// working directory.
+    /// 创建 git 工作树的目录，相对于仓库
+    /// 工作目录。
     ///
-    /// When the resolved directory is outside the project root, the
-    /// project's directory name is automatically appended so that
-    /// sibling repos don't collide. For example, with the default
-    /// `"../worktrees"` and a project at `~/code/zed`, worktrees are
-    /// created under `~/code/worktrees/zed/`.
+    /// 当解析出的目录位于项目根目录外时，
+    /// 项目目录名会自动附加，以避免
+    /// 同级仓库冲突。例如，使用默认值
+    /// `"../worktrees"` 和位于 `~/code/zed` 的项目，工作树将
+    /// 创建在 `~/code/worktrees/zed/` 目录下。
     ///
-    /// When the resolved directory is inside the project root, no
-    /// extra component is added (it's already project-scoped).
+    /// 当解析出的目录位于项目根目录内时，不会
+    /// 添加额外的路径组件（它已限定在项目范围内）。
     ///
-    /// Examples:
-    /// - `"../worktrees"` — `~/code/worktrees/<project>/` (default)
+    /// 示例：
+    /// - `"../worktrees"` — `~/code/worktrees/<project>/`（默认）
     /// - `".git/zed-worktrees"` — `<project>/.git/zed-worktrees/`
     /// - `"my-worktrees"` — `<project>/my-worktrees/`
     ///
-    /// Trailing slashes are ignored.
+    /// 忽略尾部斜杠
     ///
-    /// Default: ../worktrees
+    /// 默认值： ../worktrees
     pub worktree_directory: Option<String>,
     /// Settings for automatically fetching the default branch's remote and the current branch's upstream remote.
     pub auto_fetch: Option<AutoFetchSettingsContent>,
@@ -704,7 +710,7 @@ pub struct GitSettings {
 pub struct AutoFetchSettingsContent {
     /// Whether to automatically fetch in the background.
     ///
-    /// Default: false
+    /// 默认值：false
     pub enabled: Option<bool>,
     /// How long to wait between automatic fetches, in seconds.
     /// Only used when `enabled` is true. (min: 15)
@@ -747,10 +753,12 @@ impl GitEnabledSettings {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum GitGutterSetting {
-    /// Show git gutter in tracked files.
+    /// 在已跟踪文件中显示 Git 装订线
     #[default]
+    #[strum(serialize = "已跟踪文件")]
     TrackedFiles,
-    /// Hide git gutter
+    /// 隐藏 Git 装订线
+    #[strum(serialize = "隐藏")]
     Hide,
 }
 
@@ -769,10 +777,12 @@ pub enum GitGutterSetting {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum InlineBlameLocation {
-    /// Show git blame inline at the current line.
+    /// 在当前行内联显示 Git 追溯
     #[default]
+    #[strum(serialize = "内联")]
     Inline,
-    /// Show git blame in the status bar at the bottom of the window.
+    /// 在窗口底部的状态栏中显示 Git 追溯
+    #[strum(serialize = "状态栏")]
     StatusBar,
 }
 
@@ -780,32 +790,32 @@ pub enum InlineBlameLocation {
 #[derive(Clone, Copy, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema, MergeFrom)]
 #[serde(rename_all = "snake_case")]
 pub struct InlineBlameSettings {
-    /// Whether or not to show git blame data inline in
-    /// the currently focused line.
+    /// 是否将 Git 追溯数据内联显示于
+    /// 当前聚焦的行。
     ///
-    /// Default: true
+    /// 默认值：true
     pub enabled: Option<bool>,
-    /// Whether to only show the inline blame information
-    /// after a delay once the cursor stops moving.
+    /// 是否仅在光标停止移动后
+    /// 延迟一段时间才显示内联追溯信息。
     ///
     /// Default: 0
     pub delay_ms: Option<DelayMs>,
-    /// Where to render the blame information when enabled.
+    /// 启用后渲染追溯信息的位置
     ///
-    /// Default: inline
+    /// 默认值：inline
     pub location: Option<InlineBlameLocation>,
-    /// The amount of padding between the end of the source line and the start
-    /// of the inline blame in units of columns.
+    /// 源代码行末尾与
+    /// 内联追溯起始之间的间距（以列为单位）。
     ///
-    /// Default: 7
+    /// 默认值：7
     pub padding: Option<u32>,
-    /// The minimum column number to show the inline blame information at
+    /// 显示内联追溯信息的最小列号
     ///
     /// Default: 0
     pub min_column: Option<u32>,
-    /// Whether to show commit summary as part of the inline blame.
+    /// 是否将提交摘要显示为内联追溯的一部分
     ///
-    /// Default: false
+    /// 默认值：false
     pub show_commit_summary: Option<bool>,
 }
 
@@ -813,9 +823,9 @@ pub struct InlineBlameSettings {
 #[derive(Clone, Copy, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema, MergeFrom)]
 #[serde(rename_all = "snake_case")]
 pub struct BlameSettings {
-    /// Whether to show the avatar of the author of the commit.
+    /// 是否显示提交作者的头像
     ///
-    /// Default: true
+    /// 默认值：true
     pub show_avatar: Option<bool>,
 }
 
@@ -823,9 +833,9 @@ pub struct BlameSettings {
 #[derive(Clone, Copy, PartialEq, Debug, Default, Serialize, Deserialize, JsonSchema, MergeFrom)]
 #[serde(rename_all = "snake_case")]
 pub struct BranchPickerSettingsContent {
-    /// Whether to show author name as part of the commit information.
+    /// 是否将作者名称显示为提交信息的一部分
     ///
-    /// Default: false
+    /// 默认值：false
     pub show_author_name: Option<bool>,
 }
 
@@ -833,9 +843,9 @@ pub struct BranchPickerSettingsContent {
 #[derive(Clone, Copy, PartialEq, Debug, Default, Serialize, Deserialize, JsonSchema, MergeFrom)]
 #[serde(rename_all = "snake_case")]
 pub struct FileDiffSettingsContent {
-    /// Whether newly opened file diffs show the full file instead of changes only.
+    /// 新打开的文件差异是否显示完整文件，而非仅显示更改
     ///
-    /// Default: true
+    /// 默认值：true
     pub show_full_file: Option<bool>,
 }
 
@@ -854,10 +864,12 @@ pub struct FileDiffSettingsContent {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum GitHunkStyleSetting {
-    /// Show unstaged hunks with a filled background and staged hunks hollow.
+    /// 未暂存区块显示为实心背景，已暂存区块显示为空心
     #[default]
+    #[strum(serialize = "已暂存空心")]
     StagedHollow,
-    /// Show unstaged hunks hollow and staged hunks with a filled background.
+    /// 未暂存区块显示为空心，已暂存区块显示为实心背景
+    #[strum(serialize = "未暂存空心")]
     UnstagedHollow,
 }
 
@@ -876,14 +888,16 @@ pub enum GitHunkStyleSetting {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum GitDiffBaseSetting {
-    /// Diff against HEAD: show working (uncommitted) changes.
+    /// 与 HEAD 进行差异比较：显示工作区（未提交）更改
     #[default]
+    #[strum(serialize = "HEAD")]
     Head,
-    /// Diff against the merge base between HEAD and the repository's
-    /// default branch: show all changes on the branch.
+    /// 以 HEAD 与仓库默认分支的合并基准进行差异比较。
+    /// 显示当前分支上的所有更改。
     ///
-    /// Repositories where no default branch can be resolved fall back
-    /// to `head` behavior.
+    /// 无法解析默认分支时，仓库将回退。
+    /// 此时采用 `head` 行为。
+    #[strum(serialize = "默认分支")]
     DefaultBranch,
 }
 
@@ -903,28 +917,30 @@ pub enum GitDiffBaseSetting {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum GitPathStyle {
-    /// Show file name first, then path
+    /// 先显示文件名，后显示路径
     #[default]
+    #[strum(serialize = "文件名优先")]
     FileNameFirst,
-    /// Show full path first
+    /// 先显示完整路径
+    #[strum(serialize = "文件路径优先")]
     FilePathFirst,
 }
 
 #[with_fallible_options]
 #[derive(Clone, Debug, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct DiagnosticsSettingsContent {
-    /// Whether to show the project diagnostics button in the status bar.
+    /// 是否在状态栏中显示项目诊断按钮
     pub button: Option<bool>,
 
-    /// Whether or not to include warning diagnostics.
+    /// 是否包含警告级别的诊断信息
     ///
-    /// Default: true
+    /// 默认值：true
     pub include_warnings: Option<bool>,
 
-    /// Settings for using LSP pull diagnostics mechanism in Zed.
+    /// 在 Zed 中使用 LSP 拉取诊断机制的设置
     pub lsp_pull_diagnostics: Option<LspPullDiagnosticsSettingsContent>,
 
-    /// Settings for showing inline diagnostics.
+    /// 显示内联诊断的设置
     pub inline: Option<InlineDiagnosticsSettingsContent>,
 }
 
@@ -933,14 +949,14 @@ pub struct DiagnosticsSettingsContent {
     Clone, Copy, Debug, Default, Serialize, Deserialize, JsonSchema, MergeFrom, PartialEq, Eq,
 )]
 pub struct LspPullDiagnosticsSettingsContent {
-    /// Whether to pull for diagnostics or not.
+    /// 是否拉取诊断信息
     ///
-    /// Default: true
+    /// 默认值：true
     pub enabled: Option<bool>,
-    /// Minimum time to wait before pulling diagnostics from the language server(s).
-    /// 0 turns the debounce off.
+    /// 从语言服务器拉取诊断信息前等待的最短时间
+    /// 0 表示关闭防抖
     ///
-    /// Default: 50
+    /// 默认值：50
     pub debounce_ms: Option<DelayMs>,
 }
 
@@ -949,23 +965,23 @@ pub struct LspPullDiagnosticsSettingsContent {
     Clone, Copy, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Eq,
 )]
 pub struct InlineDiagnosticsSettingsContent {
-    /// Whether or not to show inline diagnostics
+    /// 是否显示内联诊断
     ///
-    /// Default: false
+    /// 默认值：false
     pub enabled: Option<bool>,
-    /// Whether to only show the inline diagnostics after a delay after the
-    /// last editor event.
+    /// 是否仅在上一次编辑器事件后延迟一段时间
+    /// 才显示内联诊断信息。
     ///
-    /// Default: 150
+    /// 默认值：150
     pub update_debounce_ms: Option<DelayMs>,
-    /// The amount of padding between the end of the source line and the start
-    /// of the inline diagnostic in units of columns.
+    /// 源代码行末尾与
+    /// 内联诊断起始之间的间距（以列为单位）。
     ///
-    /// Default: 4
+    /// 默认值：4
     pub padding: Option<u32>,
-    /// The minimum column to display inline diagnostics. This setting can be
-    /// used to horizontally align inline diagnostics at some position. Lines
-    /// longer than this value will still push diagnostics further to the right.
+    /// 显示内联诊断信息的最小列号。此设置可
+    /// 用于在某个位置水平对齐内联诊断信息。行长度
+    /// 超过此值时，诊断信息仍会继续向右推移。
     ///
     /// Default: 0
     pub min_column: Option<u32>,
@@ -976,23 +992,23 @@ pub struct InlineDiagnosticsSettingsContent {
 #[with_fallible_options]
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct NodeBinarySettings {
-    /// The path to the Node binary.
+    /// Node 二进制文件的路径
     pub path: Option<String>,
-    /// The path to the npm binary Zed should use (defaults to `.path/../npm`).
+    /// Zed 应使用的 npm 二进制文件路径（默认为 `.path/../npm`）
     pub npm_path: Option<String>,
-    /// If enabled, Zed will download its own copy of Node.
+    /// 如果启用，Zed 将下载自己的 Node 副本
     pub ignore_system_version: Option<bool>,
 }
 
 #[derive(Clone, PartialEq, Debug, Default, Serialize, Deserialize, JsonSchema, MergeFrom)]
 #[serde(rename_all = "snake_case")]
 pub enum DirenvSettings {
-    /// Load direnv configuration through a shell hook
+    /// 通过 shell 钩子加载 direnv 配置
     ShellHook,
-    /// Load direnv configuration directly using `direnv export json`
+    /// 直接使用 `direnv export json` 加载 direnv 配置
     #[default]
     Direct,
-    /// Do not load direnv configuration
+    /// 不加载 direnv 配置
     Disabled,
 }
 
@@ -1014,27 +1030,33 @@ pub enum DirenvSettings {
 #[serde(rename_all = "snake_case")]
 pub enum DiagnosticSeverityContent {
     // No diagnostics are shown.
+    #[strum(serialize = "关闭")]
     Off,
+    #[strum(serialize = "错误")]
     Error,
+    #[strum(serialize = "警告")]
     Warning,
+    #[strum(serialize = "信息")]
     Info,
+    #[strum(serialize = "提示")]
     Hint,
+    #[strum(serialize = "全部")]
     All,
 }
 
-/// A custom Git hosting provider.
+/// 自定义 Git 托管提供商
 #[with_fallible_options]
 #[derive(Debug, PartialEq, Clone, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct GitHostingProviderConfig {
-    /// The type of the provider.
+    /// 提供商的类型
     ///
-    /// Must be one of `github`, `gitlab`, `bitbucket`, `gitea`, `forgejo`, `gerrit`, `sourcehut`, `tangled`, or `gitiles`.
+    /// 必须为 `github`、`gitlab`、`bitbucket`、`gitea`、`forgejo`、`gerrit`、`sourcehut`、`tangled` 或 `gitiles` 之一
     pub provider: GitHostingProviderKind,
 
-    /// The base URL for the provider (e.g., "https://code.corp.big.com").
+    /// 提供商的基础 URL（例如，"https://code.corp.big.com"）
     pub base_url: String,
 
-    /// The display name for the provider (e.g., "BigCorp GitHub").
+    /// 提供商的显示名称（例如，"BigCorp GitHub"）
     pub name: String,
 }
 

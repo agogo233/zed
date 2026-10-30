@@ -830,33 +830,32 @@ pub fn authorize_dirty_buffer(
 ) -> Task<Result<DirtyBufferDecision>> {
     let (message, options) = match kind {
         DirtyBufferPromptKind::Edit => (
-            "This file has unsaved changes. Do you want to save or discard them \
-             before the agent continues editing?"
+            "此文件有未保存的更改。是否在智能体继续编辑前保存或放弃这些更改？"
                 .to_string(),
             vec![
                 acp::PermissionOption::new(
                     acp::PermissionOptionId::new("save"),
-                    "Save",
+                    "保存",
                     acp::PermissionOptionKind::AllowOnce,
                 ),
                 acp::PermissionOption::new(
                     acp::PermissionOptionId::new("discard"),
-                    "Discard",
+                    "放弃",
                     acp::PermissionOptionKind::RejectOnce,
                 ),
             ],
         ),
         DirtyBufferPromptKind::Overwrite => (
-            "This file has unsaved changes and the agent wants to overwrite it.".to_string(),
+            "此文件有未保存的更改，而智能体想要覆盖它。".to_string(),
             vec![
                 acp::PermissionOption::new(
                     acp::PermissionOptionId::new("discard"),
-                    "Overwrite",
+                    "覆盖",
                     acp::PermissionOptionKind::AllowOnce,
                 ),
                 acp::PermissionOption::new(
                     acp::PermissionOptionId::new("keep"),
-                    "Cancel",
+                    "取消",
                     acp::PermissionOptionKind::RejectOnce,
                 ),
             ],

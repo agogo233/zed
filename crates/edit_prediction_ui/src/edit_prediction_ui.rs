@@ -23,7 +23,7 @@ use crate::rate_prediction_modal::PredictEditsRatePredictionsFeatureFlag;
 actions!(
     dev,
     [
-        /// Opens the edit prediction context view.
+        /// 打开编辑预测上下文视图
         OpenEditPredictionContextView,
     ]
 );
@@ -31,7 +31,7 @@ actions!(
 actions!(
     edit_prediction,
     [
-        /// Opens the rate completions modal.
+        /// 打开补全评分对话框
         RatePredictions,
     ]
 );

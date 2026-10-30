@@ -312,7 +312,7 @@ pub struct ExtensionIndexLanguageEntry {
 actions!(
     zed,
     [
-        /// Reloads all installed extensions.
+        /// 重新加载所有已安装的扩展
         ReloadExtensions
     ]
 );

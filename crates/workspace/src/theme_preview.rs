@@ -16,7 +16,7 @@ use crate::{Item, Workspace};
 actions!(
     dev,
     [
-        /// Opens the theme preview window.
+        /// 打开主题预览窗口
         OpenThemePreview
     ]
 );
@@ -154,7 +154,7 @@ impl ThemePreview {
                     .child(
                         v_flex()
                             .gap_1()
-                            .child(Headline::new("Text Colors").size(HeadlineSize::Small).color(Color::Muted))
+                            .child(Headline::new("文本颜色").size(HeadlineSize::Small).color(Color::Muted))
                             .child(
                                 Label::new(label_with_contrast(
                                     "Default Text",
@@ -278,7 +278,7 @@ impl ThemePreview {
                     .child(
                         v_flex()
                             .gap_1()
-                            .child(Headline::new("Wrapping Text").size(HeadlineSize::Small).color(Color::Muted))
+                            .child(Headline::new("换行文本").size(HeadlineSize::Small).color(Color::Muted))
                             .child(
                                 div().max_w(px(200.)).child(
                                 "This is a longer piece of text that should wrap to multiple lines. It demonstrates how text behaves when it exceeds the width of its container."
@@ -299,7 +299,7 @@ impl ThemePreview {
         v_flex()
             .gap_1()
             .child(
-                Headline::new("Colors")
+                Headline::new("颜色")
                     .size(HeadlineSize::Small)
                     .color(Color::Muted),
             )
@@ -357,7 +357,7 @@ impl ThemePreview {
             .size_full()
             .child(
                 v_flex()
-                    .child(Headline::new("Theme Preview").size(HeadlineSize::Large))
+                    .child(Headline::new("主题预览").size(HeadlineSize::Large))
                     .child(div().w_full().text_color(cx.theme().colors().text_muted).child("This view lets you preview a range of UI elements across a theme. Use it for testing out changes to the theme."))
                     )
             .child(self.render_theme_layer(ElevationIndex::Background, window, cx))

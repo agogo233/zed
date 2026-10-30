@@ -1541,7 +1541,7 @@ impl ToolCall {
             return tool_name
                 .filter(|name| !name.trim().is_empty())
                 .cloned()
-                .unwrap_or_else(|| "Tool call".into());
+                .unwrap_or_else(|| "工具调用".into());
         };
 
         if kind == &acp_v2::ToolKind::Execute {
@@ -2717,7 +2717,7 @@ impl ContentBlock {
                 } else {
                     RenderBlock::Unsupported {
                         markdown: Self::create_markdown(
-                            "Image content could not be displayed.".into(),
+                            "无法显示图片内容".into(),
                             language_registry,
                             cx,
                         ),
@@ -2739,9 +2739,9 @@ impl ContentBlock {
         cx: &mut App,
     ) -> RenderBlock {
         let description = match content {
-            acp_v2::ContentBlock::Audio(_) => "Audio content is not supported.",
-            acp_v2::ContentBlock::Other(_) => "Unknown content type is not supported.",
-            _ => "This content is not supported.",
+            acp_v2::ContentBlock::Audio(_) => "不支持音频内容",
+            acp_v2::ContentBlock::Other(_) => "不支持未知的内容类型",
+            _ => "不支持此内容",
         };
         RenderBlock::Unsupported {
             markdown: Self::create_markdown(description.into(), language_registry, cx),
@@ -3287,7 +3287,7 @@ impl ToolCallContent {
             PreparedToolCallContent::Other(source) => Self::Other {
                 source,
                 markdown: ContentBlock::create_markdown(
-                    "Unsupported tool call content.".into(),
+                    "不支持的工具调用内容".into(),
                     language_registry,
                     cx,
                 ),
@@ -6178,7 +6178,7 @@ impl AcpThread {
             acp_v1::ToolCall::new(acp_v1::ToolCallId::new(id.0.clone()), "Tool call not found")
                 .kind(acp_v1::ToolKind::Fetch)
                 .status(acp_v1::ToolCallStatus::Failed)
-                .content(vec!["Tool call not found".into()]),
+                .content(vec!["未找到工具调用".into()]),
             Some(ToolCallStatus::Failed),
             languages,
             &self.terminals,
@@ -7168,7 +7168,7 @@ impl AcpThread {
     ) -> Submission {
         self.track_submission(id, None, cx, async move |_, _| {
             Err(anyhow!(
-                "The agent owns this session, so it does not accept prompts"
+                "此会话由智能体拥有，因此不接受提示词"
             ))
         })
     }

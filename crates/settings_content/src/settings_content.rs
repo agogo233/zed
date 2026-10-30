@@ -38,9 +38,9 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use settings_macros::{MergeFrom, with_fallible_options};
 
-/// A non-negative size in pixels.
+/// 以像素为单位的非负尺寸
 ///
-/// Valid range: 0.0 and up
+/// 有效范围：0.0 及以上
 #[derive(
     Clone,
     Copy,
@@ -68,12 +68,12 @@ impl std::fmt::Display for PixelSetting {
     }
 }
 
-/// Defines a settings override struct where each field is
-/// `Option<Box<SettingsContent>>`, along with:
-/// - `OVERRIDE_KEYS`: a `&[&str]` of the field names (the JSON keys)
-/// - `get_by_key(&self, key) -> Option<&SettingsContent>`: accessor by key
+/// 定义一个设置覆盖结构体，其中每个字段为
+/// `Option<Box<SettingsContent>>`，以及：
+/// - `OVERRIDE_KEYS`：字段名称（JSON 键）的 `&[&str]`
+/// - `get_by_key(&self, key) -> Option<&SettingsContent>`：按键访问的访问器
 ///
-/// The field list is the single source of truth for the override key strings.
+/// 字段列表是覆盖键字符串的唯一可信来源
 macro_rules! settings_overrides {
     (
         $(#[$attr:meta])*
@@ -85,10 +85,10 @@ macro_rules! settings_overrides {
         }
 
         impl $name {
-            /// The JSON override keys, derived from the field names on this struct.
+            /// JSON 覆盖键，从此结构体的字段名派生
             pub const OVERRIDE_KEYS: &[&str] = &[$(stringify!($field)),*];
 
-            /// Look up an override by its JSON key name.
+            /// 按 JSON 键名查找覆盖项
             pub fn get_by_key(&self, key: &str) -> Option<&SettingsContent> {
                 match key {
                     $(stringify!($field) => self.$field.as_deref(),)*
@@ -105,18 +105,18 @@ pub use util::serde::default_true;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ParseStatus {
-    /// Settings were parsed successfully
+    /// 设置解析成功
     Success,
-    /// Settings file was not changed, so no parsing was performed
+    /// 设置文件未更改，因此未执行解析
     Unchanged,
-    /// Settings failed to parse
+    /// 设置解析失败
     Failed { error: String },
 }
 
-/// Determines when the mouse cursor should be hidden in response to keyboard
-/// input.
+/// 确定在响应键盘
+/// 输入时隐藏鼠标光标的时机。
 ///
-/// Default: on_typing_and_action
+/// 默认值：on_typing_and_action
 #[derive(
     Copy,
     Clone,
@@ -133,19 +133,22 @@ pub enum ParseStatus {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum HideMouseMode {
-    /// Never hide the mouse cursor
+    /// 从不隐藏鼠标光标
+    #[strum(serialize = "从不")]
     Never,
-    /// Hide only when typing
+    /// 仅在输入时隐藏
+    #[strum(serialize = "输入时")]
     OnTyping,
-    /// Hide on typing and on key bindings that resolve to an action
+    /// 在输入时以及触发操作的快捷键激活时隐藏
     #[default]
+    #[strum(serialize = "输入和操作时")]
     OnTypingAndAction,
 }
 
-/// Determines whether to reduce non-essential motion in the UI, such as
-/// loading spinners and pulsating labels, by rendering them in a static state.
+/// 确定是否通过静态渲染来减少界面中不必要的动态效果，例如
+/// 加载指示器和脉动标签。
 ///
-/// Default: off
+/// 默认值：off
 #[derive(
     Copy,
     Clone,
@@ -162,10 +165,12 @@ pub enum HideMouseMode {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum ReduceMotionMode {
-    /// Always reduce motion
+    /// 始终减少动态效果
+    #[strum(serialize = "开启")]
     On,
-    /// Never reduce motion
+    /// 从不减少动态效果
     #[default]
+    #[strum(serialize = "关闭")]
     Off,
 }
 
@@ -190,10 +195,10 @@ pub struct SettingsContent {
     #[serde(flatten)]
     pub remote: RemoteSettingsContent,
 
-    /// Settings related to the command palette.
+    /// 与命令面板相关的设置
     pub command_palette: Option<CommandPaletteSettingsContent>,
 
-    /// Settings related to the file finder.
+    /// 与文件查找器相关的设置
     pub file_finder: Option<FileFinderSettingsContent>,
 
     pub call_hierarchy: Option<CallHierarchySettingsContent>,
@@ -210,61 +215,61 @@ pub struct SettingsContent {
     pub agent: Option<AgentSettingsContent>,
     pub agent_servers: Option<AllAgentServersSettings>,
 
-    /// Configuration of audio in Zed.
+    /// Zed 音频的配置
     pub audio: Option<AudioSettingsContent>,
 
-    /// Whether or not to automatically check for updates.
+    /// 是否自动检查更新
     ///
-    /// Default: false
+    /// 默认值：false
     pub auto_update: Option<bool>,
 
-    /// This base keymap settings adjusts the default keybindings in Zed to be similar
-    /// to other common code editors. By default, Zed's keymap closely follows VSCode's
-    /// keymap, with minor adjustments, this corresponds to the "VSCode" setting.
+    /// 此基础键映射设置将 Zed 的默认键绑定调整为类似于
+    /// 其他常见代码编辑器的键绑定。默认情况下，Zed 的键位映射基本沿用 VSCode 的
+    /// 键位映射并做了少量调整，对应的是 "VSCode" 设置。
     ///
-    /// Default: VSCode
+    /// 默认值：VSCode
     pub base_keymap: Option<BaseKeymapContent>,
 
-    /// Configuration for the collab panel visual settings.
+    /// 协作面板外观设置的配置
     pub collaboration_panel: Option<PanelSettingsContent>,
 
     pub debugger: Option<DebuggerSettingsContent>,
 
-    /// Configuration for Diagnostics-related features.
+    /// 诊断相关功能的配置
     pub diagnostics: Option<DiagnosticsSettingsContent>,
 
-    /// Configuration for Git-related features
+    /// Git 相关功能的配置
     pub git: Option<GitSettings>,
 
-    /// Common language server settings.
+    /// 通用语言服务器设置
     pub global_lsp_settings: Option<GlobalLspSettingsContent>,
 
-    /// The settings for the image viewer.
+    /// 图像查看器的设置
     pub image_viewer: Option<ImageViewerSettingsContent>,
 
-    /// The settings for the markdown preview.
+    /// Markdown 预览的设置
     pub markdown_preview: Option<MarkdownPreviewSettingsContent>,
 
     pub repl: Option<ReplSettingsContent>,
 
-    /// Whether or not to enable Helix mode.
+    /// 是否启用 Helix 模式
     ///
-    /// Default: false
+    /// 默认值：false
     pub helix_mode: Option<bool>,
 
-    /// Determines when the mouse cursor should be hidden in response to
-    /// keyboard input. Applies globally across all input surfaces (editors,
-    /// terminals, palettes, etc.).
+    /// 确定在响应
+    /// 键盘输入时隐藏鼠标光标的时机。全局适用于所有输入界面（编辑器、
+    /// 终端、命令面板等）。
     ///
-    /// Default: on_typing_and_action
+    /// 默认值：on_typing_and_action
     pub hide_mouse: Option<HideMouseMode>,
 
     pub journal: Option<JournalSettingsContent>,
 
-    /// A map of log scopes to the desired log level.
-    /// Useful for filtering out noisy logs or enabling more verbose logging.
+    /// 日志范围到目标日志级别的映射
+    /// 可用于过滤嘈杂日志或启用更详细的日志记录
     ///
-    /// Example: {"log": {"client": "warn"}}
+    /// 示例：{"log": {"client": "warn"}}
     pub log: Option<HashMap<String, String>>,
 
     pub line_indicator_format: Option<LineIndicatorFormat>,
@@ -277,86 +282,86 @@ pub struct SettingsContent {
 
     pub project_panel: Option<ProjectPanelSettingsContent>,
 
-    /// Configuration for Node-related features
+    /// Node 相关功能的配置
     pub node: Option<NodeBinarySettings>,
 
     pub proxy: Option<String>,
 
-    /// Whether to reduce non-essential motion in the UI, such as loading
-    /// spinners and pulsating labels, by rendering them in a static state.
+    /// 是否通过静态渲染来减少界面中不必要的动态效果，例如
+    /// 加载指示器和脉动标签
     ///
-    /// Default: off
+    /// 默认值：off
     pub reduce_motion: Option<ReduceMotionMode>,
 
-    /// The URL of the Zed server to connect to.
+    /// 要连接的 Zed 服务器 URL
     pub server_url: Option<String>,
 
-    /// The URL used as the key for credential storage.
+    /// 用作凭据存储键的 URL
     ///
-    /// When set, credentials are stored under this URL instead of `server_url`.
-    /// This allows running multiple Zed instances side by side without them
-    /// overwriting each other's keychain entries.
+    /// 设置后，凭据将存储在此 URL 下，而非 `server_url`。
+    /// 这允许并排运行多个 Zed 实例而不会
+    /// 覆盖彼此的密钥链条目。
     pub credentials_url: Option<String>,
 
-    /// Configuration for session-related features
+    /// 会话相关功能的配置
     pub session: Option<SessionSettingsContent>,
-    /// Control what info is collected by Zed.
+    /// 控制 Zed 收集哪些信息
     pub telemetry: Option<TelemetrySettingsContent>,
 
-    /// Configuration of the terminal in Zed.
+    /// Zed 终端的配置
     pub terminal: Option<TerminalSettingsContent>,
 
     pub title_bar: Option<TitleBarSettingsContent>,
 
-    /// Whether or not to enable Vim mode.
+    /// 是否启用 Vim 模式
     ///
-    /// Default: false
+    /// 默认值：false
     pub vim_mode: Option<bool>,
 
     // Settings related to calls in Zed
     pub calls: Option<CallSettingsContent>,
 
-    /// Settings for the which-key popup.
+    /// which-key 弹出窗口的设置
     pub which_key: Option<WhichKeySettingsContent>,
 
-    /// Settings related to Vim mode in Zed.
+    /// Zed 中与 Vim 模式相关的设置
     pub vim: Option<VimSettingsContent>,
 
-    /// Number of lines to search for modelines at the beginning and end of files.
-    /// Modelines contain editor directives (e.g., vim/emacs settings) that configure
-    /// the editor behavior for specific files.
+    /// 在文件头尾搜索模式行的行数。
+    /// 模式行包含编辑器指令（例如 vim/emacs 设置），用于配置
+    /// 特定文件的编辑器行为。
     ///
-    /// Default: 5
+    /// 默认值：5
     pub modeline_lines: Option<usize>,
 
-    /// Local overrides for feature flags, keyed by flag name.
+    /// 按标志名称索引的功能标志本地覆盖项
     pub feature_flags: Option<FeatureFlagsMap>,
 
-    /// Settings for developer-oriented instrumentation tools (profilers,
-    /// tracers, etc.) that can be toggled at runtime.
+    /// 面向开发者的检测工具设置（性能分析器、
+    /// 追踪器等）可在运行时切换
     pub instrumentation: Option<InstrumentationSettingsContent>,
 }
 
-/// Configuration for developer-oriented instrumentation tools that collect
-/// diagnostic data about a running Zed instance.
+/// 面向开发者的检测工具配置，用于收集
+/// 运行中的 Zed 实例的诊断数据。
 #[with_fallible_options]
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct InstrumentationSettingsContent {
-    /// Configuration for the performance profiler, accessed via the
-    /// `zed: open performance profiler` action.
+    /// 性能分析器的配置，可通过以下方式访问
+    /// `zed: open performance profiler` 操作。
     pub performance_profiler: Option<PerformanceProfilerSettingsContent>,
 }
 
-/// Configuration for the performance profiler which collects timing data
-/// for foreground and background executor tasks.
+/// 性能分析器的配置，用于收集
+/// 前台和后台执行器任务的时序数据。
 #[with_fallible_options]
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct PerformanceProfilerSettingsContent {
-    /// Whether to collect timing data for foreground and background executor
-    /// tasks. Enabling this may lead to increased memory usage, hence it's
-    /// disabled by default for regular builds.
+    /// 是否收集前台和后台执行器
+    /// 任务的计时数据。启用此功能可能会增加内存占用，因此
+    /// 在常规构建中默认禁用。
     ///
-    /// Default: false
+    /// 默认值：false
     pub enabled: Option<bool>,
 }
 
@@ -468,31 +473,31 @@ settings_overrides! {
     pub struct PlatformOverrides { macos, linux, windows }
 }
 
-/// Determines what settings a profile starts from before applying its overrides.
+/// 确定配置文件在应用覆盖前的基础设置
 #[derive(
     Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize, JsonSchema, MergeFrom,
 )]
 #[serde(rename_all = "snake_case")]
 pub enum ProfileBase {
-    /// Apply profile settings on top of the user's current settings.
+    /// 在用户当前设置之上应用配置文件设置。
     #[default]
     User,
-    /// Apply profile settings on top of Zed's default settings, ignoring user customizations.
+    /// 在 Zed 默认设置之上应用配置文件设置，忽略用户自定义。
     Default,
 }
 
-/// A named settings profile that can temporarily override settings.
+/// 可临时覆盖设置的命名配置文件
 #[with_fallible_options]
 #[derive(Debug, Default, PartialEq, Clone, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct SettingsProfile {
-    /// What base settings to start from before applying this profile's overrides.
+    /// 应用此配置文件覆盖项之前的基础设置起点
     ///
-    /// - `user`: Apply on top of user's settings (default)
-    /// - `default`: Apply on top of Zed's default settings, ignoring user customizations
+    /// - `user`：在用户设置的基础上应用（默认）
+    /// - `default`：在 Zed 默认设置之上应用，忽略用户自定义
     #[serde(default)]
     pub base: ProfileBase,
 
-    /// The settings overrides for this profile.
+    /// 此配置文件的设置覆盖项
     #[serde(default)]
     pub settings: Box<SettingsContent>,
 }
@@ -517,9 +522,9 @@ pub struct ExtensionsSettingsContent {
     pub all_languages: AllLanguageSettingsContent,
 }
 
-/// Base key bindings scheme. Base keymaps can be overridden with user keymaps.
+/// 基础键绑定方案。基础键映射可被用户键映射覆盖。
 ///
-/// Default: Zed
+/// 默认值：Zed
 #[derive(
     Copy,
     Clone,
@@ -560,14 +565,14 @@ impl strum::VariantNames for BaseKeymapContent {
     ];
 }
 
-/// Configuration of audio in Zed.
+/// Zed 音频的配置
 #[with_fallible_options]
 #[derive(Clone, PartialEq, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Debug)]
 pub struct AudioSettingsContent {
-    /// Select specific output audio device.
+    /// 选择特定的音频输出设备
     #[serde(rename = "experimental.output_audio_device")]
     pub output_audio_device: Option<AudioOutputDeviceName>,
-    /// Select specific input audio device.
+    /// 选择特定的音频输入设备
     #[serde(rename = "experimental.input_audio_device")]
     pub input_audio_device: Option<AudioInputDeviceName>,
 }
@@ -604,22 +609,22 @@ impl From<Option<String>> for AudioOutputDeviceName {
     }
 }
 
-/// Control what info is collected by Zed.
+/// 控制 Zed 收集哪些信息
 #[with_fallible_options]
 #[derive(Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema, Debug, MergeFrom)]
 pub struct TelemetrySettingsContent {
-    /// Send debug info like crash reports.
+    /// 发送调试信息（如崩溃报告）
     ///
-    /// Default: false
+    /// 默认值：false
     pub diagnostics: Option<bool>,
-    /// Send anonymized usage data like what languages you're using Zed with.
+    /// 发送匿名使用数据，例如你在 Zed 中使用的编程语言
     ///
-    /// Default: false
+    /// 默认值：false
     pub metrics: Option<bool>,
-    /// Allow sending requests to Anthropic models that cannot be offered with
-    /// Zero Data Retention.
+    /// 允许向无法在以下模式下提供的 Anthropic 模型发送请求：
+    /// Zero Data Retention
     ///
-    /// Default: false
+    /// 默认值：false
     pub anthropic_retention: Option<bool>,
 }
 
@@ -636,37 +641,37 @@ impl Default for TelemetrySettingsContent {
 #[with_fallible_options]
 #[derive(Default, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema, Clone, MergeFrom)]
 pub struct DebuggerSettingsContent {
-    /// Determines the stepping granularity.
+    /// 确定步进粒度
     ///
-    /// Default: line
+    /// 默认值：line
     pub stepping_granularity: Option<SteppingGranularity>,
-    /// Whether the breakpoints should be reused across Zed sessions.
+    /// 是否在 Zed 会话之间复用断点
     ///
-    /// Default: true
+    /// 默认值：true
     pub save_breakpoints: Option<bool>,
-    /// Whether to show the debug button in the status bar.
+    /// 是否在状态栏中显示调试按钮
     ///
-    /// Default: true
+    /// 默认值：true
     pub button: Option<bool>,
-    /// Time in milliseconds until timeout error when connecting to a TCP debug adapter
+    /// 连接 TCP 调试适配器时触发超时错误的毫秒数
     ///
-    /// Default: 2000ms
+    /// 默认值：2000 ms
     pub timeout: Option<u64>,
-    /// Whether to log messages between active debug adapters and Zed
+    /// 是否记录活动调试适配器与 Zed 之间的消息
     ///
-    /// Default: true
+    /// 默认值：true
     pub log_dap_communications: Option<bool>,
-    /// Whether to format dap messages in when adding them to debug adapter logger
+    /// 是否在将 DAP 消息添加到调试适配器日志时进行格式化
     ///
-    /// Default: true
+    /// 默认值：true
     pub format_dap_log_messages: Option<bool>,
-    /// The dock position of the debug panel
+    /// 调试面板的停靠位置
     ///
-    /// Default: Bottom
+    /// 默认值：Bottom
     pub dock: Option<DockPosition>,
 }
 
-/// The granularity of one 'step' in the stepping requests `next`, `stepIn`, `stepOut`, and `stepBack`.
+/// 步进请求 `next`、`stepIn`、`stepOut` 和 `stepBack` 中一次“步进”的粒度
 #[derive(
     PartialEq,
     Eq,
@@ -683,13 +688,16 @@ pub struct DebuggerSettingsContent {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum SteppingGranularity {
-    /// The step should allow the program to run until the current statement has finished executing.
-    /// The meaning of a statement is determined by the adapter and it may be considered equivalent to a line.
-    /// For example 'for(int i = 0; i < 10; i++)' could be considered to have 3 statements 'int i = 0', 'i < 10', and 'i++'.
+    /// 单步应允许程序运行至当前语句执行完毕
+    /// 语句的含义由调试适配器决定，可等同于一行代码
+    /// 例如，'for(int i = 0; i < 10; i++)' 可被视为包含 3 条语句：'int i = 0'、'i < 10' 和 'i++'
+    #[strum(serialize = "语句")]
     Statement,
-    /// The step should allow the program to run until the current source line has executed.
+    /// 单步应允许程序运行至当前源代码行执行完毕
+    #[strum(serialize = "行")]
     Line,
-    /// The step should allow one instruction to execute (e.g. one x86 instruction).
+    /// 单步应允许执行一条指令（例如一条 x86 指令）
+    #[strum(serialize = "指令")]
     Instruction,
 }
 
@@ -708,116 +716,119 @@ pub enum SteppingGranularity {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum DockPosition {
+    #[strum(serialize = "左")]
     Left,
+    #[strum(serialize = "底部")]
     Bottom,
+    #[strum(serialize = "右")]
     Right,
 }
 
-/// Configuration of voice calls in Zed.
+/// Zed 语音通话的配置
 #[with_fallible_options]
 #[derive(Clone, PartialEq, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Debug)]
 pub struct CallSettingsContent {
-    /// Whether the microphone should be muted when joining a channel or a call.
+    /// 加入频道或通话时是否静音麦克风
     ///
-    /// Default: false
+    /// 默认值：false
     pub mute_on_join: Option<bool>,
 
-    /// Whether your current project should be shared when joining an empty channel.
+    /// 加入空频道时是否共享当前项目
     ///
-    /// Default: false
+    /// 默认值：false
     pub share_on_join: Option<bool>,
 }
 
 #[with_fallible_options]
 #[derive(Clone, PartialEq, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Debug)]
 pub struct GitPanelSettingsContent {
-    /// Whether to show the panel button in the status bar.
+    /// 是否在状态栏中显示面板按钮
     ///
-    /// Default: true
+    /// 默认值：true
     pub button: Option<bool>,
-    /// Where to dock the panel.
+    /// 面板停靠的位置
     ///
-    /// Default: right (Agentic layout), left (Classic layout)
+    /// 默认值：right（Agentic 布局），left（Classic 布局）
     pub dock: Option<DockPosition>,
-    /// Default width of the panel in pixels.
+    /// 面板的默认宽度（像素）
     ///
-    /// Default: 360
+    /// 默认值：360
     pub default_width: Option<PixelSetting>,
-    /// How entry statuses are displayed.
+    /// 条目状态的显示方式
     ///
-    /// Default: icon
+    /// 默认值：icon
     pub status_style: Option<StatusStyle>,
 
-    /// Whether to show file icons in the git panel.
+    /// 是否在 Git 面板中显示文件图标
     ///
-    /// Default: false
+    /// 默认值：false
     pub file_icons: Option<bool>,
 
-    /// What to show for directories in the git panel.
+    /// Git 面板中目录的显示方式
     ///
-    /// Default: icon
+    /// 默认值：icon
     pub folder_indicator: Option<FolderIndicator>,
 
-    /// How and when the scrollbar should be displayed.
+    /// 滚动条的显示方式和时机
     ///
-    /// Default: inherits editor scrollbar settings
+    /// 默认值：继承编辑器滚动条设置
     pub scrollbar: Option<ScrollbarSettings>,
 
-    /// What the default branch name should be when
-    /// `init.defaultBranch` is not set in git
+    /// 以下情况使用的默认分支名称：
+    /// git 中未设置 `init.defaultBranch`
     ///
-    /// Default: main
+    /// 默认值：main
     pub fallback_branch_name: Option<String>,
 
-    /// How to sort entries in the git panel.
+    /// 控制 Git 面板中条目的排序方式
     ///
-    /// Default: path
+    /// 默认值：path
     pub sort_by: Option<GitPanelSortBy>,
 
-    /// How to group entries in the git panel.
+    /// 控制 Git 面板中条目的分组方式
     ///
-    /// Default: status
+    /// 默认值：status
     pub group_by: Option<GitPanelGroupBy>,
 
-    /// Whether to collapse untracked files in the diff panel.
+    /// 是否在差异面板中折叠未跟踪的文件
     ///
-    /// Default: false
+    /// 默认值：false
     pub collapse_untracked_diff: Option<bool>,
 
-    /// Whether to show entries with tree or flat view in the panel
+    /// 是否在面板中以树形或平铺视图显示条目
     ///
-    /// Default: false
+    /// 默认值：false
     pub tree_view: Option<bool>,
 
-    /// Whether to show the addition/deletion change count next to each file in the Git panel.
+    /// 是否在 Git 面板中每个文件旁显示增删行数统计
     ///
-    /// Default: true
+    /// 默认值：true
     pub diff_stats: Option<bool>,
 
-    /// Whether to show a badge on the git panel icon with the count of uncommitted changes.
+    /// 是否在 Git 面板图标上显示未提交更改数量的徽章
     ///
-    /// Default: false
+    /// 默认值：false
     pub show_count_badge: Option<bool>,
 
-    /// Whether the git panel should open on startup.
+    /// 启动时是否打开 Git 面板
     ///
-    /// Default: false
+    /// 默认值：false
     pub starts_open: Option<bool>,
 
-    /// Maximum length of the commit message title before a warning is shown.
-    /// Set to 0 to disable.
+    /// 显示警告前提交消息标题的最大长度
+    /// 设为 0 可禁用
     ///
     /// Default: 0
     pub commit_title_max_length: Option<usize>,
 
-    /// Default action when clicking a changed file in the Git panel.
+    /// 点击 Git 面板中已更改文件时的默认操作
     ///
-    /// Default: project_diff
+    /// 默认值：project_diff
     pub entry_primary_click_action: Option<GitPanelClickBehavior>,
 
-    /// Whether the commit message editor is shown in the Git panel by default.
+    /// 是否默认在 Git 面板中显示提交消息编辑器
     ///
-    /// Default: expanded
+    /// 默认值：expanded
     pub commit_editor: Option<GitPanelCommitEditor>,
 }
 
@@ -837,10 +848,12 @@ pub struct GitPanelSettingsContent {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum GitPanelCommitEditor {
-    /// Show the commit message editor.
+    /// 显示提交消息编辑器
     #[default]
+    #[strum(serialize = "已展开")]
     Expanded,
-    /// Hide the commit message editor, leaving only the commit button row.
+    /// 隐藏提交消息编辑器，仅保留提交按钮所在行
+    #[strum(serialize = "已折叠")]
     Collapsed,
 }
 
@@ -860,12 +873,15 @@ pub enum GitPanelCommitEditor {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum GitPanelClickBehavior {
-    /// Open the project diff, showing all changed files.
+    /// 打开项目差异，显示所有已更改文件
     #[default]
+    #[strum(serialize = "项目差异")]
     ProjectDiff,
-    /// Open a single-file diff view.
+    /// 打开单文件差异视图
+    #[strum(serialize = "文件差异")]
     FileDiff,
-    /// Open the file in the editor without a diff view.
+    /// 在编辑器中打开文件，不显示差异视图
+    #[strum(serialize = "查看文件")]
     ViewFile,
 }
 
@@ -886,7 +902,9 @@ pub enum GitPanelClickBehavior {
 #[serde(rename_all = "snake_case")]
 pub enum GitPanelSortBy {
     #[default]
+    #[strum(serialize = "路径")]
     Path,
+    #[strum(serialize = "名称")]
     Name,
 }
 
@@ -906,9 +924,12 @@ pub enum GitPanelSortBy {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum GitPanelGroupBy {
+    #[strum(serialize = "无")]
     None,
     #[default]
+    #[strum(serialize = "状态")]
     Status,
+    #[strum(serialize = "暂存状态")]
     Staging,
 }
 
@@ -929,7 +950,9 @@ pub enum GitPanelGroupBy {
 #[serde(rename_all = "snake_case")]
 pub enum StatusStyle {
     #[default]
+    #[strum(serialize = "图标")]
     Icon,
+    #[strum(serialize = "标签颜色")]
     LabelColor,
 }
 
@@ -944,57 +967,57 @@ pub struct ScrollbarSettings {
 #[with_fallible_options]
 #[derive(Clone, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Debug, PartialEq)]
 pub struct PanelSettingsContent {
-    /// Whether to show the panel button in the status bar.
+    /// 是否在状态栏中显示面板按钮
     ///
-    /// Default: true
+    /// 默认值：true
     pub button: Option<bool>,
-    /// Where to dock the panel.
+    /// 面板停靠的位置
     ///
-    /// Default: right (Agentic layout), left (Classic layout)
+    /// 默认值：right（Agentic 布局），left（Classic 布局）
     pub dock: Option<DockPosition>,
-    /// Default width of the panel in pixels.
+    /// 面板的默认宽度（像素）
     ///
-    /// Default: 240
+    /// 默认值：240
     pub default_width: Option<PixelSetting>,
 }
 
 #[with_fallible_options]
 #[derive(Clone, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Debug, PartialEq)]
 pub struct CommandPaletteSettingsContent {
-    /// Whether to use command history ranking for sorting in the command palette.
+    /// 是否在命令面板中使用命令历史记录进行排序
     ///
-    /// Default: true
+    /// 默认值：true
     pub use_command_history: Option<bool>,
 }
 
 #[with_fallible_options]
 #[derive(Clone, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Debug, PartialEq)]
 pub struct FileFinderSettingsContent {
-    /// Whether to show file icons in the file finder.
+    /// 是否在文件查找器中显示文件图标
     ///
-    /// Default: true
+    /// 默认值：true
     pub file_icons: Option<bool>,
-    /// Determines how much space the file finder can take up in relation to the available window width.
+    /// 确定文件查找器相对于可用窗口宽度可占用的空间
     ///
-    /// Default: small
+    /// 默认值：small
     pub modal_max_width: Option<ModalWidthContent>,
-    /// Determines whether the file finder should skip focus for the active file in search results.
+    /// 确定文件查找器是否应避免在搜索结果中聚焦当前文件
     ///
-    /// Default: true
+    /// 默认值：true
     pub skip_focus_for_active_in_search: Option<bool>,
-    /// Whether to use gitignored files when searching.
-    /// Only the file Zed had indexed will be used, not necessary all the gitignored files.
+    /// 搜索时是否使用被 Git 忽略的文件。
+    /// 仅使用 Zed 已索引的文件，不一定包含所有被 Git 忽略的文件。
     ///
-    /// Default: Smart
+    /// 默认值：Smart
     pub include_ignored: Option<IncludeIgnoredContent>,
-    /// Whether to include text channels in file finder results.
+    /// 是否在文件查找器结果中包含文本频道
     ///
-    /// Default: false
+    /// 默认值：false
     pub include_channels: Option<bool>,
-    /// Whether to pre-fill the file finder's query with the text selected in the
-    /// focused item (e.g. an editor or a terminal) when it is opened.
+    /// 是否在打开文件查找器时，
+    /// 使用当前聚焦项（例如编辑器或终端）中选中的文本预填其查询
     ///
-    /// Default: true
+    /// 默认值：true
     pub prefill_query_from_selection: Option<bool>,
 }
 
@@ -1014,12 +1037,15 @@ pub struct FileFinderSettingsContent {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum IncludeIgnoredContent {
-    /// Use all gitignored files
+    /// 使用所有被 Git 忽略的文件
+    #[strum(serialize = "全部")]
     All,
-    /// Use only the files Zed had indexed
+    /// 仅使用 Zed 已索引的文件
+    #[strum(serialize = "已索引")]
     Indexed,
-    /// Be smart and search for ignored when called from a gitignored worktree
+    /// 从被 Git 忽略的工作树调用时，智能搜索被忽略的文件
     #[default]
+    #[strum(serialize = "智能")]
     Smart,
 }
 
@@ -1040,10 +1066,15 @@ pub enum IncludeIgnoredContent {
 #[serde(rename_all = "lowercase")]
 pub enum ModalWidthContent {
     #[default]
+    #[strum(serialize = "小")]
     Small,
+    #[strum(serialize = "中等")]
     Medium,
+    #[strum(serialize = "大")]
     Large,
+    #[strum(serialize = "超大")]
     XLarge,
+    #[strum(serialize = "完整")]
     Full,
 }
 
@@ -1062,9 +1093,9 @@ impl ModalWidthContent {
 #[with_fallible_options]
 #[derive(Clone, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Debug, PartialEq)]
 pub struct CallHierarchySettingsContent {
-    /// Determines how much space the call hierarchy picker can take up in relation to the available window width.
+    /// 确定调用层次结构选择器相对于可用窗口宽度可占用的空间
     ///
-    /// Default: medium
+    /// 默认值：medium
     pub modal_max_width: Option<ModalWidthContent>,
 }
 
@@ -1076,14 +1107,14 @@ pub struct VimSettingsContent {
     pub use_system_clipboard: Option<UseSystemClipboard>,
     pub use_smartcase_find: Option<bool>,
     pub use_regex_search: Option<bool>,
-    /// When enabled, the `:substitute` command replaces all matches in a line
-    /// by default. The 'g' flag then toggles this behavior.,
+    /// 启用后，`:substitute` 命令会替换一行中的所有匹配项
+    /// （默认行为）。此时 'g' 标志会切换此行为。
     pub gdefault: Option<bool>,
     pub custom_digraphs: Option<HashMap<String, Arc<str>>>,
     pub highlight_on_yank_duration: Option<u64>,
     pub cursor_shape: Option<CursorShapeSettings>,
-    /// When enabled, edit predictions are shown in Vim normal mode.
-    /// By default, edit predictions are only shown in insert and replace modes.
+    /// 启用后，编辑预测将在 Vim 普通模式下显示
+    /// 默认情况下，编辑预测仅在插入和替换模式下显示
     pub show_edit_predictions_in_normal_mode: Option<bool>,
 }
 
@@ -1103,11 +1134,13 @@ pub struct VimSettingsContent {
 #[serde(rename_all = "snake_case")]
 pub enum ModeContent {
     #[default]
+    #[strum(serialize = "常规")]
     Normal,
+    #[strum(serialize = "插入")]
     Insert,
 }
 
-/// Controls when to use system clipboard.
+/// 控制何时使用系统剪贴板
 #[derive(
     Copy,
     Clone,
@@ -1123,15 +1156,18 @@ pub enum ModeContent {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum UseSystemClipboard {
-    /// Don't use system clipboard.
+    /// 不使用系统剪贴板
+    #[strum(serialize = "从不")]
     Never,
-    /// Use system clipboard.
+    /// 使用系统剪贴板。
+    #[strum(serialize = "始终")]
     Always,
-    /// Use system clipboard for yank operations.
+    /// 在复制操作中使用系统剪贴板
+    #[strum(serialize = "复制时")]
     OnYank,
 }
 
-/// Cursor shape configuration for insert mode in Vim.
+/// Vim 插入模式的光标形状配置
 #[derive(
     Copy,
     Clone,
@@ -1147,53 +1183,58 @@ pub enum UseSystemClipboard {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum VimInsertModeCursorShape {
-    /// Inherit cursor shape from the editor's base cursor_shape setting.
+    /// 继承编辑器基础 cursor_shape 设置中的光标形状。
+    #[strum(serialize = "继承")]
     Inherit,
-    /// Vertical bar cursor.
+    /// 竖线光标。
+    #[strum(serialize = "竖线")]
     Bar,
-    /// Block cursor that surrounds the character.
+    /// 包围字符的块状光标。
+    #[strum(serialize = "块状")]
     Block,
-    /// Underline cursor.
+    /// 下划线光标。
+    #[strum(serialize = "下划线")]
     Underline,
-    /// Hollow box cursor.
+    /// 空心方块光标
+    #[strum(serialize = "空心框")]
     Hollow,
 }
 
-/// The settings for cursor shape.
+/// 光标形状的设置
 #[with_fallible_options]
 #[derive(
     Copy, Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq, JsonSchema, MergeFrom,
 )]
 pub struct CursorShapeSettings {
-    /// Cursor shape for the normal mode.
+    /// 普通模式的光标形状
     ///
-    /// Default: block
+    /// 默认值：block
     pub normal: Option<CursorShape>,
-    /// Cursor shape for the replace mode.
+    /// 替换模式的光标形状
     ///
-    /// Default: underline
+    /// 默认值：underline
     pub replace: Option<CursorShape>,
-    /// Cursor shape for the visual mode.
+    /// 可视模式的光标形状
     ///
-    /// Default: block
+    /// 默认值：block
     pub visual: Option<CursorShape>,
-    /// Cursor shape for the insert mode.
+    /// 插入模式的光标形状
     ///
-    /// The default value follows the primary cursor_shape.
+    /// 默认值遵循主 cursor_shape。
     pub insert: Option<VimInsertModeCursorShape>,
 }
 
-/// Settings specific to journaling
+/// 日志记录的专项设置
 #[with_fallible_options]
 #[derive(Clone, Debug, Serialize, Deserialize, JsonSchema, MergeFrom, PartialEq)]
 pub struct JournalSettingsContent {
-    /// The path of the directory where journal entries are stored.
+    /// 日志条目存储目录的路径
     ///
-    /// Default: `~`
+    /// 默认值：`~`
     pub path: Option<String>,
-    /// What format to display the hours in.
+    /// 显示小时的格式
     ///
-    /// Default: hour12
+    /// 默认值：hour12
     pub hour_format: Option<HourFormat>,
 }
 
@@ -1208,62 +1249,62 @@ pub enum HourFormat {
 #[with_fallible_options]
 #[derive(Clone, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Debug, PartialEq)]
 pub struct OutlinePanelSettingsContent {
-    /// Whether to show the outline panel button in the status bar.
+    /// 是否在状态栏中显示大纲面板按钮
     ///
-    /// Default: true
+    /// 默认值：true
     pub button: Option<bool>,
-    /// Customize default width (in pixels) taken by outline panel
+    /// 自定义大纲面板的默认宽度（像素）
     ///
-    /// Default: 240
+    /// 默认值：240
     pub default_width: Option<PixelSetting>,
-    /// The position of outline panel
+    /// 大纲面板的位置
     ///
-    /// Default: right (Agentic layout), left (Classic layout)
+    /// 默认值：right（Agentic 布局），left（Classic 布局）
     pub dock: Option<DockSide>,
-    /// Whether to show file icons in the outline panel.
+    /// 是否在大纲面板中显示文件图标
     ///
-    /// Default: true
+    /// 默认值：true
     pub file_icons: Option<bool>,
-    /// What to show for directories in the outline panel.
+    /// 大纲面板中目录的显示方式
     ///
-    /// Default: icon
+    /// 默认值：icon
     pub folder_indicator: Option<FolderIndicator>,
-    /// Whether to show the git status in the outline panel.
+    /// 是否在大纲面板中显示 Git 状态
     ///
-    /// Default: true
+    /// 默认值：true
     pub git_status: Option<bool>,
-    /// Amount of indentation (in pixels) for nested items.
+    /// 嵌套项的缩进量（以像素为单位）。
     ///
-    /// Default: 20
+    /// 默认值：20
     pub indent_size: Option<PixelSetting>,
-    /// Whether to reveal it in the outline panel automatically,
-    /// when a corresponding project entry becomes active.
-    /// Gitignored entries are never auto revealed.
+    /// 是否在大纲面板中自动显示它，
+    /// 当对应的项目条目变为活动状态时。
+    /// 被 Git 忽略的条目永远不会自动显示。
     ///
-    /// Default: true
+    /// 默认值：true
     pub auto_reveal_entries: Option<bool>,
-    /// Whether to fold directories automatically
-    /// when directory has only one directory inside.
+    /// 是否自动折叠目录。
+    /// 仅当目录中只有一个子目录时生效。
     ///
-    /// Default: true
+    /// 默认值：true
     pub auto_fold_dirs: Option<bool>,
-    /// Settings related to indent guides in the outline panel.
+    /// 大纲面板中与缩进参考线相关的设置
     pub indent_guides: Option<IndentGuidesSettingsContent>,
-    /// Scrollbar-related settings
+    /// 滚动条相关设置
     pub scrollbar: Option<ScrollbarSettingsContent>,
-    /// Default depth to expand outline items in the current file.
-    /// The default depth to which outline entries are expanded on reveal.
-    /// - Set to 0 to collapse all items that have children
-    /// - Set to 1 or higher to collapse items at that depth or deeper
+    /// 展开当前文件大纲条目的默认深度
+    /// 大纲条目在显示时默认展开到的深度
+    /// - 设为 0 以折叠所有包含子项的条目
+    /// - 设为 1 或更大以折叠该深度及更深处的条目
     ///
-    /// Default: 100
+    /// 默认值：100
     pub expand_outlines_with_depth: Option<usize>,
-    /// Whether to hide symbols, excerpts and search matches in the outline panel
-    /// when a multi-buffer view (e.g. a diff or search results) is active,
-    /// showing only files and directories.
-    /// Does not affect single-file views.
+    /// 是否在大纲面板中隐藏符号、摘录和搜索匹配项。
+    /// 仅当多缓冲区视图（例如差异或搜索结果）处于活动状态时生效，
+    /// 此时仅显示文件和目录。
+    /// 不影响单文件视图。
     ///
-    /// Default: false
+    /// 默认值：false
     pub multi_buffer_hide_symbols: Option<bool>,
 }
 
@@ -1282,7 +1323,9 @@ pub struct OutlinePanelSettingsContent {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum DockSide {
+    #[strum(serialize = "左")]
     Left,
+    #[strum(serialize = "右")]
     Right,
 }
 
@@ -1301,7 +1344,9 @@ pub enum DockSide {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum ShowIndentGuides {
+    #[strum(serialize = "始终")]
     Always,
+    #[strum(serialize = "从不")]
     Never,
 }
 
@@ -1310,7 +1355,7 @@ pub enum ShowIndentGuides {
     Copy, Clone, Debug, Serialize, Deserialize, JsonSchema, MergeFrom, PartialEq, Eq, Default,
 )]
 pub struct IndentGuidesSettingsContent {
-    /// When to show the scrollbar in the outline panel.
+    /// 在大纲面板中显示滚动条的时机
     pub show: Option<ShowIndentGuides>,
 }
 
@@ -1322,52 +1367,52 @@ pub enum LineIndicatorFormat {
     Long,
 }
 
-/// The settings for the markdown preview.
+/// Markdown 预览的设置
 #[with_fallible_options]
 #[derive(Clone, Debug, Serialize, Deserialize, JsonSchema, MergeFrom, Default, PartialEq)]
 pub struct MarkdownPreviewSettingsContent {
-    /// The name of a font to use for rendering in the markdown preview.
-    /// Falls back to the UI font if unset.
+    /// 用于在 Markdown 预览中渲染的字体名称
+    /// 未设置时回退到 UI 字体
     pub font_family: Option<FontFamilyName>,
-    /// The name of a font to use for code (code blocks and inline code) in the
-    /// markdown preview. Falls back to the buffer font if unset.
+    /// 代码（代码块和内联代码）在
+    /// Markdown 预览中使用的字体名称。未设置时回退到缓冲区字体。
     pub code_font_family: Option<FontFamilyName>,
-    /// The font size to use for rendering in the markdown preview.
-    /// Falls back to the UI font size if unset.
+    /// 用于在 Markdown 预览中渲染的字体大小
+    /// 未设置时回退到 UI 字体大小
     pub font_size: Option<FontSize>,
-    /// The theme to use for the markdown preview.
-    /// Falls back to the main editor theme if unset.
+    /// Markdown 预览使用的主题
+    /// 未设置时回退到主编辑器主题
     pub theme: Option<ThemeSelection>,
-    /// The weight of headings (H1 through H6) in the markdown preview, in CSS
-    /// units from 100 to 900. Also applies to rendered Markdown cells in
-    /// notebooks, which share the preview typography.
+    /// Markdown 预览中标题（H1 至 H6）的字体粗细，以 CSS
+    /// 单位表示，范围为 100 到 900。同样适用于笔记本中渲染的
+    /// Markdown 单元格，它们与预览共用排版样式。
     ///
-    /// Default: 600
+    /// 默认值：600
     pub heading_font_weight: Option<FontWeightContent>,
-    /// Whether to automatically open Markdown files in the preview.
+    /// 是否自动在 Markdown 预览中打开 Markdown 文件
     ///
-    /// Default: false
+    /// 默认值：false
     pub open_markdown_files_in_preview: Option<bool>,
-    /// Whether to limit the width of the rendered markdown content. When
-    /// enabled, content is constrained to `max_width` and centered
-    /// horizontally within the preview pane, for optimal readability.
+    /// 是否限制渲染后的 Markdown 内容宽度。启用后
+    /// 内容会受 `max_width` 限制并在预览窗格中
+    /// 水平居中，以获得最佳可读性。
     ///
-    /// Default: true
+    /// 默认值：true
     pub limit_content_width: Option<bool>,
-    /// The maximum width, in pixels, of the rendered markdown content when
-    /// `limit_content_width` is enabled.
+    /// 渲染后的 Markdown 内容的最大宽度（像素），当
+    /// 启用 `limit_content_width` 时。
     ///
-    /// Default: 800
+    /// 默认值：800
     pub max_width: Option<PixelSetting>,
 }
 
-/// The settings for the image viewer.
+/// 图像查看器的设置
 #[with_fallible_options]
 #[derive(Clone, Debug, Serialize, Deserialize, JsonSchema, MergeFrom, Default, PartialEq)]
 pub struct ImageViewerSettingsContent {
-    /// The unit to use for displaying image file sizes.
+    /// 显示图像文件大小所使用的单位
     ///
-    /// Default: "binary"
+    /// 默认值："binary"
     pub unit: Option<ImageFileSizeUnit>,
 }
 
@@ -1387,10 +1432,12 @@ pub struct ImageViewerSettingsContent {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum ImageFileSizeUnit {
-    /// Displays file size in binary units (e.g., KiB, MiB).
+    /// 以二进制单位显示文件大小（例如 KiB、MiB）
     #[default]
+    #[strum(serialize = "二进制")]
     Binary,
-    /// Displays file size in decimal units (e.g., KB, MB).
+    /// 以十进制单位显示文件大小（例如 KB、MB）
+    #[strum(serialize = "十进制")]
     Decimal,
 }
 
@@ -1402,13 +1449,13 @@ pub struct RemoteSettingsContent {
     pub dev_container_connections: Option<Vec<DevContainerConnection>>,
     pub read_ssh_config: Option<bool>,
     pub use_podman: Option<bool>,
-    /// Whether to build dev container images with BuildKit.
+    /// 是否使用 BuildKit 构建开发容器镜像。
     ///
-    /// When unset, Zed auto-detects BuildKit by probing for the `buildx` CLI
-    /// plugin. Set to `false` to force the classic Docker builder, which is
-    /// required for Docker-compatible engines that lack an integrated BuildKit
-    /// (e.g. Apple Container via a Docker-API bridge), where BuildKit builds
-    /// cannot resolve locally-built images.
+    /// 未设置时，Zed 会通过探测 `buildx` CLI
+    /// 插件来自动检测 BuildKit。设为 `false` 可强制使用经典 Docker 构建器，
+    /// 这对于缺少集成 BuildKit 的 Docker 兼容引擎是必需的
+    /// （例如通过 Docker-API 桥接的 Apple Container），在这些环境中 BuildKit 构建
+    /// 无法解析本地构建的镜像。
     ///
     /// Default: null (auto-detect)
     pub dev_container_use_buildkit: Option<bool>,
@@ -1437,7 +1484,7 @@ pub struct SshConnection {
     pub args: Vec<String>,
     #[serde(default)]
     pub projects: collections::BTreeSet<RemoteProject>,
-    /// Name to use for this server in UI.
+    /// 此服务器在界面中显示的名称
     pub nickname: Option<String>,
     // By default Zed will download the binary to the host directly.
     // If this is set to true, Zed will download the binary to your local machine,
@@ -1446,8 +1493,8 @@ pub struct SshConnection {
     pub upload_binary_over_ssh: Option<bool>,
 
     pub port_forwards: Option<Vec<SshPortForwardOption>>,
-    /// Timeout in seconds for SSH connection and downloading the remote server binary.
-    /// Defaults to 10 seconds if not specified.
+    /// SSH 连接及下载远程服务器二进制文件的超时时间（秒）。
+    /// 如未指定，默认为 10 秒
     pub connection_timeout: Option<u16>,
 }
 
@@ -1476,59 +1523,59 @@ pub struct SshPortForwardOption {
     pub remote_port: u16,
 }
 
-/// Settings for configuring REPL display and behavior.
+/// 配置 REPL 显示和行为的设置
 #[with_fallible_options]
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct ReplSettingsContent {
-    /// Maximum number of lines to keep in REPL's scrollback buffer.
-    /// Clamped with [4, 256] range.
+    /// REPL 滚动缓冲区中保留的最大行数
+    /// 限制在 [4, 256] 范围内。
     ///
-    /// Default: 32
+    /// 默认值：32
     pub max_lines: Option<usize>,
-    /// Maximum number of columns to keep in REPL's scrollback buffer.
-    /// Clamped with [20, 512] range.
+    /// REPL 滚动缓冲区中保留的最大列数
+    /// 限制在 [20, 512] 范围内。
     ///
-    /// Default: 128
+    /// 默认值：128
     pub max_columns: Option<usize>,
-    /// Whether to show small single-line outputs inline instead of in a block.
+    /// 是否将简短的单行输出内联显示，而非以块形式显示
     ///
-    /// Default: true
+    /// 默认值：true
     pub inline_output: Option<bool>,
-    /// Maximum number of characters for an output to be shown inline.
-    /// Only applies when `inline_output` is true.
+    /// 内联显示输出的最大字符数
+    /// 仅在 `inline_output` 为 true 时生效。
     ///
-    /// Default: 50
+    /// 默认值：50
     pub inline_output_max_length: Option<usize>,
-    /// Maximum number of lines of output to display before scrolling.
-    /// Set to 0 to disable output height limits.
+    /// 滚动前显示的最大输出行数
+    /// 设为 0 可禁用输出高度限制
     ///
     /// Default: 0
     pub output_max_height_lines: Option<usize>,
 }
 
-/// Settings for configuring the tab switcher behaviour.
+/// 配置标签页切换器行为的设置
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct TabSwitcherSettingsContent {
-    /// When false, files are not shown while cycling through the tab switcher.
-    /// Only the confirmed file (when the modifier key is released) is shown and
-    /// recorded in the MRU history.
+    /// 为 false 时，在标签页切换器中循环切换时不显示文件。
+    /// 只有已确认的文件（松开修饰键时）才会显示，
+    /// 并记录到 MRU 历史记录中。
     ///
-    /// Default: true
+    /// 默认值：true
     pub show_file_preview: Option<bool>,
 }
 
-/// Settings for configuring the which-key popup behaviour.
+/// 配置 which-key 弹出窗口行为的设置
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct WhichKeySettingsContent {
-    /// Whether to show the which-key popup when holding down key combinations.
-    /// When enabled, the pending keystrokes indicator remains visible, but its binding preview
-    /// popover is disabled.
+    /// 是否在按住组合键时显示 which-key 弹出窗口。
+    /// 启用后，待处理按键指示器保持可见，但其绑定预览
+    /// 弹出框会被禁用。
     ///
-    /// Default: false
+    /// 默认值：false
     pub enabled: Option<bool>,
-    /// Delay in milliseconds before showing the which-key popup.
+    /// 显示 which-key 弹出窗口前的延迟（毫秒）
     ///
-    /// Default: 1000
+    /// 默认值：1000
     pub delay_ms: Option<u64>,
 }
 

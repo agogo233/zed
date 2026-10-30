@@ -43,7 +43,7 @@ pub fn init(cx: &mut App) {
 actions!(
     context_server,
     [
-        /// Restarts the context server.
+        /// 重启上下文服务器
         Restart
     ]
 );
@@ -2021,7 +2021,7 @@ async fn resolve_auth_required(
         return ContextServerState::Error {
             configuration,
             server,
-            error: "Server returned 401 Unauthorized. Check your configured Authorization header."
+            error: "服务器返回 401 Unauthorized。检查已配置的 Authorization 请求头。"
                 .into(),
         };
     }
@@ -2033,7 +2033,7 @@ async fn resolve_auth_required(
             return ContextServerState::Error {
                 configuration,
                 server,
-                error: "Server returned 401 Unauthorized on a non-HTTP transport".into(),
+                error: "服务器通过非 HTTP 传输返回 401 Unauthorized".into(),
             };
         }
     };

@@ -231,8 +231,8 @@ impl AgentTool for FetchTool {
         _cx: &mut App,
     ) -> SharedString {
         match input {
-            Ok(input) => format!("Fetch {}", MarkdownEscaped(&input.url)).into(),
-            Err(_) => "Fetch URL".into(),
+            Ok(input) => format!("获取 {}", MarkdownEscaped(&input.url)).into(),
+            Err(_) => "获取 URL".into(),
         }
     }
 

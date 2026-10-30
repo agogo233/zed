@@ -33,25 +33,25 @@ pub fn init(cx: &mut App) {
 actions!(
     search,
     [
-        /// Toggles whole word matching.
+        /// 切换全词匹配
         ToggleWholeWord,
-        /// Toggles regular expression mode.
+        /// 切换正则表达式模式
         ToggleRegex,
-        /// Toggles the replace interface.
+        /// 切换替换界面
         ToggleReplace,
-        /// Toggles searching within selection only.
+        /// 切换仅在选区内搜索
         ToggleSelection,
-        /// Selects all search matches.
+        /// 选择所有搜索匹配项
         SelectAllMatches,
-        /// Cycles through search modes.
+        /// 循环切换搜索模式
         CycleMode,
-        /// Navigates to the next query in search history.
+        /// 跳转到搜索历史中的下一条查询
         NextHistoryQuery,
-        /// Navigates to the previous query in search history.
+        /// 跳转到搜索历史中的上一条查询
         PreviousHistoryQuery,
-        /// Replaces all matches.
+        /// 替换所有匹配项
         ReplaceAll,
-        /// Replaces the next match.
+        /// 替换下一个匹配项
         ReplaceNext,
     ]
 );
@@ -81,9 +81,9 @@ pub enum SearchOption {
     Backwards,
 }
 
-const REPLACE_PLACEHOLDER: &str = "Replace in project…";
-const INCLUDE_PLACEHOLDER: &str = "Include: e.g. src/**/*.rs";
-const EXCLUDE_PLACEHOLDER: &str = "Exclude: e.g. vendor/*, *.lock";
+const REPLACE_PLACEHOLDER: &str = "在项目中替换…";
+const INCLUDE_PLACEHOLDER: &str = "包含：例如 src/**/*.rs";
+const EXCLUDE_PLACEHOLDER: &str = "排除：例如 vendor/*, *.lock";
 
 pub enum SearchSource<'a, 'b> {
     Buffer,
@@ -97,12 +97,12 @@ impl SearchOption {
 
     pub fn label(&self) -> &'static str {
         match self {
-            SearchOption::WholeWord => "Match Whole Words",
-            SearchOption::CaseSensitive => "Match Case Sensitivity",
-            SearchOption::IncludeIgnored => "Also search files ignored by configuration",
-            SearchOption::Regex => "Use Regular Expressions",
-            SearchOption::OneMatchPerLine => "One Match Per Line",
-            SearchOption::Backwards => "Search Backwards",
+            SearchOption::WholeWord => "全词匹配",
+            SearchOption::CaseSensitive => "区分大小写",
+            SearchOption::IncludeIgnored => "同时搜索被配置忽略的文件",
+            SearchOption::Regex => "使用正则表达式",
+            SearchOption::OneMatchPerLine => "每行一个匹配项",
+            SearchOption::Backwards => "向后搜索",
         }
     }
 
@@ -233,7 +233,7 @@ pub(crate) fn show_no_more_matches(window: &mut Window, cx: &mut App) {
         };
         workspace.update(cx, |workspace, cx| {
             workspace.show_toast(
-                Toast::new(notification_id.clone(), "No more matches").autohide(),
+                Toast::new(notification_id.clone(), "没有更多匹配项").autohide(),
                 cx,
             );
         })

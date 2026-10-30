@@ -927,7 +927,7 @@ impl Component for ButtonLike {
                     single_example(
                         "Default",
                         ButtonLike::new("default")
-                            .child(Label::new("Default"))
+                            .child(Label::new("默认"))
                             .into_any_element(),
                     ),
                     single_example(
@@ -941,7 +941,7 @@ impl Component for ButtonLike {
                         "Subtle",
                         ButtonLike::new("outline")
                             .style(ButtonStyle::Subtle)
-                            .child(Label::new("Subtle"))
+                            .child(Label::new("低调"))
                             .into_any_element(),
                     ),
                     single_example(
@@ -955,7 +955,7 @@ impl Component for ButtonLike {
                         "Transparent",
                         ButtonLike::new("transparent")
                             .style(ButtonStyle::Transparent)
-                            .child(Label::new("Transparent"))
+                            .child(Label::new("透明"))
                             .into_any_element(),
                     ),
                 ]),
@@ -982,12 +982,12 @@ impl Component for ButtonLike {
                                 .gap_px()
                                 .child(
                                     ButtonLike::new_rounded_left("bg_left")
-                                        .child(Label::new("Left"))
+                                        .child(Label::new("左"))
                                         .style(ButtonStyle::Filled),
                                 )
                                 .child(
                                     ButtonLike::new_rounded_right("bg_right")
-                                        .child(Label::new("Right"))
+                                        .child(Label::new("右"))
                                         .style(ButtonStyle::Filled),
                                 )
                                 .into_any_element(),

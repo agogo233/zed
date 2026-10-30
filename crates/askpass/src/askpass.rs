@@ -531,7 +531,7 @@ fn generate_gpg_wrapper_script(
         .context("Failed to shell-escape Askpass socket path")?;
 
     let prompt = shell_kind
-        .try_quote_prefix_aware("Enter passphrase for your Git signing key:")
+        .try_quote_prefix_aware("输入 Git 签名密钥的密码短语：")
         .context("Failed to shell-escape gpg passphrase prompt")?;
 
     // The wrapper only intervenes when git asks gpg to *sign* (e.g. `gpg -bsau

@@ -9,9 +9,9 @@ use zed_actions::feedback::{EmailZed, FileBugReport, RequestFeature};
 actions!(
     zed,
     [
-        /// Opens the Zed repository on GitHub.
+        /// 在 GitHub 上打开 Zed 仓库
         OpenZedRepo,
-        /// Copies installed extensions to the clipboard for bug reports.
+        /// 将已安装的扩展信息复制到剪贴板以用于错误报告
         CopyInstalledExtensionsIntoClipboard
     ]
 );
@@ -62,9 +62,9 @@ pub fn init(cx: &mut App) {
 
                     cx.prompt(
                         PromptLevel::Info,
-                        "Copied into clipboard",
+                        "已复制到剪贴板",
                         Some(&specs),
-                        &["OK"],
+                        &["确定"],
                     )
                     .await
                 })
@@ -75,9 +75,9 @@ pub fn init(cx: &mut App) {
                 cx.write_to_clipboard(ClipboardItem::new_string(clipboard_text.clone()));
                 drop(window.prompt(
                     PromptLevel::Info,
-                    "Copied into clipboard",
+                    "已复制到剪贴板",
                     Some(&clipboard_text),
-                    &["OK"],
+                    &["确定"],
                     cx,
                 ));
             })

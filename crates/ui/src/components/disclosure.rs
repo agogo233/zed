@@ -100,7 +100,7 @@ impl RenderOnce for Disclosure {
         )
         .icon_color(Color::Muted)
         .icon_size(IconSize::Small)
-        .aria_label(if self.is_open { "Collapse" } else { "Expand" })
+        .aria_label(if self.is_open { "折叠" } else { "展开" })
         .aria_expanded(self.is_open)
         .disabled(self.disabled)
         .when_some(self.shape, |this, shape| this.shape(shape))

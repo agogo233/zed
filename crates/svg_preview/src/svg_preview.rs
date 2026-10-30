@@ -8,7 +8,7 @@ pub use zed_actions::preview::svg::{OpenPreview, OpenPreviewToTheSide};
 actions!(
     svg,
     [
-        /// Opens a following SVG preview that syncs with the editor.
+        /// 打开与编辑器同步的跟随式 SVG 预览
         OpenFollowingPreview
     ]
 );

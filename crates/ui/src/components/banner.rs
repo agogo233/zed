@@ -144,7 +144,7 @@ impl Component for Banner {
             single_example(
                 "Default",
                 Banner::new()
-                    .child(Label::new("This is a default banner with no customization"))
+                    .child(Label::new("这是一个未经自定义的默认横幅"))
                     .into_any_element(),
             ),
             single_example(
@@ -153,7 +153,7 @@ impl Component for Banner {
                     .severity(Severity::Info)
                     .child(Label::new("This is an informational message"))
                     .action_slot(
-                        Button::new("learn-more", "Learn More")
+                        Button::new("learn-more", "了解详情")
                             .end_icon(Icon::new(IconName::ArrowUpRight).size(IconSize::Small)),
                     )
                     .into_any_element(),
@@ -162,24 +162,24 @@ impl Component for Banner {
                 "Success",
                 Banner::new()
                     .severity(Severity::Success)
-                    .child(Label::new("Operation completed successfully"))
-                    .action_slot(Button::new("dismiss", "Dismiss"))
+                    .child(Label::new("操作已成功完成"))
+                    .action_slot(Button::new("dismiss", "关闭"))
                     .into_any_element(),
             ),
             single_example(
                 "Warning",
                 Banner::new()
                     .severity(Severity::Warning)
-                    .child(Label::new("Your settings file uses deprecated settings"))
-                    .action_slot(Button::new("update", "Update Settings"))
+                    .child(Label::new("你的设置文件使用了已弃用的设置"))
+                    .action_slot(Button::new("update", "更新设置"))
                     .into_any_element(),
             ),
             single_example(
                 "Error",
                 Banner::new()
                     .severity(Severity::Error)
-                    .child(Label::new("Connection error: unable to connect to server"))
-                    .action_slot(Button::new("reconnect", "Retry"))
+                    .child(Label::new("连接错误：无法连接到服务器"))
+                    .action_slot(Button::new("reconnect", "重试"))
                     .into_any_element(),
             ),
         ];

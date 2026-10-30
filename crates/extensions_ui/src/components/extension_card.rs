@@ -192,7 +192,7 @@ impl ExtensionCard {
     fn uninstall_button(extension_id: &Arc<str>, is_dev: bool) -> Button {
         Button::new(
             Self::button_id(extension_id, ExtensionOperation::Remove),
-            "Uninstall",
+            "卸载",
         )
         .on_click({
             let extension_id = extension_id.clone();
@@ -215,7 +215,7 @@ impl ExtensionCard {
     ) -> Button {
         Button::new(
             SharedString::from(format!("configure-{extension_id}")),
-            "Configure",
+            "配置",
         )
         .on_click({
             let extension_id = extension_id.clone();
@@ -246,7 +246,7 @@ impl ExtensionCard {
         let rebuild = is_dev.then(|| {
             Button::new(
                 SharedString::from(format!("rebuild-{}", extension.id)),
-                "Rebuild",
+                "重新构建",
             )
             .color(Color::Accent)
             .disabled(Self::disables_actions(status))
@@ -286,7 +286,7 @@ impl ExtensionCard {
     fn install_button(extension_id: &Arc<str>) -> Button {
         Button::new(
             Self::button_id(extension_id, ExtensionOperation::Install),
-            "Install",
+            "安装",
         )
         .style(ButtonStyle::Tinted(ui::TintColor::Accent))
         .start_icon(
@@ -339,7 +339,7 @@ impl ExtensionCard {
                 let upgrade = matches!(status, ExtensionStatus::Upgrading).then(|| {
                     Button::new(
                         Self::button_id(&extension.id, ExtensionOperation::Upgrade),
-                        "Upgrade",
+                        "升级",
                     )
                     .disabled(Self::disables_actions(status))
                 });
@@ -360,7 +360,7 @@ impl ExtensionCard {
                     );
                     Button::new(
                         Self::button_id(&extension.id, ExtensionOperation::Upgrade),
-                        "Upgrade",
+                        "升级",
                     )
                     .style(ButtonStyle::Tinted(ui::TintColor::Accent))
                     .when(!is_compatible, |button| {
@@ -369,7 +369,7 @@ impl ExtensionCard {
                             move |_, cx| {
                                 Tooltip::simple(
                                     format!(
-                                        "v{version} is not compatible with this version of Zed."
+                                        "v{version} 与当前版本的 Zed 不兼容"
                                     ),
                                     cx,
                                 )
@@ -426,17 +426,17 @@ fn provided_feature_labels(
 
 pub(crate) fn extension_provides_label(provides: ExtensionProvides) -> &'static str {
     match provides {
-        ExtensionProvides::Themes => "Themes",
-        ExtensionProvides::IconThemes => "Icon Themes",
-        ExtensionProvides::Languages => "Languages",
-        ExtensionProvides::Grammars => "Grammars",
-        ExtensionProvides::LanguageServers => "Language Servers",
-        ExtensionProvides::ContextServers => "MCP Servers",
+        ExtensionProvides::Themes => "主题",
+        ExtensionProvides::IconThemes => "图标主题",
+        ExtensionProvides::Languages => "语言",
+        ExtensionProvides::Grammars => "语法",
+        ExtensionProvides::LanguageServers => "语言服务器",
+        ExtensionProvides::ContextServers => "MCP 服务器",
         ExtensionProvides::AgentServers => "Agent Servers",
         ExtensionProvides::SlashCommands => "Slash Commands",
         ExtensionProvides::IndexedDocsProviders => "Indexed Docs Providers",
-        ExtensionProvides::Snippets => "Snippets",
-        ExtensionProvides::DebugAdapters => "Debug Adapters",
+        ExtensionProvides::Snippets => "代码片段",
+        ExtensionProvides::DebugAdapters => "调试适配器",
     }
 }
 
@@ -643,7 +643,7 @@ impl RenderOnce for ExtensionCard {
                                 .child(Headline::new(name).size(HeadlineSize::Small))
                                 .child(
                                     Headline::new(if is_dev {
-                                        format!("v{version} (dev)")
+                                        format!("v{version}（开发版）")
                                     } else {
                                         format!("v{version}")
                                     })
@@ -651,7 +651,7 @@ impl RenderOnce for ExtensionCard {
                                     .color(Color::Muted),
                                 )
                                 .children(installed_version.map(|installed_version| {
-                                    Headline::new(format!("(v{installed_version} installed)"))
+                                    Headline::new(format!("（已安装 v{installed_version}）"))
                                         .size(HeadlineSize::XSmall)
                                 }))
                                 .when(!provided_features.is_empty(), |parent| {
@@ -681,7 +681,7 @@ impl RenderOnce for ExtensionCard {
                         }))
                         .children(download_count.map(|download_count| {
                             Label::new(format!(
-                                "Downloads: {}",
+                                "下载量：{}",
                                 format_number_with_commas(u128::from(download_count))
                             ))
                             .size(LabelSize::Small)
@@ -719,7 +719,7 @@ impl RenderOnce for ExtensionCard {
                                             .icon_size(IconSize::Small)
                                             .tooltip(move |_, cx| {
                                                 Tooltip::with_meta(
-                                                    "Visit Extension Repository",
+                                                    "访问扩展仓库",
                                                     None,
                                                     repository_url_for_tooltip.clone(),
                                                     cx,
@@ -768,7 +768,7 @@ impl RenderOnce for ExtensionCard {
                             .size_full()
                             .justify_center()
                             .bg(cx.theme().colors().elevated_surface_background.alpha(0.8))
-                            .child(Label::new("Overridden by dev extension.")),
+                            .child(Label::new("已被开发扩展覆盖")),
                     )
                 }),
         )

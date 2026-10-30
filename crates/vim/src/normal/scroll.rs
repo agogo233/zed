@@ -11,25 +11,25 @@ use text::SelectionGoal;
 actions!(
     vim,
     [
-        /// Scrolls up by one line.
+        /// 向上滚动一行
         LineUp,
-        /// Scrolls down by one line.
+        /// 向下滚动一行
         LineDown,
-        /// Scrolls right by one column.
+        /// 向右滚动一列
         ColumnRight,
-        /// Scrolls left by one column.
+        /// 向左滚动一列
         ColumnLeft,
-        /// Scrolls up by half a page.
+        /// 向上滚动半页
         ScrollUp,
-        /// Scrolls down by half a page.
+        /// 向下滚动半页
         ScrollDown,
-        /// Scrolls up by one page.
+        /// 向上滚动一页
         PageUp,
-        /// Scrolls down by one page.
+        /// 向下滚动一页
         PageDown,
-        /// Scrolls right by half a page's width.
+        /// 向右滚动半页宽度
         HalfPageRight,
-        /// Scrolls left by half a page's width.
+        /// 向左滚动半页宽度
         HalfPageLeft,
     ]
 );

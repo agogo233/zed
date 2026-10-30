@@ -44,7 +44,7 @@ impl Settings for TabSwitcherSettings {
 
 const PANEL_WIDTH_REMS: f32 = 28.;
 
-/// Toggles the tab switcher interface.
+/// 切换标签页切换器界面
 #[derive(PartialEq, Clone, Deserialize, JsonSchema, Default, Action)]
 #[action(namespace = tab_switcher)]
 #[serde(deny_unknown_fields)]
@@ -55,12 +55,12 @@ pub struct Toggle {
 actions!(
     tab_switcher,
     [
-        /// Closes the selected item in the tab switcher.
+        /// 关闭标签页切换器中选中的项
         CloseSelectedItem,
-        /// Toggles between showing all tabs or just the current pane's tabs.
+        /// 在显示全部标签页与仅显示当前窗格标签页之间切换
         ToggleAll,
-        /// Toggles the tab switcher showing all tabs across all panes, deduplicated by path.
-        /// Opens selected items in the active pane.
+        /// 切换标签页切换器，以显示所有窗格中的全部标签页（按路径去重）。
+        /// 在活动窗格中打开所选项。
         OpenInActivePane,
     ]
 );
@@ -739,11 +739,11 @@ impl PickerDelegate for TabSwitcherDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Search all tabs…".into()
+        "搜索所有标签页…".into()
     }
 
     fn no_matches_text(&self, _window: &mut Window, _cx: &mut App) -> Option<SharedString> {
-        Some("No tabs".into())
+        Some("没有标签页".into())
     }
 
     fn match_count(&self) -> usize {
@@ -888,7 +888,7 @@ impl PickerDelegate for TabSwitcherDelegate {
                 IconButton::new("close_tab", IconName::Close)
                     .icon_size(IconSize::Small)
                     .icon_color(indicator_color)
-                    .tooltip(Tooltip::for_action_title("Close", &CloseSelectedItem))
+                    .tooltip(Tooltip::for_action_title("关闭", &CloseSelectedItem))
                     .on_click(cx.listener(move |picker, _, window, cx| {
                         cx.stop_propagation();
                         picker.delegate.close_item_at(ix, window, cx);

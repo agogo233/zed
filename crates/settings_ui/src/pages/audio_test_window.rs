@@ -133,9 +133,9 @@ impl Render for AudioTestWindow {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let is_testing = self._stop_playback.is_some();
         let button_text = if is_testing {
-            "Stop Testing"
+            "停止测试"
         } else {
-            "Start Testing"
+            "开始测试"
         };
 
         let button_style = if is_testing {
@@ -219,13 +219,13 @@ impl Render for AudioTestWindow {
             .child(
                 v_flex()
                     .gap_1()
-                    .child(Label::new("Output Device"))
+                    .child(Label::new("输出设备"))
                     .child(output_dropdown),
             )
             .child(
                 v_flex()
                     .gap_1()
-                    .child(Label::new("Input Device"))
+                    .child(Label::new("输入设备"))
                     .child(input_dropdown),
             )
             .child(

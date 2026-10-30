@@ -152,7 +152,7 @@ impl PickerDelegate for CommitTagPickerDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Copy Tag".into()
+        "复制标签".into()
     }
 
     fn match_count(&self) -> usize {
@@ -309,7 +309,7 @@ impl ChangedFileEntry {
                 } else {
                     format!("{}/{}", dir_path, file_name).into()
                 };
-                move |_, cx| Tooltip::with_meta("View Changes", None, meta.clone(), cx)
+                move |_, cx| Tooltip::with_meta("查看更改", None, meta.clone(), cx)
             })
             .on_click({
                 let entry = self.clone();
@@ -390,7 +390,7 @@ impl ChangedFileDirectoryEntry {
             )
             .tooltip({
                 let name = self.name.clone();
-                move |_, cx| Tooltip::with_meta("Toggle Folder", None, name.clone(), cx)
+                move |_, cx| Tooltip::with_meta("展开/折叠文件夹", None, name.clone(), cx)
             })
             .on_click(move |_, _, cx| {
                 git_graph
@@ -583,24 +583,24 @@ impl SplitState {
 actions!(
     git_graph,
     [
-        /// Opens the Git Graph Tab.
+        /// 打开 Git 图标签页
         Open,
-        /// Focuses the search field.
+        /// 聚焦到搜索框
         FocusSearch,
-        /// Focuses the next git graph tab stop.
+        /// 将焦点移到 Git 图中的下一个可聚焦元素
         FocusNextTabStop,
-        /// Focuses the previous git graph tab stop.
+        /// 将焦点移到 Git 图中的上一个可聚焦元素
         FocusPreviousTabStop,
-        /// Selects a commit half a page above the current selection.
+        /// 选择当前选中项上方半页处的提交
         ScrollUp,
-        /// Selects a commit half a page below the current selection.
+        /// 选择当前选中项下方半页处的提交
         ScrollDown,
-        /// Toggles the selected commit's changed files between flat and tree views.
+        /// 在平铺视图和树状视图之间切换选中提交的更改文件
         ToggleChangedFilesView,
     ]
 );
 
-/// Opens the Git Graph Tab at a specific commit.
+/// 在特定提交处打开 Git 图标签页
 #[derive(Clone, PartialEq, serde::Deserialize, schemars::JsonSchema, gpui::Action)]
 #[action(namespace = git_graph)]
 pub struct OpenAtCommit {
@@ -617,7 +617,7 @@ fn timestamp_format() -> &'static [BorrowedFormatItem<'static>] {
 
 fn format_timestamp(timestamp: i64) -> String {
     let Ok(datetime) = OffsetDateTime::from_unix_timestamp(timestamp) else {
-        return "Unknown".to_string();
+        return "未知".to_string();
     };
 
     let local_offset = UtcOffset::current_local_offset().unwrap_or(UtcOffset::UTC);
@@ -1387,16 +1387,16 @@ impl RefMenuEntry {
         window: &mut Window,
     ) -> ContextMenu {
         if let Some(ref_name) = self.ref_name {
-            menu = menu.entry("Copy Ref Name", None, move |_window, cx| {
+            menu = menu.entry("复制引用名称", None, move |_window, cx| {
                 cx.write_to_clipboard(ClipboardItem::new_string(ref_name.to_string()));
             });
         }
 
-        menu = menu.separator().header("Custom Commands");
+        menu = menu.separator().header("自定义命令");
 
         if self.git_tasks.is_empty() {
             return menu.item(
-                ContextMenuEntry::new("Learn More")
+                ContextMenuEntry::new("了解详情")
                     .icon(IconName::ArrowUpRight)
                     .icon_color(Color::Muted)
                     .icon_position(IconPosition::End)
@@ -1627,7 +1627,7 @@ impl GitGraph {
 
         let search_editor = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text("Search commits…", window, cx);
+            editor.set_placeholder_text("搜索提交…", window, cx);
             editor
         });
 
@@ -2055,7 +2055,7 @@ impl GitGraph {
                         (!data.author_email.is_empty()).then(|| data.author_email.clone());
                     formatted_time = format_timestamp(data.commit_timestamp);
                 } else {
-                    subject = "Loading…".into();
+                    subject = "正在加载…".into();
                     author_name = None;
                     author_email = None;
                 }
@@ -2657,7 +2657,7 @@ impl GitGraph {
         let ref_entry = self.ref_menu_entry(commit.data.sha, &name, cx);
         let git_graph = cx.entity();
         let context_menu = ContextMenu::build(window, cx, move |menu, window, _| {
-            menu.header(format!("Ref {name}"))
+            menu.header(format!("引用 {name}"))
                 .map(|menu| ref_entry.add_entries(menu, &git_graph, window))
         });
 
@@ -2686,7 +2686,7 @@ impl GitGraph {
 
         let git_graph = cx.entity();
         let context_menu = ContextMenu::build(window, cx, move |mut menu, _window, _| {
-            menu = menu.header("Refs");
+            menu = menu.header("引用");
             for (ref_entry, name) in ref_entries {
                 let git_graph = git_graph.clone();
                 menu = menu.submenu(name, move |submenu, window, _cx| {
@@ -2819,7 +2819,7 @@ impl GitGraph {
         let focus_handle = self.focus_handle.clone();
         let git_graph = cx.entity();
         let context_menu = ContextMenu::build(window, cx, |mut context_menu, _window, _cx| {
-            context_menu = context_menu.context(focus_handle).header("Columns");
+            context_menu = context_menu.context(focus_handle).header("列");
             for (col_idx, label) in columns.iter().enumerate() {
                 let is_visible = !filter.get(col_idx).copied().unwrap_or(false);
                 // Disable hiding the last remaining visible column.
@@ -2894,7 +2894,7 @@ impl GitGraph {
                             })
                             .tooltip(move |_window, cx| {
                                 Tooltip::for_action_in(
-                                    "Match Case Sensitivity",
+                                    "区分大小写",
                                     &ToggleCaseSensitive,
                                     &focus_handle,
                                     cx,
@@ -2913,7 +2913,7 @@ impl GitGraph {
                             .icon_size(IconSize::Small)
                             .tooltip(move |_, cx| {
                                 Tooltip::for_action_in(
-                                    "Select Previous Match",
+                                    "选择上一个匹配项",
                                     &SelectPreviousMatch,
                                     &focus_handle,
                                     cx,
@@ -2936,7 +2936,7 @@ impl GitGraph {
                             .icon_size(IconSize::Small)
                             .tooltip(move |_, cx| {
                                 Tooltip::for_action_in(
-                                    "Select Next Match",
+                                    "选择下一个匹配项",
                                     &SelectNextMatch,
                                     &focus_handle,
                                     cx,
@@ -3043,7 +3043,7 @@ impl GitGraph {
                 data.author_email.clone(),
                 Some(data.commit_timestamp),
             ),
-            CommitDataState::Loading(_) => ("Loading…".into(), "".into(), None),
+            CommitDataState::Loading(_) => ("正在加载…".into(), "".into(), None),
         };
 
         let date_string = commit_timestamp.map(format_timestamp).unwrap_or_default();
@@ -3111,9 +3111,9 @@ impl GitGraph {
             .toggle_state(self.changed_files_view_mode.is_tree())
             .tooltip({
                 let tooltip = if is_tree_view {
-                    "Show Flat View"
+                    "显示平铺视图"
                 } else {
-                    "Show Tree View"
+                    "显示树状视图"
                 };
                 move |_, cx| Tooltip::for_action(tooltip, &ToggleChangedFilesView, cx)
             })
@@ -3172,9 +3172,9 @@ impl GitGraph {
                             )
                             .tooltip({
                                 let label = if self.commit_details_metadata_collapsed {
-                                    "Show Commit Details"
+                                    "显示提交详情"
                                 } else {
-                                    "Hide Commit Details"
+                                    "隐藏提交详情"
                                 };
                                 move |_window, cx: &mut App| Tooltip::simple(label, cx)
                             })
@@ -3246,9 +3246,9 @@ impl GitGraph {
                                     let is_copied = copied_state.read(cx).is_copied();
 
                                     let (icon, icon_color, tooltip_label) = if is_copied {
-                                        (IconName::Check, Color::Success, "Email Copied!")
+                                        (IconName::Check, Color::Success, "邮箱已复制！")
                                     } else {
-                                        (IconName::Envelope, Color::Muted, "Copy Email")
+                                        (IconName::Envelope, Color::Muted, "复制邮箱")
                                     };
 
                                     let copy_email = author_email.clone();
@@ -3299,9 +3299,9 @@ impl GitGraph {
                                     let is_copied = copied_state.read(cx).is_copied();
 
                                     let (icon, icon_color, tooltip_label) = if is_copied {
-                                        (IconName::Check, Color::Success, "Commit SHA Copied!")
+                                        (IconName::Check, Color::Success, "提交 SHA 已复制！")
                                     } else {
-                                        (IconName::Hash, Color::Muted, "Copy Commit SHA")
+                                        (IconName::Hash, Color::Muted, "复制提交 SHA")
                                     };
 
                                     Button::new("sha-button", &full_sha)
@@ -3360,7 +3360,7 @@ impl GitGraph {
                                     this.child(
                                         Button::new(
                                             "view-on-provider",
-                                            format!("View on {}", provider_name),
+                                            format!("在 {} 中查看", provider_name),
                                         )
                                         .tooltip({
                                             move |_window, cx: &mut App| {
@@ -3406,12 +3406,12 @@ impl GitGraph {
                                     .gap_1()
                                     .child(
                                         Label::new(format!(
-                                            "{} Changed {}",
+                                            "已更改 {} 个{}",
                                             changed_files_count,
                                             if changed_files_count == 1 {
-                                                "File"
+                                                "文件"
                                             } else {
-                                                "Files"
+                                                "文件"
                                             }
                                         ))
                                         .size(LabelSize::Small)
@@ -3523,7 +3523,7 @@ impl GitGraph {
             .child(Divider::horizontal())
             .child(
                 h_flex().p_1p5().w_full().child(
-                    Button::new("view-commit", "View Commit")
+                    Button::new("view-commit", "查看提交")
                         .full_width()
                         .start_icon(
                             Icon::new(IconName::GitCommit)
@@ -4310,7 +4310,7 @@ impl GitGraph {
                             }),
                     )
                     .child(
-                        Label::new("Message")
+                        Label::new("消息")
                             .size(LabelSize::Small)
                             .color(Color::Muted),
                     ),
@@ -4355,11 +4355,11 @@ impl Render for GitGraph {
 
         let content = if commit_count == 0 {
             let message = if let Some(error) = &error {
-                format!("Error loading: {}", error)
+                format!("加载出错：{}", error)
             } else if is_loading {
-                "Loading".to_string()
+                "正在加载".to_string()
             } else {
-                "No commits found".to_string()
+                "未找到提交".to_string()
             };
             let label = Label::new(message)
                 .color(Color::Muted)
@@ -4435,24 +4435,24 @@ impl Render for GitGraph {
                                     if !is_path_history {
                                         TableRow::from_vec(
                                             vec![
-                                                Label::new("Refs")
+                                                Label::new("引用")
                                                     .color(Color::Muted)
                                                     .truncate()
                                                     .into_any_element(),
-                                                Label::new("Graph")
+                                                Label::new("图")
                                                     .color(Color::Muted)
                                                     .truncate()
                                                     .into_any_element(),
-                                                Label::new("Description")
+                                                Label::new("描述")
                                                     .color(Color::Muted)
                                                     .into_any_element(),
-                                                Label::new("Date")
+                                                Label::new("日期")
                                                     .color(Color::Muted)
                                                     .into_any_element(),
-                                                Label::new("Author")
+                                                Label::new("作者")
                                                     .color(Color::Muted)
                                                     .into_any_element(),
-                                                Label::new("Commit")
+                                                Label::new("提交")
                                                     .color(Color::Muted)
                                                     .into_any_element(),
                                             ],
@@ -4461,16 +4461,16 @@ impl Render for GitGraph {
                                     } else {
                                         TableRow::from_vec(
                                             vec![
-                                                Label::new("Description")
+                                                Label::new("描述")
                                                     .color(Color::Muted)
                                                     .into_any_element(),
-                                                Label::new("Date")
+                                                Label::new("日期")
                                                     .color(Color::Muted)
                                                     .into_any_element(),
-                                                Label::new("Author")
+                                                Label::new("作者")
                                                     .color(Color::Muted)
                                                     .into_any_element(),
-                                                Label::new("Commit")
+                                                Label::new("提交")
                                                     .color(Color::Muted)
                                                     .into_any_element(),
                                             ],
@@ -4772,9 +4772,9 @@ impl Item for GitGraph {
             move |_, _| {
                 v_flex()
                     .child(Label::new(if path_history_path.is_some() {
-                        "Path History"
+                        "路径历史"
                     } else {
-                        "Git Graph"
+                        "Git 图"
                     }))
                     .when_some(path_history_path.clone(), |this, path| {
                         this.child(Label::new(path).color(Color::Muted).size(LabelSize::Small))
@@ -4803,7 +4803,7 @@ impl Item for GitGraph {
                     .file_name()
                     .map(|name| name.to_string_lossy().to_string())
             })
-            .map_or_else(|| "Git Graph".into(), |name| SharedString::from(name))
+            .map_or_else(|| "Git 图".into(), |name| SharedString::from(name))
     }
 
     fn show_toolbar(&self) -> bool {

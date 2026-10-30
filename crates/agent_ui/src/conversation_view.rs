@@ -1419,7 +1419,7 @@ impl ConversationView {
                         )
                     } else if recovering {
                         Task::ready(Err(anyhow!(
-                            "Reconnecting requires full history replay. Saved input has been kept."
+                            "重新连接需要完整重放历史记录。已保存的输入已保留。"
                         )))
                     } else if connection.supports_resume_session() {
                         resumed_without_history = true;
@@ -1888,7 +1888,7 @@ impl ConversationView {
             ServerState::Loading { .. } => self
                 .loading_status
                 .clone()
-                .unwrap_or_else(|| "Loading…".into()),
+                .unwrap_or_else(|| "正在加载…".into()),
             ServerState::LoadError { error, .. } => match error {
                 LoadError::Unsupported { .. } => {
                     format!("Upgrade {}", self.agent.agent_id()).into()
@@ -2048,11 +2048,11 @@ impl ConversationView {
             // redraws them.
             AcpThreadEvent::SubagentAssociationUpdated => {}
             AcpThreadEvent::ToolAuthorizationRequested(_) => {
-                self.notify_with_sound("Waiting for tool confirmation", IconName::Info, window, cx);
+                self.notify_with_sound("正在等待工具调用确认", IconName::Info, window, cx);
             }
             AcpThreadEvent::ToolAuthorizationReceived(_) => {}
             AcpThreadEvent::ElicitationRequested(_) => {
-                self.notify_with_sound("Waiting for input", IconName::Info, window, cx);
+                self.notify_with_sound("等待输入", IconName::Info, window, cx);
             }
             AcpThreadEvent::ElicitationResponded(_) => {}
             AcpThreadEvent::Retry(retry) => {
@@ -2114,7 +2114,7 @@ impl ConversationView {
                     }
                     if !is_subagent {
                         self.notify_with_sound(
-                            "Agent stopped at the output token limit",
+                            "智能体因达到输出 Token 上限而停止",
                             IconName::Warning,
                             window,
                             cx,
@@ -2133,7 +2133,7 @@ impl ConversationView {
                     }
                     if !is_subagent {
                         self.notify_with_sound(
-                            "Agent refused to respond to this request",
+                            "智能体拒绝响应此请求",
                             IconName::Warning,
                             window,
                             cx,
@@ -2155,7 +2155,7 @@ impl ConversationView {
                                     .as_deref()
                                     .map(|error| anyhow::Error::new(error.clone()))
                                     .unwrap_or_else(|| {
-                                        anyhow!("Agent stopped because of an error")
+                                        anyhow!("智能体因错误而停止")
                                     });
                                 ThreadError::from(error)
                             });
@@ -2166,7 +2166,7 @@ impl ConversationView {
                     }
                     if !is_subagent {
                         self.notify_with_sound(
-                            "Agent stopped because of an error",
+                            "智能体因错误而停止",
                             IconName::Warning,
                             window,
                             cx,
@@ -2187,9 +2187,9 @@ impl ConversationView {
                     let used_tools = thread.read(cx).used_tools_since_last_user_message();
                     self.notify_with_sound(
                         if used_tools {
-                            "Finished running tools"
+                            "工具运行完成"
                         } else {
-                            "New message"
+                            "新消息"
                         },
                         IconName::ZedAssistant,
                         window,
@@ -2208,7 +2208,7 @@ impl ConversationView {
                 if !is_subagent {
                     let model_or_agent_name = self.current_model_name(cx);
                     let notification_message =
-                        format!("{} refused to respond to this request", model_or_agent_name);
+                        format!("{} 拒绝响应此请求", model_or_agent_name);
                     self.notify_with_sound(&notification_message, IconName::Warning, window, cx);
                 }
             }
@@ -2228,7 +2228,7 @@ impl ConversationView {
                 }
                 if !is_subagent {
                     self.notify_with_sound(
-                        "Agent stopped due to an error",
+                        "智能体因错误而停止",
                         IconName::Warning,
                         window,
                         cx,
@@ -2238,7 +2238,7 @@ impl ConversationView {
             AcpThreadEvent::ConnectionLost => {
                 self.handle_load_error(
                     LoadError::Other(
-                        "Agent connection lost. Reconnect to restore the conversation.".into(),
+                        "智能体连接已断开。重新连接以恢复对话。".into(),
                     ),
                     window,
                     cx,
@@ -2508,7 +2508,7 @@ impl ConversationView {
             pending_auth_method.take();
             *description = Some(cx.new(|cx| {
                 Markdown::new(
-                    format!("Sign-in did not complete: {message}").into(),
+                    format!("登录未完成：{message}").into(),
                     None,
                     None,
                     cx,
@@ -2848,7 +2848,7 @@ impl ConversationView {
         if pending_auth_method.is_some() {
             return Callout::new()
                 .icon(IconName::Info)
-                .title(format!("Authenticating to {}…", agent_display_name))
+                .title(format!("正在向 {} 进行身份验证…", agent_display_name))
                 .actions_slot(
                     Icon::new(IconName::ArrowCircle)
                         .size(IconSize::Small)
@@ -2861,7 +2861,7 @@ impl ConversationView {
 
         Callout::new()
             .icon(IconName::Info)
-            .title(format!("Authenticate to {}", agent_display_name))
+            .title(format!("向 {} 进行身份验证", agent_display_name))
             .when(auth_methods.len() == 1, |this| {
                 this.actions_slot(auth_buttons())
             })
@@ -2871,7 +2871,7 @@ impl ConversationView {
                     .map(|this| {
                         if show_fallback_description {
                             this.child(
-                                Label::new("Choose one of the following authentication options:")
+                                Label::new("选择以下身份验证选项之一：")
                                     .size(LabelSize::Small)
                                     .color(Color::Muted),
                             )
@@ -3256,9 +3256,9 @@ impl ConversationView {
         div()
             .debug_selector(|| "copy-saved-agent-input".into())
             .child(
-                Button::new("copy-saved-agent-input", "Copy Saved Input")
+                Button::new("copy-saved-agent-input", "复制已保存的输入")
                     .tooltip(Tooltip::text(
-                        "Copy the original content and receipt evidence as JSON",
+                        "以 JSON 格式复制原始内容及接收确认记录",
                     ))
                     .on_click(cx.listener(|this, _, window, cx| {
                         match ThreadRecovery::to_json(
@@ -3271,7 +3271,7 @@ impl ConversationView {
                             }
                             Err(error) => this.handle_load_error(
                                 LoadError::Other(
-                                    format!("Failed to copy saved input: {error}").into(),
+                                    format!("复制已保存的输入失败：{error}").into(),
                                 ),
                                 window,
                                 cx,
@@ -3295,23 +3295,23 @@ impl ConversationView {
             } => {
                 return self.render_unsupported(path, current_version, minimum_version, window, cx);
             }
-            LoadError::FailedToInstall(msg) => ("Failed to Install", msg.to_string()),
+            LoadError::FailedToInstall(msg) => ("安装失败", msg.to_string()),
             LoadError::Exited { status, stderr } => {
-                let mut message = format!("Server exited with status {status}");
+                let mut message = format!("服务器已退出，状态为 {status}");
                 if let Some(stderr) = stderr {
                     message.push_str("\n");
                     message.push_str(stderr);
                 };
-                ("Failed to Launch", message)
+                ("启动失败", message)
             }
-            LoadError::Other(msg) => ("Failed to Launch", msg.to_string()),
+            LoadError::Other(msg) => ("启动失败", msg.to_string()),
         };
 
         let action_slot = h_flex()
             .gap_1()
             .child(
-                Button::new("retry-agent-launch", "Retry")
-                    .tooltip(Tooltip::text("Try to restart the agent"))
+                Button::new("retry-agent-launch", "重试")
+                    .tooltip(Tooltip::text("尝试重启智能体"))
                     .on_click(cx.listener(move |this, _, window, cx| {
                         this.retry_connection(window, cx);
                     })),
@@ -3337,15 +3337,15 @@ impl ConversationView {
         cx: &mut Context<Self>,
     ) -> AnyElement {
         let (heading_label, description_label) = (
-            format!("Upgrade {} to work with Zed", self.agent.agent_id()),
+            format!("升级 {} 以与 Zed 配合使用", self.agent.agent_id()),
             if version.is_empty() {
                 format!(
-                    "Currently using {}, which does not report a valid --version",
+                    "当前使用 {}，但其 --version 输出未包含有效版本",
                     path,
                 )
             } else {
                 format!(
-                    "Currently using {}, which is only version {} (need at least {minimum_version})",
+                    "当前使用的 {} 仅为版本 {}（至少需要 {minimum_version}）",
                     path, version
                 )
             },
@@ -3795,7 +3795,7 @@ impl ConversationView {
                 .and_then(|active| active.read(cx).model_selector.clone())
                 .and_then(|selector| selector.read(cx).active_model(cx))
                 .map(|model| model.name.clone())
-                .unwrap_or_else(|| SharedString::from("The model"))
+                .unwrap_or_else(|| SharedString::from("模型"))
         } else {
             // ACP agent - use the agent name (e.g., "Claude Agent", "Gemini CLI")
             self.agent.agent_id().0
@@ -3805,7 +3805,7 @@ impl ConversationView {
     fn create_copy_button(&self, message: impl Into<String>) -> impl IntoElement {
         let message = message.into();
 
-        CopyButton::new("copy-error-message", message).tooltip_label("Copy Error Message")
+        CopyButton::new("copy-error-message", message).tooltip_label("复制错误消息")
     }
 
     pub(crate) fn reauthenticate(&mut self, window: &mut Window, cx: &mut Context<Self>) {
@@ -3903,16 +3903,16 @@ fn native_available_skills(
 fn placeholder_text(agent_name: &str, has_commands: bool) -> String {
     if agent_name == agent::ZED_AGENT_ID.as_ref() {
         format!(
-            "Message the {}, @ to include context, / for commands",
+            "向 {} 发送消息，@ 可添加上下文，/ 可使用命令",
             agent_name
         )
     } else if has_commands {
         format!(
-            "Message {} — @ to include context, / for commands",
+            "向 {} 发送消息 — @ 可添加上下文，/ 可使用命令",
             agent_name
         )
     } else {
-        format!("Message {} — @ to include context", agent_name)
+        format!("向 {} 发送消息 — @ 可添加上下文", agent_name)
     }
 }
 
@@ -3971,7 +3971,7 @@ impl Render for ConversationView {
                 let label_text = self
                     .loading_status
                     .clone()
-                    .unwrap_or_else(|| "Loading…".into());
+                    .unwrap_or_else(|| "正在加载…".into());
                 v_flex()
                     .flex_1()
                     .size_full()
@@ -4045,8 +4045,8 @@ impl Render for ConversationView {
                                     div()
                                         .debug_selector(|| "discard-saved-agent-submissions".into())
                                         .child(
-                                            Button::new("discard-saved-agent-submissions", "Discard Saved Submissions")
-                                                .tooltip(Tooltip::text("Discard local copies only; does not cancel agent work"))
+                                            Button::new("discard-saved-agent-submissions", "放弃已保存的提交内容")
+                                                .tooltip(Tooltip::text("仅放弃本地副本；不会取消智能体的工作"))
                                                 .on_click(cx.listener(|this, _, _, cx| {
                                                     this.saved_submissions.clear();
                                                     if let Some(recovery) = &mut this.recovery {
@@ -4265,15 +4265,15 @@ impl AgentCodeSpanResolver {
 fn plan_summary_label(stats: &acp_thread::PlanStats<'_>, entry_count: usize) -> String {
     if stats.pending == 0 {
         if stats.cancelled == 0 {
-            "All Done"
+            "全部完成"
         } else if stats.completed == 0 {
-            "Cancelled"
+            "已取消"
         } else {
-            "Finished"
+            "已结束"
         }
         .to_owned()
     } else if stats.completed == 0 {
-        format!("{entry_count} Tasks")
+        format!("{entry_count} 个任务")
     } else {
         format!("{}/{entry_count}", stats.completed)
     }
@@ -9936,7 +9936,7 @@ pub(crate) mod tests {
         }
 
         fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
-            "Test".into()
+            "测试".into()
         }
     }
 

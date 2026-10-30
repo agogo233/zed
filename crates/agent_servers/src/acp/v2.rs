@@ -879,7 +879,7 @@ impl AcpV2Connection {
             let result = cx
                 .update(|cx| config_options.set_config_option(config_id.clone(), value, cx))
                 .await
-                .with_context(|| format!("Failed to apply default config option {config_id}"));
+                .with_context(|| format!("应用配置选项 {config_id} 的默认值失败"));
             if result.as_ref().err().is_some_and(|error| {
                 error.is::<ResponseCallbackDropped>()
                     || is_connection_closed(&self.connection)
@@ -897,7 +897,7 @@ impl AcpV2Connection {
                         thread.push_notice(
                             acp::Notice::new(
                                 acp::NoticeSeverity::Warning,
-                                "Saved config default was not applied",
+                                "未应用已保存的配置默认值",
                             )
                             .description(format!("{config_id}: {message}")),
                             cx,

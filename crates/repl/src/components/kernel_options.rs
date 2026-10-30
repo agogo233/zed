@@ -242,7 +242,7 @@ impl PickerDelegate for KernelPickerDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Select a kernel...".into()
+        "选择内核...".into()
     }
 
     fn update_matches(
@@ -385,14 +385,14 @@ impl PickerDelegate for KernelPickerDelegate {
                                                 )
                                                 .when(*is_recommended, |flex| {
                                                     flex.child(
-                                                        Label::new("Recommended")
+                                                        Label::new("推荐")
                                                             .size(LabelSize::XSmall)
                                                             .color(Color::Accent),
                                                     )
                                                 })
                                                 .when(!has_ipykernel, |flex| {
                                                     flex.child(
-                                                        Label::new("ipykernel not installed")
+                                                        Label::new("ipykernel 未安装")
                                                             .size(LabelSize::XSmall)
                                                             .color(Color::Warning),
                                                     )
@@ -434,7 +434,7 @@ impl PickerDelegate for KernelPickerDelegate {
                 .p_1()
                 .gap_4()
                 .child(
-                    Button::new("kernel-docs", "Kernel Docs")
+                    Button::new("kernel-docs", "内核文档")
                         .end_icon(
                             Icon::new(IconName::ArrowUpRight)
                                 .size(IconSize::Small)

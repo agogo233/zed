@@ -136,7 +136,7 @@ impl TabularDataPreviewPane {
             let Some(buffer_snapshot) = buffer_snapshot else {
                 view.update(cx, |view, cx| {
                     view.is_parsing = false;
-                    view.parse_error = Some("Preview requires a single file".into());
+                    view.parse_error = Some("预览需要单个文件".into());
                     cx.notify();
                 })?;
                 return Ok(());
@@ -193,7 +193,7 @@ fn from_json_lines(buffer_snapshot: &BufferSnapshot) -> anyhow::Result<TableLike
         let record: IndexMap<String, &RawValue> =
             serde_json::from_str(line).with_context(|| {
                 format!(
-                    "Cannot preview JSONL line {}: expected a JSON object",
+                    "无法预览 JSONL 第 {} 行：应为 JSON 对象",
                     line_index + 1
                 )
             })?;

@@ -216,7 +216,7 @@ impl PickerDelegate for ModelPickerDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Select a model…".into()
+        "选择模型…".into()
     }
 
     fn update_matches(
@@ -404,7 +404,7 @@ fn info_list_to_picker_entries(
 
     let has_favorites = !favorite_models.is_empty();
     if has_favorites {
-        entries.push(ModelPickerEntry::Separator("Favorite".into()));
+        entries.push(ModelPickerEntry::Separator("收藏".into()));
         for model in favorite_models {
             entries.push(ModelPickerEntry::Model((*model).clone(), true));
         }
@@ -413,7 +413,7 @@ fn info_list_to_picker_entries(
     match model_list {
         AgentModelList::Flat(list) => {
             if has_favorites {
-                entries.push(ModelPickerEntry::Separator("All".into()));
+                entries.push(ModelPickerEntry::Separator("全部".into()));
             }
             for model in list {
                 let is_favorite = favorites.contains(&model.id);

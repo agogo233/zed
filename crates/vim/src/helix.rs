@@ -32,43 +32,43 @@ use std::ops::Range;
 actions!(
     vim,
     [
-        /// Yanks the current selection or character if no selection.
+        /// 复制当前选区，若无选区则复制当前字符
         HelixYank,
-        /// Inserts at the beginning of the selection.
+        /// 在选区开头插入
         HelixInsert,
-        /// Appends at the end of the selection.
+        /// 在选区末尾追加内容
         HelixAppend,
-        /// Inserts at the end of the current Helix cursor line.
+        /// 在当前 Helix 光标行末尾插入
         HelixInsertEndOfLine,
-        /// Goes to the location of the last modification.
+        /// 跳转到最后一次修改的位置
         HelixGotoLastModification,
-        /// Goes to the line specified by the count.
+        /// 跳转到计数指定的行
         HelixGotoLine,
-        /// Select entire line or multiple lines, extending downwards.
+        /// 选择整行或多行，向下延伸
         HelixSelectLine,
-        /// Select all matches of a given pattern within the current selection.
+        /// 在当前选区内选择给定模式的所有匹配项
         HelixSelectRegex,
-        /// Removes all but the one selection that was created last.
-        /// `Newest` can eventually be `Primary`.
+        /// 移除除最后创建的选区外的所有选区
+        /// `Newest` 最终可成为 `Primary`
         HelixKeepNewestSelection,
-        /// Copies all selections below.
+        /// 将所有选区向下复制
         HelixDuplicateBelow,
-        /// Copies all selections above.
+        /// 将所有选区向上复制
         HelixDuplicateAbove,
-        /// Delete the selection and enter edit mode.
+        /// 删除选区并进入编辑模式
         HelixSubstitute,
-        /// Delete the selection and enter edit mode, without yanking the selection.
+        /// 删除选区并进入编辑模式，不复制选区
         HelixSubstituteNoYank,
         /// Replace the selection with the contents of the default register (`R`).
         HelixReplaceWithYanked,
-        /// Activate Helix-style word jump labels.
+        /// 激活 Helix 风格的单词跳转标签
         HelixJumpToWord,
-        /// Select the next match for the current search query.
+        /// 选择当前搜索查询的下一个匹配项
         HelixSelectNext,
-        /// Select the previous match for the current search query.
+        /// 选择当前搜索查询的上一个匹配项
         HelixSelectPrevious,
-        /// Trim leading and trailing whitespace from each selection.
-        /// Originally-empty selections (cursors) are dropped before trimming.
+        /// 移除每个选区首尾的空白字符
+        /// 原本为空的选区（光标）会在移除空白字符前被丢弃
         HelixTrimSelections,
     ]
 );

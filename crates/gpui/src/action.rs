@@ -428,8 +428,8 @@ mod no_action {
     actions!(
         zed,
         [
-            /// Action with special handling which unbinds the keybinding this is associated with,
-            /// if it is the highest precedence match.
+            /// 具有特殊处理的操作，用于解绑与之关联的键绑定，
+            /// 如果它是最高优先级匹配项
             NoAction
         ]
     );

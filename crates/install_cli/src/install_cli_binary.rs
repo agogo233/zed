@@ -12,7 +12,7 @@ use workspace::{Toast, Workspace};
 actions!(
     cli,
     [
-        /// Installs the Zed CLI tool to the system PATH.
+        /// 将 Zed CLI 工具安装到系统 PATH
         InstallCliBinary,
     ]
 );
@@ -86,9 +86,9 @@ pub fn install_cli_binary(window: &mut Window, cx: &mut Context<Workspace>) {
         if cfg!(any(target_os = "linux", target_os = "freebsd")) {
             let prompt = cx.prompt(
                 PromptLevel::Warning,
-                "CLI should already be installed",
+                "CLI 应已安装",
                 Some(LINUX_PROMPT_DETAIL),
-                &["OK"],
+                &["确定"],
             );
             cx.background_spawn(prompt).detach();
             return Ok(());
@@ -108,11 +108,11 @@ pub fn install_cli_binary(window: &mut Window, cx: &mut Context<Workspace>) {
                         |cx| {
                             cx.new(|cx| {
                                 MessageNotification::new(
-                                    "You can add `zed` to your PATH manually.",
+                                    "你可以手动将 `zed` 添加到 PATH",
                                     cx,
                                 )
-                                .with_title("Couldn't install the Zed CLI")
-                                .more_info_message("Show me how")
+                                .with_title("无法安装 Zed CLI")
+                                .more_info_message("查看方法")
                                 .more_info_url(CANT_INSTALL_DOCS_URL)
                             })
                         },
@@ -129,7 +129,7 @@ pub fn install_cli_binary(window: &mut Window, cx: &mut Context<Workspace>) {
                 Toast::new(
                     NotificationId::unique::<InstalledZedCli>(),
                     format!(
-                        "Installed `zed` to {}. You can launch {} from your terminal.",
+                        "已将 `zed` 安装到 {}。你可以从终端启动 {}。",
                         path.to_string_lossy(),
                         ReleaseChannel::global(cx).display_name()
                     ),
@@ -140,5 +140,5 @@ pub fn install_cli_binary(window: &mut Window, cx: &mut Context<Workspace>) {
         register_zed_scheme(cx).await.log_err();
         Ok(())
     })
-    .detach_and_prompt_err("Cannot install the Zed CLI", window, cx, |_, _, _| None);
+    .detach_and_prompt_err("无法安装 Zed CLI", window, cx, |_, _, _| None);
 }

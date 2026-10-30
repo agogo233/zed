@@ -9,22 +9,22 @@ use util::serde::default_true;
 #[with_fallible_options]
 #[derive(Debug, PartialEq, Clone, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct ExtensionSettingsContent {
-    /// The extensions that should be automatically installed by Zed.
+    /// Zed 应自动安装的扩展
     ///
-    /// This is used to make functionality provided by extensions (e.g., language support)
-    /// available out-of-the-box.
+    /// 此项用于使扩展提供的功能（例如语言支持）
+    /// 开箱即用。
     ///
-    /// Default: { "html": true }
+    /// 默认值：{ "html": true }
     #[serde(default)]
     pub auto_install_extensions: HashMap<Arc<str>, bool>,
     #[serde(default)]
     pub auto_update_extensions: HashMap<Arc<str>, bool>,
-    /// Whether to suggest installing extensions based on the files you open.
+    /// 是否根据打开的文件建议安装扩展
     ///
-    /// Default: true
+    /// 默认值：true
     #[serde(default = "default_true")]
     pub suggest_extensions: bool,
-    /// The capabilities granted to extensions.
+    /// 授予扩展的权限
     pub granted_extension_capabilities: Option<Vec<ExtensionCapabilityContent>>,
 }
 
@@ -39,16 +39,16 @@ impl Default for ExtensionSettingsContent {
     }
 }
 
-/// A capability for an extension.
+/// 扩展的权限
 #[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize, JsonSchema)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum ExtensionCapabilityContent {
     #[serde(rename = "process:exec")]
     ProcessExec {
-        /// The command to execute.
+        /// 要执行的命令
         command: String,
-        /// The arguments to pass to the command. Use `*` for a single wildcard argument.
-        /// If the last element is `**`, then any trailing arguments are allowed.
+        /// 传递给命令的参数。使用 `*` 作为单个通配符参数。
+        /// 如果最后一个元素是 `**`，则允许任何尾随参数
         args: Vec<String>,
     },
     DownloadFile {

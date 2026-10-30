@@ -19,8 +19,8 @@ use workspace::Workspace;
 gpui::actions!(
     which_key,
     [
-        /// Shows the bindings that can complete the pending key sequence. Must be bound to a
-        /// single keystroke.
+        /// 显示可完成待处理按键序列的绑定。必须绑定到
+        /// 单个按键。
         ShowPendingBindings
     ]
 );

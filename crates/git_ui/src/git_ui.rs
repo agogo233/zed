@@ -498,7 +498,7 @@ impl RenameBranchModal {
                 Err(_) => Err(anyhow!("Operation was canceled")),
             }
         })
-        .detach_and_prompt_err("Failed to rename branch", window, cx, |_, _, _| None);
+        .detach_and_prompt_err("重命名分支失败", window, cx, |_, _, _| None);
         cx.emit(DismissEvent);
     }
 }
@@ -528,7 +528,7 @@ impl Render for RenameBranchModal {
                     .gap_1p5()
                     .child(Icon::new(IconName::GitBranch).size(IconSize::XSmall))
                     .child(
-                        Headline::new(format!("Rename Branch ({})", self.current_branch))
+                        Headline::new(format!("重命名分支（{}）", self.current_branch))
                             .size(HeadlineSize::XSmall),
                     ),
             )
@@ -555,7 +555,7 @@ impl CreateTagModal {
     ) -> Self {
         let editor = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text("Tag name", window, cx);
+            editor.set_placeholder_text("标签名称", window, cx);
             editor
         });
         Self {
@@ -591,7 +591,7 @@ impl CreateTagModal {
         let commit = self.commit.to_string();
         let workspace = self.workspace.clone();
         let success_message = format!(
-            "Created tag \"{tag_name}\" at {}",
+            "已在 {} 创建标签 \"{tag_name}\"",
             self.tag_target_commit_label()
         );
         cx.spawn(async move |_, cx| {
@@ -606,7 +606,7 @@ impl CreateTagModal {
                 .log_err();
             Ok(())
         })
-        .detach_and_prompt_err("Failed to create tag", window, cx, |error, _, _| {
+        .detach_and_prompt_err("创建标签失败", window, cx, |error, _, _| {
             Some(error.to_string())
         });
         cx.emit(DismissEvent);
@@ -623,7 +623,7 @@ impl Focusable for CreateTagModal {
 
 impl Render for CreateTagModal {
     fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        let title = format!("Create Tag at {}", self.tag_target_commit_label());
+        let title = format!("在 {} 创建标签", self.tag_target_commit_label());
         v_flex()
             .key_context("CreateTagModal")
             .on_action(cx.listener(Self::cancel))
@@ -733,7 +733,7 @@ impl RefPickerModal {
     ) -> Self {
         let editor = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text("Enter git ref...", window, cx);
+            editor.set_placeholder_text("输入 git 引用...", window, cx);
             editor
         });
 
@@ -918,7 +918,7 @@ impl Render for RefPickerModal {
                     .w_full()
                     .gap_1p5()
                     .child(Icon::new(IconName::Hash).size(IconSize::XSmall))
-                    .child(Headline::new("View Commit").size(HeadlineSize::XSmall)),
+                    .child(Headline::new("查看提交").size(HeadlineSize::XSmall)),
             )
             .child(div().px_3().w_full().child(self.editor.clone()))
             .when_some(commit_preview, |el, preview| {
@@ -1016,7 +1016,7 @@ mod remote_button {
     ) -> SplitButton {
         split_button(
             id,
-            "Fetch",
+            "抓取",
             0,
             0,
             Some(IconName::ArrowCircle),
@@ -1028,7 +1028,7 @@ mod remote_button {
             },
             move |_window, cx| {
                 git_action_tooltip(
-                    "Fetch updates from remote",
+                    "从远程抓取更新",
                     &git::Fetch,
                     "git fetch",
                     keybinding_target.clone(),
@@ -1047,7 +1047,7 @@ mod remote_button {
     ) -> SplitButton {
         split_button(
             id,
-            "Push",
+            "推送",
             ahead as usize,
             0,
             None,
@@ -1059,7 +1059,7 @@ mod remote_button {
             },
             move |_window, cx| {
                 git_action_tooltip(
-                    "Push committed changes to remote",
+                    "将已提交更改推送到远程",
                     &git::Push,
                     "git push",
                     keybinding_target.clone(),
@@ -1079,7 +1079,7 @@ mod remote_button {
     ) -> SplitButton {
         split_button(
             id,
-            "Pull",
+            "拉取",
             ahead as usize,
             behind as usize,
             None,
@@ -1091,7 +1091,7 @@ mod remote_button {
             },
             move |_window, cx| {
                 git_action_tooltip(
-                    "Pull",
+                    "拉取",
                     &git::Pull,
                     "git pull",
                     keybinding_target.clone(),
@@ -1109,7 +1109,7 @@ mod remote_button {
     ) -> SplitButton {
         split_button(
             id,
-            "Publish",
+            "发布",
             0,
             0,
             Some(IconName::ExpandUp),
@@ -1121,7 +1121,7 @@ mod remote_button {
             },
             move |_window, cx| {
                 git_action_tooltip(
-                    "Publish branch to remote",
+                    "将分支发布到远程",
                     &git::Push,
                     "git push --set-upstream",
                     keybinding_target.clone(),
@@ -1139,7 +1139,7 @@ mod remote_button {
     ) -> SplitButton {
         split_button(
             id,
-            "Republish",
+            "重新发布",
             0,
             0,
             Some(IconName::ExpandUp),
@@ -1151,7 +1151,7 @@ mod remote_button {
             },
             move |_window, cx| {
                 git_action_tooltip(
-                    "Re-publish branch to remote",
+                    "将分支重新发布到远程",
                     &git::Push,
                     "git push --set-upstream",
                     keybinding_target.clone(),
@@ -1205,14 +1205,14 @@ mod remote_button {
                         .when_some(keybinding_target.clone(), |el, keybinding_target| {
                             el.context(keybinding_target)
                         })
-                        .action("Fetch", git::Fetch.boxed_clone())
-                        .action("Fetch From", git::FetchFrom.boxed_clone())
-                        .action("Pull", git::Pull.boxed_clone())
-                        .action("Pull (Rebase)", git::PullRebase.boxed_clone())
+                        .action("抓取", git::Fetch.boxed_clone())
+                        .action("从指定远程抓取", git::FetchFrom.boxed_clone())
+                        .action("拉取", git::Pull.boxed_clone())
+                        .action("拉取（变基）", git::PullRebase.boxed_clone())
                         .separator()
-                        .action("Push", git::Push.boxed_clone())
-                        .action("Push To", git::PushTo.boxed_clone())
-                        .action("Force Push", git::ForcePush.boxed_clone())
+                        .action("推送", git::Push.boxed_clone())
+                        .action("推送到指定远程", git::PushTo.boxed_clone())
+                        .action("强制推送", git::ForcePush.boxed_clone())
                 }))
             })
             .anchor(Anchor::TopRight)
@@ -1423,7 +1423,7 @@ impl GitCloneModal {
     pub fn show(panel: Entity<GitPanel>, window: &mut Window, cx: &mut Context<Self>) -> Self {
         let repo_input = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text("Enter repository URL…", window, cx);
+            editor.set_placeholder_text("输入仓库 URL…", window, cx);
             editor
         });
         let focus_handle = repo_input.focus_handle(cx);
@@ -1467,12 +1467,12 @@ impl Render for GitCloneModal {
                     .rounded_b_sm()
                     .bg(cx.theme().colors().editor_background)
                     .child(
-                        Label::new("Clone a repository from GitHub or other sources.")
+                        Label::new("从 GitHub 或其他来源克隆仓库")
                             .color(Color::Muted)
                             .size(LabelSize::Small),
                     )
                     .child(
-                        Button::new("learn-more", "Learn More")
+                        Button::new("learn-more", "了解详情")
                             .label_size(LabelSize::Small)
                             .end_icon(Icon::new(IconName::ArrowUpRight).size(IconSize::XSmall))
                             .on_click(|_, _, cx| {

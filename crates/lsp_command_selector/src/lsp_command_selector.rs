@@ -64,7 +64,7 @@ impl LspCommandSelector {
         let arguments_editor = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
             editor.set_placeholder_text(
-                "JSON arguments (42, {\"key\": \"value\"}, …) or plain text for one string",
+                "JSON 参数（42, {\"key\": \"value\"}, …）或作为单个字符串的纯文本",
                 window,
                 cx,
             );
@@ -193,7 +193,7 @@ impl PickerDelegate for LspCommandSelectorDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Select a language server command…".into()
+        "选择语言服务器命令…".into()
     }
 
     fn match_count(&self) -> usize {
@@ -241,7 +241,7 @@ impl PickerDelegate for LspCommandSelectorDelegate {
                 }
                 Err(error) => {
                     let error = format!(
-                        "Failed to execute LSP command {}: {error:#}",
+                        "执行 LSP 命令 {} 失败：{error:#}",
                         command.command
                     );
                     log::error!("{error}");
@@ -370,7 +370,7 @@ impl PickerDelegate for LspCommandSelectorDelegate {
                         .gap_2()
                         .justify_between()
                         .child(
-                            Label::new("Arguments")
+                            Label::new("参数")
                                 .size(LabelSize::Small)
                                 .color(Color::Muted),
                         )
@@ -383,7 +383,7 @@ impl PickerDelegate for LspCommandSelectorDelegate {
                                     cx,
                                 ))
                                 .child(
-                                    Label::new("to switch focus")
+                                    Label::new("切换焦点")
                                         .size(LabelSize::Small)
                                         .color(Color::Muted),
                                 ),
@@ -393,7 +393,7 @@ impl PickerDelegate for LspCommandSelectorDelegate {
                 .map(|footer| match &self.execution {
                     Execution::Idle => footer,
                     Execution::Running { .. } => footer.child(
-                        Label::new("Executing command…")
+                        Label::new("正在执行命令…")
                             .size(LabelSize::Small)
                             .color(Color::Muted),
                     ),

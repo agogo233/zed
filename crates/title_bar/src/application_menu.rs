@@ -14,20 +14,20 @@ use crate::title_bar_settings::TitleBarSettings;
 actions!(
     app_menu,
     [
-        /// Activates the menu on the right in the client-side application menu.
+        /// 激活客户端应用程序菜单中右侧的菜单
         ///
-        /// Does not apply to platform menu bars (e.g. on macOS).
+        /// 不适用于平台菜单栏（例如 macOS）
         ActivateMenuRight,
-        /// Activates the menu on the left in the client-side application menu.
+        /// 激活客户端应用程序菜单中左侧的菜单
         ///
-        /// Does not apply to platform menu bars (e.g. on macOS).
+        /// 不适用于平台菜单栏（例如 macOS）
         ActivateMenuLeft
     ]
 );
 
 /// Opens the named menu in the client-side application menu.
 ///
-/// Does not apply to platform menu bars (e.g. on macOS).
+/// 不适用于平台菜单栏（例如 macOS）
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Default, Action)]
 #[action(namespace = app_menu)]
 pub struct OpenApplicationMenu(String);
@@ -196,8 +196,8 @@ impl ApplicationMenu {
                         .style(ButtonStyle::Subtle)
                         .icon_size(IconSize::Small)
                         .tab_index(0isize)
-                        .aria_label("Application menu"),
-                        Tooltip::text("Open Application Menu"),
+                        .aria_label("应用程序菜单"),
+                        Tooltip::text("打开应用程序菜单"),
                     )
                     .with_handle(handle),
             )
@@ -424,12 +424,12 @@ mod tests {
         let mut items = Vec::new();
         if include_agent_panel {
             items.push(MenuItem::action(
-                "Agent Panel",
+                "智能体面板",
                 OpenApplicationMenu(String::new()),
             ));
         }
         items.push(MenuItem::action(
-            "Diagnostics",
+            "诊断",
             OpenApplicationMenu(String::new()),
         ));
 
@@ -526,7 +526,7 @@ mod tests {
         cx.update(|cx| {
             cx.set_menus(vec![
                 Menu::new("Zed").items([MenuItem::action(
-                    "Settings",
+                    "设置",
                     OpenApplicationMenu(String::new()),
                 )]),
                 view_menu(true),

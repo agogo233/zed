@@ -12,25 +12,25 @@ pub fn init() {}
 actions!(
     menu,
     [
-        /// Cancels the current menu operation.
+        /// 取消当前菜单操作
         Cancel,
-        /// Confirms the selected menu item.
+        /// 确认选中的菜单项
         Confirm,
-        /// Performs secondary confirmation action.
+        /// 执行次要确认操作
         SecondaryConfirm,
-        /// Selects the previous item in the menu.
+        /// 选中菜单中的上一项
         SelectPrevious,
-        /// Selects the next item in the menu.
+        /// 选中菜单中的下一项
         SelectNext,
-        /// Selects the first item in the menu.
+        /// 选中菜单中的第一项
         SelectFirst,
-        /// Selects the last item in the menu.
+        /// 选中菜单中的最后一项
         SelectLast,
-        /// Enters a submenu (navigates to child menu).
+        /// 进入子菜单（即导航至下级菜单）
         SelectChild,
-        /// Exits a submenu (navigates to parent menu).
+        /// 退出子菜单（即导航至上级菜单）
         SelectParent,
-        /// Restarts the menu from the beginning.
+        /// 从菜单开头重新开始
         Restart,
         EndSlot,
     ]

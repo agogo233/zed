@@ -12,7 +12,7 @@ use std::{path::PathBuf, sync::Arc};
 // https://github.com/mmastrac/rust-ctor/issues/280
 pub fn init() {}
 
-/// Opens a URL in the system's default web browser.
+/// 在系统默认浏览器中打开一个 URL
 #[derive(Clone, PartialEq, Deserialize, JsonSchema, Action)]
 #[action(namespace = zed)]
 #[serde(deny_unknown_fields)]
@@ -20,7 +20,7 @@ pub struct OpenBrowser {
     pub url: Arc<str>,
 }
 
-/// Opens a zed:// URL within the application.
+/// 在应用程序内打开一个 zed:// URL
 #[derive(Clone, PartialEq, Deserialize, JsonSchema, Action)]
 #[action(namespace = zed)]
 #[serde(deny_unknown_fields)]
@@ -38,50 +38,50 @@ pub struct ChangeKeybinding {
 actions!(
     zed,
     [
-        /// Opens the settings editor.
+        /// 打开设置编辑器
         #[action(deprecated_aliases = ["zed_actions::OpenSettingsEditor"])]
         OpenSettings,
-        /// Opens the settings JSON file.
+        /// 打开设置 JSON 文件
         #[action(deprecated_aliases = ["zed_actions::OpenSettings"])]
         OpenSettingsFile,
-        /// Opens project-specific settings.
+        /// 打开项目专属设置
         #[action(deprecated_aliases = ["zed_actions::OpenProjectSettings"])]
         OpenProjectSettings,
-        /// Opens the project tasks configuration.
+        /// 打开项目任务配置
         OpenProjectTasks,
-        /// Opens the project tasks configuration with worktree setup guidance.
+        /// 打开项目任务配置，并提供工作树设置指南
         OpenWorktreeSetupTasks,
-        /// Opens the default keymap file.
+        /// 打开默认键映射文件
         OpenDefaultKeymap,
-        /// Opens the user keymap file.
+        /// 打开用户键映射文件
         #[action(deprecated_aliases = ["zed_actions::OpenKeymap"])]
         OpenKeymapFile,
-        /// Opens the keymap editor.
+        /// 打开键映射编辑器
         #[action(deprecated_aliases = ["zed_actions::OpenKeymapEditor"])]
         OpenKeymap,
-        /// Opens account settings.
+        /// 打开帐户设置
         OpenAccountSettings,
-        /// Opens server settings.
+        /// 打开服务器设置
         OpenServerSettings,
-        /// Quits the application.
+        /// 退出应用程序
         Quit,
-        /// Shows information about Zed.
+        /// 显示 Zed 的相关信息
         About,
-        /// Opens the documentation website.
+        /// 打开文档网站
         OpenDocs,
-        /// Views open source licenses.
+        /// 查看开源许可证
         OpenLicenses,
-        /// Opens the Zed status page.
+        /// 打开 Zed 状态页面
         OpenStatusPage,
-        /// Opens the Zed merch store.
+        /// 打开 Zed 周边商店
         GetMerch,
-        /// Opens the telemetry log.
+        /// 打开遥测日志
         OpenTelemetryLog,
-        /// Opens the performance profiler.
+        /// 打开性能分析器
         OpenPerformanceProfiler,
-        /// Opens the onboarding view.
+        /// 打开引导视图
         OpenOnboarding,
-        /// Shows the auto-update notification for testing.
+        /// 显示用于测试的自动更新通知
         ShowUpdateNotification,
     ]
 );
@@ -99,7 +99,7 @@ pub enum ExtensionCategoryFilter {
     DebugAdapters,
 }
 
-/// Opens the extensions management interface.
+/// 打开扩展管理界面
 #[derive(PartialEq, Clone, Default, Debug, Deserialize, JsonSchema, Action)]
 #[action(namespace = zed)]
 #[serde(deny_unknown_fields)]
@@ -112,19 +112,19 @@ pub struct Extensions {
     pub id: Option<String>,
 }
 
-/// Opens the ACP registry.
+/// 打开 ACP 注册表
 #[derive(PartialEq, Clone, Default, Debug, Deserialize, JsonSchema, Action)]
 #[action(namespace = zed)]
 #[serde(deny_unknown_fields)]
 pub struct AcpRegistry;
 
-/// Show call diagnostics and connection quality statistics.
+/// 显示通话诊断和连接质量统计信息
 #[derive(PartialEq, Clone, Default, Debug, Deserialize, JsonSchema, Action)]
 #[action(namespace = collab)]
 #[serde(deny_unknown_fields)]
 pub struct ShowCallStats;
 
-/// Decreases the font size in the editor buffer.
+/// 减小编辑器缓冲区的字体大小
 #[derive(PartialEq, Clone, Default, Debug, Deserialize, JsonSchema, Action)]
 #[action(namespace = zed)]
 #[serde(deny_unknown_fields)]
@@ -133,7 +133,7 @@ pub struct DecreaseBufferFontSize {
     pub persist: bool,
 }
 
-/// Increases the font size in the editor buffer.
+/// 增大编辑器缓冲区的字体大小
 #[derive(PartialEq, Clone, Default, Debug, Deserialize, JsonSchema, Action)]
 #[action(namespace = zed)]
 #[serde(deny_unknown_fields)]
@@ -142,7 +142,7 @@ pub struct IncreaseBufferFontSize {
     pub persist: bool,
 }
 
-/// Opens the settings editor at a specific path.
+/// 在指定路径处打开设置编辑器
 #[derive(PartialEq, Clone, Debug, Deserialize, JsonSchema, Action)]
 #[action(namespace = zed)]
 #[serde(deny_unknown_fields)]
@@ -181,7 +181,7 @@ pub enum OpenSettingsAtTarget {
     Project { worktree_id: usize },
 }
 
-/// Resets the buffer font size to the default value.
+/// 将缓冲区字体大小重置为默认值
 #[derive(PartialEq, Clone, Default, Debug, Deserialize, JsonSchema, Action)]
 #[action(namespace = zed)]
 #[serde(deny_unknown_fields)]
@@ -190,7 +190,7 @@ pub struct ResetBufferFontSize {
     pub persist: bool,
 }
 
-/// Decreases the font size of the user interface.
+/// 减小用户界面的字体大小
 #[derive(PartialEq, Clone, Default, Debug, Deserialize, JsonSchema, Action)]
 #[action(namespace = zed)]
 #[serde(deny_unknown_fields)]
@@ -199,7 +199,7 @@ pub struct DecreaseUiFontSize {
     pub persist: bool,
 }
 
-/// Increases the font size of the user interface.
+/// 增大用户界面的字体大小
 #[derive(PartialEq, Clone, Default, Debug, Deserialize, JsonSchema, Action)]
 #[action(namespace = zed)]
 #[serde(deny_unknown_fields)]
@@ -208,7 +208,7 @@ pub struct IncreaseUiFontSize {
     pub persist: bool,
 }
 
-/// Resets the UI font size to the default value.
+/// 将 UI 字体大小重置为默认值
 #[derive(PartialEq, Clone, Default, Debug, Deserialize, JsonSchema, Action)]
 #[action(namespace = zed)]
 #[serde(deny_unknown_fields)]
@@ -217,7 +217,7 @@ pub struct ResetUiFontSize {
     pub persist: bool,
 }
 
-/// Resets all zoom levels (UI and buffer font sizes, including in the agent panel) to their default values.
+/// 将所有缩放级别（UI 和缓冲区字体大小，包括智能体面板）重置为默认值
 #[derive(PartialEq, Clone, Default, Debug, Deserialize, JsonSchema, Action)]
 #[action(namespace = zed)]
 #[serde(deny_unknown_fields)]
@@ -231,11 +231,11 @@ pub mod editor {
     actions!(
         editor,
         [
-            /// Moves cursor up.
+            /// 向上移动光标
             MoveUp,
-            /// Moves cursor down.
+            /// 向下移动光标
             MoveDown,
-            /// Reveals the current file in the system file manager.
+            /// 在系统文件管理器中显示当前文件
             RevealInFileManager,
         ]
     );
@@ -247,15 +247,15 @@ pub mod dev {
     actions!(
         dev,
         [
-            /// Toggles the developer inspector for debugging UI elements.
+            /// 切换用于调试 UI 元素的开发者检查器
             ToggleInspector,
-            /// Cycles the debug frame-time overlay between hidden, current
-            /// frame-time, and detailed frame-time statistics.
+            /// 将调试帧时间叠加层在隐藏、当前
+            /// 帧时间和详细帧时间统计信息之间循环切换
             ToggleFpsOverlay,
-            /// Resets the debug frame-time overlay's statistics, except for the
-            /// total frame count.
+            /// 重置调试帧时间叠加层的统计信息，但
+            /// 总帧数除外
             ResetFrameOverlayStats,
-            /// Opens the key context view for debugging keybindings.
+            /// 打开键上下文视图以调试键绑定
             OpenKeyContextView
         ]
     );
@@ -267,14 +267,14 @@ pub mod remote_debug {
     actions!(
         remote_debug,
         [
-            /// Simulates a disconnection from the remote server for testing purposes.
-            /// This will trigger the reconnection logic.
+            /// 模拟断开远程服务器连接以进行测试
+            /// 这将触发重连逻辑
             SimulateDisconnect,
-            /// Simulates a timeout/slow connection to the remote server for testing purposes.
-            /// This will cause heartbeat failures and trigger reconnection.
+            /// 模拟远程服务器超时/慢速连接以进行测试
+            /// 这将导致心跳失败并触发重连
             SimulateTimeout,
-            /// Simulates a timeout/slow connection to the remote server for testing purposes.
-            /// This will cause heartbeat failures and attempting a reconnection while having exhausted all attempts.
+            /// 模拟远程服务器超时/慢速连接以进行测试
+            /// 这将导致心跳失败，并在耗尽所有重连尝试后继续尝试重连
             SimulateTimeoutExhausted,
         ]
     );
@@ -290,7 +290,7 @@ pub mod workspace {
             CopyPath,
             #[action(deprecated_aliases = ["editor::CopyRelativePath", "outline_panel::CopyRelativePath", "project_panel::CopyRelativePath"])]
             CopyRelativePath,
-            /// Opens the selected file with the system's default application.
+            /// 用系统默认应用程序打开所选文件
             #[action(deprecated_aliases = ["project_panel::OpenWithSystem"])]
             OpenWithSystem,
         ]
@@ -315,8 +315,8 @@ pub enum NewWorktreeBranchTarget {
     },
 }
 
-/// Creates a new git worktree and switches the workspace to it.
-/// Dispatched by the unified worktree picker when the user selects a "Create new worktree" entry.
+/// 创建新的 Git 工作树并将工作区切换至该工作树
+/// 当用户在统一工作树选择器中选择“新建工作树”条目时触发
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema, Action)]
 #[action(namespace = git)]
 #[serde(deny_unknown_fields)]
@@ -326,8 +326,8 @@ pub struct CreateWorktree {
     pub branch_target: NewWorktreeBranchTarget,
 }
 
-/// Switches the workspace to an existing linked worktree.
-/// Dispatched by the unified worktree picker when the user selects an existing worktree.
+/// 将工作区切换到已有的关联工作树
+/// 当用户在统一工作树选择器中选择现有工作树时触发
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema, Action)]
 #[action(namespace = git)]
 #[serde(deny_unknown_fields)]
@@ -336,8 +336,8 @@ pub struct SwitchWorktree {
     pub display_name: String,
 }
 
-/// Opens an existing worktree in a new window.
-/// Dispatched by the worktree picker's "Open in New Window" button.
+/// 在新窗口中打开现有工作树
+/// 当用户点击工作树选择器的“在新窗口中打开”按钮时触发
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema, Action)]
 #[action(namespace = git)]
 #[serde(deny_unknown_fields)]
@@ -351,30 +351,30 @@ pub mod git {
     actions!(
         git,
         [
-            /// Checks out a different git branch.
+            /// 签出不同的 Git 分支
             CheckoutBranch,
-            /// Switches to a different git branch.
+            /// 切换到不同的 Git 分支
             Switch,
-            /// Selects a different repository.
+            /// 选择其他仓库
             SelectRepo,
-            /// Filter remotes.
+            /// 筛选远程仓库
             FilterRemotes,
-            /// Create a git remote.
+            /// 创建 Git 远程仓库
             CreateRemote,
-            /// Opens the git branch selector.
+            /// 打开 Git 分支选择器
             #[action(deprecated_aliases = ["branches::OpenRecent"])]
             Branch,
-            /// Shows uncommitted changes across the project.
+            /// 显示整个项目中未提交的更改
             ViewUncommittedChanges,
-            /// Shows unstaged changes across the project.
+            /// 显示整个项目中未暂存的更改
             ViewUnstagedChanges,
-            /// Shows staged changes across the project.
+            /// 显示整个项目中已暂存的更改
             ViewStagedChanges,
-            /// Opens the git stash selector.
+            /// 打开 Git 贮藏选择器
             ViewStash,
-            /// Opens the git worktree selector.
+            /// 打开 Git 工作树选择器
             Worktree,
-            /// Creates a pull request for the current branch.
+            /// 为当前分支创建拉取请求
             CreatePullRequest
         ]
     );
@@ -386,7 +386,7 @@ pub mod toast {
     actions!(
         toast,
         [
-            /// Runs the action associated with a toast notification.
+            /// 执行与提示通知关联的操作
             RunAction
         ]
     );
@@ -398,7 +398,7 @@ pub mod command_palette {
     actions!(
         command_palette,
         [
-            /// Toggles the command palette.
+            /// 切换命令面板
             Toggle,
         ]
     );
@@ -410,7 +410,7 @@ pub mod text_finder {
     actions!(
         text_finder,
         [
-            /// Opens the Project Search Picker.
+            /// 打开项目搜索选择器
             Toggle,
         ]
     );
@@ -422,9 +422,9 @@ pub mod project_panel {
     actions!(
         project_panel,
         [
-            /// Toggles the project panel.
+            /// 切换项目面板
             Toggle,
-            /// Toggles focus on the project panel.
+            /// 切换项目面板的焦点
             ToggleFocus
         ]
     );
@@ -435,11 +435,11 @@ pub mod feedback {
     actions!(
         feedback,
         [
-            /// Opens email client to send feedback to Zed support.
+            /// 打开邮件客户端，向 Zed 支持团队发送反馈
             EmailZed,
-            /// Opens the bug report form.
+            /// 打开错误报告表单
             FileBugReport,
-            /// Opens the feature request form.
+            /// 打开功能请求表单
             RequestFeature
         ]
     );
@@ -456,7 +456,7 @@ pub mod theme_selector {
     use schemars::JsonSchema;
     use serde::Deserialize;
 
-    /// Toggles the theme selector interface.
+    /// 切换主题选择器界面
     #[derive(PartialEq, Clone, Default, Debug, Deserialize, JsonSchema, Action)]
     #[action(namespace = theme_selector)]
     #[serde(deny_unknown_fields)]
@@ -471,7 +471,7 @@ pub mod icon_theme_selector {
     use schemars::JsonSchema;
     use serde::Deserialize;
 
-    /// Toggles the icon theme selector interface.
+    /// 切换图标主题选择器界面
     #[derive(PartialEq, Clone, Default, Debug, Deserialize, JsonSchema, Action)]
     #[action(namespace = icon_theme_selector)]
     #[serde(deny_unknown_fields)]
@@ -498,15 +498,15 @@ pub mod search {
     actions!(
         search,
         [
-            /// Focuses on the search input field.
+            /// 聚焦到搜索输入框
             FocusSearch,
-            /// Selects the next search match.
+            /// 选中下一个搜索匹配项
             SelectNextMatch,
-            /// Selects the previous search match.
+            /// 选中上一个搜索匹配项
             SelectPreviousMatch,
-            /// Toggles case-sensitive search.
+            /// 切换区分大小写搜索
             ToggleCaseSensitive,
-            /// Toggles searching in ignored files.
+            /// 切换在忽略文件中搜索
             ToggleIncludeIgnored
         ]
     );
@@ -516,7 +516,7 @@ pub mod buffer_search {
     use schemars::JsonSchema;
     use serde::Deserialize;
 
-    /// Opens the buffer search interface with the specified configuration.
+    /// 以指定配置打开缓冲区搜索界面
     #[derive(PartialEq, Clone, Deserialize, JsonSchema, Action)]
     #[action(namespace = buffer_search)]
     #[serde(deny_unknown_fields)]
@@ -550,13 +550,13 @@ pub mod buffer_search {
     actions!(
         buffer_search,
         [
-            /// Deploys the search and replace interface.
+            /// 打开搜索和替换界面
             DeployReplace,
-            /// Dismisses the search bar.
+            /// 关闭搜索栏
             Dismiss,
-            /// Focuses back on the editor.
+            /// 将焦点切换回编辑器
             FocusEditor,
-            /// Sets the search query from the selection or word under cursor.
+            /// 从选区或光标下的单词设置搜索查询
             UseSelectionForFind,
         ]
     );
@@ -579,35 +579,35 @@ pub mod agent {
     actions!(
         agent,
         [
-            /// Opens the agent settings UI.
+            /// 打开智能体设置界面
             #[action(deprecated_aliases = ["agent::OpenConfiguration"])]
             OpenSettings,
-            /// Opens the agent onboarding modal.
+            /// 打开智能体引导对话框
             OpenOnboardingModal,
-            /// Resets the agent onboarding state.
+            /// 重置智能体引导状态
             ResetOnboarding,
-            /// Starts a chat conversation with the agent.
+            /// 与智能体开始聊天会话
             Chat,
-            /// Toggles the language model selector dropdown.
+            /// 切换语言模型选择器下拉菜单
             #[action(deprecated_aliases = ["assistant::ToggleModelSelector", "assistant2::ToggleModelSelector"])]
             ToggleModelSelector,
-            /// Triggers re-authentication on Gemini
+            /// 触发 Gemini 重新身份验证
             ReauthenticateAgent,
-            /// Logs out of the current external agent
+            /// 注销当前外部智能体
             LogoutAgent,
-            /// Add the current selection as context for threads in the agent panel.
+            /// 将当前选区作为上下文添加到智能体面板的会话中
             #[action(deprecated_aliases = ["assistant::QuoteSelection", "agent::QuoteSelection"])]
             AddSelectionToThread,
-            /// Resets the agent panel zoom levels (agent UI and buffer font sizes).
+            /// 重置智能体面板的缩放级别（智能体 UI 和缓冲区字体大小）
             ResetAgentZoom,
-            /// Pastes clipboard content without any formatting.
+            /// 粘贴剪贴板内容，不保留任何格式
             PasteRaw,
         ]
     );
 
-    /// Selects the agent used for new threads in the agent panel, without
-    /// opening the panel. The selected agent is launched the next time the
-    /// panel is opened.
+    /// 选择智能体面板中新会话使用的智能体，无需
+    /// 打开面板。下次打开面板时将启动所选
+    /// 智能体。
     #[derive(Clone, PartialEq, Deserialize, JsonSchema, Action)]
     #[action(namespace = agent)]
     #[serde(deny_unknown_fields)]
@@ -616,7 +616,7 @@ pub mod agent {
         pub agent: String,
     }
 
-    /// Opens a new agent thread with the provided branch diff for review.
+    /// 打开一个新的智能体会话，以审查所提供的分支差异
     #[derive(Clone, PartialEq, Deserialize, JsonSchema, Action)]
     #[action(namespace = agent)]
     #[serde(deny_unknown_fields)]
@@ -636,7 +636,7 @@ pub mod agent {
         pub theirs_branch_name: String,
     }
 
-    /// Opens a new agent thread to resolve specific merge conflicts.
+    /// 打开一个新的智能体会话，以解决特定的合并冲突
     #[derive(Clone, PartialEq, Deserialize, JsonSchema, Action)]
     #[action(namespace = agent)]
     #[serde(deny_unknown_fields)]
@@ -645,7 +645,7 @@ pub mod agent {
         pub conflicts: Vec<ConflictContent>,
     }
 
-    /// Opens a new agent thread to resolve merge conflicts in the given file paths.
+    /// 打开一个新的智能体会话，以解决指定文件路径中的合并冲突
     #[derive(Clone, PartialEq, Deserialize, JsonSchema, Action)]
     #[action(namespace = agent)]
     #[serde(deny_unknown_fields)]
@@ -663,28 +663,28 @@ pub mod assistant {
     actions!(
         agent,
         [
-            /// Toggles the agent panel.
+            /// 切换智能体面板
             Toggle,
             #[action(deprecated_aliases = ["assistant::ToggleFocus"])]
             ToggleFocus,
             FocusAgent,
-            /// Opens the skill creator window for creating a new skill.
+            /// 打开技能创建器窗口以创建新技能
             OpenSkillCreator,
-            /// Opens the skill creator window to import a skill from a GitHub URL.
+            /// 打开技能创建器窗口以从 GitHub URL 导入技能
             CreateSkillFromUrl,
-            /// Opens the user-global AGENTS.md rules file.
+            /// 打开用户全局 AGENTS.md 规则文件
             #[action(name = "OpenGlobalAGENTS.mdRules")]
             OpenGlobalAgentsMdRules,
-            /// Opens the project AGENTS.md rules file.
+            /// 打开项目 AGENTS.md 规则文件
             #[action(name = "OpenProjectAGENTS.mdRules")]
             OpenProjectAgentsMdRules,
-            /// Opens the skills manager in the settings window.
+            /// 在设置窗口中打开技能管理器
             #[action(deprecated_aliases = ["agent::OpenRulesLibrary", "assistant::OpenRulesLibrary", "assistant::DeployPromptLibrary"])]
             ManageSkills,
         ]
     );
 
-    /// Deploys the assistant interface with the specified configuration.
+    /// 使用指定配置打开助手界面
     #[derive(Clone, Default, Deserialize, PartialEq, JsonSchema, Action)]
     #[action(namespace = assistant)]
     #[serde(deny_unknown_fields)]
@@ -693,7 +693,7 @@ pub mod assistant {
     }
 }
 
-/// Opens the recent projects interface.
+/// 打开最近项目界面
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = projects)]
 #[serde(deny_unknown_fields)]
@@ -702,7 +702,7 @@ pub struct OpenRecent {
     pub create_new_window: Option<bool>,
 }
 
-/// Creates a project from a selected template.
+/// 从所选模板创建项目
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = projects)]
 #[serde(deny_unknown_fields)]
@@ -713,7 +713,7 @@ pub struct OpenRemote {
     pub create_new_window: Option<bool>,
 }
 
-/// Opens the dev container connection modal.
+/// 打开 Dev Container 连接对话框
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = projects)]
 #[serde(deny_unknown_fields)]
@@ -730,7 +730,7 @@ pub enum RevealTarget {
     Dock,
 }
 
-/// Spawns a task with name or opens tasks modal.
+/// 按名称运行任务或打开任务对话框
 #[derive(Debug, PartialEq, Clone, Deserialize, JsonSchema, Action)]
 #[action(namespace = task)]
 #[serde(untagged)]
@@ -763,7 +763,7 @@ impl Spawn {
     }
 }
 
-/// Reruns the last task.
+/// 重新运行上一个任务
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = task)]
 #[serde(deny_unknown_fields)]
@@ -807,14 +807,14 @@ pub mod outline {
 actions!(
     zed_predict_onboarding,
     [
-        /// Opens the Zed Predict onboarding modal.
+        /// 打开 Zed Predict 引导对话框
         OpenZedPredictOnboarding
     ]
 );
 actions!(
     git_onboarding,
     [
-        /// Opens the git integration onboarding modal.
+        /// 打开 Git 集成引导对话框
         OpenGitIntegrationOnboarding
     ]
 );
@@ -828,9 +828,9 @@ pub mod debug_panel {
     actions!(
         debug_panel,
         [
-            /// Toggles the debug panel.
+            /// 切换调试面板
             Toggle,
-            /// Toggles focus on the debug panel.
+            /// 切换调试面板的焦点
             ToggleFocus
         ]
     );
@@ -839,11 +839,11 @@ pub mod debug_panel {
 actions!(
     debugger,
     [
-        /// Toggles the enabled state of a breakpoint.
+        /// 切换断点的启用状态
         ToggleEnableBreakpoint,
-        /// Removes a breakpoint.
+        /// 移除一个断点
         UnsetBreakpoint,
-        /// Opens the project debug tasks configuration.
+        /// 打开项目调试任务配置
         OpenProjectDebugTasks,
     ]
 );
@@ -854,7 +854,7 @@ pub mod vim {
     actions!(
         vim,
         [
-            /// Opens the default keymap file.
+            /// 打开默认键映射文件
             OpenDefaultKeymap
         ]
     );
@@ -873,7 +873,7 @@ pub mod wsl_actions {
     use schemars::JsonSchema;
     use serde::Deserialize;
 
-    /// Opens a folder inside Wsl.
+    /// 在 WSL 内打开一个文件夹
     #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
     #[action(namespace = projects)]
     #[serde(deny_unknown_fields)]
@@ -882,7 +882,7 @@ pub mod wsl_actions {
         pub create_new_window: Option<bool>,
     }
 
-    /// Open a wsl distro.
+    /// 打开一个 WSL 发行版
     #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
     #[action(namespace = projects)]
     #[serde(deny_unknown_fields)]
@@ -899,9 +899,9 @@ pub mod preview {
         actions!(
             markdown,
             [
-                /// Opens a markdown preview for the current file.
+                /// 为当前文件打开 Markdown 预览
                 OpenPreview,
-                /// Opens a markdown preview in a split pane.
+                /// 在分割窗格中打开 Markdown 预览
                 OpenPreviewToTheSide,
             ]
         );
@@ -913,9 +913,9 @@ pub mod preview {
         actions!(
             svg,
             [
-                /// Opens an SVG preview for the current file.
+                /// 为当前文件打开 SVG 预览
                 OpenPreview,
-                /// Opens an SVG preview in a split pane.
+                /// 在分割窗格中打开 SVG 预览
                 OpenPreviewToTheSide,
             ]
         );
@@ -927,7 +927,7 @@ pub mod agents_sidebar {
     use schemars::JsonSchema;
     use serde::Deserialize;
 
-    /// Toggles the thread switcher popup when the sidebar is focused.
+    /// 切换侧边栏聚焦时的会话切换弹出窗口
     #[derive(PartialEq, Clone, Deserialize, JsonSchema, Default, Action)]
     #[action(namespace = agents_sidebar)]
     #[serde(deny_unknown_fields)]
@@ -939,7 +939,7 @@ pub mod agents_sidebar {
     actions!(
         agents_sidebar,
         [
-            /// Moves focus to the sidebar's search/filter editor.
+            /// 将焦点移至侧边栏的搜索/筛选编辑器
             FocusSidebarFilter,
         ]
     );
@@ -951,37 +951,37 @@ pub mod notebook {
     actions!(
         notebook,
         [
-            /// Opens a Jupyter notebook file.
+            /// 打开一个 Jupyter 笔记本文件
             OpenNotebook,
-            /// Runs all cells in the notebook.
+            /// 运行笔记本中的所有单元格
             RunAll,
-            /// Runs the current cell and stays on it.
+            /// 运行当前单元格并停留在此处
             Run,
-            /// Runs the current cell and advances to the next cell.
+            /// 运行当前单元格并移至下一个单元格
             RunAndAdvance,
-            /// Clears all cell outputs.
+            /// 清除所有单元格输出
             ClearOutputs,
-            /// Moves the current cell up.
+            /// 将当前单元格向上移动
             MoveCellUp,
-            /// Moves the current cell down.
+            /// 将当前单元格向下移动
             MoveCellDown,
-            /// Adds a new markdown cell.
+            /// 添加新 Markdown 单元格
             AddMarkdownBlock,
-            /// Adds a new code cell.
+            /// 添加新代码单元格
             AddCodeBlock,
-            /// Deletes the current cell.
+            /// 删除当前单元格
             DeleteCell,
-            /// Restarts the kernel.
+            /// 重启内核
             RestartKernel,
-            /// Interrupts the current execution.
+            /// 中断当前执行
             InterruptKernel,
-            /// Move down in cells.
+            /// 在单元格间向下移动
             NotebookMoveDown,
-            /// Move up in cells.
+            /// 在单元格间向上移动
             NotebookMoveUp,
-            /// Enters the current cell's editor (edit mode).
+            /// 进入当前单元格的编辑器（编辑模式）
             EnterEditMode,
-            /// Exits the cell editor and returns to cell command mode.
+            /// 退出单元格编辑器并返回单元格命令模式
             EnterCommandMode,
         ]
     );
@@ -993,7 +993,7 @@ pub mod git_panel {
     actions!(
         git_panel,
         [
-            /// Toggles focus on the git panel.
+            /// 切换 Git 面板的焦点
             ToggleFocus,
         ]
     );

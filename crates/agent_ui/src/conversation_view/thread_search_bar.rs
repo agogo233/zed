@@ -29,11 +29,11 @@ use crate::entry_view_state::EntryViewState;
 actions!(
     agent,
     [
-        /// Closes the thread search bar.
+        /// 关闭会话搜索栏
         DismissThreadSearch,
-        /// Selects the next thread search match.
+        /// 选择下一个会话搜索匹配项
         SelectNextThreadMatch,
-        /// Selects the previous thread search match.
+        /// 选择上一个会话搜索匹配项
         SelectPreviousThreadMatch,
     ]
 );
@@ -170,7 +170,7 @@ impl ThreadSearchBar {
     ) -> Self {
         let query_editor = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text("Search this thread…", window, cx);
+            editor.set_placeholder_text("搜索此会话…", window, cx);
             editor
         });
         let editor_subscription = cx.subscribe_in(
@@ -845,7 +845,7 @@ impl Render for ThreadSearchBar {
                         "thread-search-prev",
                         IconName::ChevronLeft,
                         !has_matches,
-                        "Previous Match",
+                        "上一个匹配项",
                         &SelectPreviousThreadMatch,
                         focus_handle.clone(),
                     ))
@@ -853,7 +853,7 @@ impl Render for ThreadSearchBar {
                         "thread-search-next",
                         IconName::ChevronRight,
                         !has_matches,
-                        "Next Match",
+                        "下一个匹配项",
                         &SelectNextThreadMatch,
                         focus_handle.clone(),
                     ))
@@ -868,7 +868,7 @@ impl Render for ThreadSearchBar {
                         "thread-search-dismiss",
                         IconName::Close,
                         false,
-                        "Close Search",
+                        "关闭搜索",
                         &DismissThreadSearch,
                         focus_handle,
                     )),

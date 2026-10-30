@@ -11,27 +11,27 @@ use crate::markdown_preview_view::MarkdownPreviewView;
 actions!(
     markdown,
     [
-        /// Scrolls up by one page in the markdown preview.
+        /// 在 Markdown 预览中向上滚动一页
         #[action(deprecated_aliases = ["markdown::MovePageUp"])]
         ScrollPageUp,
-        /// Scrolls down by one page in the markdown preview.
+        /// 在 Markdown 预览中向下滚动一页
         #[action(deprecated_aliases = ["markdown::MovePageDown"])]
         ScrollPageDown,
-        /// Scrolls up by approximately one visual line.
+        /// 向上滚动约一个可视行
         ScrollUp,
-        /// Scrolls down by approximately one visual line.
+        /// 向下滚动约一个可视行
         ScrollDown,
-        /// Scrolls up by one markdown element in the markdown preview
+        /// 在 Markdown 预览中向上滚动一个 Markdown 元素
         ScrollUpByItem,
-        /// Scrolls down by one markdown element in the markdown preview
+        /// 在 Markdown 预览中向下滚动一个 Markdown 元素
         ScrollDownByItem,
-        /// Scrolls to the top of the markdown preview.
+        /// 滚动到 Markdown 预览顶部
         ScrollToTop,
-        /// Scrolls to the bottom of the markdown preview.
+        /// 滚动到 Markdown 预览底部
         ScrollToBottom,
-        /// Opens a following markdown preview that syncs with the editor.
+        /// 打开与编辑器同步的跟随式 Markdown 预览
         OpenFollowingPreview,
-        /// Closes the markdown preview and returns focus to the source editor.
+        /// 关闭 Markdown 预览并将焦点返回原编辑器
         CloseAndReturnToEditor
     ]
 );

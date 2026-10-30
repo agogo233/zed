@@ -417,7 +417,7 @@ impl ConfigOptionSelector {
 
     fn render_trigger_button(&self, _window: &mut Window, _cx: &mut Context<Self>) -> Button {
         let Some(option) = self.current_option() else {
-            return Button::new("config-option-trigger", "Unknown")
+            return Button::new("config-option-trigger", "未知")
                 .label_size(LabelSize::Small)
                 .color(Color::Muted)
                 .disabled(true);
@@ -526,33 +526,33 @@ impl Render for ConfigOptionSelector {
                             acp::SessionConfigOptionCategory::Mode => {
                                 content = content
                                     .child(action_tooltip_container(
-                                        "Change Mode",
+                                        "更改模式",
                                         KeyBinding::for_action(&ToggleProfileSelector, cx),
                                     ))
                                     .child(action_tooltip_container(
-                                        "Cycle Through Modes",
+                                        "循环切换模式",
                                         KeyBinding::for_action(&CycleModeSelector, cx),
                                     ));
                             }
                             acp::SessionConfigOptionCategory::Model => {
                                 content = content
                                     .child(action_tooltip_container(
-                                        "Change Model",
+                                        "更改模型",
                                         KeyBinding::for_action(&ToggleModelSelector, cx),
                                     ))
                                     .child(action_tooltip_container(
-                                        "Cycle Favorite Models",
+                                        "循环切换收藏模型",
                                         KeyBinding::for_action(&CycleFavoriteModels, cx),
                                     ));
                             }
                             acp::SessionConfigOptionCategory::ThoughtLevel => {
                                 content = content
                                     .child(action_tooltip_container(
-                                        "Change Thinking Effort",
+                                        "更改思考力度",
                                         KeyBinding::for_action(&ToggleThinkingEffortMenu, cx),
                                     ))
                                     .child(action_tooltip_container(
-                                        "Cycle Thinking Effort",
+                                        "循环切换思考力度",
                                         KeyBinding::for_action(&CycleThinkingEffort, cx),
                                     ));
                             }
@@ -760,7 +760,7 @@ impl PickerDelegate for ConfigOptionPickerDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Select an option…".into()
+        "选择选项…".into()
     }
 
     fn update_matches(
@@ -895,9 +895,9 @@ impl PickerDelegate for ConfigOptionPickerDelegate {
                                 }))
                                 .end_slot_on_hover(div().pr_1p5().child({
                                     let (icon, color, tooltip) = if is_favorite {
-                                        (IconName::StarFilled, Color::Accent, "Unfavorite")
+                                        (IconName::StarFilled, Color::Accent, "取消收藏")
                                     } else {
-                                        (IconName::Star, Color::Default, "Favorite")
+                                        (IconName::Star, Color::Default, "收藏")
                                     };
 
                                     let config_id = self.config_id.clone();
@@ -1072,7 +1072,7 @@ fn options_to_picker_entries(
     }
 
     if !favorite_options.is_empty() {
-        entries.push(ConfigOptionPickerEntry::Separator("Favorites".into()));
+        entries.push(ConfigOptionPickerEntry::Separator("收藏夹".into()));
         for option in favorite_options {
             entries.push(ConfigOptionPickerEntry::Option(option));
         }
@@ -1082,7 +1082,7 @@ fn options_to_picker_entries(
         if let Some(option) = options.first()
             && option.group.is_none()
         {
-            entries.push(ConfigOptionPickerEntry::Separator("All Options".into()));
+            entries.push(ConfigOptionPickerEntry::Separator("所有选项".into()));
         }
     }
 

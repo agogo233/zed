@@ -315,7 +315,7 @@ impl Component for AiSettingItem {
                     .into_any_element(),
             ),
             single_example(
-                "MCP server (stopped)",
+                "MCP 服务器（已停止）",
                 container()
                     .child(AiSettingItem::new(
                         "custom-mcp",
@@ -365,7 +365,7 @@ impl Component for AiSettingItem {
                     .into_any_element(),
             ),
             single_example(
-                "Registry agent (starting, animated)",
+                "注册表智能体（启动中，动画）",
                 container()
                     .child(
                         AiSettingItem::new(
@@ -399,7 +399,7 @@ impl Component for AiSettingItem {
                                 "Failed to connect: connection refused",
                             )
                             .child(
-                                Button::new("logout", "Log Out")
+                                Button::new("logout", "退出登录")
                                     .style(ButtonStyle::Outlined)
                                     .label_size(LabelSize::Small),
                             ),

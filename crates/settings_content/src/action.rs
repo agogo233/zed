@@ -7,8 +7,8 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use settings_macros::MergeFrom;
 
-/// The value of an entry in `command_aliases`, either a registered action name
-/// or an arbitrary string, for example, a vim command like `"w"` or `"wq"`.
+/// `command_aliases` 中条目的值，可以是已注册的操作名称
+/// 或任意字符串，例如 `"w"` 或 `"wq"` 这样的 vim 命令。
 ///
 /// This is a separate type from `ActionName` on purpose, as `ActionName` is
 /// also used by keymap bindings, which only accept registered action names, and
@@ -83,11 +83,11 @@ impl JsonSchema for CommandAliasTarget {
         "CommandAliasTarget".into()
     }
 
-    /// Returns `true` as a placeholder.
+    /// 作为占位符返回 `true`
     ///
-    /// The real schema, an `anyOf` of every registered action name with action
+    /// 真实 schema 是所有已注册操作名称的 `anyOf`，并附带操作文档，
     /// documentation and deprecation metadata, as well as any arbitrary string,
-    /// cannot be produced here because `JsonSchema::json_schema` receives no
+    /// 无法在此处生成，因为 `JsonSchema::json_schema` 不接收任何
     /// runtime context. It is instead built by call sites that do have access
     /// to the GPUI action registry using [`CommandAliasTarget::build_schema`].
     fn json_schema(_generator: &mut SchemaGenerator) -> Schema {
@@ -95,24 +95,24 @@ impl JsonSchema for CommandAliasTarget {
     }
 }
 
-/// The name of a registered GPUI action, serialized as a plain JSON string, for
-/// example, "editor::Cancel"` or `"workspace::CloseActiveItem"`.
+/// 已注册 GPUI 操作的名称，序列化为普通 JSON 字符串，
+/// 例如，"editor::Cancel"` 或 `"workspace::CloseActiveItem"`。
 ///
-/// This newtype exists so that settings fields like `command_aliases`, or the
-/// keymap file bindings, can request JSON-schema auto completion over the set
-/// of actions known at runtime.
+/// 此新类型的存在是为了使 `command_aliases` 等设置字段或
+/// 键映射文件绑定，能够针对操作集合请求 JSON schema 自动补全，
+/// 该集合包含运行时已知的操作。
 #[derive(Serialize, Deserialize, Default, MergeFrom, Clone, Debug, PartialEq)]
 #[serde(transparent)]
 pub struct ActionName(String);
 
-/// Small helper function to populate the schema's `deprecationMessage` field with the
-/// provided deprecation message.
+/// 使用所提供的弃用消息填充架构 `deprecationMessage` 字段的
+/// 小型辅助函数
 fn add_deprecation(schema: &mut Schema, message: String) {
     schema.insert("deprecationMessage".into(), Value::String(message));
 }
 
-/// Small helper function to populate the schema's `description` field with the
-/// provided description.
+/// 使用所提供的描述填充架构 `description` 字段的
+/// 小型辅助函数
 fn add_description(schema: &mut Schema, description: &str) {
     schema.insert("description".into(), Value::String(description.to_string()));
 }
@@ -122,9 +122,9 @@ impl ActionName {
         Self(name.into())
     }
 
-    /// Build the JSON schema to be used for `$defs/ActionName`, basically an
-    /// `anyOf` of all of the available actions with per-action documentation
-    /// and deprecation metadata attached.
+    /// 构建用于 `$defs/ActionName` 的 JSON 架构，基本上是一个
+    /// 所有可用操作的 `anyOf`，并附带每个操作的文档
+    /// 并附加弃用元数据。
     pub fn build_schema<'a>(
         action_names: impl IntoIterator<Item = &'a str>,
         action_documentation: &HashMap<&str, &str>,
@@ -169,53 +169,53 @@ impl AsRef<str> for ActionName {
 }
 
 impl JsonSchema for ActionName {
-    /// The name under which this type should be stored in a generator's `$defs`
-    /// map when schemars encounters it during schema generation.
-    /// Keeping it stable as `"ActionName"` lets consumers reference it by
-    /// `#/$defs/ActionName` and lets [`util::schemars::replace_subschema`] look
-    /// it up at runtime to swap in the real schema.
+    /// 此类型在生成器 `$defs` 映射中存储时使用的名称，
+    /// 在 schema 生成过程中 schemars 遇到该类型时使用。
+    /// 将其保持为 `"ActionName"` 使消费者可通过以下方式引用
+    /// `#/$defs/ActionName`，并让 [`util::schemars::replace_subschema`] 能够在运行时
+    /// 查找它，以替换为真实 schema。
     fn schema_name() -> Cow<'static, str> {
         "ActionName".into()
     }
 
-    /// Returns `true` as a placeholder.
+    /// 作为占位符返回 `true`
     ///
-    /// The real schema, an `anyOf` of every registered action name with action
-    /// documentation and deprecation metadata, cannot be produced here because
-    /// `JsonSchema::json_schema` receives no runtime context. It is instead
-    /// built by call sites that do have access to the GPUI action registry
-    /// using [`ActionName::build_schema`].
+    /// 真实 schema 是所有已注册操作名称的 `anyOf`，并附带操作文档，
+    /// 以及弃用元数据；它无法在此处生成，因为
+    /// `JsonSchema::json_schema` 不接收运行时上下文。它改为
+    /// 由能够访问 GPUI 操作注册表的调用位置
+    /// 使用 [`ActionName::build_schema`] 构建。
     fn json_schema(_: &mut SchemaGenerator) -> Schema {
         json_schema!(true)
     }
 }
 
-/// A GPUI action together with its input data, serialized as a two-element JSON
-/// array of the form `["namespace::Name", { ... }]`, for example,
-/// `["pane::ActivateItem", { "index": 0 }]`.
+/// 一个 GPUI 操作及其输入数据，序列化为二元素 JSON 数组；
+/// 其格式为 `["namespace::Name", { ... }]`，例如
+/// `["pane::ActivateItem", { "index": 0 }]`
 #[derive(Deserialize, Default)]
 #[serde(transparent)]
 pub struct ActionWithArguments(pub Value);
 
 impl JsonSchema for ActionWithArguments {
-    /// The name under which this type should be stored in a generator's `$defs`
-    /// map when schemars encounters it during schema generation.
-    /// Keeping it stable as `"ActionWithArguments"` lets consumers reference it
-    /// by `#/$defs/ActionWithArguments` and lets
-    /// [`util::schemars::replace_subschema`] look it up at runtime to swap in
-    /// the real schema.
+    /// 此类型在生成器 `$defs` 映射中存储时使用的名称，
+    /// 在 schema 生成过程中 schemars 遇到该类型时使用。
+    /// 将其保持为 `"ActionWithArguments"` 后，消费者可
+    /// 通过 `#/$defs/ActionWithArguments` 引用，并允许
+    /// [`util::schemars::replace_subschema`] 在运行时查找它以替换为
+    /// 真实的模式定义。
     fn schema_name() -> Cow<'static, str> {
         "ActionWithArguments".into()
     }
 
-    /// Returns `true` as a placeholder.
+    /// 作为占位符返回 `true`
     ///
-    /// The real schema, an `anyOf` of every registered action name that
-    /// supports arguments, with action documentation and deprecation metadata,
-    /// cannot be produced here because `JsonSchema::json_schema` receives no
-    /// runtime context. At the time of writing, it is instead built by
-    /// [`KeymapFile::generate_json_schema`], where all of the runtime
-    /// information is available.
+    /// 真实 schema 是由所有支持参数的已注册操作名称组成的 `anyOf`，
+    /// 并附带操作文档和弃用元数据；它
+    /// 无法在此处生成，因为 `JsonSchema::json_schema` 不接收任何
+    /// 运行时上下文。在撰写本文时，它改由以下方式构建：
+    /// [`KeymapFile::generate_json_schema`]，其中所有运行时
+    /// 信息可用。
     fn json_schema(_: &mut SchemaGenerator) -> Schema {
         json_schema!(true)
     }

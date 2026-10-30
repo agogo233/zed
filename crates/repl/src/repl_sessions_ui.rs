@@ -41,23 +41,23 @@ fn refresh_python_kernelspecs_for_buffer(
 actions!(
     repl,
     [
-        /// Runs the current cell and advances to the next one.
+        /// 运行当前单元格并移至下一个
         Run,
-        /// Runs the current cell without advancing.
+        /// 运行当前单元格但不移至下一个
         RunInPlace,
-        /// Clears all outputs in the REPL.
+        /// 清除 REPL 中的所有输出
         ClearOutputs,
-        /// Clears the output of the cell at the current cursor position.
+        /// 清除当前光标位置单元格的输出
         ClearCurrentOutput,
-        /// Opens the REPL sessions panel.
+        /// 打开 REPL 会话面板
         Sessions,
-        /// Interrupts the currently running kernel.
+        /// 中断当前运行的内核
         Interrupt,
-        /// Shuts down the current kernel.
+        /// 关闭当前内核
         Shutdown,
-        /// Restarts the current kernel.
+        /// 重启当前内核
         Restart,
-        /// Refreshes the list of available kernelspecs.
+        /// 刷新可用内核规格列表
         RefreshKernelspecs
     ]
 );
@@ -207,7 +207,7 @@ impl Item for ReplSessionsPage {
     type Event = ItemEvent;
 
     fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
-        "REPL Sessions".into()
+        "REPL 会话".into()
     }
 
     fn telemetry_event_text(&self) -> Option<&'static str> {
@@ -242,7 +242,7 @@ impl Render for ReplSessionsPage {
         // install kernels. It can be assumed they don't have a running kernel if we have no
         // specifications.
         if kernel_specifications.is_empty() {
-            let instructions = "To start interactively running code in your editor, you need to install and configure Jupyter kernels.";
+            let instructions = "要在编辑器中交互式运行代码，需要安装并配置 Jupyter 内核";
 
             return ReplSessionsContainer::new("No Jupyter Kernels Available")
                 .child(Label::new(instructions))
@@ -252,7 +252,7 @@ impl Render for ReplSessionsPage {
                             .style(ButtonStyle::Filled)
                             .size(ButtonSize::Large)
                             .layer(ElevationIndex::ModalSurface)
-                            .child(Label::new("Install Kernels"))
+                            .child(Label::new("安装内核"))
                             .on_click(move |_, _, cx| {
                                 cx.open_url(
                                     "https://zed.dev/docs/repl#language-specific-instructions",
@@ -264,7 +264,7 @@ impl Render for ReplSessionsPage {
 
         // When there are no sessions, show the command to run code in an editor
         if sessions.is_empty() {
-            let instructions = "To run code in a Jupyter kernel, select some code and use the 'repl::Run' command.";
+            let instructions = "要在 Jupyter 内核中运行代码，选中代码并使用 'repl::Run' 命令";
 
             return ReplSessionsContainer::new("No Jupyter Kernel Sessions").child(
                 v_flex()

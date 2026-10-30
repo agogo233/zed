@@ -48,7 +48,7 @@ pub enum Object {
     EntireFile,
 }
 
-/// Selects a word text object.
+/// 选择一个单词文本对象
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -57,7 +57,7 @@ struct Word {
     ignore_punctuation: bool,
 }
 
-/// Selects a subword text object.
+/// 选择一个子词文本对象
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -65,7 +65,7 @@ struct Subword {
     #[serde(default)]
     ignore_punctuation: bool,
 }
-/// Selects text at the same indentation level.
+/// 选择相同缩进级别的文本
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -87,7 +87,7 @@ pub struct CandidateWithRanges {
     close_range: Range<MultiBufferOffset>,
 }
 
-/// Operates on text within or around parentheses `()`.
+/// 操作括号 `()` 内部或周围的文本
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -96,7 +96,7 @@ struct Parentheses {
     opening: bool,
 }
 
-/// Operates on text within or around square brackets `[]`.
+/// 操作方括号 `[]` 内部或周围的文本
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -105,7 +105,7 @@ struct SquareBrackets {
     opening: bool,
 }
 
-/// Operates on text within or around angle brackets `<>`.
+/// 对尖括号 `<>` 内部或周围的文本进行操作
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -114,7 +114,7 @@ struct AngleBrackets {
     opening: bool,
 }
 
-/// Operates on text within or around curly brackets `{}`.
+/// 对花括号 `{}` 内部或周围的文本进行操作
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -413,41 +413,41 @@ fn find_mini_brackets(
 actions!(
     vim,
     [
-        /// Selects a sentence text object.
+        /// 选择一个句子文本对象
         Sentence,
-        /// Selects a paragraph text object.
+        /// 选择一个段落文本对象
         Paragraph,
-        /// Selects text within single quotes.
+        /// 选择单引号内的文本
         Quotes,
-        /// Selects text within backticks.
+        /// 选择反引号内的文本
         BackQuotes,
-        /// Selects text within the nearest quotes (single or double).
+        /// 选择最近引号（单引号或双引号）内的文本
         MiniQuotes,
-        /// Selects text within any type of quotes.
+        /// 选择任意类型引号内的文本
         AnyQuotes,
-        /// Selects text within double quotes.
+        /// 选择双引号内的文本
         DoubleQuotes,
-        /// Selects text within vertical bars (pipes).
+        /// 选择竖线（管道符）内的文本
         VerticalBars,
-        /// Selects text within the nearest brackets.
+        /// 选择最近括号内的文本
         MiniBrackets,
-        /// Selects text within any type of brackets.
+        /// 选择任意类型括号内的文本
         AnyBrackets,
-        /// Selects text within the closest surrounding pair of any type
-        /// (brackets, quotes, backticks, or vertical bars), based on the
-        /// language's bracket queries, like Helix's `m` text object.
+        /// 选择最近的任意类型包围对内的文本
+        /// （括号、引号、反引号或竖线），基于该
+        /// 语言的括号查询，类似 Helix 的 `m` 文本对象。
         AnyPair,
-        /// Selects a function argument.
+        /// 选择一个函数参数
         Argument,
-        /// Selects an HTML/XML tag.
+        /// 选择一个 HTML/XML 标签
         Tag,
-        /// Selects a method or function.
+        /// 选择一个方法或函数
         Method,
-        /// Selects a class definition.
+        /// 选择一个类定义
         Class,
-        /// Selects a comment block.
+        /// 选择一个注释块
         Comment,
-        /// Selects the entire file.
+        /// 选中整个文件
         EntireFile
     ]
 );

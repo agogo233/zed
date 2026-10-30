@@ -180,7 +180,7 @@ enum IndentType {
     Same,
 }
 
-/// Moves to the start of the next word.
+/// 移至下一个单词的开头
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -189,7 +189,7 @@ struct NextWordStart {
     ignore_punctuation: bool,
 }
 
-/// Moves to the end of the next word.
+/// 移到下一个单词的末尾
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -198,7 +198,7 @@ struct NextWordEnd {
     ignore_punctuation: bool,
 }
 
-/// Moves to the start of the previous word.
+/// 移至上一个单词的开头
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -207,7 +207,7 @@ struct PreviousWordStart {
     ignore_punctuation: bool,
 }
 
-/// Moves to the end of the previous word.
+/// 移到上一个单词的末尾
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -216,7 +216,7 @@ struct PreviousWordEnd {
     ignore_punctuation: bool,
 }
 
-/// Moves to the start of the next subword.
+/// 移至下一个子词的开头
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -225,7 +225,7 @@ pub(crate) struct NextSubwordStart {
     pub(crate) ignore_punctuation: bool,
 }
 
-/// Moves to the end of the next subword.
+/// 移到下一个子词的末尾
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -234,7 +234,7 @@ pub(crate) struct NextSubwordEnd {
     pub(crate) ignore_punctuation: bool,
 }
 
-/// Moves to the start of the previous subword.
+/// 移至上一个子词的开头
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -243,7 +243,7 @@ pub(crate) struct PreviousSubwordStart {
     pub(crate) ignore_punctuation: bool,
 }
 
-/// Moves to the end of the previous subword.
+/// 移到上一个子词的末尾
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -252,7 +252,7 @@ pub(crate) struct PreviousSubwordEnd {
     pub(crate) ignore_punctuation: bool,
 }
 
-/// Moves cursor up by the specified number of lines.
+/// 将光标向上移动指定行数
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -261,7 +261,7 @@ pub(crate) struct Up {
     pub(crate) display_lines: bool,
 }
 
-/// Moves cursor down by the specified number of lines.
+/// 将光标向下移动指定行数
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -270,7 +270,7 @@ pub(crate) struct Down {
     pub(crate) display_lines: bool,
 }
 
-/// Moves to the first non-whitespace character on the current line.
+/// 移到当前行第一个非空白字符处
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -279,7 +279,7 @@ struct FirstNonWhitespace {
     display_lines: bool,
 }
 
-/// Moves to the matching bracket or delimiter.
+/// 移到匹配的括号或定界符处
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -291,7 +291,7 @@ struct Matching {
     match_quotes: bool,
 }
 
-/// Moves to the end of the current line.
+/// 移到当前行末尾
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -300,7 +300,7 @@ struct EndOfLine {
     display_lines: bool,
 }
 
-/// Moves to the start of the current line.
+/// 移至当前行的行首
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -309,7 +309,7 @@ pub struct StartOfLine {
     pub(crate) display_lines: bool,
 }
 
-/// Moves to the middle of the current line.
+/// 移到当前行中间
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -318,7 +318,7 @@ struct MiddleOfLine {
     display_lines: bool,
 }
 
-/// Finds the next unmatched bracket or delimiter.
+/// 查找下一个未匹配的括号或分隔符
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -327,7 +327,7 @@ struct UnmatchedForward {
     char: char,
 }
 
-/// Finds the previous unmatched bracket or delimiter.
+/// 查找上一个未匹配的括号或分隔符
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -339,83 +339,83 @@ struct UnmatchedBackward {
 actions!(
     vim,
     [
-        /// Moves cursor left one character.
+        /// 将光标向左移动一个字符
         Left,
-        /// Moves cursor left one character, wrapping to previous line.
+        /// 将光标向左移动一个字符，到达行首时换到上一行
         #[action(deprecated_aliases = ["vim::Backspace"])]
         WrappingLeft,
-        /// Moves cursor right one character.
+        /// 将光标向右移动一个字符
         Right,
-        /// Moves cursor right one character, wrapping to next line.
+        /// 将光标向右移动一个字符，到达行末时换到下一行
         #[action(deprecated_aliases = ["vim::Space"])]
         WrappingRight,
-        /// Selects the current line.
+        /// 选中当前行
         CurrentLine,
-        /// Moves to the start of the next sentence.
+        /// 移至下一个句子的开头
         SentenceForward,
-        /// Moves to the start of the previous sentence.
+        /// 移至上一个句子的开头
         SentenceBackward,
-        /// Moves to the start of the paragraph.
+        /// 移至段落开头
         StartOfParagraph,
-        /// Moves to the end of the paragraph.
+        /// 移到段落末尾
         EndOfParagraph,
-        /// Moves to the start of the document.
+        /// 移至文档开头
         StartOfDocument,
-        /// Moves to the end of the document.
+        /// 移到文档末尾
         EndOfDocument,
-        /// Goes to a percentage position in the file.
+        /// 跳转到文件中的百分比位置
         GoToPercentage,
-        /// Moves to the start of the next line.
+        /// 移至下一行的行首
         NextLineStart,
-        /// Moves to the start of the previous line.
+        /// 移至上一行的行首
         PreviousLineStart,
-        /// Moves to the start of a line downward.
+        /// 向下移至相应行的行首
         StartOfLineDownward,
-        /// Moves to the end of a line downward.
+        /// 移到向下某行的末尾
         EndOfLineDownward,
-        /// Goes to a specific column number.
+        /// 跳转到指定列号
         GoToColumn,
-        /// Repeats the last character find.
+        /// 重复上次字符查找
         RepeatFind,
-        /// Repeats the last character find in reverse.
+        /// 反向重复上次字符查找
         RepeatFindReversed,
-        /// Moves to the top of the window.
+        /// 移至窗口顶部
         WindowTop,
-        /// Moves to the middle of the window.
+        /// 移到窗口中间
         WindowMiddle,
-        /// Moves to the bottom of the window.
+        /// 移到窗口底部
         WindowBottom,
-        /// Moves to the start of the next section.
+        /// 移至下一节的开头
         NextSectionStart,
-        /// Moves to the end of the next section.
+        /// 移到下一节的末尾
         NextSectionEnd,
-        /// Moves to the start of the previous section.
+        /// 移至上一节的开头
         PreviousSectionStart,
-        /// Moves to the end of the previous section.
+        /// 移到上一节的末尾
         PreviousSectionEnd,
-        /// Moves to the start of the next method.
+        /// 移至下一个方法的开头
         NextMethodStart,
-        /// Moves to the end of the next method.
+        /// 移到下一个方法的末尾
         NextMethodEnd,
-        /// Moves to the start of the previous method.
+        /// 移至上一个方法的开头
         PreviousMethodStart,
-        /// Moves to the end of the previous method.
+        /// 移到上一个方法的末尾
         PreviousMethodEnd,
-        /// Moves to the next comment.
+        /// 移到下一个注释处
         NextComment,
-        /// Moves to the previous comment.
+        /// 移到上一个注释处
         PreviousComment,
-        /// Moves to the previous line with lesser indentation.
+        /// 移到缩进更浅的上一行
         PreviousLesserIndent,
-        /// Moves to the previous line with greater indentation.
+        /// 移到缩进更深的上一行
         PreviousGreaterIndent,
-        /// Moves to the previous line with the same indentation.
+        /// 移到缩进相同的上一行
         PreviousSameIndent,
-        /// Moves to the next line with lesser indentation.
+        /// 移到缩进更浅的下一行
         NextLesserIndent,
-        /// Moves to the next line with greater indentation.
+        /// 移到缩进更深的下一行
         NextGreaterIndent,
-        /// Moves to the next line with the same indentation.
+        /// 移到缩进相同的下一行
         NextSameIndent,
     ]
 );

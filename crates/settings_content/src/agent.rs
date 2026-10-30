@@ -12,7 +12,7 @@ use crate::ExtendingVec;
 
 use crate::DockPosition;
 
-/// Where to position the threads sidebar.
+/// 会话侧边栏的停靠位置
 #[derive(
     Clone,
     Copy,
@@ -29,32 +29,34 @@ use crate::DockPosition;
 )]
 #[serde(rename_all = "snake_case")]
 pub enum SidebarDockPosition {
-    /// Always show the sidebar on the left side.
+    /// 始终在左侧显示侧边栏。
     #[default]
+    #[strum(serialize = "左")]
     Left,
-    /// Always show the sidebar on the right side.
+    /// 始终在右侧显示侧边栏。
+    #[strum(serialize = "右")]
     Right,
 }
 
 #[with_fallible_options]
 #[derive(Clone, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom, Debug, Default)]
 pub struct ThreadsSidebarSettingsContent {
-    /// Whether opening a folder in an existing window automatically opens the
-    /// Threads Sidebar. Applies when `default_open_behavior` or
-    /// `cli_default_open_behavior` is set to `existing_window`.
+    /// 是否在现有窗口中打开文件夹时自动打开
+    /// 会话侧边栏。当 `default_open_behavior` 或
+    /// `cli_default_open_behavior` 设置为 `existing_window` 时生效。
     ///
-    /// Default: true
+    /// 默认值：true
     pub auto_open: Option<bool>,
-    /// Where to position the threads sidebar.
+    /// 会话侧边栏的停靠位置
     ///
-    /// Default: left
+    /// 默认值：left
     pub position: Option<SidebarDockPosition>,
-    /// Default width of the threads sidebar in pixels.
+    /// 会话侧边栏的默认宽度（像素）
     ///
-    /// Values range from 200 to 800, matching the widths the sidebar can be
-    /// dragged to. Values outside that range are clamped into it.
+    /// 取值范围为 200 到 800，与侧边栏可拖动到的宽度
+    /// 一致。超出该范围的值将被限制在此范围内。
     ///
-    /// Default: 300
+    /// 默认值：300
     #[schemars(range(min = 200, max = 800))]
     pub default_width: Option<crate::PixelSetting>,
 }
@@ -66,7 +68,7 @@ pub enum SidebarSide {
     Right,
 }
 
-/// How thinking blocks should be displayed by default in the agent panel.
+/// 思考块在智能体面板中的默认显示方式
 #[derive(
     Clone,
     Copy,
@@ -83,17 +85,21 @@ pub enum SidebarSide {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum ThinkingBlockDisplay {
-    /// Thinking blocks fully expand during streaming, then auto-collapse
-    /// when the model finishes thinking. Users can re-expand after collapse.
+    /// 思考块在流式传输期间完全展开，随后在
+    /// 模型完成思考后自动折叠。用户可在折叠后重新展开。
     #[default]
+    #[strum(serialize = "自动")]
     Auto,
-    /// Thinking blocks auto-expand with a height constraint during streaming,
-    /// then remain in their constrained state when complete. Users can click
-    /// to fully expand or collapse.
+    /// 思考块在流式传输期间自动展开并带有高度限制，
+    /// 完成后保持受限状态。用户可以点击
+    /// 完全展开或折叠
+    #[strum(serialize = "预览")]
     Preview,
-    /// Thinking blocks are always fully expanded by default (no height constraint).
+    /// 思考块默认始终完全展开（无高度限制）
+    #[strum(serialize = "始终展开")]
     AlwaysExpanded,
-    /// Thinking blocks are always collapsed by default.
+    /// 思考块默认始终折叠
+    #[strum(serialize = "始终折叠")]
     AlwaysCollapsed,
 }
 
@@ -192,223 +198,223 @@ impl JsonSchema for AutoCompactThreshold {
 #[with_fallible_options]
 #[derive(Clone, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom, Debug, Default)]
 pub struct AutoCompactSettingsContent {
-    /// Whether to automatically compact the agent's context when it grows too
-    /// large, summarizing earlier messages to free up room in the model's
-    /// context window.
+    /// 是否在智能体的上下文增长过大时自动压缩，
+    /// 通过汇总较早的消息来为模型的
+    /// 上下文窗口腾出空间。
     ///
-    /// Default: true
+    /// 默认值：true
     pub enabled: Option<bool>,
-    /// The threshold at which auto-compaction runs. This is one of:
+    /// 自动压缩运行的阈值。可为以下之一：
     ///
-    /// - A percentage string ending in `%`, e.g. `"90%"`, measured against the
-    ///   model's context window. `"90%"` compacts once the context is 90% full.
-    /// - A positive integer: compaction runs once that many tokens have been
-    ///   used. For example, `100000` compacts after 100,000 tokens are used.
-    /// - A negative integer: compaction runs once that many tokens remain in
-    ///   the context window. For example, `-20000` compacts once there are
-    ///   fewer than 20,000 tokens of headroom left in the context window.
+    /// - 以 `%` 结尾的百分比字符串，例如 `"90%"`，相对于
+    ///   模型的上下文窗口计算。`"90%"` 表示上下文填充至 90% 时进行压缩。
+    /// - 正整数：已使用的 Token 数达到该数值后运行压缩。
+    ///   例如，`100000` 表示使用 100,000 个 Token 后压缩。
+    /// - 负整数：上下文窗口中剩余的 Token 数低于该数值的绝对值时运行压缩。
+    ///   例如，`-20000` 表示当上下文窗口中
+    ///   剩余空间少于 20,000 个 Token 时压缩。
     ///
-    /// `0` is not a valid threshold.
+    /// `0` 不是有效的阈值。
     ///
-    /// Default: "90%"
+    /// 默认值："90%"
     pub threshold: Option<AutoCompactThreshold>,
 }
 
 #[with_fallible_options]
 #[derive(Clone, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom, Debug, Default)]
 pub struct AgentSettingsContent {
-    /// Whether the Agent is enabled.
+    /// 是否启用智能体
     ///
-    /// Default: true
+    /// 默认值：true
     pub enabled: Option<bool>,
-    /// Whether to show the agent panel button in the status bar.
+    /// 是否在状态栏中显示智能体面板按钮
     ///
-    /// Default: true
+    /// 默认值：true
     pub button: Option<bool>,
-    /// Where to dock the agent panel.
+    /// 智能体面板停靠的位置
     ///
-    /// Default: left (Agentic layout), right (Classic layout)
+    /// 默认值：left（Agentic 布局），right（Classic 布局）
     pub dock: Option<DockPosition>,
-    /// Whether the agent panel should use flexible (proportional) sizing when docked to the
-    /// left or right.
+    /// 智能体面板停靠到左侧或
+    /// 右侧时是否使用弹性（比例）尺寸。
     ///
-    /// When enabled, `default_width` does not control the panel width, and resetting the panel
-    /// restores the default proportion.
+    /// 启用后，`default_width` 不会控制面板宽度，重置面板
+    /// 会恢复默认比例。
     ///
-    /// Default: true
+    /// 默认值：true
     pub flexible: Option<bool>,
     /// The deprecated version of `threads_sidebar.position`.
     ///
-    /// Don't use this field.
+    /// 不要使用此字段
     #[schemars(skip)]
     pub sidebar_side: Option<SidebarDockPosition>,
     /// The deprecated version of `threads_sidebar.default_width`.
     ///
-    /// Don't use this field.
+    /// 不要使用此字段
     #[schemars(skip)]
     pub threads_sidebar_default_width: Option<crate::PixelSetting>,
     /// The deprecated version of `threads_sidebar.auto_open`.
     ///
-    /// Don't use this field.
+    /// 不要使用此字段
     #[schemars(skip)]
     pub threads_sidebar_auto_open: Option<bool>,
-    /// Maximum number of idle threads with loadable sessions to retain in the
-    /// agent panel. Set to 0 to unload every eligible idle thread when it is
-    /// no longer active.
+    /// 在智能体面板中保留的、可重新加载的空闲会话的最大数量。
+    /// 设置为 0 时，每个符合条件的空闲会话
+    /// 在不再活动时都会被卸载。
     ///
-    /// Default: 5
+    /// 默认值：5
     pub max_idle_retained_threads: Option<usize>,
-    /// Settings for the threads sidebar.
+    /// 会话侧边栏的设置
     pub threads_sidebar: Option<ThreadsSidebarSettingsContent>,
-    /// Default fixed width in pixels when the agent panel is docked to the left or right and
-    /// `flexible` is false.
+    /// 智能体面板停靠到左侧或右侧且
+    /// `flexible` 为 false 时的默认固定宽度（像素）
     ///
-    /// Default: 640
+    /// 默认值：640
     pub default_width: Option<crate::PixelSetting>,
-    /// Default height in pixels when the agent panel is docked to the bottom.
+    /// 智能体面板停靠到底部时的默认高度（像素）
     ///
-    /// Default: 320
+    /// 默认值：320
     pub default_height: Option<crate::PixelSetting>,
-    /// Whether to limit the content width in the agent panel. When enabled,
-    /// content will be constrained to `max_content_width` and centered when
-    /// the panel is wider than that value, for optimal readability.
+    /// 是否限制智能体面板的内容宽度。启用后，
+    /// 内容将被限制在 `max_content_width` 范围内，并在
+    /// 面板宽度超过该值时居中显示，以获得最佳可读性。
     ///
-    /// Default: true
+    /// 默认值：true
     pub limit_content_width: Option<bool>,
-    /// Maximum content width in pixels for the agent panel. Content will be
-    /// centered when the panel is wider than this value.
+    /// 智能体面板的最大内容宽度（像素）。内容会在
+    /// 面板宽度超过此值时居中显示。
     ///
-    /// Default: 850
+    /// 默认值：850
     pub max_content_width: Option<crate::PixelSetting>,
-    /// The default model to use when creating new chats and for other features when a specific model is not specified.
+    /// 创建新会话及其他功能未指定模型时使用的默认模型
     pub default_model: Option<LanguageModelSelection>,
-    /// Model to use for subagents. Defaults to the parent thread's model and its
-    /// thinking, effort, and speed settings when not specified. If the configured
-    /// model is unavailable, the parent thread's model is used instead.
+    /// 子智能体使用的模型。未指定时默认使用父会话的模型，
+    /// 并沿用其思考模式、思考力度和快速模式设置。如果配置的模型不可用，
+    /// 则改用父会话的模型。
     pub subagent_model: Option<LanguageModelSelection>,
-    /// Favorite models to show at the top of the model selector.
+    /// 在模型选择器顶部显示的收藏模型
     #[serde(default)]
     pub favorite_models: Vec<LanguageModelSelection>,
-    /// Model to use for the inline assistant. Defaults to default_model when not specified.
+    /// 内联助手使用的模型，未指定时默认使用 default_model
     pub inline_assistant_model: Option<LanguageModelSelection>,
-    /// Model to use for the inline assistant when streaming tools are enabled.
+    /// 启用流式工具时内联助手使用的模型
     ///
-    /// Default: true
+    /// 默认值：true
     pub inline_assistant_use_streaming_tools: Option<bool>,
-    /// Model to use for generating git commit messages. Defaults to default_model when not specified.
+    /// 用于生成 git 提交消息的模型，未指定时默认使用 default_model
     pub commit_message_model: Option<LanguageModelSelection>,
-    /// Whether to include project rules files (AGENTS.md, CLAUDE.md, .rules, etc.)
-    /// in the prompt when generating git commit messages.
+    /// 是否将项目规则文件（AGENTS.md、CLAUDE.md、.rules 等）包含
+    /// 在生成 git 提交消息时使用的提示词中
     ///
-    /// Default: true
+    /// 默认值：true
     pub commit_message_include_project_rules: Option<bool>,
-    /// Custom instructions to include in the prompt when generating git commit messages.
-    /// Applied in addition to any project rules files (such as `.rules` or `AGENTS.md`).
+    /// 生成 git 提交消息时要包含在提示词中的自定义指令
+    /// 在任何项目规则文件（如 `.rules` 或 `AGENTS.md`）之外额外应用
     pub commit_message_instructions: Option<String>,
-    /// Model to use for generating thread summaries. Defaults to default_model when not specified.
+    /// 用于生成会话摘要的模型，未指定时默认使用 default_model
     pub thread_summary_model: Option<LanguageModelSelection>,
-    /// Model to use for context compaction (`/compact` and auto-compaction).
-    /// Falls back to the thread's currently selected model when not specified.
-    /// If the configured model is unavailable (provider not registered, model
-    /// not found), the thread's current model is used instead.
+    /// 用于上下文压缩（`/compact` 与自动压缩）的模型。
+    /// 未指定时，回退到会话当前选择的模型。
+    /// 如果配置的模型不可用（提供商未注册或找不到模型），
+    /// 则改用会话的当前模型。
     pub compaction_model: Option<LanguageModelSelection>,
-    /// Additional models with which to generate alternatives when performing inline assists.
+    /// 在执行内联辅助时用于生成备选方案的附加模型
     pub inline_alternatives: Option<Vec<LanguageModelSelection>>,
-    /// The default profile to use in the Agent.
+    /// 在智能体中使用的默认配置文件
     ///
-    /// Default: write
+    /// 默认值：write
     pub default_profile: Option<Arc<str>>,
-    /// The available agent profiles.
+    /// 可用的智能体配置文件
     pub profiles: Option<IndexMap<Arc<str>, AgentProfileContent>>,
-    /// Where to show a popup notification when the agent is waiting for user input.
+    /// 智能体等待用户输入时显示弹出通知的位置
     ///
-    /// Default: "primary_screen"
+    /// 默认值："primary_screen"
     pub notify_when_agent_waiting: Option<NotifyWhenAgentWaiting>,
-    /// When to play a sound when the agent has either completed its response, or needs user input.
+    /// 智能体完成响应或需要用户输入时播放提示音的时机
     ///
-    /// Default: never
+    /// 默认值：never
     pub play_sound_when_agent_done: Option<PlaySoundWhenAgentDone>,
-    /// Whether to keep the system awake while agent threads are running.
+    /// 是否在智能体会话运行期间保持系统唤醒
     ///
-    /// Default: true
+    /// 默认值：true
     pub prevent_idle_sleep: Option<bool>,
-    /// Whether to display agent edits in single-file editors in addition to the review multibuffer pane.
+    /// 是否在审查多缓冲区窗格之外，也在单文件编辑器中显示智能体编辑内容
     ///
-    /// Default: false
+    /// 默认值：false
     pub single_file_review: Option<bool>,
-    /// Additional parameters for language model requests. When making a request
-    /// to a model, parameters will be taken from the last entry in this list
-    /// that matches the model's provider and name. In each entry, both provider
-    /// and model are optional, so that you can specify parameters for either
-    /// one.
+    /// 语言模型请求的附加参数。向模型发起请求时，
+    /// 参数将取自此列表中最后一个
+    /// 与该模型的提供商和名称匹配的条目。在每个条目中，
+    /// 提供商和模型均为可选项，因此你可以为其中任一项
+    /// 指定参数。
     ///
-    /// Default: []
+    /// 默认值：[]
     #[serde(default)]
     pub model_parameters: Vec<LanguageModelParameters>,
-    /// Settings for automatic agent context compaction, which summarizes
-    /// earlier messages to free up room in the model's context window once the
-    /// context grows too large.
+    /// 智能体上下文自动压缩的设置，用于汇总
+    /// 较早的消息，并在上下文变得过大时释放模型
+    /// 上下文窗口中的空间。
     pub auto_compact: Option<AutoCompactSettingsContent>,
-    /// Whether to show thumb buttons for feedback in the agent panel.
+    /// 是否在智能体面板中显示用于反馈的点赞/点踩按钮
     ///
-    /// Default: true
+    /// 默认值：true
     pub enable_feedback: Option<bool>,
-    /// Whether to have edit cards in the agent panel expanded, showing a preview of the full diff.
+    /// 是否在智能体面板中展开编辑卡片，显示完整差异预览
     ///
-    /// Default: true
+    /// 默认值：true
     pub expand_edit_card: Option<bool>,
-    /// Whether to have terminal cards in the agent panel expanded, showing the whole command output.
+    /// 是否在智能体面板中展开终端卡片，显示完整命令输出
     ///
-    /// Default: true
+    /// 默认值：true
     pub expand_terminal_card: Option<bool>,
-    /// Command to automatically run when Zed creates a Terminal Thread shell in the agent panel.
-    /// The command is sent to the shell as if typed, so it is interpreted by your
-    /// configured shell (including on Windows and remote/WSL projects).
-    /// An empty string disables this behavior.
+    /// Zed 在智能体面板中创建终端会话 shell 时自动运行的命令。
+    /// 该命令会像手动输入一样发送到 shell，因此会由你
+    /// 配置的 shell 解释（包括 Windows 和远程/WSL 项目）。
+    /// 空字符串会禁用此行为。
     ///
-    /// Default: ""
+    /// 默认值：""
     pub terminal_init_command: Option<String>,
-    /// How thinking blocks should be displayed by default in the agent panel.
+    /// 思考块在智能体面板中的默认显示方式
     ///
-    /// Default: automatic
+    /// 默认值：automatic
     pub thinking_display: Option<ThinkingBlockDisplay>,
-    /// Whether clicking the stop button on a running terminal tool should also cancel the agent's generation.
-    /// Note that this only applies to the stop button, not to ctrl+c inside the terminal.
+    /// 点击正在运行的终端工具的停止按钮是否也应取消智能体的生成。
+    /// 注意：这仅适用于停止按钮，不适用于终端内的 ctrl+c。
     ///
-    /// Default: true
+    /// 默认值：true
     pub cancel_generation_on_terminal_stop: Option<bool>,
-    /// Whether to always use cmd-enter (or ctrl-enter on Linux or Windows) to send messages in the agent panel.
+    /// 是否始终使用 cmd-enter（Linux 或 Windows 上为 ctrl-enter）在智能体面板中发送消息
     ///
-    /// Default: false
+    /// 默认值：false
     pub use_modifier_to_send: Option<bool>,
-    /// Minimum number of lines of height the agent message editor should have.
+    /// 智能体消息编辑器的最小高度（以行数计）
     ///
-    /// Default: 4
+    /// 默认值：4
     pub message_editor_min_lines: Option<usize>,
-    /// Whether to show turn statistics (elapsed time during generation, final turn duration).
+    /// 是否显示轮次统计信息（生成期间的耗时、最终轮次时长）
     ///
-    /// Default: false
+    /// 默认值：false
     pub show_turn_stats: Option<bool>,
-    /// Whether to show the merge conflict indicator in the status bar
-    /// that offers to resolve conflicts using the agent.
+    /// 是否在状态栏中显示合并冲突指示器，
+    /// 该指示器提供使用智能体解决冲突的选项。
     ///
-    /// Default: true
+    /// 默认值：true
     pub show_merge_conflict_indicator: Option<bool>,
-    /// Per-tool permission rules for granular control over which tool actions
-    /// require confirmation.
+    /// 逐工具权限规则，用于精细控制哪些工具操作
+    /// 需要确认。
     ///
-    /// The global `default` applies when no tool-specific rules match.
-    /// For external agent servers (e.g. Claude Agent) that define their own
-    /// permission modes, "deny" and "confirm" still take precedence — the
-    /// external agent's permission system is only used when Zed would allow
-    /// the action. Per-tool regex patterns (`always_allow`, `always_deny`,
-    /// `always_confirm`) match against the tool's text input (command, path,
-    /// URL, etc.).
+    /// 当没有工具特定规则匹配时，全局 `default` 将生效。
+    /// 对于定义了自身权限模式的外部智能体服务器（如 Claude Agent），
+    /// "deny" 和 "confirm" 仍优先生效——
+    /// 外部智能体的权限系统仅在 Zed 允许
+    /// 该操作时才会使用。每工具正则表达式模式（`always_allow`、`always_deny`、
+    /// `always_confirm`）会针对工具的文本输入（命令、路径、
+    /// URL 等）进行匹配。
     pub tool_permissions: Option<ToolPermissionsContent>,
 
-    /// Persistent sandbox permission grants for agent-run terminal commands.
-    /// These are populated when choosing "Allow always" from a sandbox
-    /// escalation prompt.
+    /// 针对智能体运行的终端命令持久授予的沙盒权限。
+    /// 在沙盒权限提升提示中选择“始终允许”时会填充
+    /// 这些权限。
     pub sandbox_permissions: Option<SandboxPermissionsContent>,
 }
 
@@ -533,8 +539,8 @@ impl AgentSettingsContent {
             .allow_all_hosts = Some(true);
     }
 
-    /// The persisted sandbox network host patterns, as written (callers own
-    /// parsing/validation).
+    /// 持久化的沙盒网络主机模式，按原样保存（调用方负责
+    /// 解析/验证）。
     pub fn sandbox_network_hosts(&self) -> &[String] {
         self.sandbox_permissions
             .as_ref()
@@ -543,9 +549,9 @@ impl AgentSettingsContent {
             .unwrap_or_default()
     }
 
-    /// Replace the persisted sandbox network host patterns. Callers compute
-    /// the new list (typically the old list plus newly granted hosts, pruned
-    /// of entries subsumed by wildcards) rather than appending blindly.
+    /// 替换持久化的沙盒网络主机模式。调用方计算
+    /// 新列表（通常为旧列表加上新授予的主机，并移除
+    /// 已被通配符涵盖的条目），而不是盲目追加。
     pub fn set_sandbox_network_hosts(&mut self, hosts: Vec<String>) {
         self.sandbox_permissions
             .get_or_insert_default()
@@ -593,11 +599,11 @@ pub struct AgentProfileContent {
     #[serde(default)]
     #[schemars(schema_with = "agent_profile_tools_schema")]
     pub tools: IndexMap<Arc<str>, bool>,
-    /// Whether all context servers are enabled by default.
+    /// 是否默认启用所有上下文服务器
     pub enable_all_context_servers: Option<bool>,
     #[serde(default)]
     pub context_servers: IndexMap<Arc<str>, ContextServerPresetContent>,
-    /// The default language model selected when using this profile.
+    /// 使用此配置文件时选用的默认语言模型
     pub default_model: Option<LanguageModelSelection>,
 }
 
@@ -661,8 +667,11 @@ fn agent_profile_tools_schema(_: &mut schemars::SchemaGenerator) -> schemars::Sc
 #[serde(rename_all = "snake_case")]
 pub enum NotifyWhenAgentWaiting {
     #[default]
+    #[strum(serialize = "主屏幕")]
     PrimaryScreen,
+    #[strum(serialize = "所有屏幕")]
     AllScreens,
+    #[strum(serialize = "从不")]
     Never,
 }
 
@@ -682,8 +691,11 @@ pub enum NotifyWhenAgentWaiting {
 #[serde(rename_all = "snake_case")]
 pub enum PlaySoundWhenAgentDone {
     #[default]
+    #[strum(serialize = "从不")]
     Never,
+    #[strum(serialize = "隐藏时")]
     WhenHidden,
+    #[strum(serialize = "始终")]
     Always,
 }
 
@@ -848,56 +860,56 @@ pub enum CustomAgentServerSettings {
         path: PathBuf,
         #[serde(default, skip_serializing_if = "Vec::is_empty")]
         args: Vec<String>,
-        /// Default: {}
+        /// 默认值：{}
         #[serde(default, skip_serializing_if = "HashMap::is_empty")]
         env: HashMap<String, String>,
-        /// The default mode to use for this agent.
+        /// 此智能体使用的默认模式
         ///
-        /// Note: Not only all agents support modes.
+        /// 注意：并非所有智能体都支持模式。
         ///
-        /// Default: None
+        /// 默认值：None
         default_mode: Option<String>,
-        /// Default values for session config options.
+        /// 会话配置选项的默认值
         ///
-        /// This is a map from config option ID to the default value for that option.
+        /// 这是从配置选项 ID 到该选项默认值的映射。
         ///
-        /// Default: {}
+        /// 默认值：{}
         #[serde(default, skip_serializing_if = "HashMap::is_empty")]
         default_config_options: HashMap<String, AgentConfigOptionValue>,
-        /// Favorited values for session config options.
+        /// 会话配置选项的已收藏值
         ///
-        /// This is a map from config option ID to a list of favorited value IDs.
+        /// 这是从配置选项 ID 到收藏值 ID 列表的映射。
         ///
-        /// Default: {}
+        /// 默认值：{}
         #[serde(default, skip_serializing_if = "HashMap::is_empty")]
         favorite_config_option_values: HashMap<String, Vec<String>>,
     },
     // Used for the ACP extension migration
     #[serde(alias = "extension")]
     Registry {
-        /// Additional environment variables to pass to the agent.
+        /// 传递给智能体的附加环境变量
         ///
-        /// Default: {}
+        /// 默认值：{}
         #[serde(default, skip_serializing_if = "HashMap::is_empty")]
         env: HashMap<String, String>,
-        /// The default mode to use for this agent.
+        /// 此智能体使用的默认模式
         ///
-        /// Note: Not only all agents support modes.
+        /// 注意：并非所有智能体都支持模式。
         ///
-        /// Default: None
+        /// 默认值：None
         default_mode: Option<String>,
-        /// Default values for session config options.
+        /// 会话配置选项的默认值
         ///
-        /// This is a map from config option ID to the default value for that option.
+        /// 这是从配置选项 ID 到该选项默认值的映射。
         ///
-        /// Default: {}
+        /// 默认值：{}
         #[serde(default, skip_serializing_if = "HashMap::is_empty")]
         default_config_options: HashMap<String, AgentConfigOptionValue>,
-        /// Favorited values for session config options.
+        /// 会话配置选项的已收藏值
         ///
-        /// This is a map from config option ID to a list of favorited value IDs.
+        /// 这是从配置选项 ID 到收藏值 ID 列表的映射。
         ///
-        /// Default: {}
+        /// 默认值：{}
         #[serde(default, skip_serializing_if = "HashMap::is_empty")]
         favorite_config_option_values: HashMap<String, Vec<String>>,
     },
@@ -1013,70 +1025,70 @@ impl JsonSchema for GrantedWritePathContent {
 #[with_fallible_options]
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct SandboxPermissionsContent {
-    /// Whether sandboxed terminal commands may always reach any host over the
-    /// network without prompting.
-    /// Default: false
+    /// 沙盒中的终端命令是否始终可以通过网络访问任意主机
+    /// 且无需提示确认。
+    /// 默认值：false
     pub allow_all_hosts: Option<bool>,
 
-    /// Hosts that sandboxed terminal commands may always reach over the
-    /// network without prompting. Each entry is an exact hostname
-    /// (`github.com`) or a leading-`*.` subdomain wildcard (`*.npmjs.org`).
-    /// Default: []
+    /// 沙盒中的终端命令始终可通过网络访问且
+    /// 无需提示确认的主机。每个条目都是精确主机名
+    /// （`github.com`）或以 `*.` 开头的子域通配符（`*.npmjs.org`）。
+    /// 默认值：[]
     pub network_hosts: Option<ExtendingVec<String>>,
 
-    /// Whether sandboxed terminal commands may always write anywhere on the
-    /// filesystem without prompting.
-    /// Default: false
+    /// 沙盒中的终端命令是否始终可以写入
+    /// 文件系统中的任意位置且无需提示确认
+    /// 默认值：false
     pub allow_fs_write_all: Option<bool>,
 
-    /// Whether to persistently run agent terminal commands outside the OS
-    /// sandbox. This is the model-facing "off switch": when true, the sandboxed
-    /// terminal tool is not exposed and the system prompt omits the sandbox
-    /// section, so the model uses the plain `terminal` tool. On Windows, WSL
-    /// sandbox setup is skipped. Distinct from the model-requested
-    /// `unsandboxed: true` escape approved "once" or "for this thread".
-    /// Default: false
+    /// 是否持久地在 OS
+    /// 沙盒外运行智能体终端命令。这是面向模型的“关闭开关”：为 true 时，沙盒中的
+    /// 终端工具不会暴露，系统提示词会省略沙盒
+    /// 部分，因此模型会使用普通的 `terminal` 工具。在 Windows 上，WSL
+    /// 沙盒设置会被跳过。这不同于模型请求的
+    /// `unsandboxed: true` 逃逸（已批准“一次”或“针对此会话”）。
+    /// 默认值：false
     pub allow_unsandboxed: Option<bool>,
 
-    /// Directory subtrees that sandboxed terminal commands may always write
-    /// to without prompting. Each entry is either a bare path string or an
-    /// object `{requested, resolved}`; Zed writes objects (the canonical,
-    /// symlink-resolved target established at approval time), while
-    /// hand-authored entries may be bare path strings. Paths written by Zed
-    /// are absolute.
-    /// Default: []
+    /// 沙盒中的终端命令始终可写入且
+    /// 无需提示确认的目录子树。每个条目可以是纯路径字符串，也可以是
+    /// 对象 `{requested, resolved}`；Zed 写入的是对象（批准时确定的规范路径，
+    /// 即解析符号链接后的目标），而
+    /// 手动编写的条目可以是纯路径字符串。Zed 写入的路径
+    /// 均为绝对路径。
+    /// 默认值：[]
     pub write_paths: Option<ExtendingVec<GrantedWritePathContent>>,
 
-    /// Whether to warn when a sandbox escalation prompt requests a domain or
-    /// write path that contains potentially confusable Unicode characters
-    /// (homoglyphs, invisible characters, or bidirectional overrides). When
-    /// enabled, such prompts show a warning that must be acknowledged before
-    /// the request can be allowed.
-    /// Default: true
+    /// 是否在沙盒权限提升提示请求的域名或
+    /// 写入路径包含可能造成混淆的 Unicode 字符
+    /// （同形字符、不可见字符或双向控制符）时发出警告。
+    /// 启用后，此类提示会显示一条警告，必须确认
+    /// 后才能允许该请求。
+    /// 默认值：true
     pub warn_confusable_unicode: Option<bool>,
 
-    /// Whether to warn (Windows/WSL only) when a sandbox grant targets a file on
-    /// a Windows-hosted (DrvFs) filesystem. Such grants are enforced inside WSL
-    /// via a translated path, and their sandbox-integrity guarantees are weaker
-    /// than a distro-native filesystem. When enabled, such grants show a warning
-    /// that must be acknowledged before the command runs.
-    /// Default: true
+    /// 是否在以下情况下发出警告（仅限 Windows/WSL）：沙盒授权的目标是
+    /// Windows 主机文件系统（DrvFs）中的文件。此类授权在 WSL 内
+    /// 通过转换后的路径强制执行，其沙盒完整性保证弱于
+    /// 发行版原生文件系统。启用后，此类授权会显示警告，
+    /// 必须先确认该警告才能运行命令。
+    /// 默认值：true
     pub warn_ntfs_grants: Option<bool>,
 }
 
 #[with_fallible_options]
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct ToolPermissionsContent {
-    /// Global default permission when no tool-specific rules match.
-    /// Individual tools can override this with their own default.
-    /// Default: confirm
+    /// 当没有工具特定规则匹配时的全局默认权限。
+    /// 单个工具可以用自己的默认值覆盖此设置。
+    /// 默认值：confirm
     #[serde(alias = "default_mode")]
     pub default: Option<ToolPermissionMode>,
 
-    /// Per-tool permission rules.
-    /// Keys are tool names (e.g. terminal, edit_file, fetch) including MCP
-    /// tools (e.g. mcp:server_name:tool_name). Any tool name is accepted;
-    /// even tools without meaningful text input can have a `default` set.
+    /// 逐工具权限规则。
+    /// 键为工具名称（如 terminal、edit_file、fetch），包括 MCP
+    /// 工具（例如 mcp:server_name:tool_name）。任何工具名称均可接受；
+    /// 即使工具没有有意义的文本输入，也可以设置 `default`。
     #[serde(default)]
     pub tools: HashMap<Arc<str>, ToolRulesContent>,
 }
@@ -1084,48 +1096,48 @@ pub struct ToolPermissionsContent {
 #[with_fallible_options]
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct ToolRulesContent {
-    /// Default mode when no regex rules match.
-    /// When unset, inherits from the global `tool_permissions.default`.
+    /// 没有正则表达式规则匹配时的默认模式
+    /// 未设置时，从全局 `tool_permissions.default` 继承
     #[serde(alias = "default_mode")]
     pub default: Option<ToolPermissionMode>,
 
-    /// Regexes for inputs to auto-approve.
-    /// For terminal: matches command. For file tools: matches path. For fetch: matches URL.
-    /// For `copy_path` and `move_path`, patterns are matched independently against each
-    /// path (source and destination).
-    /// Patterns accumulate across settings layers (user, project, profile) and cannot be
-    /// removed by a higher-priority layer—only new patterns can be added.
-    /// Default: []
+    /// 自动批准输入的正则表达式
+    /// 终端：匹配命令。文件工具：匹配路径。fetch：匹配 URL
+    /// 对于 `copy_path` 和 `move_path`，模式分别独立匹配各个
+    /// 路径（源路径和目标路径）。
+    /// 模式在各设置层（用户、项目、配置文件）中累积，无法被
+    /// 高优先级层移除——只能添加新模式。
+    /// 默认值：[]
     pub always_allow: Option<ExtendingVec<ToolRegexRule>>,
 
-    /// Regexes for inputs to auto-reject.
-    /// **SECURITY**: These take precedence over ALL other rules, across ALL settings layers.
-    /// For `copy_path` and `move_path`, patterns are matched independently against each
-    /// path (source and destination).
-    /// Patterns accumulate across settings layers (user, project, profile) and cannot be
-    /// removed by a higher-priority layer—only new patterns can be added.
-    /// Default: []
+    /// 自动拒绝输入的正则表达式
+    /// **安全**：这些规则优先于所有其他规则，跨所有设置层级生效。
+    /// 对于 `copy_path` 和 `move_path`，模式分别独立匹配各个
+    /// 路径（源路径和目标路径）。
+    /// 模式在各设置层（用户、项目、配置文件）中累积，无法被
+    /// 高优先级层移除——只能添加新模式。
+    /// 默认值：[]
     pub always_deny: Option<ExtendingVec<ToolRegexRule>>,
 
-    /// Regexes for inputs that must always prompt.
-    /// Takes precedence over always_allow but not always_deny.
-    /// For `copy_path` and `move_path`, patterns are matched independently against each
-    /// path (source and destination).
-    /// Patterns accumulate across settings layers (user, project, profile) and cannot be
-    /// removed by a higher-priority layer—only new patterns can be added.
-    /// Default: []
+    /// 必须始终提示确认的输入的正则表达式
+    /// 优先于 always_allow，但不优先于 always_deny
+    /// 对于 `copy_path` 和 `move_path`，模式分别独立匹配各个
+    /// 路径（源路径和目标路径）。
+    /// 模式在各设置层（用户、项目、配置文件）中累积，无法被
+    /// 高优先级层移除——只能添加新模式。
+    /// 默认值：[]
     pub always_confirm: Option<ExtendingVec<ToolRegexRule>>,
 }
 
 #[with_fallible_options]
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct ToolRegexRule {
-    /// The regex pattern to match.
+    /// 要匹配的正则表达式模式
     #[serde(default)]
     pub pattern: String,
 
-    /// Whether the regex is case-sensitive.
-    /// Default: false (case-insensitive)
+    /// 正则表达式是否区分大小写
+    /// 默认值：false（不区分大小写）
     pub case_sensitive: Option<bool>,
 }
 
@@ -1134,11 +1146,11 @@ pub struct ToolRegexRule {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum ToolPermissionMode {
-    /// Auto-approve without prompting.
+    /// 无需提示确认，自动批准。
     Allow,
-    /// Auto-reject with an error.
+    /// 自动拒绝并返回错误。
     Deny,
-    /// Always prompt for confirmation (default behavior).
+    /// 始终提示确认（默认行为）。
     #[default]
     Confirm,
 }
@@ -1146,9 +1158,9 @@ pub enum ToolPermissionMode {
 impl std::fmt::Display for ToolPermissionMode {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            ToolPermissionMode::Allow => write!(f, "Allow"),
-            ToolPermissionMode::Deny => write!(f, "Deny"),
-            ToolPermissionMode::Confirm => write!(f, "Confirm"),
+            ToolPermissionMode::Allow => write!(f, "允许"),
+            ToolPermissionMode::Deny => write!(f, "拒绝"),
+            ToolPermissionMode::Confirm => write!(f, "确认"),
         }
     }
 }

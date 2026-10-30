@@ -187,10 +187,9 @@ impl RenderOnce for TerminalToolHeader {
                                     .icon_color(Color::Error)
                                     .tooltip(move |_window, cx| {
                                         Tooltip::with_meta(
-                                            "Stop This Command",
+                                            "停止此命令",
                                             None,
-                                            "Also possible by placing your cursor inside the \
-                                             terminal and using regular terminal bindings.",
+                                            "也可以将光标置于终端内并使用常规终端键绑定",
                                             cx,
                                         )
                                     })
@@ -218,7 +217,7 @@ impl RenderOnce for TerminalToolHeader {
                             .icon_size(IconSize::Small)
                             .icon_color(Color::Error)
                             .when_some(exit_code, |this, code| {
-                                this.tooltip(Tooltip::text(format!("Exited with code {code}")))
+                                this.tooltip(Tooltip::text(format!("已退出，退出码 {code}")))
                             }),
                     )
             })
@@ -235,7 +234,7 @@ impl RenderOnce for TerminalToolHeader {
                             Tooltip::with_meta(
                                 title.clone(),
                                 None,
-                                format!("{detail} Click to learn more about sandboxing."),
+                                format!("{detail} 点击了解有关沙盒的更多信息。"),
                                 cx,
                             )
                         })

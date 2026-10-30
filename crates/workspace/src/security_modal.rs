@@ -88,9 +88,9 @@ impl Render for SecurityModal {
 
         let restricted_count = self.restricted_paths.len();
         let header_label: SharedString = if restricted_count == 1 {
-            "Unrecognized Project".into()
+            "无法识别的项目".into()
         } else {
-            format!("Unrecognized Projects ({})", restricted_count).into()
+            format!("无法识别的项目（{}）", restricted_count).into()
         };
 
         let path_style = self.path_style(cx);
@@ -191,23 +191,23 @@ impl Render for SecurityModal {
                         v_flex()
                             .child(
                                 Label::new(
-                                    "Untrusted projects are opened in Restricted Mode to protect your system.",
+                                    "不受信任的项目将以受限模式打开，以保护你的系统",
                                 )
                                 .color(Color::Muted),
                             )
                             .child(
                                 Label::new(
-                                    "Review .zed/settings.json for any extensions or commands configured by this project.",
+                                    "查看 .zed/settings.json 中此项目配置的扩展或命令",
                                 )
                                 .color(Color::Muted),
                             ),
                     )
                     .child(
                         v_flex()
-                            .child(Label::new("Restricted Mode prevents:").color(Color::Muted))
-                            .child(ListBulletItem::new("Project settings from being applied"))
-                            .child(ListBulletItem::new("Language servers from running"))
-                            .child(ListBulletItem::new("MCP Server integrations from installing")),
+                            .child(Label::new("受限模式会阻止：").color(Color::Muted))
+                            .child(ListBulletItem::new("应用项目设置"))
+                            .child(ListBulletItem::new("运行语言服务器"))
+                            .child(ListBulletItem::new("安装 MCP 服务器集成")),
                     )
                     .map(|this| {
                         let Some(trust_label) = trust_label else {
@@ -230,7 +230,7 @@ impl Render for SecurityModal {
                                             "trust-parents",
                                             ToggleState::from(self.trust_parents),
                                         )
-                                        .label("Trust all projects in")
+                                        .label("信任以下文件夹中的所有项目")
                                         .on_click(cx.listener(
                                             |security_modal, state: &ToggleState, _, cx| {
                                                 let trust_parents = state.selected();
@@ -277,7 +277,7 @@ impl Render for SecurityModal {
                     .gap_1()
                     .justify_end()
                     .child(
-                        Button::new("rm", "Stay in Restricted Mode")
+                        Button::new("rm", "保持受限模式")
                             .key_binding(
                                 KeyBinding::for_action(
                                     &ToggleWorktreeSecurity,
@@ -292,7 +292,7 @@ impl Render for SecurityModal {
                             })),
                     )
                     .child(
-                        Button::new("tc", "Trust and Continue")
+                        Button::new("tc", "信任并继续")
                             .style(ButtonStyle::Filled)
                             .layer(ui::ElevationIndex::ModalSurface)
                             .key_binding(
@@ -317,7 +317,7 @@ impl SecurityModal {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Self {
-        let trust_path_input = cx.new(|cx| InputField::new(window, cx, "Folder to trust"));
+        let trust_path_input = cx.new(|cx| InputField::new(window, cx, "要信任的文件夹"));
         let task = cx.spawn(async |this, cx| {
             let home_dir = home_dir_task.await;
             this.update(cx, |this, cx| {
@@ -533,10 +533,10 @@ fn validate_trust_scope(
 ) -> Result<PathBuf, SharedString> {
     let trimmed = typed.trim();
     if trimmed.is_empty() {
-        return Err("Enter a folder to trust".into());
+        return Err("输入要信任的文件夹".into());
     }
     if home_dir.is_none() && trimmed.starts_with('~') {
-        return Err("Home directory not available".into());
+        return Err("主目录不可用".into());
     }
     let expanded = match (trimmed.strip_prefix('~'), home_dir) {
         (Some(rest), Some(home_dir)) => {
@@ -549,11 +549,11 @@ fn validate_trust_scope(
         _ => PathBuf::from(trimmed),
     };
     if !path_style.is_absolute(&expanded) {
-        return Err("Enter an absolute folder path".into());
+        return Err("输入绝对文件夹路径".into());
     }
 
     if !path_style.starts_with(project, expanded.as_path()) {
-        return Err("Must be a parent folder of the project".into());
+        return Err("必须是项目的父文件夹".into());
     }
     Ok(expanded)
 }

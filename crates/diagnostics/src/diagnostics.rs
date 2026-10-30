@@ -53,11 +53,11 @@ use workspace::{
 actions!(
     diagnostics,
     [
-        /// Opens the project diagnostics view.
+        /// 打开项目诊断视图
         Deploy,
-        /// Toggles the display of warning-level diagnostics.
+        /// 切换警告级别诊断的显示
         ToggleWarnings,
-        /// Toggles automatic refresh of diagnostics.
+        /// 切换诊断自动刷新
         ToggleDiagnosticsRefresh
     ]
 );
@@ -104,9 +104,9 @@ impl Render for ProjectDiagnosticsEditor {
         let child =
             if warning_count + self.summary.error_count == 0 && self.editor.read(cx).is_empty(cx) {
                 let label = if self.summary.warning_count == 0 {
-                    SharedString::new_static("No problems in workspace")
+                    SharedString::new_static("工作区中无问题")
                 } else {
-                    SharedString::new_static("No errors in workspace")
+                    SharedString::new_static("工作区中无错误")
                 };
                 v_flex()
                     .key_context("EmptyPane")
@@ -124,7 +124,7 @@ impl Render for ProjectDiagnosticsEditor {
                             ""
                         };
                         let label = format!(
-                            "Show {} warning{}",
+                            "显示 {} 个警告{:.0}",
                             self.summary.warning_count, plural_suffix
                         );
                         this.child(
@@ -756,7 +756,7 @@ impl Item for ProjectDiagnosticsEditor {
     }
 
     fn tab_content_text(&self, _detail: usize, _: &App) -> SharedString {
-        "Diagnostics".into()
+        "诊断".into()
     }
 
     fn tab_content(&self, params: TabContentParams, _window: &Window, _: &App) -> AnyElement {
@@ -769,7 +769,7 @@ impl Item for ProjectDiagnosticsEditor {
                         h_flex()
                             .gap_1()
                             .child(Icon::new(IconName::Check).color(Color::Success))
-                            .child(Label::new("No problems").color(params.text_color())),
+                            .child(Label::new("没有问题").color(params.text_color())),
                     )
                 },
             )

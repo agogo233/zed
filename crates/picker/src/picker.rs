@@ -64,30 +64,30 @@ pub enum ScrollBehavior {
 actions!(
     picker,
     [
-        /// Confirms the selected completion in the picker.
+        /// 确认选取器中选中的补全
         ConfirmCompletion,
-        /// Toggles the preview between hidden and visible.
+        /// 切换预览的隐藏和显示
         TogglePreview,
-        /// Shows the preview to the right of the results.
+        /// 在结果右侧显示预览
         SetPreviewRight,
-        /// Shows the preview below the results.
+        /// 在结果下方显示预览
         SetPreviewBelow,
-        /// Hides the preview.
+        /// 隐藏预览
         SetPreviewHidden,
-        /// Opens the footer's actions menu.
+        /// 打开页脚的操作菜单
         ToggleActionsMenu,
-        /// Toggles multi-select mode, in which clicking items adds them to
-        /// the selection instead of opening them
+        /// 切换多选模式。在该模式下，点击条目会将其选中，
+        /// 而不是将其打开
         ToggleMultiSelect,
-        /// Toggles the current item in the multi-selection and advances to
-        /// the next item, starting multi-select mode if it isn't already
-        /// active
+        /// 切换当前条目的多选状态并前进至下一项，
+        /// 如果多选模式尚未启用，
+        /// 则启动该模式
         MultiSelectNext,
     ]
 );
 
-/// ConfirmInput is an alternative editor action which - instead of selecting active picker entry - treats pickers editor input literally,
-/// performing some kind of action on it.
+/// ConfirmInput 是一个替代编辑器操作，它不选择当前激活的选取器条目，而是将选取器的编辑器输入视为字面量，
+/// 对其执行某种操作
 #[derive(Clone, PartialEq, Deserialize, JsonSchema, Default, Action)]
 #[action(namespace = picker)]
 #[serde(deny_unknown_fields)]
@@ -221,7 +221,7 @@ pub trait PickerDelegate: Sized + 'static {
     }
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str>;
     fn no_matches_text(&self, _window: &mut Window, _cx: &mut App) -> Option<SharedString> {
-        Some("No matches".into())
+        Some("无匹配".into())
     }
     fn update_matches(
         &mut self,
@@ -1401,14 +1401,14 @@ impl<D: PickerDelegate> Picker<D> {
                                     &focus_handle,
                                     cx,
                                 ))
-                                .child(Label::new("Select")),
+                                .child(Label::new("选择")),
                         )
                         .child(Divider::vertical())
                         .child(
                             h_flex()
                                 .gap_1()
                                 .child(KeyBinding::for_action_in(&menu::Confirm, &focus_handle, cx))
-                                .child(Label::new("Open")),
+                                .child(Label::new("打开")),
                         )
                         .into_any_element()
                 }))
@@ -1709,7 +1709,7 @@ mod tests {
         }
 
         fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-            "Test".into()
+            "测试".into()
         }
 
         fn update_matches(

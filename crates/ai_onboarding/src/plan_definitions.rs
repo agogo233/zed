@@ -8,54 +8,54 @@ impl PlanDefinitions {
     pub fn free_plan(&self) -> impl IntoElement {
         List::new()
             .child(ListBulletItem::new(
-                "Unlimited prompts with your AI API keys",
+                "使用你的 AI API 密钥，无限次发送提示词",
             ))
-            .child(ListBulletItem::new("Unlimited use of external agents"))
+            .child(ListBulletItem::new("无限制使用外部智能体"))
     }
 
     pub fn sign_in_upsell(&self) -> impl IntoElement {
         List::new()
-            .child(ListBulletItem::new("Unlimited edit predictions"))
-            .child(ListBulletItem::new("$5 of GPT Luna"))
-            .child(ListBulletItem::new("No credit card required"))
+            .child(ListBulletItem::new("无限制编辑预测"))
+            .child(ListBulletItem::new("GPT Luna $5 额度"))
+            .child(ListBulletItem::new("无需信用卡"))
     }
 
     pub fn pro_trial(&self, period: bool) -> impl IntoElement {
         List::new()
-            .child(ListBulletItem::new("$5 of GPT Luna"))
-            .child(ListBulletItem::new("Unlimited edit predictions"))
+            .child(ListBulletItem::new("GPT Luna $5 额度"))
+            .child(ListBulletItem::new("无限制编辑预测"))
             .when(period, |this| {
                 this.child(ListBulletItem::new(
-                    "14 days from trial start, no credit card required",
+                    "自试用开始起 14 天，无需信用卡",
                 ))
             })
     }
 
     pub fn pro_plan(&self) -> impl IntoElement {
         List::new()
-            .child(ListBulletItem::new("$5 of tokens in Zed agent"))
-            .child(ListBulletItem::new("Usage-based billing beyond $5"))
-            .child(ListBulletItem::new("Unlimited edit predictions"))
+            .child(ListBulletItem::new("Zed 智能体 $5 额度"))
+            .child(ListBulletItem::new("超出 $5 后按用量计费"))
+            .child(ListBulletItem::new("无限制编辑预测"))
     }
 
     pub fn business_plan(&self) -> impl IntoElement {
         List::new()
-            .child(ListBulletItem::new("Unlimited edit predictions"))
-            .child(ListBulletItem::new("Usage-based billing"))
+            .child(ListBulletItem::new("无限制编辑预测"))
+            .child(ListBulletItem::new("按用量计费"))
     }
 
     pub fn vip_plan(&self) -> impl IntoElement {
         List::new()
-            .child(ListBulletItem::new("Unlimited edit predictions"))
-            .child(ListBulletItem::new("Tokens in the Zed agent"))
+            .child(ListBulletItem::new("无限制编辑预测"))
+            .child(ListBulletItem::new("Zed 智能体中的 Token"))
     }
 
     pub fn student_plan(&self) -> impl IntoElement {
         List::new()
-            .child(ListBulletItem::new("Unlimited edit predictions"))
-            .child(ListBulletItem::new("$10 of tokens in Zed agent"))
+            .child(ListBulletItem::new("无限制编辑预测"))
+            .child(ListBulletItem::new("Zed 智能体 $10 额度"))
             .child(ListBulletItem::new(
-                "Optional credit packs for additional usage",
+                "可选的额外用量点数包",
             ))
     }
 }

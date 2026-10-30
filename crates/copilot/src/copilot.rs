@@ -48,7 +48,7 @@ pub use crate::copilot_edit_prediction_delegate::CopilotEditPredictionDelegate;
 actions!(
     copilot_edit_predictions,
     [
-        /// Reinstalls the Copilot Edit Predictions language server.
+        /// 重新安装 Copilot Edit Predictions 语言服务器
         #[action(deprecated_aliases = ["copilot::Reinstall"])]
         Reinstall,
     ]

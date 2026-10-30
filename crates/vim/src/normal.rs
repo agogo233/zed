@@ -36,75 +36,75 @@ use multi_buffer::MultiBufferRow;
 actions!(
     vim,
     [
-        /// Inserts text after the cursor.
+        /// 在光标后插入文本
         InsertAfter,
-        /// Inserts text before the cursor.
+        /// 在光标前插入文本
         InsertBefore,
-        /// Inserts at the first non-whitespace character.
+        /// 在第一个非空白字符处插入
         InsertFirstNonWhitespace,
-        /// Inserts at the end of the line.
+        /// 在行末插入
         InsertEndOfLine,
-        /// Inserts a new line above the current line.
+        /// 在当前行上方插入新行
         InsertLineAbove,
-        /// Inserts a new line below the current line.
+        /// 在当前行下方插入新行
         InsertLineBelow,
-        /// Inserts an empty line above without entering insert mode.
+        /// 在上方插入空行而不进入插入模式
         InsertEmptyLineAbove,
-        /// Inserts an empty line below without entering insert mode.
+        /// 在下方插入空行而不进入插入模式
         InsertEmptyLineBelow,
-        /// Inserts at the previous insert position.
+        /// 在上次插入位置处插入
         InsertAtPrevious,
-        /// Joins the current line with the next line.
+        /// 将当前行与下一行合并
         JoinLines,
-        /// Joins lines without adding whitespace.
+        /// 合并行而不添加空白
         JoinLinesNoWhitespace,
-        /// Deletes character to the left.
+        /// 向左删除字符
         DeleteLeft,
-        /// Deletes character to the right.
+        /// 向右删除字符
         DeleteRight,
-        /// Deletes using Helix-style behavior.
+        /// 使用 Helix 风格行为删除
         HelixDelete,
-        /// Collapse the current selection
+        /// 收起当前选区
         HelixCollapseSelection,
-        /// Changes from cursor to end of line.
+        /// 修改从光标位置到行尾的内容
         ChangeToEndOfLine,
-        /// Deletes from cursor to end of line.
+        /// 从光标删除到行尾
         DeleteToEndOfLine,
-        /// Yanks (copies) the selected text.
+        /// 复制选定的文本
         Yank,
-        /// Yanks the entire line.
+        /// 复制整行
         YankLine,
-        /// Yanks from cursor to end of line.
+        /// 从光标处复制到行尾
         YankToEndOfLine,
-        /// Toggles the case of selected text.
+        /// 切换选中文本的大小写
         ChangeCase,
-        /// Converts selected text to uppercase.
+        /// 将所选文本转换为全大写
         ConvertToUpperCase,
-        /// Converts selected text to lowercase.
+        /// 将所选文本转换为全小写
         ConvertToLowerCase,
-        /// Applies ROT13 cipher to selected text.
+        /// 对选中文本应用 ROT13 密码
         ConvertToRot13,
-        /// Applies ROT47 cipher to selected text.
+        /// 对选中文本应用 ROT47 密码
         ConvertToRot47,
-        /// Toggles comments for selected lines.
+        /// 切换所选行的注释
         ToggleComments,
-        /// Toggles block comments for selected lines.
+        /// 切换所选行的块注释
         ToggleBlockComments,
-        /// Shows the current location in the file.
+        /// 显示当前在文件中的位置
         ShowLocation,
-        /// Undoes the last change.
+        /// 撤销上次更改
         Undo,
-        /// Redoes the last undone change.
+        /// 重做上次撤销的更改
         Redo,
-        /// Undoes all changes to the most recently changed line.
+        /// 撤销最近更改行的所有更改
         UndoLastLine,
-        /// Go to tab page (with count support).
+        /// 跳转到标签页（支持计数）
         GoToTab,
-        /// Go to previous tab page (with count support).
+        /// 跳转到上一个标签页（支持计数）
         GoToPreviousTab,
-        /// Goes to the previous reference to the symbol under the cursor.
+        /// 跳转到光标下符号的上一个引用
         GoToPreviousReference,
-        /// Goes to the next reference to the symbol under the cursor.
+        /// 跳转到光标下符号的下一个引用
         GoToNextReference,
     ]
 );

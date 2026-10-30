@@ -38,9 +38,7 @@ const CALLBACK_HOST: &str = "127.0.0.1";
 const CALLBACK_PORT: u16 = 56121;
 const CALLBACK_PATH: &str = "/callback";
 
-const INFERENCE_FORBIDDEN_MESSAGE: &str = "Login succeeded, but this Grok account cannot use the API \
-    (HTTP 403). Some plans do not include this access. You can also use the separate xAI provider \
-    with an API key from console.x.ai.";
+const INFERENCE_FORBIDDEN_MESSAGE: &str = "登录成功，但此 Grok 帐户无法使用该 API（HTTP 403）。部分方案不包含此权限。你也可以使用单独的 xAI 提供商，并从 console.x.ai 获取 API 密钥。";
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 struct SuperGrokCredentials {
@@ -201,7 +199,7 @@ impl State {
                             this.update(cx, |state, cx| {
                                 state.sign_in_task = None;
                                 state.last_auth_error =
-                                    Some("Failed to save credentials. Please try again.".into());
+                                    Some("保存凭据失败。请重试。".into());
                                 cx.notify();
                             })
                             .log_err();
@@ -212,7 +210,7 @@ impl State {
                     log::error!("SuperGrok sign-in failed: {err:?}");
                     this.update(cx, |state, cx| {
                         state.sign_in_task = None;
-                        state.last_auth_error = Some("Sign-in failed. Please try again.".into());
+                        state.last_auth_error = Some("登录失败。请重试。".into());
                         cx.notify();
                     })
                     .log_err();
@@ -381,11 +379,11 @@ fn supported_thinking_effort_levels(model: &SuperGrokModel) -> Vec<LanguageModel
         .filter_map(|effort| {
             let (name, value) = match effort {
                 ReasoningEffort::None => return None,
-                ReasoningEffort::Minimal => ("Minimal", "minimal"),
-                ReasoningEffort::Low => ("Low", "low"),
-                ReasoningEffort::Medium => ("Medium", "medium"),
-                ReasoningEffort::High => ("High", "high"),
-                ReasoningEffort::XHigh => ("Extra High", "xhigh"),
+                ReasoningEffort::Minimal => ("最低", "minimal"),
+                ReasoningEffort::Low => ("低", "low"),
+                ReasoningEffort::Medium => ("中等", "medium"),
+                ReasoningEffort::High => ("高", "high"),
+                ReasoningEffort::XHigh => ("超高", "xhigh"),
                 ReasoningEffort::Max => return None,
             };
 
@@ -624,7 +622,7 @@ async fn get_fresh_credentials(
                                 s.refresh_task = None;
                                 s.credentials = None;
                                 s.last_auth_error = Some(
-                                    "Your SuperGrok session has expired. Sign in again.".into(),
+                                    "你的 SuperGrok 会话已过期。重新登录。".into(),
                                 );
                                 cx.notify();
                             })

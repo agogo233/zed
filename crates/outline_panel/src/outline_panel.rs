@@ -66,41 +66,41 @@ use crate::outline_panel_settings::OutlinePanelSettingsScrollbarProxy;
 actions!(
     outline_panel,
     [
-        /// Collapses all entries in the outline tree.
+        /// 折叠大纲树中所有条目
         CollapseAllEntries,
-        /// Collapses the currently selected entry.
+        /// 折叠当前选中的条目
         CollapseSelectedEntry,
-        /// Expands all entries in the outline tree.
+        /// 展开大纲树中的所有条目
         ExpandAllEntries,
-        /// Expands the currently selected entry.
+        /// 展开当前选中的条目
         ExpandSelectedEntry,
-        /// Folds the selected directory.
+        /// 折叠选中的目录
         FoldDirectory,
-        /// Opens the selected entry in the editor.
+        /// 在编辑器中打开所选条目
         OpenSelectedEntry,
-        /// Reveals the selected item in the system file manager.
+        /// 在系统文件管理器中显示选定项
         RevealInFileManager,
-        /// Scroll half a page upwards
+        /// 向上滚动半页
         ScrollUp,
-        /// Scroll half a page downwards
+        /// 向下滚动半页
         ScrollDown,
-        /// Scroll until the cursor displays at the center
+        /// 滚动直到光标显示在中间
         ScrollCursorCenter,
-        /// Scroll until the cursor displays at the top
+        /// 滚动直到光标显示在顶部
         ScrollCursorTop,
-        /// Scroll until the cursor displays at the bottom
+        /// 滚动直到光标显示在底部
         ScrollCursorBottom,
-        /// Selects the parent of the current entry.
+        /// 选中当前条目的上级
         SelectParent,
-        /// Toggles the pin status of the active editor.
+        /// 切换活动编辑器的固定状态
         ToggleActiveEditorPin,
-        /// Toggles showing symbols, excerpts and search matches for multi-buffer views.
+        /// 切换在多缓冲区视图中显示符号、摘录和搜索匹配项
         ToggleSymbols,
-        /// Unfolds the selected directory.
+        /// 展开所选目录
         UnfoldDirectory,
-        /// Toggles the outline panel.
+        /// 切换大纲面板
         Toggle,
-        /// Toggles focus on the outline panel.
+        /// 切换大纲面板的焦点
         ToggleFocus,
     ]
 );
@@ -1072,7 +1072,7 @@ impl OutlinePanel {
         cx.new(|cx| {
             let filter_editor = cx.new(|cx| {
                 let mut editor = Editor::single_line(window, cx);
-                editor.set_placeholder_text("Search buffer symbols…", window, cx);
+                editor.set_placeholder_text("搜索缓冲区符号…", window, cx);
                 editor
             });
             let filter_update_subscription = cx.subscribe_in(
@@ -1812,17 +1812,17 @@ impl OutlinePanel {
                     ui::utils::reveal_in_file_manager_label(false),
                     Box::new(RevealInFileManager),
                 )
-                .action("Open in Terminal", Box::new(OpenInTerminal))
+                .action("在终端中打开", Box::new(OpenInTerminal))
                 .when(is_unfoldable, |menu| {
-                    menu.action("Unfold Directory", Box::new(UnfoldDirectory))
+                    menu.action("展开目录", Box::new(UnfoldDirectory))
                 })
                 .when(is_foldable, |menu| {
-                    menu.action("Fold Directory", Box::new(FoldDirectory))
+                    menu.action("折叠目录", Box::new(FoldDirectory))
                 })
                 .separator()
-                .action("Copy Path", Box::new(zed_actions::workspace::CopyPath))
+                .action("复制路径", Box::new(zed_actions::workspace::CopyPath))
                 .action(
-                    "Copy Relative Path",
+                    "复制相对路径",
                     Box::new(zed_actions::workspace::CopyRelativePath),
                 )
         });
@@ -2696,9 +2696,9 @@ impl OutlinePanel {
                             .map(|icon| icon.color(color).into_any_element());
                             (icon, name)
                         }
-                        None => (None, "Untitled".to_string()),
+                        None => (None, "未命名".to_string()),
                     },
-                    None => (None, "Unknown buffer".to_string()),
+                    None => (None, "未知缓冲区".to_string()),
                 };
                 (
                     ElementId::from(("buffer", external_file.buffer_id.to_proto())),
@@ -2924,16 +2924,16 @@ impl OutlinePanel {
         h_flex()
             .id("expand-collapse")
             .role(gpui::Role::Button)
-            .aria_label(if is_expanded { "Collapse" } else { "Expand" })
+            .aria_label(if is_expanded { "折叠" } else { "展开" })
             .aria_expanded(is_expanded)
             .flex_none()
             .cursor_pointer()
             .rounded_sm()
             .hover(|style| style.bg(cx.theme().colors().ghost_element_hover))
             .tooltip(Tooltip::text(if is_expanded {
-                "Collapse"
+                "折叠"
             } else {
-                "Expand"
+                "展开"
             }))
             .on_click(
                 cx.listener(move |panel, event: &gpui::ClickEvent, window, cx| {
@@ -5263,9 +5263,9 @@ impl OutlinePanel {
     ) -> impl IntoElement {
         let contents = if self.cached_entries.is_empty() {
             let header = if query.is_some() {
-                "No matches for query"
+                "没有与查询匹配的结果"
             } else {
-                "No outlines available"
+                "没有可用的大纲"
             };
 
             v_flex()
@@ -5288,7 +5288,7 @@ impl OutlinePanel {
                     h_flex()
                         .gap_1()
                         .justify_center()
-                        .child(Label::new("Toggle Panel With").color(Color::Muted))
+                        .child(Label::new("切换面板的快捷键").color(Color::Muted))
                         .child({
                             let key_binding = match self.position(window, cx) {
                                 DockPosition::Left => {
@@ -5461,18 +5461,18 @@ impl OutlinePanel {
 
     fn render_filter_footer(&mut self, pinned: bool, cx: &mut Context<Self>) -> Div {
         let (pin_button_id, icon, icon_tooltip) = if pinned {
-            ("unpin_button", IconName::Unpin, "Unpin Outline")
+            ("unpin_button", IconName::Unpin, "取消固定大纲")
         } else {
-            ("pin_button", IconName::Pin, "Pin Active Outline")
+            ("pin_button", IconName::Pin, "固定当前大纲")
         };
 
         let has_query = self.query(cx).is_some();
         let show_symbols_toggle = self.multi_buffer_active(cx);
         let hide_symbols = self.hide_symbols_active(cx);
         let (hide_symbols_icon, hide_symbols_tooltip) = if hide_symbols {
-            (IconName::FileCodeOff, "Show Symbols")
+            (IconName::FileCodeOff, "显示符号")
         } else {
-            (IconName::FileCode, "Hide Symbols")
+            (IconName::FileCode, "隐藏符号")
         };
 
         h_flex()
@@ -5498,7 +5498,7 @@ impl OutlinePanel {
                         this.child(
                             IconButton::new("clear_filter", IconName::Close)
                                 .shape(IconButtonShape::Square)
-                                .tooltip(Tooltip::text("Clear Filter"))
+                                .tooltip(Tooltip::text("清除筛选"))
                                 .on_click(cx.listener(|outline_panel, _, window, cx| {
                                     outline_panel.filter_editor.update(cx, |editor, cx| {
                                         editor.set_text("", window, cx);
@@ -5630,7 +5630,7 @@ impl Panel for OutlinePanel {
     }
 
     fn icon_tooltip(&self, _window: &Window, _: &App) -> Option<&'static str> {
-        Some("Outline Panel")
+        Some("大纲面板")
     }
 
     fn toggle_action(&self) -> Box<dyn Action> {
@@ -5781,7 +5781,7 @@ impl Render for OutlinePanel {
                         .gap_0p5()
                         .border_b_1()
                         .border_color(cx.theme().colors().border_variant)
-                        .child(Label::new("Searching:").color(Color::Muted))
+                        .child(Label::new("正在搜索：").color(Color::Muted))
                         .child(Label::new(query_text)),
                 )
             })

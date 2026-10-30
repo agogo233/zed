@@ -11,25 +11,25 @@ use crate::{
     merge_from,
 };
 
-/// The state of the modifier keys at some point in time
+/// 某一时刻修饰键的状态
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct ModifiersContent {
-    /// The control key
+    /// Control 键
     #[serde(default)]
     pub control: bool,
-    /// The alt key
-    /// Sometimes also known as the 'meta' key
+    /// Alt 键
+    /// ，有时也称为 'meta' 键
     #[serde(default)]
     pub alt: bool,
-    /// The shift key
+    /// Shift 键
     #[serde(default)]
     pub shift: bool,
-    /// The command key, on macos
-    /// the windows key, on windows
-    /// the super key, on linux
+    /// macOS 上的 command 键
+    /// Windows 上的 Windows 键
+    /// Linux 上的 super 键
     #[serde(default)]
     pub platform: bool,
-    /// The function key
+    /// Fn 键
     #[serde(default)]
     pub function: bool,
 }
@@ -37,16 +37,16 @@ pub struct ModifiersContent {
 #[with_fallible_options]
 #[derive(Debug, Clone, Default, PartialEq, Serialize, JsonSchema)]
 pub struct AllLanguageSettingsContent {
-    /// The edit prediction settings.
+    /// 编辑预测设置
     pub edit_predictions: Option<EditPredictionSettingsContent>,
-    /// The default language settings.
+    /// 默认语言设置
     #[serde(flatten)]
     pub defaults: LanguageSettingsContent,
-    /// The settings for individual languages.
+    /// 各语言的设置
     #[serde(default)]
     pub languages: LanguageToSettingsMap,
-    /// Settings for associating file extensions and filenames
-    /// with languages.
+    /// 用于将文件扩展名和文件名
+    /// 与语言关联的设置
     pub file_types: Option<FileTypeMap>,
 }
 
@@ -85,7 +85,7 @@ impl merge_from::MergeFrom for AllLanguageSettingsContent {
     }
 }
 
-/// The provider that supplies edit predictions.
+/// 提供编辑预测的提供商
 #[derive(
     Copy, Clone, Debug, Default, Eq, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom,
 )]
@@ -127,17 +127,17 @@ impl EditPredictionProvider {
     }
 }
 
-/// The contents of the edit prediction settings.
+/// 编辑预测设置的内容
 #[with_fallible_options]
 #[derive(Clone, Debug, Default, Serialize, Deserialize, JsonSchema, MergeFrom, PartialEq)]
 pub struct EditPredictionSettingsContent {
-    /// Determines which edit prediction provider to use.
+    /// 确定要使用的编辑预测提供商
     pub provider: Option<EditPredictionProvider>,
-    /// Disable edit predictions for files matching these glob patterns.
+    /// 对匹配这些 glob 模式的文件禁用编辑预测
     ///
-    /// Use `"..."` to add patterns without repeating Zed's defaults. In project
-    /// settings, it extends the user or parent configuration value. Omit
-    /// `"..."` to replace the inherited list.
+    /// 使用 `"..."` 可在不重复 Zed 默认值的情况下添加 glob 模式。在项目
+    /// 设置中，它会扩展用户配置或父级配置的值。省略
+    /// `"..."` 则会替换继承的列表。
     ///
     /// ```json
     /// {
@@ -147,61 +147,61 @@ pub struct EditPredictionSettingsContent {
     /// }
     /// ```
     ///
-    /// Inherited patterns are inserted at `"..."`, and duplicates keep their first
-    /// occurrence.
+    /// 继承的 glob 模式会插入到 `"..."` 所在位置，重复项保留
+    /// 首次出现的条目。
     ///
-    /// Set `[]` to clear the inherited list. Omit this setting to inherit it unchanged.
+    /// 设为 `[]` 可清空继承的列表。省略此设置则会原样继承该列表。
     ///
-    /// Relative patterns are matched against paths relative to the worktree root.
-    /// Absolute patterns are matched against absolute paths. A leading `~` is
-    /// expanded to your home folder.
+    /// 相对路径模式会与相对于工作树根目录的路径进行匹配。
+    /// 绝对路径模式会与绝对路径进行匹配。开头的 `~` 会
+    /// 展开为你的主目录。
     pub disabled_globs: Option<SplicingVec>,
-    /// The mode used to display edit predictions in the buffer.
-    /// Provider support required.
+    /// 在缓冲区中显示编辑预测的模式
+    /// 需要提供商支持
     pub mode: Option<EditPredictionsMode>,
-    /// Settings specific to GitHub Copilot.
+    /// GitHub Copilot 的专项设置
     pub copilot: Option<CopilotEditPredictionSettingsContent>,
-    /// Settings specific to Codestral.
+    /// Codestral 的专项设置
     pub codestral: Option<CodestralSettingsContent>,
-    /// Settings specific to Ollama.
+    /// Ollama 的专项设置
     pub ollama: Option<OllamaEditPredictionSettingsContent>,
-    /// Settings specific to using custom OpenAI-compatible servers for edit prediction.
+    /// 使用自定义 OpenAI 兼容服务器进行编辑预测的专项设置
     pub open_ai_compatible_api: Option<CustomEditPredictionProviderSettingsContent>,
-    /// Settings specific to Zed's Edit Predictions provider.
+    /// Zed 编辑预测提供商的专项设置
     pub zed: Option<ZedEditPredictionSettingsContent>,
-    /// Settings specific to the Mercury Edit Predictions provider.
+    /// Mercury 编辑预测提供商的专项设置
     pub mercury: Option<MercuryEditPredictionSettingsContent>,
-    /// Controls whether Zed may collect training data when using Zed's Edit Predictions.
-    /// Data is only ever captured for files in projects that are detected as open source.
+    /// 控制 Zed 是否可在使用编辑预测时收集训练数据
+    /// 仅为检测为开源的项目中的文件收集数据
     ///
-    /// - `"default"`: use the preference previously set via the status-bar toggle,
-    ///   or false if no preference has been stored.
-    /// - `"yes"`: allow data collection for files in open-source projects.
-    /// - `"no"`: never allow data collection.
+    /// - `"default"`：使用之前通过状态栏开关设置的偏好，
+    ///   若未存储任何偏好，则为 false。
+    /// - `"yes"`：允许对开源项目中的文件进行数据收集。
+    /// - `"no"`：始终不允许数据收集。
     pub allow_data_collection: Option<EditPredictionDataCollectionChoice>,
 }
 
 #[with_fallible_options]
 #[derive(Clone, Debug, Default, Serialize, Deserialize, JsonSchema, MergeFrom, PartialEq)]
 pub struct CustomEditPredictionProviderSettingsContent {
-    /// Api URL to use for completions.
+    /// 用于补全的 API URL。
     ///
-    /// Default: ""
+    /// 默认值：""
     pub api_url: Option<String>,
-    /// The prompt format to use for completions. Set to `""` to have the format be derived from the model name.
+    /// 用于补全的提示词格式。设为 `""` 可根据模型名称推导格式。
     ///
-    /// Default: ""
+    /// 默认值：""
     pub prompt_format: Option<EditPredictionPromptFormatContent>,
-    /// The name of the model.
+    /// 模型名称
     ///
-    /// Default: ""
+    /// 默认值：""
     pub model: Option<String>,
-    /// Maximum tokens to generate for FIM models and self-hosted Sweep rewrite responses.
+    /// FIM 模型和自托管 Sweep 重写响应的最大生成 Token 数
     ///
-    /// Default: 256
+    /// 默认值：256
     pub max_output_tokens: Option<u32>,
-    /// The debounce delay in milliseconds before automatically requesting a prediction
-    /// after typing stops. Set to 0 to request predictions immediately.
+    /// 停止输入后自动请求预测前的防抖延迟（毫秒）。
+    /// 设置为 0 可立即请求预测。
     ///
     /// Default: 0
     pub prediction_debounce: Option<DelayMs>,
@@ -224,16 +224,27 @@ pub struct CustomEditPredictionProviderSettingsContent {
 #[serde(rename_all = "snake_case")]
 pub enum EditPredictionPromptFormatContent {
     #[default]
+    #[strum(serialize = "推断")]
     Infer,
+    #[strum(serialize = "Zeta")]
     Zeta,
+    #[strum(serialize = "Zeta2")]
     Zeta2,
+    #[strum(serialize = "Zeta2 1")]
     Zeta2_1,
+    #[strum(serialize = "Code Llama")]
     CodeLlama,
+    #[strum(serialize = "Star Coder")]
     StarCoder,
+    #[strum(serialize = "Deepseek Coder")]
     DeepseekCoder,
+    #[strum(serialize = "Qwen")]
     Qwen,
+    #[strum(serialize = "Code Gemma")]
     CodeGemma,
+    #[strum(serialize = "Codestral")]
     Codestral,
+    #[strum(serialize = "Glm")]
     Glm,
     Sweep,
 }
@@ -241,79 +252,79 @@ pub enum EditPredictionPromptFormatContent {
 #[with_fallible_options]
 #[derive(Clone, Debug, Default, Serialize, Deserialize, JsonSchema, MergeFrom, PartialEq)]
 pub struct CopilotSettingsContent {
-    /// Enterprise URI shared by Copilot Chat and edit predictions.
+    /// Copilot Chat 和编辑预测共用的企业 URI
     ///
-    /// Default: none
+    /// 默认值：none
     pub enterprise_uri: Option<String>,
 }
 
 #[with_fallible_options]
 #[derive(Clone, Debug, Default, Serialize, Deserialize, JsonSchema, MergeFrom, PartialEq)]
 pub struct CopilotEditPredictionSettingsContent {
-    /// HTTP/HTTPS proxy to use for Copilot.
+    /// Copilot 使用的 HTTP/HTTPS 代理
     ///
-    /// Default: none
+    /// 默认值：none
     pub proxy: Option<String>,
-    /// Disable certificate verification for the proxy (not recommended).
+    /// 禁用代理证书验证（不推荐）
     ///
-    /// Default: false
+    /// 默认值：false
     pub proxy_no_verify: Option<bool>,
-    /// Whether the Copilot Next Edit Suggestions feature is enabled.
+    /// 是否启用 Copilot 下一处编辑建议功能
     ///
-    /// Default: true
+    /// 默认值：true
     pub enable_next_edit_suggestions: Option<bool>,
-    /// The debounce delay in milliseconds before automatically requesting a prediction
-    /// after typing stops. Set to 0 to request predictions immediately.
+    /// 停止输入后自动请求预测前的防抖延迟（毫秒）。
+    /// 设置为 0 可立即请求预测。
     ///
-    /// Default: 75
+    /// 默认值：75
     pub prediction_debounce: Option<DelayMs>,
 }
 
 #[with_fallible_options]
 #[derive(Clone, Debug, Default, Serialize, Deserialize, JsonSchema, MergeFrom, PartialEq)]
 pub struct CodestralSettingsContent {
-    /// Model to use for completions.
+    /// 用于补全的模型
     ///
-    /// Default: "codestral-latest"
+    /// 默认值："codestral-latest"
     pub model: Option<String>,
-    /// Maximum tokens to generate.
+    /// 最大生成 Token 数
     ///
-    /// Default: 150
+    /// 默认值：150
     pub max_tokens: Option<u32>,
-    /// Api URL to use for completions.
+    /// 用于补全的 API URL。
     ///
-    /// Default: "https://codestral.mistral.ai"
+    /// 默认值："https://codestral.mistral.ai"
     pub api_url: Option<String>,
-    /// The debounce delay in milliseconds before automatically requesting a prediction
-    /// after typing stops. Set to 0 to request predictions immediately.
+    /// 停止输入后自动请求预测前的防抖延迟（毫秒）。
+    /// 设置为 0 可立即请求预测。
     ///
-    /// Default: 150
+    /// 默认值：150
     pub prediction_debounce: Option<DelayMs>,
 }
 
-/// Settings specific to Zed's Edit Predictions provider.
+/// Zed 编辑预测提供商的专项设置
 #[with_fallible_options]
 #[derive(Clone, Debug, Default, Serialize, Deserialize, JsonSchema, MergeFrom, PartialEq)]
 pub struct ZedEditPredictionSettingsContent {
-    /// The debounce delay in milliseconds before automatically requesting a prediction
-    /// after typing stops. Set to 0 to request predictions immediately.
+    /// 停止输入后自动请求预测前的防抖延迟（毫秒）。
+    /// 设置为 0 可立即请求预测。
     ///
     /// Default: 0
     pub prediction_debounce: Option<DelayMs>,
 }
 
-/// Settings specific to the Mercury Edit Predictions provider.
+/// Mercury 编辑预测提供商的专项设置
 #[with_fallible_options]
 #[derive(Clone, Debug, Default, Serialize, Deserialize, JsonSchema, MergeFrom, PartialEq)]
 pub struct MercuryEditPredictionSettingsContent {
-    /// The debounce delay in milliseconds before automatically requesting a prediction
-    /// after typing stops. Set to 0 to request predictions immediately.
+    /// 停止输入后自动请求预测前的防抖延迟（毫秒）。
+    /// 设置为 0 可立即请求预测。
     ///
     /// Default: 0
     pub prediction_debounce: Option<DelayMs>,
 }
 
-/// Ollama model name for edit predictions.
+/// 用于编辑预测的 Ollama 模型名称。
 #[with_fallible_options]
 #[derive(Clone, Debug, Serialize, Deserialize, JsonSchema, MergeFrom, PartialEq, Eq)]
 #[serde(transparent)]
@@ -340,31 +351,31 @@ impl From<OllamaModelName> for String {
 #[with_fallible_options]
 #[derive(Clone, Debug, Default, Serialize, Deserialize, JsonSchema, MergeFrom, PartialEq)]
 pub struct OllamaEditPredictionSettingsContent {
-    /// Model to use for completions.
+    /// 用于补全的模型
     ///
-    /// Default: none
+    /// 默认值：none
     pub model: Option<OllamaModelName>,
-    /// Maximum tokens to generate for FIM models and self-hosted Sweep rewrite responses.
+    /// FIM 模型和自托管 Sweep 重写响应的最大生成 Token 数
     ///
-    /// Default: 256
+    /// 默认值：256
     pub max_output_tokens: Option<u32>,
-    /// Api URL to use for completions.
+    /// 用于补全的 API URL。
     ///
-    /// Default: "http://localhost:11434"
+    /// 默认值："http://localhost:11434"
     pub api_url: Option<String>,
 
-    /// The prompt format to use for completions. Set to `""` to have the format be derived from the model name.
+    /// 用于补全的提示词格式。设为 `""` 可根据模型名称推导格式。
     ///
-    /// Default: ""
+    /// 默认值：""
     pub prompt_format: Option<EditPredictionPromptFormatContent>,
-    /// The debounce delay in milliseconds before automatically requesting a prediction
-    /// after typing stops. Set to 0 to request predictions immediately.
+    /// 停止输入后自动请求预测前的防抖延迟（毫秒）。
+    /// 设置为 0 可立即请求预测。
     ///
     /// Default: 0
     pub prediction_debounce: Option<DelayMs>,
 }
 
-/// Controls whether Zed collects training data when using Zed's Edit Predictions.
+/// 控制使用 Zed 编辑预测时是否收集训练数据
 #[derive(
     Copy,
     Clone,
@@ -381,17 +392,20 @@ pub struct OllamaEditPredictionSettingsContent {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum EditPredictionDataCollectionChoice {
-    /// Use the preference previously set via the status-bar toggle, or false
-    /// if no preference has been stored.
+    /// 使用之前通过状态栏开关设置的偏好或 false，
+    /// 未存储偏好时使用后者。
     #[default]
+    #[strum(serialize = "默认")]
     Default,
-    /// Allow Zed to collect training data from open-source projects.
+    /// 允许 Zed 从开源项目收集训练数据
+    #[strum(serialize = "是")]
     Yes,
-    /// Never allow training data collection.
+    /// 从不允许收集训练数据
+    #[strum(serialize = "否")]
     No,
 }
 
-/// The mode in which edit predictions should be displayed.
+/// 显示编辑预测的模式
 #[derive(
     Copy,
     Clone,
@@ -408,17 +422,19 @@ pub enum EditPredictionDataCollectionChoice {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum EditPredictionsMode {
-    /// If provider supports it, display inline when holding modifier key (e.g., alt).
-    /// Otherwise, eager preview is used.
+    /// 如果提供商支持，在按住修饰键（如 alt）时内联显示
+    /// 否则，使用即时预览。
     #[serde(alias = "auto")]
+    #[strum(serialize = "低调")]
     Subtle,
-    /// Display inline when there are no language server completions available.
+    /// 当没有可用的语言服务器补全时内联显示
     #[default]
     #[serde(alias = "eager_preview")]
+    #[strum(serialize = "预测优先")]
     Eager,
 }
 
-/// Controls the soft-wrapping behavior in the editor.
+/// 控制编辑器中的软换行行为
 #[derive(
     Copy,
     Clone,
@@ -434,17 +450,20 @@ pub enum EditPredictionsMode {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum AutoIndentMode {
-    /// Adjusts indentation based on syntax context when typing.
-    /// Uses tree-sitter to analyze code structure and indent accordingly.
+    /// 输入时根据语法上下文调整缩进
+    /// 使用 tree-sitter 分析代码结构并相应地调整缩进
+    #[strum(serialize = "语法感知")]
     SyntaxAware,
-    /// Preserve the indentation of the current line when creating new lines,
-    /// but don't adjust based on syntax context.
+    /// 创建新行时保留当前行的缩进，
+    /// 但不根据语法上下文进行调整。
+    #[strum(serialize = "保留缩进")]
     PreserveIndent,
-    /// No automatic indentation. New lines start at column 0.
+    /// 无自动缩进。新行从第 0 列开始。
+    #[strum(serialize = "无")]
     None,
 }
 
-/// Controls the soft-wrapping behavior in the editor.
+/// 控制编辑器中的软换行行为
 #[derive(
     Copy,
     Clone,
@@ -460,15 +479,19 @@ pub enum AutoIndentMode {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum SoftWrap {
-    /// Prefer a single line generally, unless an overly long line is encountered.
+    /// 通常保持单行，除非遇到过长的行
+    #[strum(serialize = "无")]
     None,
-    /// Deprecated: use None instead. Left to avoid breaking existing users' configs.
-    /// Prefer a single line generally, unless an overly long line is encountered.
+    /// 已弃用：改用 None。保留此项是为了避免破坏现有用户的配置
+    /// 通常保持单行，除非遇到过长的行
+    #[strum(serialize = "优先单行")]
     PreferLine,
-    /// Soft wrap lines that exceed the editor width.
+    /// 对超出编辑器宽度的行进行自动换行
+    #[strum(serialize = "编辑器宽度")]
     EditorWidth,
-    /// Soft wrap line at the preferred line length or the editor width (whichever is smaller).
+    /// 在首选行长度或编辑器宽度（取较小者）处自动换行
     #[serde(alias = "preferred_line_length")]
+    #[strum(serialize = "限定宽度")]
     Bounded,
 }
 
@@ -548,155 +571,159 @@ impl<'de> Deserialize<'de> for ConfiguredLanguageServer {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum SoftWrapIndent {
-    /// Continuation lines start at column 0.
+    /// 续行从第 0 列开始
+    #[strum(serialize = "无")]
     None,
-    /// Continuation lines match the original line's indentation.
+    /// 续行使用与原始行相同的缩进
     #[default]
+    #[strum(serialize = "相同")]
     Same,
-    /// Continuation lines get 1 extra indent level beyond the original.
+    /// 续行在原始行的基础上增加 1 级缩进
+    #[strum(serialize = "增加一级")]
     ExtraOne,
-    /// Continuation lines get 2 extra indent levels beyond the original.
+    /// 续行在原始行的基础上增加 2 级缩进
+    #[strum(serialize = "增加两级")]
     ExtraTwo,
 }
 
-/// The settings for a particular language.
+/// 特定语言的设置
 #[with_fallible_options]
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct LanguageSettingsContent {
-    /// How many columns a tab should occupy.
+    /// 制表符应占用多少列
     ///
-    /// Default: 4
+    /// 默认值：4
     #[schemars(range(min = 1, max = 128))]
     pub tab_size: Option<NonZeroU32>,
-    /// Whether to indent lines using tab characters, as opposed to multiple
-    /// spaces.
+    /// 是否使用制表符而不是多个
+    /// 空格来缩进行。
     ///
-    /// Default: false
+    /// 默认值：false
     pub hard_tabs: Option<bool>,
-    /// How to soft-wrap long lines of text.
+    /// 长文本行的软换行方式
     ///
-    /// Default: none
+    /// 默认值：none
     pub soft_wrap: Option<SoftWrap>,
-    /// How to indent soft-wrapped continuation lines.
+    /// 软换行续行的缩进方式
     ///
-    /// Default: same
+    /// 默认值：same
     pub soft_wrap_indent: Option<SoftWrapIndent>,
-    /// The column at which to soft-wrap lines, for buffers where soft-wrap
-    /// is enabled.
+    /// 对行进行软换行的列位置，适用于
+    /// 已启用软换行的缓冲区。
     ///
-    /// Default: 80
+    /// 默认值：80
     pub preferred_line_length: Option<u32>,
-    /// Whether to show wrap guides in the editor. Setting this to true will
-    /// show a guide at the 'preferred_line_length' value if softwrap is set to
-    /// 'preferred_line_length', and will show any additional guides as specified
-    /// by the 'wrap_guides' setting.
+    /// 是否在编辑器中显示换行参考线。设置为 true 后，若
+    /// softwrap 设为 'preferred_line_length'，会显示一条参考线；
+    /// 该参考线位于 'preferred_line_length' 处，还会显示额外参考线。
+    /// 这些参考线由 'wrap_guides' 设置指定。
     ///
-    /// Default: true
+    /// 默认值：true
     pub show_wrap_guides: Option<bool>,
-    /// Character counts at which to show wrap guides in the editor.
+    /// 在编辑器中显示换行参考线的字符数
     ///
-    /// Default: []
+    /// 默认值：[]
     pub wrap_guides: Option<Vec<usize>>,
-    /// Indent guide related settings.
+    /// 缩进参考线相关设置。
     pub indent_guides: Option<IndentGuideSettingsContent>,
-    /// Whether or not to perform a buffer format before saving.
+    /// 保存前是否对缓冲区执行格式化
     ///
-    /// Default: off
+    /// 默认值：off
     pub format_on_save: Option<FormatOnSave>,
-    /// Whether or not to remove any trailing whitespace from lines of a buffer
-    /// before saving it.
+    /// 是否移除缓冲区各行末尾的空白字符
+    /// （保存之前）。
     ///
-    /// Default: true
+    /// 默认值：true
     pub remove_trailing_whitespace_on_save: Option<bool>,
-    /// Whether or not to ensure there's a single newline at the end of a buffer
-    /// when saving it.
+    /// 是否确保缓冲区末尾有且仅有一个换行符
+    /// （保存时）。
     ///
-    /// Default: true
+    /// 默认值：true
     pub ensure_final_newline_on_save: Option<bool>,
-    /// How line endings should be handled for new files and during format and
-    /// save operations.
+    /// 新文件以及在格式化和
+    /// 保存操作时行尾的处理方式。
     ///
-    /// - `detect`: Detect existing line endings and otherwise use the platform
-    ///   default (`lf` on Unix, `crlf` on Windows).
-    /// - `prefer_lf`: Prefer LF for new files and files with no existing line
-    ///   ending.
-    /// - `prefer_crlf`: Prefer CRLF for new files and files with no existing
-    ///   line ending.
-    /// - `enforce_lf`: Enforce LF during format and save.
-    /// - `enforce_crlf`: Enforce CRLF during format and save.
+    /// - `detect`：检测现有行尾符，否则使用平台
+    ///   默认值（Unix 上为 `lf`，Windows 上为 `crlf`）。
+    /// - `prefer_lf`：对新文件和没有现有行尾符的文件优先使用 LF
+    ///   行尾符。
+    /// - `prefer_crlf`：对新文件和无现有行尾符的文件优先使用 CRLF
+    ///   行尾符。
+    /// - `enforce_lf`：在格式化和保存时强制使用 LF。
+    /// - `enforce_crlf`：在格式化和保存时强制使用 CRLF。
     ///
-    /// The EditorConfig `end_of_line` property overrides this setting and
-    /// behaves like `enforce_lf` or `enforce_crlf`.
+    /// EditorConfig 的 `end_of_line` 属性会覆盖此设置，且
+    /// 其行为类似于 `enforce_lf` 或 `enforce_crlf`。
     ///
-    /// Default: detect
+    /// 默认值：detect
     pub line_ending: Option<LineEndingSetting>,
-    /// How to perform a buffer format.
+    /// 缓冲区格式化的执行方式
     ///
-    /// Default: auto
+    /// 默认值：auto
     pub formatter: Option<FormatterList>,
-    /// Zed's Prettier integration settings.
-    /// Allows to enable/disable formatting with Prettier
-    /// and configure default Prettier, used when no project-level Prettier installation is found.
+    /// Zed 的 Prettier 集成设置。
+    /// 允许启用/禁用 Prettier 格式化
+    /// 并配置默认的 Prettier，当项目级 Prettier 未安装时使用
     ///
-    /// Default: off
+    /// 默认值：off
     pub prettier: Option<PrettierSettingsContent>,
-    /// Whether to automatically close JSX tags.
+    /// 是否自动关闭 JSX 标签
     pub jsx_tag_auto_close: Option<JsxTagAutoCloseSettingsContent>,
-    /// Whether to use language servers to provide code intelligence.
+    /// 是否使用语言服务器提供代码智能功能
     ///
-    /// Default: true
+    /// 默认值：true
     pub enable_language_server: Option<bool>,
-    /// The list of language servers to use (or disable) for this language.
+    /// 为此语言使用（或禁用）的语言服务器列表
     ///
-    /// This array should consist of language server IDs, as well as the following
-    /// special tokens:
-    /// - `"!<language_server_id>"` - A language server ID prefixed with a `!` will be disabled.
-    /// - `"..."` - A placeholder to refer to the **rest** of the registered language servers for this language.
+    /// 此数组应包含语言服务器 ID 以及以下
+    /// 特殊标记：
+    /// - `"!<language_server_id>"` — 以 `!` 为前缀的语言服务器 ID 将被禁用。
+    /// - `"..."` — 用于引用该语言**其余**已注册语言服务器的占位符。
     ///
-    /// Default: ["..."]
+    /// 默认值：["..."]
     pub language_servers: Option<Vec<ConfiguredLanguageServer>>,
-    /// Controls how semantic tokens from language servers are used for syntax highlighting.
+    /// 控制语言服务器的语义标记在语法高亮中的使用方式
     ///
-    /// Options:
-    /// - "off": Do not request semantic tokens from language servers.
-    /// - "combined": Use LSP semantic tokens together with tree-sitter highlighting.
-    /// - "full": Use LSP semantic tokens exclusively, replacing tree-sitter highlighting.
+    /// 选项：
+    /// - "off"：不向语言服务器请求语义标记。
+    /// - "combined"：将 LSP 语义标记与 tree-sitter 高亮结合使用。
+    /// - "full"：仅使用 LSP 语义标记，替换 tree-sitter 高亮。
     ///
-    /// Default: "off"
+    /// 默认值："off"
     pub semantic_tokens: Option<SemanticTokens>,
-    /// Controls whether folding ranges from language servers are used instead of
-    /// tree-sitter and indent-based folding.
+    /// 控制是否使用来自语言服务器的折叠范围来替代
+    /// 基于 tree-sitter 和缩进的代码折叠
     ///
-    /// Options:
-    /// - "off": Use tree-sitter and indent-based folding (default).
-    /// - "on": Use LSP folding wherever possible, falling back to tree-sitter and indent-based folding when no results were returned by the server.
+    /// 选项：
+    /// - "off"：使用 tree-sitter 和基于缩进的折叠（默认）。
+    /// - "on"：尽可能使用 LSP 折叠，当服务器未返回结果时回退到 tree-sitter 和基于缩进的折叠。
     ///
-    /// Default: "off"
+    /// 默认值："off"
     pub document_folding_ranges: Option<DocumentFoldingRanges>,
-    /// Controls the source of document symbols used for outlines and breadcrumbs.
+    /// 控制用于大纲和面包屑的文档符号来源
     ///
-    /// Options:
-    /// - "off": Use tree-sitter queries to compute document symbols (default).
-    /// - "on": Use the language server's `textDocument/documentSymbol` LSP response. When enabled, tree-sitter is not used for document symbols.
+    /// 选项：
+    /// - "off"：使用 tree-sitter 查询计算文档符号（默认）。
+    /// - "on"：使用语言服务器的 `textDocument/documentSymbol` LSP 响应。启用后，不使用 tree-sitter 计算文档符号。
     ///
-    /// Default: "off"
+    /// 默认值："off"
     pub document_symbols: Option<DocumentSymbols>,
-    /// Controls where the `editor::Rewrap` action is allowed for this language.
+    /// 控制此语言中 `editor::Rewrap` 操作的允许范围
     ///
-    /// Note: This setting has no effect in Vim mode, as rewrap is already
-    /// allowed everywhere.
+    /// 注意：此设置在 Vim 模式下无效，因为重排
+    /// 已允许在所有位置使用。
     ///
-    /// Default: "in_comments"
+    /// 默认值："in_comments"
     pub allow_rewrap: Option<RewrapBehavior>,
-    /// Controls whether edit predictions are shown immediately (true)
-    /// or manually by triggering `editor::ShowEditPrediction` (false).
+    /// 控制编辑预测是否立即显示（true）
+    /// 或通过触发 `editor::ShowEditPrediction` 手动显示（false）。
     ///
-    /// Default: true
+    /// 默认值：true
     pub show_edit_predictions: Option<bool>,
-    /// Disable edit predictions in these language scopes, such as "comment" and
+    /// 在这些语言作用域中禁用编辑预测，例如 "comment" 和
     /// "string".
     ///
-    /// Default:
+    /// 默认值：
     ///
     /// ```json
     /// {
@@ -704,10 +731,10 @@ pub struct LanguageSettingsContent {
     /// }
     /// ```
     ///
-    /// Use `"..."` to add scopes without repeating the inherited list. In project
-    /// settings, it extends the user or parent configuration value. In
-    /// language-specific settings, it extends the scopes inherited by that
-    /// language. Omit `"..."` to replace the inherited list.
+    /// 使用 `"..."` 可在不重复继承列表的情况下添加作用域。在项目
+    /// 设置中，它会扩展用户配置或父级配置的值。在
+    /// 特定语言的设置中，它会扩展该
+    /// 语言所继承的作用域。省略 `"..."` 则会替换继承的列表。
     ///
     /// ```json
     /// {
@@ -720,110 +747,110 @@ pub struct LanguageSettingsContent {
     /// }
     /// ```
     ///
-    /// Inherited scopes are inserted at `"..."`, and duplicates keep their first
-    /// occurrence.
+    /// 继承的作用域会插入到 `"..."` 所在位置，重复项保留
+    /// 首次出现的条目。
     ///
-    /// Set `[]` to clear the inherited list. Omit this setting to inherit it unchanged.
+    /// 设为 `[]` 可清空继承的列表。省略此设置则会原样继承该列表。
     pub edit_predictions_disabled_in: Option<SplicingVec>,
-    /// Whether to show tabs and spaces in the editor.
+    /// 是否在编辑器中显示制表符和空格
     pub show_whitespaces: Option<ShowWhitespaceSetting>,
-    /// Visible characters used to render whitespace when show_whitespaces is enabled.
+    /// 启用 show_whitespaces 时用于渲染空白字符的可见字符。
     ///
-    /// Default: "•" for spaces, "→" for tabs.
+    /// 默认值：空格用 "•"，制表符用 "→"
     pub whitespace_map: Option<WhitespaceMapContent>,
-    /// Whether to start a new line with a comment when a previous line is a comment as well.
+    /// 当上一行也是注释时，是否在新行开头自动添加注释
     ///
-    /// Default: true
+    /// 默认值：true
     pub extend_comment_on_newline: Option<bool>,
-    /// Whether to continue markdown lists when pressing enter.
+    /// 是否在按下 Enter 键时继续 Markdown 列表
     ///
-    /// Default: true
+    /// 默认值：true
     pub extend_list_on_newline: Option<bool>,
-    /// Whether to indent list items when pressing tab after a list marker.
+    /// 是否在列表标记后按 Tab 键时缩进列表项
     ///
-    /// Default: true
+    /// 默认值：true
     pub indent_list_on_tab: Option<bool>,
-    /// Inlay hint related settings.
+    /// 内嵌提示相关设置。
     pub inlay_hints: Option<InlayHintSettingsContent>,
-    /// Whether to automatically type closing characters for you. For example,
-    /// when you type '(', Zed will automatically add a closing ')' at the correct position.
+    /// 是否自动为你输入闭合字符。例如，
+    /// 输入 '(' 时，Zed 会自动在正确位置添加右括号 ')'
     ///
-    /// Default: true
+    /// 默认值：true
     pub use_autoclose: Option<bool>,
-    /// Whether to automatically surround text with characters for you. For example,
-    /// when you select text and type '(', Zed will automatically surround text with ().
+    /// 是否自动为你用字符包围文本。例如，
+    /// 选中文本并输入 '(' 时，Zed 会自动用 () 包围所选文本
     ///
-    /// Default: true
+    /// 默认值：true
     pub use_auto_surround: Option<bool>,
-    /// Controls how the editor handles the autoclosed characters.
-    /// When set to `false`(default), skipping over and auto-removing of the closing characters
-    /// happen only for auto-inserted characters.
-    /// Otherwise(when `true`), the closing characters are always skipped over and auto-removed
-    /// no matter how they were inserted.
+    /// 控制编辑器对自动闭合字符的处理方式
+    /// 设为 `false`（默认）时，跳过并自动删除闭合字符
+    /// 仅对自动插入的字符生效。
+    /// 否则（当值为 `true` 时），闭合字符将始终被跳过并自动删除
+    /// 无论它们是以何种方式插入的。
     ///
-    /// Default: false
+    /// 默认值：false
     pub always_treat_brackets_as_autoclosed: Option<bool>,
-    /// Whether to use additional LSP queries to format (and amend) the code after
-    /// every "trigger" symbol input, defined by LSP server capabilities.
+    /// 是否使用额外的 LSP 查询，以便在
+    /// 每次输入由 LSP 服务器能力定义的“触发”符号后格式化（并修正）代码。
     ///
-    /// Default: true
+    /// 默认值：true
     pub use_on_type_format: Option<bool>,
-    /// Which code actions to run on save before the formatter.
-    /// These are not run if formatting is off.
+    /// 保存时在格式化器之前运行哪些代码操作
+    /// 若格式化已关闭，这些操作不会运行
     ///
-    /// Default: {} (or {"source.organizeImports": true} for Go).
+    /// 默认值：{}（对于 Go 为 {"source.organizeImports": true}）
     pub code_actions_on_format: Option<HashMap<String, bool>>,
-    /// Whether to perform linked edits of associated ranges, if the language server supports it.
-    /// For example, when editing opening <html> tag, the contents of the closing </html> tag will be edited as well.
+    /// 是否执行关联范围的联动编辑（若语言服务器支持）
+    /// 例如，编辑 <html> 开始标签时，对应的 </html> 闭合标签内容也会同步编辑
     ///
-    /// Default: true
+    /// 默认值：true
     pub linked_edits: Option<bool>,
-    /// Controls automatic indentation behavior when typing.
+    /// 控制输入时的自动缩进行为
     ///
-    /// - "syntax_aware": Adjusts indentation based on syntax context (default)
-    /// - "preserve_indent": Preserves current line's indentation on new lines
-    /// - "none": No automatic indentation
+    /// - "syntax_aware"：根据语法上下文调整缩进（默认）
+    /// - "preserve_indent"：在新行上保留当前行的缩进
+    /// - "none"：不自动缩进
     ///
-    /// Default: syntax_aware
+    /// 默认值：syntax_aware
     pub auto_indent: Option<AutoIndentMode>,
-    /// Whether indentation of pasted content should be adjusted based on the context.
+    /// 粘贴内容的缩进是否应根据上下文进行调整
     ///
-    /// Default: true
+    /// 默认值：true
     pub auto_indent_on_paste: Option<bool>,
-    /// Task configuration for this language.
+    /// 此语言的任务配置
     ///
-    /// Default: {}
+    /// 默认值：{}
     pub tasks: Option<LanguageTaskSettingsContent>,
-    /// Whether to pop the completions menu while typing in an editor without
-    /// explicitly requesting it.
+    /// 是否在编辑器中输入时自动弹出补全菜单
+    /// （无需显式触发）。
     ///
-    /// Default: true
+    /// 默认值：true
     pub show_completions_on_input: Option<bool>,
-    /// Whether to display inline and alongside documentation for items in the
-    /// completions menu.
+    /// 是否为补全菜单中的项显示内联及并排
+    /// 文档。
     ///
-    /// Default: true
+    /// 默认值：true
     pub show_completion_documentation: Option<bool>,
-    /// Controls how completions are processed for this language.
+    /// 控制此语言的补全处理方式
     pub completions: Option<CompletionSettingsContent>,
-    /// Preferred debuggers for this language.
+    /// 该语言的首选调试器
     ///
-    /// Default: []
+    /// 默认值：[]
     pub debuggers: Option<Vec<String>>,
-    /// Whether to enable word diff highlighting in the editor.
+    /// 是否在编辑器中启用单词级差异高亮
     ///
-    /// When enabled, changed words within modified lines are highlighted
-    /// to show exactly what changed.
+    /// 启用后，已修改行中发生变化的单词将被高亮显示
+    /// 精确显示变更内容
     ///
-    /// Default: true
+    /// 默认值：true
     pub word_diff_enabled: Option<bool>,
-    /// Whether to use tree-sitter bracket queries to detect and colorize the brackets in the editor.
+    /// 是否使用 tree-sitter 括号查询来检测并为编辑器中的括号着色
     ///
-    /// Default: false
+    /// 默认值：false
     pub colorize_brackets: Option<bool>,
 }
 
-/// Controls how whitespace should be displayedin the editor.
+/// 控制编辑器中空白字符的显示方式
 #[derive(
     Copy,
     Clone,
@@ -839,20 +866,25 @@ pub struct LanguageSettingsContent {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum ShowWhitespaceSetting {
-    /// Draw whitespace only for the selected text.
+    /// 仅为所选文本绘制空白符
+    #[strum(serialize = "选择")]
     Selection,
-    /// Do not draw any tabs or spaces.
+    /// 不绘制任何制表符或空格
+    #[strum(serialize = "无")]
     None,
-    /// Draw all invisible symbols.
+    /// 绘制所有不可见符号
+    #[strum(serialize = "全部")]
     All,
-    /// Draw whitespaces at boundaries only.
+    /// 仅在边界处绘制空白符
     ///
-    /// For a whitespace to be on a boundary, any of the following conditions need to be met:
-    /// - It is a tab
-    /// - It is adjacent to an edge (start or end)
-    /// - It is adjacent to a whitespace (left or right)
+    /// 空白字符处于边界位置需满足以下任一条件：
+    /// - 是制表符
+    /// - 紧邻边界（开头或结尾）
+    /// - 紧邻空白字符（左侧或右侧）
+    #[strum(serialize = "边界")]
     Boundary,
-    /// Draw whitespaces only after non-whitespace characters.
+    /// 仅在非空白字符后绘制空白符
+    #[strum(serialize = "尾随")]
     Trailing,
 }
 
@@ -863,7 +895,7 @@ pub struct WhitespaceMapContent {
     pub tab: Option<char>,
 }
 
-/// The behavior of `editor::Rewrap`.
+/// `editor::Rewrap` 的行为
 #[derive(
     Debug,
     PartialEq,
@@ -879,87 +911,90 @@ pub struct WhitespaceMapContent {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum RewrapBehavior {
-    /// Only rewrap within comments.
+    /// 仅在注释内重新换行
     #[default]
+    #[strum(serialize = "在注释中")]
     InComments,
-    /// Only rewrap within the current selection(s).
+    /// 仅在当前选区内重新换行
+    #[strum(serialize = "在选区中")]
     InSelections,
-    /// Allow rewrapping anywhere.
+    /// 允许在任意位置重新换行
+    #[strum(serialize = "任意位置")]
     Anywhere,
 }
 
 #[with_fallible_options]
 #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct JsxTagAutoCloseSettingsContent {
-    /// Enables or disables auto-closing of JSX tags.
+    /// 启用或禁用 JSX 标签的自动关闭
     pub enabled: Option<bool>,
 }
 
-/// The settings for inlay hints.
+/// 内嵌提示的设置
 #[with_fallible_options]
 #[derive(Clone, Default, Debug, Serialize, Deserialize, JsonSchema, MergeFrom, PartialEq, Eq)]
 pub struct InlayHintSettingsContent {
-    /// Global switch to toggle hints on and off.
+    /// 用于开启或关闭提示的全局开关
     ///
-    /// Default: false
+    /// 默认值：false
     pub enabled: Option<bool>,
-    /// Global switch to toggle inline values on and off when debugging.
+    /// 调试时用于开关内联值显示的全局开关
     ///
-    /// Default: true
+    /// 默认值：true
     pub show_value_hints: Option<bool>,
-    /// Whether type hints should be shown.
+    /// 是否显示类型提示
     ///
-    /// Default: true
+    /// 默认值：true
     pub show_type_hints: Option<bool>,
-    /// Whether parameter hints should be shown.
+    /// 是否显示参数提示
     ///
-    /// Default: true
+    /// 默认值：true
     pub show_parameter_hints: Option<bool>,
-    /// Whether other hints should be shown.
+    /// 是否显示其他提示
     ///
-    /// Default: true
+    /// 默认值：true
     pub show_other_hints: Option<bool>,
-    /// Whether to show a background for inlay hints.
+    /// 是否为内嵌提示显示背景
     ///
-    /// If set to `true`, the background will use the `hint.background` color
-    /// from the current theme.
+    /// 如果设置为 `true`，背景将使用 `hint.background` 颜色
+    /// （来自当前主题）。
     ///
-    /// Default: false
+    /// 默认值：false
     pub show_background: Option<bool>,
-    /// Whether or not to debounce inlay hints updates after buffer edits.
+    /// 是否对缓冲区编辑后的内嵌提示更新进行防抖
     ///
-    /// Set to 0 to disable debouncing.
+    /// 设为 0 可禁用防抖
     ///
-    /// Default: 700
+    /// 默认值：700
     pub edit_debounce_ms: Option<u64>,
-    /// Whether or not to debounce inlay hints updates after buffer scrolls.
+    /// 是否对缓冲区滚动后的内嵌提示更新进行防抖
     ///
-    /// Set to 0 to disable debouncing.
+    /// 设为 0 可禁用防抖
     ///
-    /// Default: 50
+    /// 默认值：50
     pub scroll_debounce_ms: Option<u64>,
-    /// Toggles inlay hints (hides or shows) when the user presses the modifiers specified.
-    /// If only a subset of the modifiers specified is pressed, hints are not toggled.
-    /// If no modifiers are specified, this is equivalent to `null`.
+    /// 当用户按下指定修饰键时切换内嵌提示（隐藏或显示）
+    /// 如果仅按下指定修饰键的子集，则不会切换提示
+    /// 如果未指定修饰键，则等同于 `null`
     ///
-    /// Default: null
+    /// 默认值：null
     pub toggle_on_modifiers_press: Option<ModifiersContent>,
 }
 
-/// The kind of an inlay hint.
+/// 内嵌提示的种类
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum InlayHintKind {
-    /// An inlay hint for a type.
+    /// 类型的内嵌提示。
     Type,
-    /// An inlay hint for a parameter.
+    /// 参数的内嵌提示。
     Parameter,
 }
 
 impl InlayHintKind {
-    /// Returns the [`InlayHintKind`]fromthe given name.
+    /// 根据给定名称返回 [`InlayHintKind`]
     ///
-    /// Returns `None` if `name` does not match any of the expected
-    /// string representations.
+    /// 若 `name` 与任何预期值均不匹配，则返回 `None`；预期值均为
+    /// 字符串表示形式。
     pub fn from_name(name: &str) -> Option<Self> {
         match name {
             "type" => Some(InlayHintKind::Type),
@@ -968,7 +1003,7 @@ impl InlayHintKind {
         }
     }
 
-    /// Returns the name of this [`InlayHintKind`].
+    /// 返回此 [`InlayHintKind`] 的名称
     pub fn name(&self) -> &'static str {
         match self {
             InlayHintKind::Type => "type",
@@ -977,31 +1012,31 @@ impl InlayHintKind {
     }
 }
 
-/// Controls how completions are processed for this language.
+/// 控制此语言的补全处理方式
 #[with_fallible_options]
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, JsonSchema, MergeFrom, Default)]
 #[serde(rename_all = "snake_case")]
 pub struct CompletionSettingsContent {
-    /// Controls how words are completed.
-    /// For large documents, not all words may be fetched for completion.
+    /// 控制单词的补全方式
+    /// 对于大型文档，可能无法获取所有词语用于补全
     ///
     /// Default: `fallback`
     pub words: Option<WordsCompletionMode>,
-    /// How many characters has to be in the completions query to automatically show the words-based completions.
-    /// Before that value, it's still possible to trigger the words-based completion manually with the corresponding editor command.
+    /// 补全查询中需要多少个字符才能自动显示基于单词的补全
+    /// 在此值以下，仍可通过相应的编辑器命令手动触发基于单词的补全。
     ///
-    /// Default: 3
+    /// 默认值：3
     pub words_min_length: Option<u32>,
-    /// Whether to fetch LSP completions or not.
+    /// 是否获取 LSP 补全
     ///
-    /// Default: true
+    /// 默认值：true
     pub lsp: Option<bool>,
-    /// When fetching LSP completions, determines how long to wait for a response of a particular server.
-    /// When set to 0, waits indefinitely.
+    /// 获取 LSP 补全时，确定等待特定服务器响应的时长
+    /// 设为 0 时，无限等待
     ///
     /// Default: 0
     pub lsp_fetch_timeout_ms: Option<u64>,
-    /// Controls how LSP completions are inserted.
+    /// 控制 LSP 补全的插入方式
     ///
     /// Default: "replace_suffix"
     pub lsp_insert_mode: Option<LspInsertMode>,
@@ -1022,19 +1057,23 @@ pub struct CompletionSettingsContent {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum LspInsertMode {
-    /// Replaces text before the cursor, using the `insert` range described in the LSP specification.
+    /// 使用 LSP 规范中的 `insert` 范围替换光标前的文本
+    #[strum(serialize = "插入")]
     Insert,
-    /// Replaces text before and after the cursor, using the `replace` range described in the LSP specification.
+    /// 使用 LSP 规范中的 `replace` 范围替换光标前后的文本
+    #[strum(serialize = "替换")]
     Replace,
-    /// Behaves like `"replace"` if the text that would be replaced is a subsequence of the completion text,
-    /// and like `"insert"` otherwise.
+    /// 若将被替换的文本是补全内容的子序列，则行为类似 `"replace"`，
+    /// 否则类似于 `"insert"`。
+    #[strum(serialize = "替换子序列")]
     ReplaceSubsequence,
-    /// Behaves like `"replace"` if the text after the cursor is a suffix of the completion, and like
-    /// `"insert"` otherwise.
+    /// 若光标后的文本是补全的后缀，则行为类似 `"replace"`，否则类似
+    /// `"insert"`。
+    #[strum(serialize = "替换后缀")]
     ReplaceSuffix,
 }
 
-/// Controls how document's words are completed.
+/// 控制文档中单词的补全方式
 #[derive(
     Copy,
     Clone,
@@ -1050,40 +1089,43 @@ pub enum LspInsertMode {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum WordsCompletionMode {
-    /// Always fetch document's words for completions along with LSP completions.
+    /// 始终获取文档中的单词以与 LSP 补全一同提供补全。
+    #[strum(serialize = "已启用")]
     Enabled,
-    /// Only if LSP response errors or times out,
-    /// use document's words to show completions.
+    /// 仅当 LSP 响应出错或超时时，
+    /// 使用文档中的词汇提供补全
+    #[strum(serialize = "回退")]
     Fallback,
-    /// Never fetch or complete document's words for completions.
-    /// (Word-based completions can still be queried via a separate action)
+    /// 从不获取或补全文档中的词语
+    /// （基于单词的补全仍可通过独立操作查询）
+    #[strum(serialize = "已禁用")]
     Disabled,
 }
 
-/// Allows to enable/disable formatting with Prettier
-/// and configure default Prettier, used when no project-level Prettier installation is found.
-/// Prettier formatting is disabled by default.
+/// 允许启用/禁用 Prettier 格式化
+/// 并配置默认的 Prettier，当项目级 Prettier 未安装时使用
+/// Prettier 格式化默认禁用
 #[with_fallible_options]
 #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct PrettierSettingsContent {
-    /// Enables or disables formatting with Prettier for a given language.
+    /// 为指定语言启用或禁用 Prettier 格式化
     pub allowed: Option<bool>,
 
-    /// Forces Prettier integration to use a specific parser name when formatting files with the language.
+    /// 强制 Prettier 集成在格式化该语言文件时使用指定的解析器名称
     pub parser: Option<String>,
 
-    /// Forces Prettier integration to use specific plugins when formatting files with the language.
-    /// The default Prettier will be installed with these plugins.
+    /// 强制 Prettier 集成在格式化该语言文件时使用指定插件
+    /// 默认 Prettier 将与这些插件一起安装
     pub plugins: Option<HashSet<String>>,
 
-    /// Default Prettier options, in the format as in package.json section for Prettier.
-    /// If project installs Prettier via its package.json, these options will be ignored.
+    /// 默认 Prettier 选项，格式与 package.json 中 Prettier 部分相同
+    /// 如果项目通过 package.json 安装了 Prettier，这些选项将被忽略
     #[serde(flatten)]
     pub options: Option<HashMap<String, serde_json::Value>>,
 }
 
 /// TODO: this should just be a bool
-/// Controls the behavior of formatting files when they are saved.
+/// 控制保存文件时的格式化行为
 #[derive(
     Debug,
     Clone,
@@ -1099,23 +1141,27 @@ pub struct PrettierSettingsContent {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum FormatOnSave {
-    /// Files should be formatted on save.
+    /// 文件应在保存时格式化
+    #[strum(serialize = "开启")]
     On,
-    /// Files should not be formatted on save.
+    /// 文件不应在保存时格式化
+    #[strum(serialize = "关闭")]
     Off,
-    /// Only lines with unstaged changes are formatted on save.
-    /// Requires source control and LSP range formatting support.
-    /// If no git diff is available or if the LSP doesn't support
-    /// range formatting, formatting is skipped.
+    /// 保存时仅格式化包含未暂存更改的行。
+    /// 需要版本控制和 LSP 范围格式化支持。
+    /// 如果没有可用的 Git 差异，或 LSP 不支持
+    /// 范围格式化，则跳过格式化。
+    #[strum(serialize = "修改内容")]
     Modifications,
-    /// Only lines with unstaged changes are formatted on save.
-    /// If no git diff is available (e.g., when source control is
-    /// unavailable) or if the LSP doesn't support range formatting,
-    /// falls back to formatting the whole file.
+    /// 保存时仅格式化包含未暂存更改的行。
+    /// 如果没有可用的 Git 差异（例如版本控制
+    /// 不可用），或 LSP 不支持范围格式化，
+    /// 则回退到格式化整个文件。
+    #[strum(serialize = "修改内容（若可用）")]
     ModificationsIfAvailable,
 }
 
-/// Controls how line endings are normalized when a buffer is saved.
+/// 控制保存缓冲区时行尾的规范化方式
 #[derive(
     Debug,
     Clone,
@@ -1131,27 +1177,27 @@ pub enum FormatOnSave {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum LineEndingSetting {
-    /// Preserve the existing line endings of the file. New files use the
-    /// platform default line ending.
-    #[strum(serialize = "Detect")]
+    /// 保留文件现有的行尾符。新文件使用
+    /// 平台默认行尾符。
+    #[strum(serialize = "自动检测")]
     Detect,
-    /// Use LF for new files and files with no existing line-ending
-    /// convention, while preserving existing LF or CRLF files.
-    #[strum(serialize = "Prefer LF")]
+    /// 对新文件及没有既定行尾约定的文件使用 LF
+    /// 规范，同时保留现有的 LF 或 CRLF 文件。
+    #[strum(serialize = "首选 LF")]
     PreferLf,
-    /// Use CRLF for new files and files with no existing line-ending
-    /// convention, while preserving existing LF or CRLF files.
-    #[strum(serialize = "Prefer CRLF")]
+    /// 对新文件及没有既定行尾约定的文件使用 CRLF
+    /// 规范，同时保留现有的 LF 或 CRLF 文件。
+    #[strum(serialize = "首选 CRLF")]
     PreferCrlf,
-    /// Normalize line endings to LF (`\n`) during format and save.
-    #[strum(serialize = "Enforce LF")]
+    /// 在格式化和保存时将行尾规范化为 LF（`\n`）。
+    #[strum(serialize = "强制 LF")]
     EnforceLf,
-    /// Normalize line endings to CRLF (`\r\n`) during format and save.
-    #[strum(serialize = "Enforce CRLF")]
+    /// 在格式化和保存时将行尾规范化为 CRLF（`\r\n`）。
+    #[strum(serialize = "强制 CRLF")]
     EnforceCrlf,
 }
 
-/// Controls which formatters should be used when formatting code.
+/// 控制格式化代码时使用的格式化工具
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, JsonSchema, MergeFrom)]
 #[serde(untagged)]
 pub enum FormatterList {
@@ -1174,28 +1220,28 @@ impl AsRef<[Formatter]> for FormatterList {
     }
 }
 
-/// Controls which formatter should be used when formatting code. If there are multiple formatters, they are executed in the order of declaration.
+/// 控制格式化代码时使用的格式化工具；若有多个格式化工具，则按声明顺序依次执行
 #[derive(Clone, Default, Debug, Serialize, Deserialize, PartialEq, Eq, JsonSchema, MergeFrom)]
 #[serde(rename_all = "snake_case")]
 pub enum Formatter {
-    /// Format files using Zed's Prettier integration (if applicable),
-    /// or falling back to formatting via language server.
+    /// 使用 Zed 的 Prettier 集成格式化文件（如适用），
+    /// 或回退为通过语言服务器进行格式化。
     #[default]
     Auto,
-    /// Do not format code.
+    /// 不格式化代码
     None,
-    /// Format code using Zed's Prettier integration.
+    /// 使用 Zed 的 Prettier 集成来格式化代码
     Prettier,
-    /// Format code using an external command.
+    /// 使用外部命令格式化代码
     External {
-        /// The external program to run.
+        /// 要运行的外部程序
         command: String,
-        /// The arguments to pass to the program.
+        /// 传递给程序的参数
         arguments: Option<Vec<String>>,
     },
-    /// Files should be formatted using a code action executed by language servers.
+    /// 文件应使用语言服务器执行的代码操作进行格式化
     CodeAction(String),
-    /// Format code using a language server.
+    /// 使用语言服务器格式化代码
     #[serde(untagged)]
     LanguageServer(LanguageServerFormatterSpecifier),
 }
@@ -1242,11 +1288,11 @@ impl From<LanguageServerFormatterSpecifier> for LanguageServerVariantContent {
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, JsonSchema, MergeFrom)]
 #[serde(rename_all = "snake_case", untagged)]
 enum LanguageServerVariantContent {
-    /// Format code using a specific language server.
+    /// 使用指定的语言服务器格式化代码
     Specific {
         language_server: LanguageServerSpecifierContent,
     },
-    /// Format code using the current language server.
+    /// 使用当前语言服务器格式化代码
     Current(CurrentLanguageServerContent),
 }
 
@@ -1260,59 +1306,59 @@ enum CurrentLanguageServerContent {
 #[derive(Clone, Default, Debug, Serialize, Deserialize, PartialEq, Eq, JsonSchema, MergeFrom)]
 #[serde(rename_all = "snake_case")]
 struct LanguageServerSpecifierContent {
-    /// The name of the language server to format with
+    /// 用于格式化的语言服务器名称
     name: Option<String>,
 }
 
-/// The settings for indent guides.
+/// 缩进参考线的设置
 #[with_fallible_options]
 #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct IndentGuideSettingsContent {
-    /// Whether to display indent guides in the editor.
+    /// 是否在编辑器中显示缩进参考线
     ///
-    /// Default: true
+    /// 默认值：true
     pub enabled: Option<bool>,
-    /// The width of the indent guides in pixels, between 1 and 10.
+    /// 缩进参考线的宽度（像素），范围为 1 到 10
     ///
     /// Default: 1
     pub line_width: Option<u32>,
-    /// The width of the active indent guide in pixels, between 1 and 10.
+    /// 活动缩进参考线的宽度（像素），范围为 1 到 10
     ///
     /// Default: 1
     pub active_line_width: Option<u32>,
-    /// Determines how indent guides are colored.
+    /// 确定缩进参考线的着色方式
     ///
     /// Default: Fixed
     pub coloring: Option<IndentGuideColoring>,
-    /// Determines how indent guide backgrounds are colored.
+    /// 确定缩进参考线背景的着色方式
     ///
     /// Default: Disabled
     pub background_coloring: Option<IndentGuideBackgroundColoring>,
 }
 
-/// The task settings for a particular language.
+/// 特定语言的任务设置
 #[with_fallible_options]
 #[derive(Debug, Clone, Default, Deserialize, PartialEq, Serialize, JsonSchema, MergeFrom)]
 pub struct LanguageTaskSettingsContent {
-    /// Extra task variables to set for a particular language.
+    /// 为特定语言设置额外的任务变量
     pub variables: Option<HashMap<String, String>>,
     pub enabled: Option<bool>,
-    /// Use LSP tasks over Zed language extension ones.
-    /// If no LSP tasks are returned due to error/timeout or regular execution,
-    /// Zed language extension tasks will be used instead.
+    /// 优先使用 LSP 任务而非 Zed 语言扩展任务
+    /// 如果由于错误/超时或正常执行未返回 LSP 任务，
+    /// 将改用 Zed 语言扩展任务。
     ///
-    /// Other Zed tasks will still be shown:
-    /// * Zed task from either of the task config file
-    /// * Zed task from history (e.g. one-off task was spawned before)
+    /// 其他 Zed 任务仍会显示：
+    /// * 来自任意任务配置文件的 Zed 任务
+    /// * 来自历史记录的 Zed 任务（如之前曾运行过的一次性任务）
     pub prefer_lsp: Option<bool>,
 }
 
-/// Map from language name to settings.
+/// 从语言名称到设置的映射
 #[with_fallible_options]
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct LanguageToSettingsMap(pub HashMap<String, LanguageSettingsContent>);
 
-/// Map from language name to file patterns.
+/// 从语言名称到文件模式的映射
 #[with_fallible_options]
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct FileTypeMap(pub HashMap<Arc<str>, ExtendingSet<String>>);
@@ -1326,7 +1372,7 @@ impl<'a> IntoIterator for &'a FileTypeMap {
     }
 }
 
-/// Determines how indent guides are colored.
+/// 确定缩进参考线的着色方式
 #[derive(
     Default,
     Debug,
@@ -1343,16 +1389,19 @@ impl<'a> IntoIterator for &'a FileTypeMap {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum IndentGuideColoring {
-    /// Do not render any lines for indent guides.
+    /// 不为缩进参考线渲染任何线条
+    #[strum(serialize = "已禁用")]
     Disabled,
-    /// Use the same color for all indentation levels.
+    /// 对所有缩进级别使用相同颜色。
     #[default]
+    #[strum(serialize = "固定颜色")]
     Fixed,
-    /// Use a different color for each indentation level.
+    /// 为每个缩进级别使用不同的颜色
+    #[strum(serialize = "缩进感知")]
     IndentAware,
 }
 
-/// Determines how indent guide backgrounds are colored.
+/// 确定缩进参考线背景的着色方式
 #[derive(
     Default,
     Debug,
@@ -1369,10 +1418,12 @@ pub enum IndentGuideColoring {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum IndentGuideBackgroundColoring {
-    /// Do not render any background for indent guides.
+    /// 不为缩进参考线渲染任何背景
     #[default]
+    #[strum(serialize = "已禁用")]
     Disabled,
-    /// Use a different color for each indentation level.
+    /// 为每个缩进级别使用不同的颜色
+    #[strum(serialize = "缩进感知")]
     IndentAware,
 }
 

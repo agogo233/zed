@@ -49,20 +49,20 @@ pub struct AnthropicCompatibleSettingsContent {
 #[with_fallible_options]
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct AnthropicCompatibleAvailableModel {
-    /// The model's name in the provider's API. e.g. claude-3-5-sonnet-latest
+    /// 模型在提供商 API 中的名称。例如 claude-3-5-sonnet-latest
     pub name: String,
-    /// The model's name in Zed's UI, such as in the model selector dropdown menu in the assistant panel.
+    /// 模型在 Zed UI 中的名称，例如助手面板的模型选择器下拉菜单中显示的名称。
     pub display_name: Option<String>,
-    /// The model's context window size.
+    /// 模型的上下文窗口大小
     pub max_tokens: u64,
-    /// A model `name` to substitute when calling tools, in case the primary model doesn't support tool calling.
+    /// 调用工具时用于替代的模型 `name`，适用于主模型不支持工具调用的情况
     pub tool_override: Option<String>,
     pub max_output_tokens: Option<u64>,
     #[serde(serialize_with = "crate::serialize_optional_f32_with_two_decimal_places")]
     pub default_temperature: Option<f32>,
     #[serde(default)]
     pub extra_beta_headers: Vec<String>,
-    /// The model's mode (e.g. thinking)
+    /// 模型的模式（例如思考模式）
     pub mode: Option<ModelMode>,
     #[serde(default)]
     pub capabilities: AnthropicCompatibleModelCapabilities,
@@ -73,8 +73,8 @@ pub struct AnthropicCompatibleAvailableModel {
 pub struct AnthropicCompatibleModelCapabilities {
     pub tools: bool,
     pub images: bool,
-    /// Whether to send explicit `cache_control` breakpoints for prompt caching.
-    /// Leave disabled if the provider rejects requests containing them.
+    /// 是否为提示词缓存发送显式的 `cache_control` 断点。
+    /// 如果提供商拒绝包含这些断点的请求，则保持禁用。
     pub prompt_caching: bool,
 }
 
@@ -91,24 +91,24 @@ impl Default for AnthropicCompatibleModelCapabilities {
 #[with_fallible_options]
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct AnthropicAvailableModel {
-    /// The model's name in the Anthropic API. e.g. claude-3-5-sonnet-latest, claude-3-opus-20240229, etc
+    /// 模型在 Anthropic API 中的名称，例如 claude-3-5-sonnet-latest、claude-3-opus-20240229 等
     pub name: String,
-    /// The model's name in Zed's UI, such as in the model selector dropdown menu in the agent panel.
+    /// 模型在 Zed 界面中显示的名称，例如智能体面板中的模型选择下拉菜单
     pub display_name: Option<String>,
-    /// The model's context window size.
+    /// 模型的上下文窗口大小
     pub max_tokens: u64,
-    /// A model `name` to substitute when calling tools, in case the primary model doesn't support tool calling.
+    /// 调用工具时用于替代的模型 `name`，适用于主模型不支持工具调用的情况
     pub tool_override: Option<String>,
-    /// Configuration of Anthropic's caching API.
+    /// Anthropic 缓存 API 的配置
     pub cache_configuration: Option<LanguageModelCacheConfiguration>,
     pub max_output_tokens: Option<u64>,
     #[serde(serialize_with = "crate::serialize_optional_f32_with_two_decimal_places")]
     pub default_temperature: Option<f32>,
     #[serde(default)]
     pub extra_beta_headers: Vec<String>,
-    /// Whether Anthropic's fast mode is available for this model.
+    /// 此模型是否可使用 Anthropic 的快速模式
     pub supports_fast_mode: Option<bool>,
-    /// The model's mode (e.g. thinking)
+    /// 模型的模式（例如思考模式）
     pub mode: Option<ModelMode>,
 }
 
@@ -116,9 +116,9 @@ pub struct AnthropicAvailableModel {
 #[derive(Default, Clone, Debug, Serialize, Deserialize, PartialEq, JsonSchema, MergeFrom)]
 pub struct AmazonBedrockSettingsContent {
     pub available_models: Option<Vec<BedrockAvailableModel>>,
-    /// Custom models served through the `bedrock-mantle` endpoint's
-    /// OpenAI-compatible APIs, in addition to the built-in Mantle models
-    /// (GPT-5.6 Sol, GPT-5.6 Terra, GPT-5.6 Luna, GPT-5.5, GPT-5.4, Grok 4.3).
+    /// 通过 `bedrock-mantle` 端点的
+    /// OpenAI 兼容 API 提供的自定义模型，以及内置的 Mantle 模型
+    /// （GPT-5.6 Sol、GPT-5.6 Terra、GPT-5.6 Luna、GPT-5.5、GPT-5.4、Grok 4.3）。
     pub mantle_available_models: Option<Vec<BedrockMantleAvailableModel>>,
     pub custom_headers: Option<HashMap<String, String>>,
     pub endpoint_url: Option<String>,
@@ -126,9 +126,9 @@ pub struct AmazonBedrockSettingsContent {
     pub profile: Option<String>,
     pub authentication_method: Option<BedrockAuthMethodContent>,
     pub allow_global: Option<bool>,
-    /// The guardrail identifier (ARN or ID) to apply to Bedrock API requests.
+    /// 应用于 Bedrock API 请求的护栏标识符（ARN 或 ID）
     pub guardrail_identifier: Option<String>,
-    /// The guardrail version to use. Defaults to "DRAFT" if not specified.
+    /// 要使用的护栏版本。未指定时默认为 "DRAFT"
     pub guardrail_version: Option<String>,
 }
 
@@ -165,25 +165,25 @@ pub struct BedrockThinkingConfigSettings {
 #[with_fallible_options]
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct BedrockMantleAvailableModel {
-    /// The model id as expected in Bedrock Mantle request bodies, e.g. `openai.gpt-5.5`.
+    /// Bedrock Mantle 请求体中预期的模型 ID，例如 `openai.gpt-5.5`
     pub name: String,
     pub display_name: Option<String>,
     pub max_tokens: u64,
     pub max_output_tokens: Option<u64>,
-    /// The OpenAI-compatible API this model must be called through.
+    /// 调用此模型时必须使用的 OpenAI 兼容 API
     pub protocol: BedrockMantleProtocolContent,
     pub supports_tools: Option<bool>,
     pub supports_images: Option<bool>,
-    /// Whether this custom Mantle model supports OpenAI reasoning effort parameters.
+    /// 此自定义 Mantle 模型是否支持 OpenAI 推理力度参数
     pub supports_thinking: Option<bool>,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub enum BedrockMantleProtocolContent {
-    /// The OpenAI Chat Completions API (`/chat/completions`).
+    /// OpenAI Chat Completions API（`/chat/completions`）
     #[serde(rename = "chat_completions")]
     ChatCompletions,
-    /// The OpenAI Responses API (`/responses`).
+    /// OpenAI Responses API（`/responses`）
     #[serde(rename = "responses")]
     Responses,
 }
@@ -214,33 +214,33 @@ pub struct OllamaSettingsContent {
 #[with_fallible_options]
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct OllamaAvailableModel {
-    /// The model name in the Ollama API (e.g. "llama3.2:latest")
+    /// Ollama API 中的模型名称（例如 "llama3.2:latest"）
     pub name: String,
-    /// The model's name in Zed's UI, such as in the model selector dropdown menu in the agent panel.
+    /// 模型在 Zed 界面中显示的名称，例如智能体面板中的模型选择下拉菜单
     pub display_name: Option<String>,
-    /// The Context Length parameter to the model (aka num_ctx or n_ctx)
+    /// 模型的上下文长度参数（即 num_ctx 或 n_ctx）
     pub max_tokens: u64,
-    /// The number of seconds to keep the connection open after the last request
+    /// 最后一次请求后保持连接的秒数
     pub keep_alive: Option<KeepAlive>,
-    /// Whether the model supports tools
+    /// 模型是否支持工具
     pub supports_tools: Option<bool>,
-    /// Whether the model supports vision
+    /// 模型是否支持视觉
     pub supports_images: Option<bool>,
-    /// Whether to enable think mode
+    /// 是否启用思考模式
     pub supports_thinking: Option<bool>,
 }
 
 #[derive(Clone, Serialize, Deserialize, Debug, Eq, PartialEq, JsonSchema, MergeFrom)]
 #[serde(untagged)]
 pub enum KeepAlive {
-    /// Keep model alive for N seconds
+    /// 保持模型存活 N 秒
     Seconds(isize),
-    /// Keep model alive for a fixed duration. Accepts durations like "5m", "10m", "1h", "1d", etc.
+    /// 保持模型存活固定时长。接受如 "5m"、"10m"、"1h"、"1d" 等格式的时长。
     Duration(String),
 }
 
 impl KeepAlive {
-    /// Keep model alive until a new model is loaded or until Ollama shuts down
+    /// 保持模型存活，直到加载新模型或 Ollama 关闭
     pub fn indefinite() -> Self {
         Self::Seconds(-1)
     }
@@ -258,9 +258,9 @@ pub struct OpenCodeSettingsContent {
     pub api_url: Option<String>,
     pub available_models: Option<Vec<OpenCodeAvailableModel>>,
     pub custom_headers: Option<HashMap<String, String>>,
-    /// Whether to show OpenCode Zen models. Defaults to true.
+    /// 是否显示 OpenCode Zen 模型，默认为 true
     pub show_zen_models: Option<bool>,
-    /// Whether to show OpenCode Go models. Defaults to true.
+    /// 是否显示 OpenCode Go 模型，默认为 true
     pub show_go_models: Option<bool>,
 }
 
@@ -290,15 +290,15 @@ pub struct OpenCodeAvailableModel {
     pub display_name: Option<String>,
     pub max_tokens: u64,
     pub max_output_tokens: Option<u64>,
-    /// The API protocol to use for this model: "anthropic", "openai_responses", "openai_chat", or "google". Defaults to "openai_chat".
+    /// 此模型使用的 API 协议："anthropic"、"openai_responses"、"openai_chat" 或 "google"。默认为 "openai_chat"。
     pub protocol: Option<OpenCodeApiProtocol>,
-    /// The subscription for this model: "zen" or "go". Defaults to Zen.
+    /// 此模型的订阅方案："zen" 或 "go"，默认为 Zen。
     pub subscription: Option<OpenCodeModelSubscription>,
-    /// Custom Model API URL to use for this model.
+    /// 此模型使用的自定义模型 API URL
     pub custom_model_api_url: Option<String>,
-    /// Supported reasoning effort levels, for example `["low", "medium", "high"].
+    /// 支持的推理力度级别，例如 `["low", "medium", "high"].
     pub reasoning_effort_levels: Option<Vec<ReasoningEffort>>,
-    /// When using OpenAiChat protocol, whether thinking tokens are sent as a dedicated `reasoning_content` field or inline in message text.
+    /// 使用 OpenAiChat 协议时，思考 token 是作为专用 `reasoning_content` 字段发送，还是内联在消息文本中
     #[serde(default)]
     pub interleaved_reasoning: bool,
 }
@@ -326,11 +326,11 @@ pub struct LmStudioAvailableModel {
 #[derive(Default, Clone, Debug, Serialize, Deserialize, PartialEq, JsonSchema, MergeFrom)]
 pub struct LlamaCppSettingsContent {
     pub api_url: Option<String>,
-    /// Whether to automatically discover models served by the llama.cpp server.
-    /// Defaults to true.
+    /// 是否自动发现 llama.cpp 服务器提供的模型。
+    /// 默认为 true。
     pub auto_discover: Option<bool>,
     pub available_models: Option<Vec<LlamaCppAvailableModel>>,
-    /// Overrides the context length reported for every llama.cpp model.
+    /// 覆盖每个 llama.cpp 模型所报告的上下文长度
     pub context_window: Option<u64>,
     pub custom_headers: Option<HashMap<String, String>>,
 }
@@ -338,17 +338,17 @@ pub struct LlamaCppSettingsContent {
 #[with_fallible_options]
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct LlamaCppAvailableModel {
-    /// The model id reported by the llama.cpp server (its `--alias` or the model file path).
+    /// llama.cpp 服务器报告的模型 ID（其 `--alias` 或模型文件路径）
     pub name: String,
-    /// The model's name in Zed's UI, such as in the model selector dropdown menu in the agent panel.
+    /// 模型在 Zed 界面中显示的名称，例如智能体面板中的模型选择下拉菜单
     pub display_name: Option<String>,
-    /// The Context Length parameter to the model (aka n_ctx).
+    /// 传递给模型的上下文长度参数（即 n_ctx）
     pub max_tokens: u64,
-    /// Whether the model supports tools.
+    /// 模型是否支持工具
     pub supports_tools: Option<bool>,
-    /// Whether the model supports vision.
+    /// 模型是否支持视觉
     pub supports_images: Option<bool>,
-    /// Whether the model emits reasoning/thinking content.
+    /// 模型是否输出推理/思考内容
     pub supports_thinking: Option<bool>,
 }
 
@@ -554,29 +554,29 @@ pub struct ZedDotDevSettingsContent {
 #[with_fallible_options]
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct ZedDotDevAvailableModel {
-    /// The provider of the language model.
+    /// 语言模型的提供商
     pub provider: ZedDotDevAvailableProvider,
-    /// The model's name in the provider's API. e.g. claude-3-5-sonnet-20240620
+    /// 模型在提供商 API 中的名称，例如 claude-3-5-sonnet-20240620
     pub name: String,
-    /// The name displayed in the UI, such as in the agent panel model dropdown menu.
+    /// 在界面中显示的名称，例如智能体面板的模型下拉菜单
     pub display_name: Option<String>,
-    /// The size of the context window, indicating the maximum number of tokens the model can process.
+    /// 上下文窗口的大小，表示模型可处理的最大 token 数量
     pub max_tokens: usize,
-    /// The maximum number of output tokens allowed by the model.
+    /// 模型允许的最大输出 token 数
     pub max_output_tokens: Option<u64>,
-    /// The maximum number of completion tokens allowed by the model (o1-* only)
+    /// 模型允许的最大生成 Token 数（仅限 o1-*）
     pub max_completion_tokens: Option<u64>,
-    /// Override this model with a different Anthropic model for tool calls.
+    /// 使用其他 Anthropic 模型覆盖此模型以进行工具调用。
     pub tool_override: Option<String>,
-    /// Indicates whether this custom model supports caching.
+    /// 指示此自定义模型是否支持缓存。
     pub cache_configuration: Option<LanguageModelCacheConfiguration>,
-    /// The default temperature to use for this model.
+    /// 此模型使用的默认温度
     #[serde(serialize_with = "crate::serialize_optional_f32_with_two_decimal_places")]
     pub default_temperature: Option<f32>,
-    /// Any extra beta headers to provide when using the model.
+    /// 使用模型时提供的额外 beta 标头。
     #[serde(default)]
     pub extra_beta_headers: Vec<String>,
-    /// The model's mode (e.g. thinking)
+    /// 模型的模式（例如思考模式）
     pub mode: Option<ModelMode>,
 }
 
@@ -639,7 +639,7 @@ fn default_true() -> bool {
     true
 }
 
-/// Configuration for caching language model messages.
+/// 缓存语言模型消息的配置
 #[with_fallible_options]
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct LanguageModelCacheConfiguration {

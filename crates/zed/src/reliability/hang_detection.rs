@@ -15,11 +15,11 @@ mod task_traces;
 gpui::actions!(
     dev,
     [
-        /// Causes a performance hang to test performance monitoring
+        /// 触发性能卡顿以测试性能监控
         HangAction,
-        /// Causes a performance hang to test performance monitoring
+        /// 触发性能卡顿以测试性能监控
         HangBackground,
-        /// Causes a performance hang to test performance monitoring
+        /// 触发性能卡顿以测试性能监控
         HangForeground,
     ]
 );

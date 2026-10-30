@@ -1,24 +1,24 @@
-/// Trait for recursively merging settings structures.
+/// 递归合并设置结构的 trait
 ///
-/// When Zed starts it loads settings from `default.json` to initialize
-/// everything. These may be further refined by loading the user's settings,
-/// and any settings profiles; and then further refined by loading any
-/// local project settings.
+/// Zed 启动时从 `default.json` 加载设置以初始化
+/// 所有设置。这些设置可通过加载用户设置进一步调整，
+/// 以及任何设置配置文件；然后再通过加载任何
+/// 本地项目设置。
 ///
-/// The default behaviour of merging is:
-/// * For objects with named keys (HashMap, structs, etc.). The values are merged deeply
-///   (so if the default settings has languages.JSON.prettier.allowed = true, and the user's settings has
-///    languages.JSON.tab_size = 4; the merged settings file will have both settings).
-/// * For options, a None value is ignored, but Some values are merged recursively.
-/// * For other types (including Vec), a merge overwrites the current value.
+/// 合并的默认行为如下：
+/// * 对于具有命名键的对象（HashMap、结构体等），值将被深度合并
+///   （例如，若默认设置中 languages.JSON.prettier.allowed = true，而用户设置中
+///    languages.JSON.tab_size = 4；合并后的设置文件将同时包含两个设置）。
+/// * 对于 Option 类型，None 值将被忽略，Some 值将被递归合并。
+/// * 对于其他类型（包括 Vec），合并将覆盖当前值。
 ///
-/// If you want to break the rules you can (e.g. ExtendingVec, or SaturatingBool).
+/// 如果需要打破规则，可以使用相关类型（如 ExtendingVec 或 SaturatingBool）。
 #[allow(unused)]
 pub trait MergeFrom {
-    /// Merge from a source of the same type.
+    /// 从相同类型的源合并
     fn merge_from(&mut self, other: &Self);
 
-    /// Merge from an optional source of the same type.
+    /// 从相同类型的可选源合并
     fn merge_from_option(&mut self, other: Option<&Self>) {
         if let Some(other) = other {
             self.merge_from(other);

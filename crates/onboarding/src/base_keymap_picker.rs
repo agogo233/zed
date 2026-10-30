@@ -14,7 +14,7 @@ use workspace::{ModalView, Workspace, ui::HighlightedLabel};
 actions!(
     zed,
     [
-        /// Toggles the base keymap selector modal.
+        /// 切换基础键映射选择器对话框
         ToggleBaseKeymapSelector
     ]
 );
@@ -107,7 +107,7 @@ impl PickerDelegate for BaseKeymapSelectorDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Select a base keymap...".into()
+        "选择基础键映射...".into()
     }
 
     fn match_count(&self) -> usize {

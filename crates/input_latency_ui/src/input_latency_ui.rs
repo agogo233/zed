@@ -12,7 +12,7 @@ use std::{
 actions!(
     dev,
     [
-        /// Opens a buffer showing the input-to-frame latency histogram for the current window.
+        /// 打开一个缓冲区，显示当前窗口的输入到帧延迟直方图
         DumpInputLatencyHistogram,
     ]
 );

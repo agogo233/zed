@@ -6,9 +6,9 @@ use crate::{Vim, state::Mode};
 actions!(
     vim,
     [
-        /// Navigates to an older position in the change list.
+        /// 跳转到变更列表中的较旧位置
         ChangeListOlder,
-        /// Navigates to a newer position in the change list.
+        /// 跳转到变更列表中的较新位置
         ChangeListNewer
     ]
 );

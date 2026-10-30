@@ -35,27 +35,27 @@ use crate::{
 actions!(
     multi_workspace,
     [
-        /// Toggles the workspace switcher sidebar.
+        /// 显示或隐藏工作区切换器侧边栏
         ToggleWorkspaceSidebar,
-        /// Closes the workspace sidebar.
+        /// 关闭工作区侧边栏
         CloseWorkspaceSidebar,
-        /// Moves focus to or from the workspace sidebar without closing it.
+        /// 将焦点移至或移出工作区侧边栏（不关闭）
         FocusWorkspaceSidebar,
-        /// Activates the next project in the sidebar.
+        /// 激活侧边栏中的下一个项目
         NextProject,
-        /// Activates the previous project in the sidebar.
+        /// 激活侧边栏中的上一个项目
         PreviousProject,
-        /// Moves the active project up in the sidebar.
+        /// 将活动项目在侧边栏中向上移动
         MoveProjectUp,
-        /// Moves the active project down in the sidebar.
+        /// 将活动项目在侧边栏中向下移动
         MoveProjectDown,
-        /// Activates the next thread in sidebar order.
+        /// 按侧边栏顺序激活下一个会话
         NextThread,
-        /// Activates the previous thread in sidebar order.
+        /// 按侧边栏顺序激活上一个会话
         PreviousThread,
-        /// Creates a new thread in the current workspace.
+        /// 在当前工作区创建新会话
         NewThread,
-        /// Moves the active project to a new window.
+        /// 将活动项目移到新窗口
         MoveProjectToNewWindow,
     ]
 );
@@ -75,8 +75,8 @@ pub fn sidebar_side_context_menu(
         let fs = <dyn fs::Fs>::global(cx);
         ContextMenu::build(window, cx, move |mut menu, _, _cx| {
             let positions: [(SidebarDockPosition, &str); 2] = [
-                (SidebarDockPosition::Left, "Left"),
-                (SidebarDockPosition::Right, "Right"),
+                (SidebarDockPosition::Left, "左"),
+                (SidebarDockPosition::Right, "右"),
             ];
             for (position, label) in positions {
                 let fs = fs.clone();

@@ -2844,7 +2844,7 @@ impl gpui::Render for ErrorWrappingTestView {
             Requested 59724. Please try again in 264ms. Visit \
             https://platform.openai.com/account/rate-limits to learn more.";
 
-        let retry_description = "Retrying. Next attempt in 4 seconds (Attempt 1 of 2).";
+        let retry_description = "正在重试。4 秒后进行下次尝试（第 1 次，共 2 次）。";
 
         v_flex()
             .size_full()
@@ -2862,16 +2862,16 @@ impl gpui::Render for ErrorWrappingTestView {
                 Callout::new()
                     .severity(Severity::Error)
                     .icon(IconName::XCircle)
-                    .title("An Error Happened")
+                    .title("发生了错误")
                     .description(long_error_message)
-                    .actions_slot(Button::new("dismiss", "Dismiss").label_size(LabelSize::Small)),
+                    .actions_slot(Button::new("dismiss", "关闭").label_size(LabelSize::Small)),
             )
             .child(
                 Callout::new()
                     .severity(Severity::Error)
                     .icon(IconName::XCircle)
                     .title(long_error_message)
-                    .actions_slot(Button::new("retry", "Retry").label_size(LabelSize::Small)),
+                    .actions_slot(Button::new("retry", "重试").label_size(LabelSize::Small)),
             )
     }
 }

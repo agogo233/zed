@@ -308,19 +308,19 @@ fn language_model(model: &deepseek::Model) -> LanguageModel {
         supported_effort_levels: if supports_thinking {
             Arc::new([
                 LanguageModelEffortLevel {
-                    name: "Low".into(),
+                    name: "低".into(),
                     value: "low".into(),
                     is_default: false,
                     supports_disabling_thinking: None,
                 },
                 LanguageModelEffortLevel {
-                    name: "High".into(),
+                    name: "高".into(),
                     value: "high".into(),
                     is_default: true,
                     supports_disabling_thinking: None,
                 },
                 LanguageModelEffortLevel {
-                    name: "Max".into(),
+                    name: "最大".into(),
                     value: "max".into(),
                     is_default: false,
                     supports_disabling_thinking: None,

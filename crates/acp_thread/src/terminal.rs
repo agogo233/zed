@@ -117,18 +117,15 @@ impl LinuxWslSandboxError {
     pub fn user_facing_message(&self) -> String {
         match self {
             LinuxWslSandboxError::BwrapNotFound => {
-                "No usable `bwrap` binary was found on your PATH. Install Bubblewrap to let \
-                 the agent sandbox terminal commands."
+                "在 PATH 中未找到可用的 `bwrap` 二进制文件。安装 Bubblewrap，以便智能体在沙盒中运行终端命令。"
                     .to_string()
             }
             LinuxWslSandboxError::SetuidRejected => {
-                "The only `bwrap` available is setuid-root, which Zed refuses to run. Install \
-                 a non-setuid Bubblewrap to let the agent sandbox terminal commands."
+                "唯一可用的 `bwrap` 是 setuid-root 版本，Zed 拒绝运行它。安装非 setuid 的 Bubblewrap，以便智能体在沙盒中运行终端命令。"
                     .to_string()
             }
             LinuxWslSandboxError::SandboxProbeFailed => {
-                "`bwrap` is installed but couldn't create a sandbox, likely because \
-                 unprivileged user namespaces are disabled on this system."
+                "`bwrap` 已安装，但无法创建沙盒，可能是因为此系统禁用了非特权用户命名空间。"
                     .to_string()
             }
             LinuxWslSandboxError::Other(message) => message.clone(),
@@ -277,7 +274,7 @@ impl SandboxWrap {
             for path in &self.writable_paths {
                 let location = sandbox::HostFilesystemLocation::capture(path).map_err(|error| {
                     anyhow::anyhow!(error).context(format!(
-                        "cannot capture writable sandbox path `{}`",
+                        "无法捕获可写沙盒路径 `{}`",
                         path.display()
                     ))
                 })?;
@@ -286,9 +283,7 @@ impl SandboxWrap {
             for granted in &self.extra_write_paths {
                 let location = granted_write_path_to_location(granted).map_err(|error| {
                     anyhow::anyhow!(error).context(format!(
-                        "cannot re-verify approved sandbox write grant `{}` (if the \
-                         directory was removed, remove the grant or recreate the \
-                         directory)",
+                        "无法重新验证已批准的沙盒写入授权 `{}`（如果该目录已被删除，可移除该授权或重新创建该目录）",
                         granted.requested.display()
                     ))
                 })?;

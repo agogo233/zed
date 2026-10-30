@@ -598,7 +598,7 @@ async fn run_terminal_tool(
     #[cfg(target_os = "windows")]
     let write_paths: Vec<settings::GrantedWritePath> = {
         let Some(release) = wsl_zed_release.clone() else {
-            return Err("Could not select a Linux Zed release for WSL sandboxing".to_string());
+            return Err("无法为 WSL 沙盒选择 Linux 版 Zed".to_string());
         };
         let mut resolved_paths = Vec::with_capacity(write_paths.len());
         for requested in write_paths {
@@ -670,7 +670,7 @@ async fn run_terminal_tool(
             // Carry the underlying error so a prompt-delivery failure is
             // distinguishable from a genuine user abort.
             return Ok(format!(
-                "Command cancelled: the user declined to run a command whose sandbox writes to a Windows drive ({error})."
+                "命令已取消：用户拒绝运行沙盒会写入 Windows 驱动器的命令（{error}）"
             ));
         }
     }
@@ -693,11 +693,11 @@ async fn run_terminal_tool(
         if let Err(error) = approve.await {
             if want_unsandboxed {
                 return Ok(format!(
-                    "Command cancelled: user denied permission to run outside the sandbox ({error})."
+                    "命令已取消：用户拒绝了在沙盒外运行的权限（{error}）"
                 ));
             }
             return Ok(format!(
-                "Command cancelled: user denied the requested sandbox permissions ({error})."
+                "命令已取消：用户拒绝了请求的沙盒权限（{error}）"
             ));
         }
     }
@@ -831,7 +831,7 @@ async fn run_terminal_tool(
                             "Failed to create a sandbox for an agent terminal command: {error:?}"
                         );
                         return Err(format!(
-                            "Cannot create a sandbox for this command: {}",
+                            "无法为此命令创建沙盒：{}",
                             error.user_facing_message()
                         ));
                     }

@@ -121,11 +121,11 @@ impl TableView {
                 let (icon, tooltip_text) = match self.settings.numbering_type {
                     RowIdentifiers::SrcLines => (
                         IconName::Code,
-                        "Showing file line numbers.\nClick to show sequential row numbers.",
+                        "当前显示文件行号。\n点击可显示连续行号",
                     ),
                     RowIdentifiers::RowNum => (
                         IconName::Hash,
-                        "Showing sequential row numbers.\nClick to show file line numbers.",
+                        "当前显示连续行号。\n点击可显示文件行号",
                     ),
                 };
 

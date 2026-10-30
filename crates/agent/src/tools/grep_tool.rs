@@ -115,18 +115,18 @@ impl AgentTool for GrepTool {
                 let page = input.page();
                 let regex_str = MarkdownInlineCode(&input.regex);
                 let case_info = if input.case_sensitive {
-                    " (case-sensitive)"
+                    "（区分大小写）"
                 } else {
                     ""
                 };
 
                 if page > 1 {
-                    format!("Get page {page} of search results for regex {regex_str}{case_info}")
+                    format!("获取正则表达式 {regex_str}{case_info} 的第 {page} 页搜索结果")
                 } else {
-                    format!("Search files for regex {regex_str}{case_info}")
+                    format!("在文件中搜索正则表达式 {regex_str}{case_info}")
                 }
             }
-            Err(_) => "Search with regex".into(),
+            Err(_) => "使用正则表达式搜索".into(),
         }
         .into()
     }

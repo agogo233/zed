@@ -181,11 +181,11 @@ impl Render for ProfileSelector {
         }
 
         if !self.provider.profiles_supported(cx) {
-            return Button::new("tools-not-supported-button", "Tools Unsupported")
+            return Button::new("tools-not-supported-button", "不支持工具")
                 .disabled(true)
                 .label_size(LabelSize::Small)
                 .color(Color::Muted)
-                .tooltip(Tooltip::text("This model does not support tools."))
+                .tooltip(Tooltip::text("此模型不支持工具"))
                 .into_any_element();
         }
 
@@ -231,7 +231,7 @@ impl Render for ProfileSelector {
                     .gap_1()
                     .child(
                         container()
-                            .child(Label::new("Change Profile"))
+                            .child(Label::new("更改配置文件"))
                             .child(KeyBinding::for_action(&ToggleProfileSelector, cx)),
                     )
                     .child(
@@ -239,7 +239,7 @@ impl Render for ProfileSelector {
                             .pt_1()
                             .border_t_1()
                             .border_color(cx.theme().colors().border_variant)
-                            .child(Label::new("Cycle Through Profiles"))
+                            .child(Label::new("循环切换配置文件"))
                             .child(KeyBinding::for_action(&CycleModeSelector, cx)),
                     )
                     .into_any()
@@ -388,9 +388,9 @@ impl ProfilePickerDelegate {
 
     fn documentation(candidate: &ProfileCandidate) -> Option<&'static str> {
         match candidate.id.as_str() {
-            builtin_profiles::WRITE => Some("Get help to write anything."),
-            builtin_profiles::ASK => Some("Chat about your codebase."),
-            builtin_profiles::MINIMAL => Some("Chat about anything with no tools."),
+            builtin_profiles::WRITE => Some("获取各种写作帮助。"),
+            builtin_profiles::ASK => Some("聊聊你的代码库。"),
+            builtin_profiles::MINIMAL => Some("不使用工具，聊任何内容。"),
             _ => None,
         }
     }
@@ -481,14 +481,14 @@ impl PickerDelegate for ProfilePickerDelegate {
     }
 
     fn placeholder_text(&self, _: &mut Window, _: &mut App) -> Arc<str> {
-        "Search profiles…".into()
+        "搜索配置文件…".into()
     }
 
     fn no_matches_text(&self, _window: &mut Window, _cx: &mut App) -> Option<SharedString> {
         let text = if self.candidates.is_empty() {
-            "No profiles.".into()
+            "没有配置文件。".into()
         } else {
-            "No profiles match your search.".into()
+            "没有配置文件匹配你的搜索。".into()
         };
         Some(text)
     }
@@ -752,7 +752,7 @@ impl PickerDelegate for ProfilePickerDelegate {
                                                 .color(Color::Warning),
                                         )
                                         .child(
-                                            Label::new("Disabled in Restricted Mode")
+                                            Label::new("在受限模式下禁用")
                                                 .size(LabelSize::Small),
                                         ),
                                 )
@@ -790,7 +790,7 @@ impl PickerDelegate for ProfilePickerDelegate {
                         .border_color(cx.theme().colors().border_variant)
                         .p_1p5()
                         .child(
-                            Button::new("configure", "Configure")
+                            Button::new("configure", "配置")
                                 .full_width()
                                 .style(ButtonStyle::Outlined)
                                 .key_binding(
@@ -817,7 +817,7 @@ impl PickerDelegate for ProfilePickerDelegate {
                             .border_color(cx.theme().colors().border_variant)
                             .p_1p5()
                             .child(
-                                Button::new("restricted-mode", "Restricted Mode")
+                                Button::new("restricted-mode", "受限模式")
                                     .full_width()
                                     .style(ButtonStyle::Tinted(TintColor::Warning))
                                     .color(Color::Warning)
@@ -827,7 +827,7 @@ impl PickerDelegate for ProfilePickerDelegate {
                                             .color(Color::Warning),
                                     )
                                     .tooltip(Tooltip::text(
-                                        "Some tools are disabled. Click to review trust settings.",
+                                        "部分工具已禁用。点击查看信任设置。",
                                     ))
                                     .on_click(|_, window, cx| {
                                         window.dispatch_action(

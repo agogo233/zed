@@ -16,7 +16,7 @@ use ui::{ConfiguredApiCard, prelude::*};
 use x_ai_subscribed::{PROVIDER_ID, PROVIDER_NAME, State, SuperGrokModel, language_model};
 
 const SUBSCRIPTION_DESCRIPTION: &str =
-    "Sign in with your SuperGrok subscription to use Grok models in Zed's agent.";
+    "通过你的 SuperGrok 订阅登录，以便在 Zed 智能体中使用 Grok 模型";
 
 pub struct XAiSubscribedProvider {
     state: Entity<State>,
@@ -122,7 +122,7 @@ impl LanguageModelProvider for XAiSubscribedProvider {
         let title = if is_authenticated {
             None
         } else {
-            Some("Configure SuperGrok".into())
+            Some("配置 SuperGrok".into())
         };
         let description = if is_authenticated {
             None
@@ -149,14 +149,12 @@ impl LanguageModelProvider for XAiSubscribedProvider {
     }
 
     fn authentication_error_message(&self) -> SharedString {
-        "Your SuperGrok session is invalid or has expired. \
-        Sign in again via Settings > AI > LLM Providers to continue."
+        "你的 SuperGrok 会话无效或已过期。通过设置 > AI > LLM 提供商重新登录以继续。"
             .into()
     }
 
     fn missing_credentials_error_message(&self) -> SharedString {
-        "You are not signed in to SuperGrok. \
-        Sign in via Settings > AI > LLM Providers to continue."
+        "你尚未登录 SuperGrok。通过设置 > AI > LLM 提供商登录以继续。"
             .into()
     }
 }
@@ -192,15 +190,15 @@ impl Render for ConfigurationView {
         if state.is_authenticated() {
             let label = state
                 .email()
-                .map(|email| format!("Signed in as {email}"))
-                .unwrap_or_else(|| "Signed in".to_string());
+                .map(|email| format!("已以 {email} 身份登录"))
+                .unwrap_or_else(|| "已登录".to_string());
             let state_entity = self.state.clone();
 
             return v_flex()
                 .gap_2()
                 .child(
                     ConfiguredApiCard::new("x-ai-subscribed-sign-out", SharedString::from(label))
-                        .button_label("Sign Out")
+                        .button_label("注销")
                         .on_click(cx.listener(move |_this, _, _window, cx| {
                             state_entity
                                 .update(cx, |state, cx| state.sign_out(cx))
@@ -214,9 +212,9 @@ impl Render for ConfigurationView {
         let provider_state = self.state.clone();
         let is_signing_in = state.is_signing_in();
         let button_label = if is_signing_in {
-            "Signing in…"
+            "正在登录…"
         } else {
-            "Sign In"
+            "登录"
         };
 
         v_flex()

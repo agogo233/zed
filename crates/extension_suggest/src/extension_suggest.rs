@@ -260,10 +260,10 @@ const SUGGESTIONS_BY_LANGUAGE: &[LanguageAdditionSuggestion] = &[LanguageAdditio
         "Twig",
         "Vue.js",
     ],
-    title: "Emmet is available for this file",
-    description: "Emmet expands abbreviations such as `ul>li*3` into HTML and `m10` into CSS.",
+    title: "此文件可使用 Emmet",
+    description: "Emmet 可将 `ul>li*3` 等缩写展开为 HTML，并将 `m10` 展开为 CSS",
     docs_url: "https://zed.dev/docs/languages/emmet",
-    install_message: "Install Emmet",
+    install_message: "安装 Emmet",
 }];
 
 fn suggested_extensions() -> &'static HashMap<&'static str, Arc<str>> {

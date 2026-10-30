@@ -1,23 +1,23 @@
 use serde::Serializer;
 
-/// Serializes an f32 value with 2 decimal places of precision.
+/// 以 2 位小数精度序列化 f32 值
 ///
-/// This function rounds the value to 2 decimal places and formats it as a string,
-/// then parses it back to f64 before serialization. This ensures clean JSON output
-/// without IEEE 754 floating-point artifacts.
+/// 此函数将值四舍五入到 2 位小数并格式化为字符串，
+/// 然后在序列化之前将其解析回 f64，以确保生成干净的 JSON 输出
+/// 不含 IEEE 754 浮点数精度问题
 ///
-/// # Arguments
+/// # 参数
 ///
-/// * `value` - The f32 value to serialize
-/// * `serializer` - The serde serializer to use
+/// * `value` — 要序列化的 f32 值
+/// * `serializer` — 要使用的 serde 序列化器
 ///
-/// # Returns
+/// # 返回值
 ///
-/// Result of the serialization operation
+/// 序列化操作的结果
 ///
-/// # Usage
+/// # 用法
 ///
-/// This function can be used with Serde's `serialize_with` attribute:
+/// 此函数可与 Serde 的 `serialize_with` 属性一起使用：
 /// ```
 /// use serde::Serialize;
 /// use settings_content::serialize_f32_with_two_decimal_places;
@@ -38,30 +38,30 @@ where
     serializer.serialize_f64(clean_value)
 }
 
-/// Serializes an optional f32 value with 2 decimal places of precision.
+/// 以 2 位小数精度序列化可选的 f32 值
 ///
-/// This function handles `Option<f32>` types, serializing `Some` values with 2 decimal
-/// places of precision and `None` values as null. For `Some` values, it rounds to 2 decimal
-/// places and formats as a string, then parses back to f64 before serialization. This ensures
-/// clean JSON output without IEEE 754 floating-point artifacts.
+/// 此函数处理 `Option<f32>` 类型，将 `Some` 值序列化为 2 位小数精度
+/// 并将 `None` 值序列化为 null。对于 `Some` 值，会四舍五入到 2 位小数
+/// 并格式化为字符串，再解析回 f64 后进行序列化。这可确保
+/// 输出干净的 JSON，不含 IEEE 754 浮点数精度误差。
 ///
-/// # Arguments
+/// # 参数
 ///
-/// * `value` - The optional f32 value to serialize
-/// * `serializer` - The serde serializer to use
+/// * `value` — 要序列化的可选 f32 值
+/// * `serializer` — 要使用的 serde 序列化器
 ///
-/// # Returns
+/// # 返回值
 ///
-/// Result of the serialization operation
+/// 序列化操作的结果
 ///
-/// # Behavior
+/// # 行为
 ///
-/// * `Some(v)` - Serializes the value rounded to 2 decimal places
-/// * `None` - Serializes as JSON null
+/// * `Some(v)` — 将值四舍五入到 2 位小数后序列化
+/// * `None` — 序列化为 JSON null
 ///
-/// # Usage
+/// # 用法
 ///
-/// This function can be used with Serde's `serialize_with` attribute:
+/// 此函数可与 Serde 的 `serialize_with` 属性一起使用：
 /// ```
 /// use serde::Serialize;
 /// use settings_content::serialize_optional_f32_with_two_decimal_places;

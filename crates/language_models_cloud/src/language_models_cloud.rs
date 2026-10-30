@@ -96,7 +96,7 @@ impl LlmRequestError {
                     PROVIDER_NAME,
                     Some(StatusCode::UNAUTHORIZED),
                     None,
-                    "Zed rejected the credentials for this request.".to_string(),
+                    "Zed 拒绝了此请求的凭据".to_string(),
                     None,
                     ProviderErrorCategory::Authentication,
                 )
@@ -106,7 +106,7 @@ impl LlmRequestError {
                     PROVIDER_NAME,
                     None,
                     None,
-                    "Not signed in to Zed.".to_string(),
+                    "尚未登录 Zed".to_string(),
                     None,
                     ProviderErrorCategory::Authentication,
                 )
@@ -144,7 +144,7 @@ fn payment_required_error(status: StatusCode) -> LanguageModelCompletionError {
         PROVIDER_NAME,
         Some(status),
         None,
-        "payment required to use this language model; please upgrade your account".to_string(),
+        "使用此语言模型需要付费；请升级帐户".to_string(),
         None,
         ProviderErrorCategory::PaymentRequired,
     )

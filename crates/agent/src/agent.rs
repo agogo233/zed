@@ -1304,7 +1304,7 @@ impl NativeAgent {
                     if let Err(error) = expand_project_skills_directories(&worktree, cx).await {
                         project_skills_results.push(vec![Err(SkillLoadError {
                             path: PathBuf::from(project_skills_relative_path()),
-                            message: format!("Failed to scan project skills: {}", error),
+                            message: format!("扫描项目技能失败：{}", error),
                         })]);
                         continue;
                     }
@@ -1323,7 +1323,7 @@ impl NativeAgent {
                             worktree_results.push(Err(SkillLoadError {
                                 path: skill_file.display_path.clone(),
                                 message: format!(
-                                    "SKILL.md file exceeds maximum size of {}KB",
+                                    "SKILL.md 文件超过最大大小 {}KB",
                                     MAX_SKILL_FILE_SIZE / 1024
                                 ),
                             }));
@@ -1343,7 +1343,7 @@ impl NativeAgent {
                             Err(error) => {
                                 worktree_results.push(Err(SkillLoadError {
                                     path: skill_file.display_path.clone(),
-                                    message: format!("Failed to read file: {}", error),
+                                    message: format!("读取文件失败：{}", error),
                                 }));
                                 continue;
                             }
@@ -3661,7 +3661,7 @@ impl NativeThreadEnvironment {
             })?;
             if !available {
                 anyhow::bail!(
-                    "Model {model_id} is unavailable. Call list_agents_and_models to inspect available models."
+                    "模型 {model_id} 不可用。调用 list_agents_and_models 查看可用模型。"
                 );
             }
             Some(subagent_model_id_to_selection(&model_id, cx))
@@ -3995,7 +3995,7 @@ impl SubagentHandle for NativeSubagentHandle {
                     Ok(connection) => connection.send_and_wait_for_completion(
                         acp_thread.clone(), vec![message.into()], cx,
                     ),
-                    Err(_) => Task::ready(Err(anyhow!("Subagent connection is not native"))),
+                    Err(_) => Task::ready(Err(anyhow!("子智能体连接不是原生连接"))),
                 };
                 (task, token_limit_rx, subscription)
             });
@@ -4012,9 +4012,7 @@ impl SubagentHandle for NativeSubagentHandle {
                         // reported below comes after it.
                         task.await.log_err();
                         Err(anyhow!(
-                            "The agent is nearing the end of its context window and has been \
-                             stopped. You can prompt the thread again to have the agent wrap up \
-                             or hand off its work."
+                            "智能体的上下文窗口即将用尽，已被停止。你可以再次向该会话发送提示词，让智能体收尾或移交其工作。"
                         ))
                     }
                 }
@@ -4026,13 +4024,13 @@ impl SubagentHandle for NativeSubagentHandle {
             let response_stop_reason = response.as_ref().ok().cloned();
             let result = match response {
                 Ok(reason) => match reason {
-                    acp_v2::StopReason::Cancelled => Err(anyhow!("User canceled")),
-                    acp_v2::StopReason::MaxTokens => Err(anyhow!("The agent reached the maximum number of tokens.")),
-                    acp_v2::StopReason::MaxTurnRequests => Err(anyhow!("The agent reached the maximum number of allowed requests between user turns. Try prompting again.")),
-                    acp_v2::StopReason::Refusal => Err(anyhow!("The agent refused to process that prompt. Try again.")),
+                    acp_v2::StopReason::Cancelled => Err(anyhow!("用户已取消")),
+                    acp_v2::StopReason::MaxTokens => Err(anyhow!("智能体已达到最大 Token 数")),
+                    acp_v2::StopReason::MaxTurnRequests => Err(anyhow!("智能体已达到两个用户轮次之间允许的最大请求数。尝试再次发送提示词。")),
+                    acp_v2::StopReason::Refusal => Err(anyhow!("智能体拒绝处理该提示词。重试。")),
                     acp_v2::StopReason::Error(reason) => Err(match reason.error {
                         Some(error) => anyhow::Error::new(*error),
-                        None => anyhow!("Native agent stopped with an error"),
+                        None => anyhow!("原生智能体因错误而停止"),
                     }),
                     acp_v2::StopReason::EndTurn => thread.read_with(cx, |thread, _cx| {
                         thread
@@ -4052,9 +4050,9 @@ impl SubagentHandle for NativeSubagentHandle {
                                     Some(content)
                                 }
                             })
-                            .context("No response from subagent")
+                            .context("子智能体无响应")
                     }),
-                    _ => Err(anyhow!("Native subagent returned an unsupported stop reason")),
+                    _ => Err(anyhow!("原生子智能体返回了不支持的停止原因")),
                 },
                 Err(error) => Err(error),
             };
@@ -4073,7 +4071,7 @@ impl SubagentHandle for NativeSubagentHandle {
                     if partial_output.is_empty() {
                         anyhow!("{error:#}")
                     } else {
-                        anyhow!("{error:#}\n\nPartial subagent output (last 3 messages, up to 4096 characters each):\n\n{partial_output}")
+                        anyhow!("{error:#}\n\n子智能体的部分输出（最近 3 条消息，每条最多 4096 个字符）：\n\n{partial_output}")
                     }
                 })
             };

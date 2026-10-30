@@ -88,7 +88,7 @@ impl BranchDiff {
             let workspace = cx.entity().downgrade();
             window
                 .spawn(cx, async |_cx| {
-                    let result: Result<()> = Err(anyhow!("No active repository"));
+                    let result: Result<()> = Err(anyhow!("无活动仓库"));
                     result
                 })
                 .detach_and_notify_err(workspace, window, cx);
@@ -146,7 +146,7 @@ impl BranchDiff {
             let workspace = cx.entity().downgrade();
             window
                 .spawn(cx, async |_cx| {
-                    let result: Result<()> = Err(anyhow!("No active repository"));
+                    let result: Result<()> = Err(anyhow!("无活动仓库"));
                     result
                 })
                 .detach_and_notify_err(workspace, window, cx);
@@ -336,7 +336,7 @@ impl BranchDiff {
             DiffMultibuffer::new(
                 branch_diff,
                 Capability::ReadWrite,
-                "No changes",
+                "没有更改",
                 move |editor, cx| {
                     editor.set_diff_hunk_renderer(Some(Arc::new(HiddenDiffHunkRenderer)), cx);
                     editor.rhs_editor().update(cx, move |rhs_editor, _cx| {
@@ -477,8 +477,8 @@ impl Item for BranchDiff {
 
     fn tab_content_text(&self, _detail: usize, cx: &App) -> SharedString {
         match self.diff_base(cx) {
-            DiffBase::Merge { base_ref } => format!("Changes since {}", base_ref).into(),
-            DiffBase::Head | DiffBase::Index | DiffBase::Staged => "Changes".into(),
+            DiffBase::Merge { base_ref } => format!("自 {} 以来的更改", base_ref).into(),
+            DiffBase::Head | DiffBase::Index | DiffBase::Staged => "更改".into(),
         }
     }
 
@@ -774,7 +774,7 @@ impl Render for BranchDiffToolbar {
             return div();
         };
         let selected_base_ref = base_ref.clone();
-        let base_ref_label = format!("Base: {base_ref}");
+        let base_ref_label = format!("基准：{base_ref}");
         let repository = branch_diff.read(cx).repo(cx);
         let workspace = branch_diff.read(cx).workspace.clone();
         let project = branch_diff.read(cx).project.clone();
@@ -869,13 +869,13 @@ impl Render for BranchDiffToolbar {
                                 .size(IconSize::XSmall)
                                 .color(Color::Muted),
                         ),
-                        Tooltip::text("Select Base Branch"),
+                        Tooltip::text("选择基准分支"),
                     ),
             )
             .when(show_review_button, |this| {
                 let focus_handle = focus_handle.clone();
                 this.child(Divider::vertical()).child(
-                    Button::new("review-diff", "Review Diff")
+                    Button::new("review-diff", "审阅差异")
                         .start_icon(
                             Icon::new(IconName::ZedAssistant)
                                 .size(IconSize::Small)
@@ -883,9 +883,9 @@ impl Render for BranchDiffToolbar {
                         )
                         .tooltip(move |_, cx| {
                             Tooltip::with_meta_in(
-                                "Review Diff",
+                                "审阅差异",
                                 Some(&ReviewDiff),
-                                "Send this diff for your last agent to review.",
+                                "将此差异发送给上一个智能体进行审阅",
                                 &focus_handle,
                                 cx,
                             )

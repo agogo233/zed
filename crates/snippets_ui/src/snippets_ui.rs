@@ -57,9 +57,9 @@ impl From<ScopeFileName> for ScopeName {
 actions!(
     snippets,
     [
-        /// Opens the snippets configuration file.
+        /// 打开代码片段配置文件
         ConfigureSnippets,
-        /// Opens the snippets folder in the file manager.
+        /// 在文件管理器中打开代码片段文件夹
         OpenFolder
     ]
 );
@@ -204,7 +204,7 @@ impl PickerDelegate for ScopeSelectorDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _: &mut App) -> Arc<str> {
-        "Select snippet scope...".into()
+        "选择代码片段作用域...".into()
     }
 
     fn match_count(&self) -> usize {

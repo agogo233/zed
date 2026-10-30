@@ -4778,7 +4778,7 @@ impl Project {
         cx: &mut Context<Self>,
     ) -> Task<Result<Vec<DebuggerHoverVariable>>> {
         let Some(session) = self.dap_store.read(cx).session_by_id(session_id) else {
-            return Task::ready(Err(anyhow!("debug session is no longer available")));
+            return Task::ready(Err(anyhow!("调试会话不再可用")));
         };
 
         let task = session.update(cx, |session, cx| {

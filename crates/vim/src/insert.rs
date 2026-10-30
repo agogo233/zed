@@ -10,13 +10,13 @@ use workspace::searchable::Direction;
 actions!(
     vim,
     [
-        /// Switches to normal mode with cursor positioned before the current character.
+        /// 切换到普通模式，光标定位于当前字符之前
         NormalBefore,
-        /// Temporarily switches to normal mode for one command.
+        /// 临时切换到普通模式以执行一个命令
         TemporaryNormal,
-        /// Inserts the next character from the line above into the current line.
+        /// 将上方行的下一个字符插入当前行
         InsertFromAbove,
-        /// Inserts the next character from the line below into the current line.
+        /// 将下方行的下一个字符插入当前行
         InsertFromBelow
     ]
 );

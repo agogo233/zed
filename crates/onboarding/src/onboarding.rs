@@ -35,7 +35,7 @@ mod basics_page;
 pub mod multibuffer_hint;
 mod theme_preview;
 
-/// Imports settings from Visual Studio Code.
+/// 从 Visual Studio Code 导入设置
 #[derive(Copy, Clone, Debug, Default, PartialEq, Deserialize, JsonSchema, Action)]
 #[action(namespace = zed)]
 #[serde(deny_unknown_fields)]
@@ -44,7 +44,7 @@ pub struct ImportVsCodeSettings {
     pub skip_prompt: bool,
 }
 
-/// Imports settings from Cursor editor.
+/// 从 Cursor 编辑器导入设置
 #[derive(Copy, Clone, Debug, Default, PartialEq, Deserialize, JsonSchema, Action)]
 #[action(namespace = zed)]
 #[serde(deny_unknown_fields)]
@@ -58,13 +58,13 @@ pub const FIRST_OPEN: &str = "first_open";
 actions!(
     onboarding,
     [
-        /// Finish the onboarding process.
+        /// 完成引导流程
         Finish,
-        /// Sign in while in the onboarding flow.
+        /// 在引导流程中登录
         SignIn,
-        /// Open the user account in zed.dev while in the onboarding flow.
+        /// 在引导流程中打开 zed.dev 上的用户帐户
         OpenAccount,
-        /// Resets the welcome screen hints to their initial state.
+        /// 将欢迎页面提示重置为初始状态
         ResetHints
     ]
 );
@@ -351,11 +351,11 @@ impl Render for Onboarding {
                                             .child(
                                                 v_flex()
                                                     .child(
-                                                        Headline::new("Welcome to Zed")
+                                                        Headline::new("欢迎使用 Zed")
                                                             .size(HeadlineSize::Small),
                                                     )
                                                     .child(
-                                                        Label::new("The editor for what's next")
+                                                        Label::new("面向未来的编辑器")
                                                             .color(Color::Muted)
                                                             .size(LabelSize::Small)
                                                             .italic(),
@@ -363,7 +363,7 @@ impl Render for Onboarding {
                                             ),
                                     )
                                     .child({
-                                        Button::new("finish_setup", "Finish Setup")
+                                        Button::new("finish_setup", "完成设置")
                                             .style(ButtonStyle::Filled)
                                             .size(ButtonSize::Medium)
                                             .width(rems_from_px(200_f32))
@@ -397,7 +397,7 @@ impl Item for Onboarding {
     type Event = ItemEvent;
 
     fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
-        "Onboarding".into()
+        "新手引导".into()
     }
 
     fn telemetry_event_text(&self) -> Option<&'static str> {
@@ -484,9 +484,9 @@ pub async fn handle_import_vscode_settings(
                 zlog::error!("{err:?}");
                 let _ = cx.prompt(
                     gpui::PromptLevel::Info,
-                    &format!("Could not find or load a {source} settings file"),
+                    &format!("找不到或无法加载 {source} 设置文件"),
                     None,
-                    &["OK"],
+                    &["确定"],
                 );
                 return;
             }
@@ -496,13 +496,12 @@ pub async fn handle_import_vscode_settings(
         let prompt = cx.prompt(
             gpui::PromptLevel::Warning,
             &format!(
-                "Importing {} settings may overwrite your existing settings. \
-                Will import settings from {}",
+                "导入 {} 设置可能会覆盖你现有的设置。将从 {} 导入设置。",
                 vscode_settings.source,
                 truncate_and_remove_front(&vscode_settings.path.to_string_lossy(), 128),
             ),
             None,
-            &["Import", "Cancel"],
+            &["导入", "取消"],
         );
         let result = cx.spawn(async move |_| prompt.await.ok()).await;
         if result != Some(0) {
@@ -527,7 +526,7 @@ pub async fn handle_import_vscode_settings(
         .update_in(cx, |workspace, _, cx| match result {
             Ok(_) => {
                 let confirmation_toast = StatusToast::new(
-                    format!("Your {} settings were successfully imported.", source),
+                    format!("你的 {} 设置已成功导入。", source),
                     cx,
                     |this, _| {
                         this.icon(
@@ -550,7 +549,7 @@ pub async fn handle_import_vscode_settings(
             }
             Err(_) => {
                 let error_toast = StatusToast::new(
-                    "Failed to import settings. See log for details",
+                    "导入设置失败，详情请查看日志",
                     cx,
                     |this, _| {
                         this.icon(
@@ -558,7 +557,7 @@ pub async fn handle_import_vscode_settings(
                                 .size(IconSize::Small)
                                 .color(Color::Error),
                         )
-                        .action("Open Log", |window, cx| {
+                        .action("打开日志", |window, cx| {
                             window.dispatch_action(workspace::OpenLog.boxed_clone(), cx)
                         })
                         .dismiss_button(true)

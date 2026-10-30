@@ -10,7 +10,7 @@ use sysinfo::{MemoryRefreshKind, RefreshKind, System};
 actions!(
     zed,
     [
-        /// Copies system specifications to the clipboard for bug reports.
+        /// 将系统规格信息复制到剪贴板以用于错误报告
         CopySystemSpecsIntoClipboard,
     ]
 );

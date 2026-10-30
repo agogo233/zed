@@ -434,8 +434,8 @@ impl UndoMessage {
             UndoMessage::Changed(_) => {
                 "this is a bug in the manage_undo_and_redo task please report"
             }
-            UndoMessage::Undo => "Undo Failed",
-            UndoMessage::Redo => "Redo Failed",
+            UndoMessage::Undo => "撤销失败",
+            UndoMessage::Redo => "重做失败",
         }
     }
 }
@@ -662,9 +662,9 @@ impl Inner {
         // share the parent folder, then it was a simple rename, otherwise it
         // was a move.
         let operation = if from.path.parent() == to.path.parent() {
-            "rename"
+            "重命名"
         } else {
-            "move"
+            "移动"
         };
 
         let res: Result<Task<Result<CreatedEntry>>> = workspace.update(cx, |workspace, cx| {
@@ -673,7 +673,7 @@ impl Inner {
                     .entry_for_path(from, cx)
                     .map(|entry| entry.id)
                     .with_context(|| {
-                        format!("Failed to {operation} `{from_name}`. It no longer exists.")
+                        format!("{operation} `{from_name}` 失败。该条目已不存在。")
                     })?;
 
                 Ok(project.rename_entry(entry_id, to.clone(), cx))
@@ -683,7 +683,7 @@ impl Inner {
         res?.await.map_err(|err| {
             if already_exists_error(&err) {
                 anyhow!(
-                    "Failed to {operation} `{from_name}` to `{to_name}`. A file or folder already exists there."
+                    "将 `{from_name}` {operation}至 `{to_name}` 失败。该位置已存在文件或文件夹。"
                 )
             } else {
                 err
@@ -800,17 +800,17 @@ impl Inner {
                 let entry_id = project
                     .entry_for_path(project_path, cx)
                     .map(|entry| entry.id)
-                    .with_context(|| format!("Failed to trash `{name}`. It no longer exists."))?;
+                    .with_context(|| format!("将 `{name}` 移至回收站失败。该条目已不存在。"))?;
 
                 project
                     .trash_entry(entry_id, cx)
-                    .with_context(|| format!("Failed to trash `{name}`."))
+                    .with_context(|| format!("将 `{name}` 移至回收站失败"))
             })
         })?;
 
         match task.await {
             Ok(trash_id) => Ok(trash_id),
-            Err(err) => Err(err).context(format!("Failed to trash `{name}`.")),
+            Err(err) => Err(err).context(format!("将 `{name}` 移至回收站失败")),
         }
     }
 
@@ -851,7 +851,7 @@ impl Inner {
                     project_path_display(project, &project_path, path_style, cx)
                 }))
             })
-            .unwrap_or_else(|| "item".to_string());
+            .unwrap_or_else(|| "条目".to_string());
 
         workspace
             .update(cx, |workspace, cx| {
@@ -862,9 +862,9 @@ impl Inner {
             .await
             .map_err(|err| match err.downcast_ref::<TrashRestoreError>() {
                 Some(TrashRestoreError::Collision { .. }) => anyhow!(
-                    "Failed to restore `{name}`. Something already exists at its original location."
+                    "还原 `{name}` 失败。原位置已存在其他文件或文件夹。"
                 ),
-                _ => anyhow!("Failed to restore `{name}`. It may have been permanently deleted."),
+                _ => anyhow!("还原 `{name}` 失败。它可能已被永久删除。"),
             })
     }
 
@@ -996,7 +996,7 @@ impl Inner {
                     PromptLevel::Info,
                     &prompt.message,
                     prompt.detail,
-                    &[prompt.confirmation_label, "Cancel"],
+                    &[prompt.confirmation_label, "取消"],
                     cx,
                 )
             })?

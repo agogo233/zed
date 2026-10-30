@@ -55,9 +55,9 @@ impl TasksModalDelegate {
             reveal_target: Some(RevealTarget::Center),
         }) = &task_overrides
         {
-            Arc::from("Find a task, or run a command in the central pane")
+            Arc::from("查找任务，或在中央窗格中运行命令")
         } else {
-            Arc::from("Find a task, or run a command")
+            Arc::from("查找任务，或运行命令")
         };
         Self {
             task_store,
@@ -569,7 +569,7 @@ impl PickerDelegate for TasksModalDelegate {
                                         .checked_sub(1);
                                     picker.refresh(window, cx);
                                 }))
-                                .tooltip(|_, cx| Tooltip::simple("Delete from Recent Tasks", cx)),
+                                .tooltip(|_, cx| Tooltip::simple("从最近任务中删除", cx)),
                         );
                         item.end_slot_on_hover(delete_button)
                     } else {
@@ -680,9 +680,9 @@ impl PickerDelegate for TasksModalDelegate {
                         .boxed_clone();
                         this.child({
                             let spawn_oneshot_label = if current_modifiers.secondary(cx) {
-                                "Spawn Oneshot Without History"
+                                "启动一次性任务（无历史记录）"
                             } else {
-                                "Spawn Oneshot"
+                                "启动一次性任务"
                             };
 
                             Button::new("spawn-onehshot", spawn_oneshot_label)
@@ -694,9 +694,9 @@ impl PickerDelegate for TasksModalDelegate {
                     } else if current_modifiers.secondary(cx) {
                         this.child({
                             let label = if is_recent_selected {
-                                "Rerun Without History"
+                                "无历史记录重新运行"
                             } else {
-                                "Spawn Without History"
+                                "无历史记录运行"
                             };
                             Button::new("spawn", label)
                                 .key_binding(KeyBinding::for_action(&menu::SecondaryConfirm, cx))
@@ -707,7 +707,7 @@ impl PickerDelegate for TasksModalDelegate {
                     } else {
                         this.child({
                             let run_entry_label =
-                                if is_recent_selected { "Rerun" } else { "Spawn" };
+                                if is_recent_selected { "重新运行" } else { "启动" };
 
                             Button::new("spawn", run_entry_label)
                                 .key_binding(KeyBinding::for_action(&menu::Confirm, cx))

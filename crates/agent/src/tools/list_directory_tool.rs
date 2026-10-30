@@ -195,9 +195,9 @@ impl AgentTool for ListDirectoryTool {
     ) -> SharedString {
         if let Ok(input) = input {
             let path = MarkdownInlineCode(&input.path);
-            format!("List the {path} directory's contents").into()
+            format!("列出 {path} 目录的内容").into()
         } else {
-            "List directory".into()
+            "列出目录".into()
         }
     }
 

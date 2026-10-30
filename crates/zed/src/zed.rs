@@ -121,35 +121,35 @@ impl gpui::Global for CrashHandler {}
 actions!(
     zed,
     [
-        /// Opens the element inspector for debugging UI.
+        /// 打开元素检查器以调试 UI
         DebugElements,
-        /// Hides the application window.
+        /// 隐藏应用程序窗口
         Hide,
-        /// Hides all other application windows.
+        /// 隐藏所有其他应用程序窗口
         HideOthers,
-        /// Minimizes the current window.
+        /// 最小化当前窗口
         Minimize,
-        /// Opens the default settings file.
+        /// 打开默认设置文件
         OpenDefaultSettings,
-        /// Opens project-specific settings file.
+        /// 打开项目专属设置文件
         OpenProjectSettingsFile,
-        /// Opens the tasks panel.
+        /// 打开任务面板
         OpenTasks,
-        /// Opens debug tasks configuration.
+        /// 打开调试任务配置
         OpenDebugTasks,
-        /// Shows the default semantic token rules (read-only).
+        /// 显示默认语义标记规则（只读）
         ShowDefaultSemanticTokenRules,
-        /// Resets the application database.
+        /// 重置应用程序数据库
         ResetDatabase,
-        /// Shows all hidden windows.
+        /// 显示所有隐藏窗口
         ShowAll,
-        /// Toggles fullscreen mode.
+        /// 切换全屏模式
         ToggleFullScreen,
-        /// Zooms the window.
+        /// 缩放窗口
         Zoom,
-        /// Triggers a test panic for debugging.
+        /// 触发用于调试的测试 panic
         TestPanic,
-        /// Triggers a hard crash for debugging.
+        /// 触发用于调试的强制崩溃
         TestCrash,
     ]
 );
@@ -157,14 +157,14 @@ actions!(
 actions!(
     dev,
     [
-        /// Opens a prompt to enter a URL to open.
+        /// 打开用于输入待打开 URL 的提示框
         OpenUrlPrompt,
-        /// Dumps the current accessibility tree (the last update sent to the
-        /// platform adapter) to a new buffer as JSON, for debugging what is
-        /// exposed to assistive technology.
+        /// 将当前无障碍树（最近一次发送给
+        /// 平台适配器的更新）以 JSON 格式转储到新缓冲区，用于调试
+        /// 向辅助技术公开的内容。
         DumpAccessibilityTree,
-        /// Copies the current accessibility tree to the clipboard as JSON,
-        /// without opening a buffer. See [`DumpAccessibilityTree`].
+        /// 将当前无障碍树以 JSON 格式复制到剪贴板，
+        /// 而不打开缓冲区。参见 [`DumpAccessibilityTree`]。
         CopyAccessibilityTree,
     ]
 );
@@ -240,7 +240,7 @@ pub fn init(cx: &mut App) {
             open_bundled_file(
                 workspace,
                 asset_str::<Assets>("licenses.md"),
-                "Open Source License Attribution",
+                "开源许可证归属",
                 "Markdown",
                 window,
                 cx,
@@ -297,7 +297,7 @@ pub fn init(cx: &mut App) {
             open_bundled_file(
                 workspace,
                 settings::default_semantic_token_rules(),
-                "Default Semantic Token Rules",
+                "默认语义标记规则",
                 "JSONC",
                 window,
                 cx,
@@ -309,7 +309,7 @@ pub fn init(cx: &mut App) {
             open_bundled_file(
                 workspace,
                 settings::default_settings(),
-                "Default Settings",
+                "默认设置",
                 "JSON",
                 window,
                 cx,
@@ -321,7 +321,7 @@ pub fn init(cx: &mut App) {
             open_bundled_file(
                 workspace,
                 settings::default_keymap(),
-                "Default Key Bindings",
+                "默认键绑定",
                 "JSON",
                 window,
                 cx,
@@ -677,9 +677,9 @@ fn initialize_file_watcher(fs: &dyn Fs, window: &mut Window, cx: &mut Context<Wo
         );
         let prompt = window.prompt(
             PromptLevel::Critical,
-            "Could not start inotify",
+            "无法启动 inotify",
             Some(&message),
-            &["Troubleshoot and Quit"],
+            &["排查并退出"],
             cx,
         );
         cx.spawn(async move |_, cx| {
@@ -708,9 +708,9 @@ fn initialize_file_watcher(fs: &dyn Fs, window: &mut Window, cx: &mut Context<Wo
         );
         let prompt = window.prompt(
             PromptLevel::Critical,
-            "Could not start ReadDirectoryChangesW",
+            "无法启动 ReadDirectoryChangesW",
             Some(&message),
-            &["Troubleshoot and Quit"],
+            &["排查并退出"],
             cx,
         );
         cx.spawn(async move |_, cx| {
@@ -758,9 +758,9 @@ fn show_software_emulation_warning_if_needed(
         );
         let prompt = window.prompt(
             PromptLevel::Critical,
-            "Unsupported GPU",
+            "不支持的 GPU",
             Some(&message),
-            &["Skip", "Troubleshoot and Quit"],
+            &["跳过", "排查并退出"],
             cx,
         );
         cx.spawn(async move |_, cx| {
@@ -987,7 +987,7 @@ fn register_actions(
                         buffer.set_text(json, cx);
                     });
                     workspace.update_in(cx, |workspace, window, cx| {
-                        let title = "Accessibility Tree".to_string();
+                        let title = "无障碍树".to_string();
                         let buffer = cx.new(|cx| {
                             MultiBuffer::singleton(buffer, cx).with_title(title.clone())
                         });
@@ -1069,7 +1069,7 @@ fn register_actions(
                 Err(e) => {
                     workspace.show_error(
                         format!(
-                            "Opening this URL in a browser failed because the URL is invalid: {}\n\nError was: {e}",
+                            "在浏览器中打开此 URL 失败，因为该 URL 无效：{}\n\n错误为：{e}",
                             action.url
                         ),
                         cx,
@@ -1280,7 +1280,7 @@ fn register_actions(
                         Toast::new(
                             NotificationId::unique::<RegisterZedScheme>(),
                             format!(
-                                "zed:// links will now open in {}.",
+                                "zed:// 链接现在将在 {} 中打开",
                                 ReleaseChannel::global(cx).display_name()
                             ),
                         ),
@@ -1290,7 +1290,7 @@ fn register_actions(
                 Ok(())
             })
             .detach_and_prompt_err(
-                "Error registering zed:// scheme",
+                "注册 zed:// 方案出错",
                 window,
                 cx,
                 |_, _, _| None,
@@ -1626,14 +1626,14 @@ fn open_about_window(cx: &mut App) {
                             .child(Headline::new(self.message.clone()))
                             .when_some(self.commit.clone(), |this, commit| {
                                 this.child(
-                                    Label::new("Commit")
+                                    Label::new("提交")
                                         .color(Color::Muted)
                                         .size(LabelSize::XSmall),
                                 )
                                 .child(Label::new(commit).size(LabelSize::Small))
                             })
                             .child(
-                                Label::new("Version")
+                                Label::new("版本")
                                     .color(Color::Muted)
                                     .size(LabelSize::XSmall),
                             )
@@ -1651,7 +1651,7 @@ fn open_about_window(cx: &mut App) {
                                         window.remove_window();
                                     }))
                                     .child(
-                                        Button::new("ok", "OK")
+                                        Button::new("ok", "确定")
                                             .full_width()
                                             .style(ButtonStyle::OutlinedGhost)
                                             .toggle_state(ok_is_focused)
@@ -1671,7 +1671,7 @@ fn open_about_window(cx: &mut App) {
                                         },
                                     ))
                                     .child(
-                                        Button::new("copy", "Copy")
+                                        Button::new("copy", "复制")
                                             .full_width()
                                             .style(ButtonStyle::Tinted(TintColor::Accent))
                                             .toggle_state(copy_is_focused)
@@ -1776,9 +1776,9 @@ fn quit(_: &Quit, cx: &mut App) {
                 .update(cx, |_, window, cx| {
                     window.prompt(
                         PromptLevel::Info,
-                        "Are you sure you want to quit?",
+                        "确定要退出吗？",
                         None,
-                        &["Quit", "Cancel"],
+                        &["退出", "取消"],
                         cx,
                     )
                 })
@@ -1855,8 +1855,7 @@ fn open_log_file(workspace: &mut Workspace, window: &mut Window, cx: &mut Contex
                                 cx.new(|cx| {
                                     MessageNotification::new(
                                         format!(
-                                            "Unable to access/open log file at path \
-                                                    {}: {e:#}",
+                                            "无法访问/打开路径 {} 处的日志文件：{e:#}",
                                             paths::log_file().display()
                                         ),
                                         cx,
@@ -1937,8 +1936,8 @@ fn notify_settings_errors(result: settings::SettingsParseResult, is_user: bool, 
             } else {
                 show_app_notification(id, cx, move |cx| {
                     cx.new(|cx| {
-                        MessageNotification::new(format!("Invalid user settings file\n{error}"), cx)
-                            .primary_message("Open Settings File")
+                        MessageNotification::new(format!("用户设置文件无效\n{error}"), cx)
+                            .primary_message("打开设置文件")
                             .primary_icon(IconName::Settings)
                             .primary_on_click(|window, cx| {
                                 window.dispatch_action(
@@ -1969,12 +1968,11 @@ fn notify_settings_errors(result: settings::SettingsParseResult, is_user: bool, 
                     cx.new(|cx| {
                         MessageNotification::new(
                             format!(
-                                "Failed to migrate settings\n\
-                                {err}"
+                                "迁移设置失败\n{err}"
                             ),
                             cx,
                         )
-                        .primary_message("Open Settings File")
+                        .primary_message("打开设置文件")
                         .primary_icon(IconName::Settings)
                         .primary_on_click(|window, cx| {
                             window.dispatch_action(zed_actions::OpenSettingsFile.boxed_clone(), cx);
@@ -2007,11 +2005,11 @@ fn init_global_config_error_notifications(cx: &mut App) {
             match result {
                 Ok(_) => dismiss_app_notification(&id, cx),
                 Err(error) => {
-                    let message = format!("Invalid global {file_kind} file\n{error}");
+                    let message = format!("全局 {file_kind} 文件无效\n{error}");
                     show_app_notification(id, cx, move |cx| {
                         cx.new(|cx| {
                             MessageNotification::new(message.clone(), cx)
-                                .primary_message("Open File")
+                                .primary_message("打开文件")
                                 .primary_icon(IconName::Settings)
                                 .primary_on_click(move |window, cx| {
                                     on_click(window, cx);
@@ -2098,7 +2096,7 @@ pub fn watch_user_agents_md(fs: Arc<dyn fs::Fs>, cx: &mut App) {
         UserAgentsMdState::Error(message) => {
             let path = paths::agents_file().display().to_string();
             log::error!("Failed to load user AGENTS.md from {path}: {message}");
-            let body = format!("Failed to load {path}\n{message}");
+            let body = format!("加载 {path} 失败\n{message}");
             let notification_id = notification_id.clone();
             show_app_notification(notification_id, cx, move |cx| {
                 let body = body.clone();
@@ -2257,11 +2255,11 @@ fn show_keymap_file_json_error(
     cx: &mut App,
 ) {
     let message: SharedString =
-        format!("JSON parse error in keymap file. Bindings not reloaded.\n\n{error}").into();
+        format!("键映射文件中存在 JSON 解析错误，绑定未重新加载。\n\n{error}").into();
     show_app_notification(notification_id, cx, move |cx| {
         cx.new(|cx| {
             MessageNotification::new(message.clone(), cx)
-                .primary_message("Open Keymap File")
+                .primary_message("打开键映射文件")
                 .primary_icon(IconName::Settings)
                 .primary_on_click(|window, cx| {
                     window.dispatch_action(zed_actions::OpenKeymapFile.boxed_clone(), cx);
@@ -2338,7 +2336,7 @@ fn reload_keymaps(cx: &mut App, mut user_key_bindings: Vec<KeyBinding>) {
     // On Windows, this is set in the `update_jump_list` method of the `HistoryManager`.
     #[cfg(not(target_os = "windows"))]
     cx.set_dock_menu(vec![gpui::MenuItem::action(
-        "New Window",
+        "新建窗口",
         workspace::NewWindow,
     )]);
     // todo: nicer api here?
@@ -2647,7 +2645,7 @@ fn open_local_file(
         struct NoOpenFolders;
 
         workspace.show_notification(NotificationId::unique::<NoOpenFolders>(), cx, |cx| {
-            cx.new(|cx| MessageNotification::new("This project has no folders open.", cx))
+            cx.new(|cx| MessageNotification::new("此项目未打开任何文件夹", cx))
         });
         None
     }

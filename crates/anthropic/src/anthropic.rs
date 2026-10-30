@@ -1371,7 +1371,7 @@ pub fn completion_error_from_anthropic(
             status,
             retry_after,
         } => {
-            let message = format!("{provider}'s API rate limit exceeded");
+            let message = format!("{provider} 的 API 已超出速率限制");
             Error::from_provider_response(
                 provider,
                 Some(status),
@@ -1385,7 +1385,7 @@ pub fn completion_error_from_anthropic(
             status,
             retry_after,
         } => {
-            let message = format!("{provider}'s API servers are overloaded right now");
+            let message = format!("{provider} 的 API 服务器目前负载过高");
             Error::from_provider_response(
                 provider,
                 Some(status),

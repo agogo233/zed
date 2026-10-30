@@ -94,7 +94,7 @@ fn build_application() -> Application {
 }
 
 fn files_not_created_on_launch(errors: HashMap<io::ErrorKind, Vec<&Path>>) {
-    let message = "Zed failed to launch";
+    let message = "Zed 启动失败";
     let error_details = errors
         .into_iter()
         .flat_map(|(kind, paths)| {
@@ -133,7 +133,7 @@ fn files_not_created_on_launch(errors: HashMap<io::ErrorKind, Vec<&Path>>) {
                             gpui::PromptLevel::Critical,
                             message,
                             Some(&error_details),
-                            &["Exit"],
+                            &["退出"],
                             cx,
                         );
 
@@ -176,7 +176,7 @@ fn fail_to_open_window(e: anyhow::Error, _cx: &mut App) {
             proxy
                 .add_notification(
                     notification_id,
-                    Notification::new("Zed failed to launch")
+                    Notification::new("Zed 启动失败")
                         .body(Some(
                             format!(
                                 "{e:?}. See https://zed.dev/docs/linux for troubleshooting steps."
@@ -1390,10 +1390,10 @@ pub(crate) async fn restore_or_create_workspace(
 
         if error_count > 0 {
             let message = if error_count == 1 {
-                "Failed to restore 1 workspace. Check logs for details.".to_string()
+                "恢复 1 个工作区失败，详情请查看日志".to_string()
             } else {
                 format!(
-                    "Failed to restore {} workspaces. Check logs for details.",
+                    "恢复 {} 个工作区失败，详情请查看日志",
                     error_count
                 )
             };

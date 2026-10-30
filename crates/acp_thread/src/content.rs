@@ -3,7 +3,7 @@ use anyhow::{Result, bail};
 
 pub fn validate_prompt_content_for_v1(content: &[acp_v2::ContentBlock]) -> Result<()> {
     if !content.iter().all(can_convert_to_v1) {
-        bail!("This prompt contains content not supported by ACP v1");
+        bail!("此提示词包含 ACP v1 不支持的内容");
     }
     Ok(())
 }

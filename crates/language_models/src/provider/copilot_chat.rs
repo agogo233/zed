@@ -148,7 +148,7 @@ impl LanguageModelProvider for CopilotChatLanguageModelProvider {
             None
         } else {
             Some(language_model::InlineDescription::Text(
-                "Requires an active GitHub Copilot subscription.".into(),
+                "需要有效的 GitHub Copilot 订阅".into(),
             ))
         };
 

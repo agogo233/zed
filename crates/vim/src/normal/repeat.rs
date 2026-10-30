@@ -14,13 +14,13 @@ use workspace::Workspace;
 actions!(
     vim,
     [
-        /// Repeats the last change.
+        /// 重复上次修改
         Repeat,
-        /// Ends the repeat recording.
+        /// 结束重复录制
         EndRepeat,
-        /// Toggles macro recording.
+        /// 切换宏录制
         ToggleRecord,
-        /// Replays the last recorded macro.
+        /// 回放上次录制的宏
         ReplayLastRecording
     ]
 );

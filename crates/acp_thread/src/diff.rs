@@ -86,7 +86,7 @@ impl DiffPatch {
             }
             Err(error) => {
                 let preview = format!(
-                    "Diff preview unavailable: {error}\n\n{}",
+                    "差异预览不可用：{error}\n\n{}",
                     crate::ToolCallContent::patch_preview(source)
                 );
                 Self {
@@ -284,24 +284,24 @@ fn diff_change_paths(change: &acp_v2::DiffChange) -> Option<(Option<&Path>, Opti
 
 pub fn diff_change_label(change: &acp_v2::DiffChange) -> String {
     match &change.operation {
-        acp_v2::DiffChangeOperation::Add(change) => format!("Added {}", change.path.0.display()),
+        acp_v2::DiffChangeOperation::Add(change) => format!("已添加 {}", change.path.0.display()),
         acp_v2::DiffChangeOperation::Delete(change) => {
-            format!("Deleted {}", change.path.0.display())
+            format!("已删除 {}", change.path.0.display())
         }
         acp_v2::DiffChangeOperation::Modify(change) => {
-            format!("Modified {}", change.path.0.display())
+            format!("已修改 {}", change.path.0.display())
         }
         acp_v2::DiffChangeOperation::Move(change) => format!(
-            "Moved {} → {}",
+            "已移动 {} → {}",
             change.old_path.0.display(),
             change.path.0.display()
         ),
         acp_v2::DiffChangeOperation::Copy(change) => format!(
-            "Copied {} → {}",
+            "已复制 {} → {}",
             change.old_path.0.display(),
             change.path.0.display()
         ),
-        _ => "Unsupported file operation".to_owned(),
+        _ => "不支持的文件操作".to_owned(),
     }
 }
 

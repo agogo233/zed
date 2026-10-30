@@ -78,31 +78,31 @@ const CONTENT_MIN_WIDTH: Pixels = px(400.);
 actions!(
     settings_editor,
     [
-        /// Minimizes the settings UI window.
+        /// 最小化设置界面窗口
         Minimize,
-        /// Toggles focus between the navbar and the main content.
+        /// 在导航栏与主内容之间切换焦点
         ToggleFocusNav,
-        /// Expands the navigation entry.
+        /// 展开导航条目
         ExpandNavEntry,
-        /// Collapses the navigation entry.
+        /// 折叠导航条目
         CollapseNavEntry,
-        /// Focuses the next file in the file list.
+        /// 聚焦到文件列表中的下一个文件
         FocusNextFile,
-        /// Focuses the previous file in the file list.
+        /// 聚焦到文件列表中的上一个文件
         FocusPreviousFile,
-        /// Opens an editor for the current file
+        /// 为当前文件打开编辑器
         OpenCurrentFile,
-        /// Focuses the previous root navigation entry.
+        /// 聚焦到上一个根导航条目
         FocusPreviousRootNavEntry,
-        /// Focuses the next root navigation entry.
+        /// 聚焦到下一个根导航条目
         FocusNextRootNavEntry,
-        /// Focuses the first navigation entry.
+        /// 聚焦到第一个导航条目
         FocusFirstNavEntry,
-        /// Focuses the last navigation entry.
+        /// 聚焦到最后一个导航条目
         FocusLastNavEntry,
-        /// Focuses and opens the next navigation entry without moving focus to content.
+        /// 聚焦并打开下一个导航条目，不将焦点移至内容区域
         FocusNextNavEntry,
-        /// Focuses and opens the previous navigation entry without moving focus to content.
+        /// 聚焦并打开上一个导航条目，不将焦点移至内容区域
         FocusPreviousNavEntry
     ]
 );
@@ -531,12 +531,12 @@ fn init_renderers(cx: &mut App) {
                     settings_window,
                     item,
                     settings_file,
-                    Button::new("open-in-settings-file", "Edit in settings.json")
+                    Button::new("open-in-settings-file", "在 settings.json 中编辑")
                         .style(ButtonStyle::Outlined)
                         .size(ButtonSize::Medium)
                         .tab_index(0_isize)
                         .tooltip(Tooltip::for_action_title_in(
-                            "Edit in settings.json",
+                            "在 settings.json 中编辑",
                             &OpenCurrentFile,
                             &settings_window.focus_handle,
                         ))
@@ -1243,9 +1243,9 @@ impl SettingsPageItem {
                         .child(
                             Button::new(
                                 ("sub-page".into(), sub_page_link.title.clone()),
-                                "Configure",
+                                "配置",
                             )
-                            .aria_label(format!("Configure {}", sub_page_link.title))
+                            .aria_label(format!("配置 {}", sub_page_link.title))
                             .tab_index(0_isize)
                             .end_icon(
                                 Icon::new(IconName::ChevronRight)
@@ -1442,8 +1442,8 @@ fn render_settings_item_layout(
                                 IconButton::new("reset-to-default-btn", IconName::Undo)
                                     .icon_color(Color::Muted)
                                     .icon_size(IconSize::Small)
-                                    .aria_label("Reset to Default")
-                                    .tooltip(Tooltip::text("Reset to Default"))
+                                    .aria_label("重置为默认值")
+                                    .tooltip(Tooltip::text("重置为默认值"))
                                     .on_click(move |_, window, cx| {
                                         reset_to_default(window, cx);
                                     }),
@@ -1451,7 +1451,7 @@ fn render_settings_item_layout(
                         })
                         .when_some(modified_in, |this, modified_in| {
                             this.child(
-                                Label::new(format!("\u{2014}  Modified in {modified_in}"))
+                                Label::new(format!("\u{2014}  在 {modified_in} 中修改"))
                                     .color(Color::Muted)
                                     .size(LabelSize::Small),
                             )
@@ -1515,9 +1515,9 @@ fn render_settings_item(
                     )
                     .tooltip(|_, cx| {
                         Tooltip::with_meta(
-                            "Overridden by Organization",
+                            "已被组织覆盖",
                             None,
-                            "Contact your organization admins to adjust this setting.",
+                            "联系组织管理员以调整此设置",
                             cx,
                         )
                     }),
@@ -1574,8 +1574,8 @@ fn render_settings_item_link(
                 .icon_color(link_icon_color)
                 .icon_size(IconSize::Small)
                 .shape(IconButtonShape::Square)
-                .aria_label("Copy Link")
-                .tooltip(Tooltip::text("Copy Link"))
+                .aria_label("复制链接")
+                .tooltip(Tooltip::text("复制链接"))
                 .when_some(json_path, |this, path| {
                     this.on_click(cx.listener(move |this, _, _, cx| {
                         let link = format!("zed://settings/{}", path);
@@ -1798,7 +1798,7 @@ impl SettingsWindow {
         let current_file = SettingsUiFile::User;
         let search_bar = cx.new(|cx| {
             let mut editor = Editor::single_line(window, cx);
-            editor.set_placeholder_text("Search settings…", window, cx);
+            editor.set_placeholder_text("搜索设置…", window, cx);
             editor
         });
         cx.subscribe(&search_bar, |this, _, event: &EditorEvent, cx| {
@@ -2875,7 +2875,7 @@ impl SettingsWindow {
         h_flex()
             .id("settings-ui-files-header")
             .role(Role::Group)
-            .aria_label("Settings File")
+            .aria_label("设置文件")
             .w_full()
             .gap_1()
             .justify_between()
@@ -2940,7 +2940,7 @@ impl SettingsWindow {
                                         }),
                                     )
                                     .style(DropdownStyle::Subtle)
-                                    .trigger_tooltip(Tooltip::text("View Other Projects"))
+                                    .trigger_tooltip(Tooltip::text("查看其他项目"))
                                     .trigger_icon(IconName::ChevronDown)
                                     .attach(gpui::Anchor::BottomLeft)
                                     .offset(gpui::Point {
@@ -2953,11 +2953,11 @@ impl SettingsWindow {
                     }),
             )
             .child(
-                Button::new(edit_in_json_id, "Edit in settings.json")
+                Button::new(edit_in_json_id, "在 settings.json 中编辑")
                     .tab_index(0_isize)
                     .style(ButtonStyle::OutlinedGhost)
                     .tooltip(Tooltip::for_action_title_in(
-                        "Edit in settings.json",
+                        "在 settings.json 中编辑",
                         &OpenCurrentFile,
                         &self.focus_handle,
                     ))
@@ -2969,7 +2969,7 @@ impl SettingsWindow {
 
     pub(crate) fn display_name(&self, file: &SettingsUiFile) -> Option<String> {
         match file {
-            SettingsUiFile::User => Some("User".to_string()),
+            SettingsUiFile::User => Some("用户".to_string()),
             SettingsUiFile::Project((worktree_id, path)) => self
                 .worktree_root_dirs
                 .get(&worktree_id)
@@ -3025,7 +3025,7 @@ impl SettingsWindow {
         h_flex()
             .id("settings-ui-search")
             .role(Role::SearchInput)
-            .aria_label("Search Settings")
+            .aria_label("搜索设置")
             .aria_value(a11y_value)
             .track_focus(&self.search_bar.focus_handle(cx))
             .a11y_synthetic_children(a11y_text_runs)
@@ -3046,7 +3046,7 @@ impl SettingsWindow {
                     IconButton::new("clear-btn", IconName::Close)
                         .icon_color(Color::Muted)
                         .icon_size(IconSize::Small)
-                        .tooltip(Tooltip::text("Clear"))
+                        .tooltip(Tooltip::text("清除"))
                         .on_click(cx.listener(|settings_window, _, window, cx| {
                             settings_window.clear_search(window, cx);
                         })),
@@ -3070,9 +3070,9 @@ impl SettingsWindow {
                 .visible_navbar_entries()
                 .any(|(_, entry)| entry.focus_handle.is_focused(window))
         {
-            "Focus Content"
+            "聚焦内容"
         } else {
-            "Focus Navbar"
+            "聚焦导航栏"
         };
 
         let mut key_context = KeyContext::new_with_defaults(cx.platform_info().os);
@@ -3213,7 +3213,7 @@ impl SettingsWindow {
                 v_flex()
                     .id("settings-ui-nav")
                     .role(Role::Tree)
-                    .aria_label("Settings Navigation")
+                    .aria_label("设置导航")
                     .flex_1()
                     .overflow_hidden()
                     .track_focus(&self.navbar_focus_handle.focus_handle(cx))
@@ -3493,7 +3493,7 @@ impl SettingsWindow {
                 "sub-page-scope-picker",
                 scope_name,
                 ContextMenu::build(window, cx, move |mut menu, _, _| {
-                    menu = menu.header("Scope");
+                    menu = menu.header("作用域");
 
                     for ix in allowed_file_indices {
                         let (file, focus_handle) = &self.files[ix];
@@ -3523,7 +3523,7 @@ impl SettingsWindow {
                 }),
             )
             .style(DropdownStyle::Subtle)
-            .trigger_tooltip(Tooltip::text("Change Scope"))
+            .trigger_tooltip(Tooltip::text("更改作用域"))
             .attach(gpui::Anchor::BottomLeft)
             .offset(gpui::Point {
                 x: px(0.0),
@@ -3570,9 +3570,9 @@ impl SettingsWindow {
             .items_center()
             .justify_center()
             .gap_1()
-            .child(Label::new("No Results"))
+            .child(Label::new("无结果"))
             .child(
-                Label::new(format!("No settings match \"{}\"", search_query))
+                Label::new(format!("没有设置匹配 \"{}\"", search_query))
                     .size(LabelSize::Small)
                     .color(Color::Muted),
             )
@@ -3594,7 +3594,7 @@ impl SettingsWindow {
             }))
             .id("settings-ui-page")
             .role(Role::Group)
-            .aria_label("Settings Content")
+            .aria_label("设置内容")
             .size_full();
 
         let has_active_search = !self.search_bar.read(cx).is_empty(cx);
@@ -3822,7 +3822,7 @@ impl SettingsWindow {
             let is_skills_page =
                 current_sub_page.link.json_path == Some(AGENT_SKILLS_SETTINGS_PATH);
             let is_llm_providers_page = current_sub_page.link.json_path == Some("llm_providers")
-                && current_sub_page.link.title.as_ref() == "LLM Providers";
+                && current_sub_page.link.title.as_ref() == "LLM 提供商";
             let is_external_agents_page = current_sub_page.link.json_path == Some("agent_servers");
             let is_mcp_servers_page = current_sub_page.link.json_path == Some("context_servers");
 
@@ -3850,11 +3850,11 @@ impl SettingsWindow {
                         .flex_shrink_0()
                         .when(current_sub_page.link.in_json, |this| {
                             this.child(
-                                Button::new("open-in-settings-file", "Edit in settings.json")
+                                Button::new("open-in-settings-file", "在 settings.json 中编辑")
                                     .tab_index(0_isize)
                                     .style(ButtonStyle::OutlinedGhost)
                                     .tooltip(Tooltip::for_action_title_in(
-                                        "Edit in settings.json",
+                                        "在 settings.json 中编辑",
                                         &OpenCurrentFile,
                                         &self.focus_handle,
                                     ))
@@ -3868,7 +3868,7 @@ impl SettingsWindow {
                         })
                         .when(is_skills_page, |this| {
                             this.child(
-                                Button::new("open-skill-creator", "Create Skill")
+                                Button::new("open-skill-creator", "创建技能")
                                     .tab_index(0_isize)
                                     .style(ButtonStyle::OutlinedGhost)
                                     .on_click(cx.listener(|this, _, window, cx| {
@@ -3926,7 +3926,7 @@ impl SettingsWindow {
                     )
                     .action_slot(
                         div().pr_1().pb_1().child(
-                            Button::new("fix-in-json", "Fix in settings.json")
+                            Button::new("fix-in-json", "在 settings.json 中修复")
                                 .tab_index(0_isize)
                                 .style(ButtonStyle::Tinted(ui::TintColor::Warning))
                                 .on_click(cx.listener(|this, _, window, cx| {
@@ -3943,7 +3943,7 @@ impl SettingsWindow {
                 .gap_2()
                 .when_some(parse_error, |this, err| {
                     this.child(banner(
-                        "Failed to load your settings. Some values may be incorrect and changes may be lost.",
+                        "加载设置失败。部分值可能不正确，更改可能会丢失。",
                         err,
                         &mut self.shown_errors,
                         cx,
@@ -3951,17 +3951,17 @@ impl SettingsWindow {
                 })
                 .map(|this| match &error.migration_status {
                     settings::MigrationStatus::Succeeded => this.child(banner(
-                        "Your settings are out of date, and need to be updated.",
+                        "你的设置已过时，需要更新。",
                         match &self.current_file {
-                            SettingsUiFile::User => "They can be automatically migrated to the latest version.",
-                            SettingsUiFile::Server(_) | SettingsUiFile::Project(_)  => "They must be manually migrated to the latest version."
+                            SettingsUiFile::User => "它们可以自动迁移到最新版本。",
+                            SettingsUiFile::Server(_) | SettingsUiFile::Project(_)  => "它们必须手动迁移到最新版本。"
                         }.to_string(),
                         &mut self.shown_errors,
                         cx,
                     )),
                     settings::MigrationStatus::Failed { error: err } if !parse_failed => this
                         .child(banner(
-                            "Your settings file is out of date, automatic migration failed",
+                            "你的设置文件已过时，自动迁移失败",
                             err.clone(),
                             &mut self.shown_errors,
                             cx,
@@ -3993,10 +3993,10 @@ impl SettingsWindow {
                         v_flex()
                             .my_0p5()
                             .gap_0p5()
-                            .child(Label::new("Restricted Mode"))
+                            .child(Label::new("受限模式"))
                             .child(
                                 Label::new(
-                                    "This project is in restricted mode. Some project settings may not apply.",
+                                    "此项目处于受限模式。部分项目设置可能不会生效",
                                 )
                                 .size(LabelSize::Small)
                                 .color(Color::Muted),
@@ -4004,7 +4004,7 @@ impl SettingsWindow {
                     )
                     .action_slot(
                         div().pr_2().pb_1().child(
-                            Button::new("manage-trust", "Manage Trust")
+                            Button::new("manage-trust", "管理信任")
                                 .style(ButtonStyle::Tinted(ui::TintColor::Warning))
                                 .on_click(cx.listener(move |_this, _, window, cx| {
                                     if let Some(original_window) = original_window {
@@ -4431,7 +4431,7 @@ impl SettingsWindow {
         self.skill_creator_page = Some((page.clone(), subscription));
 
         let sub_page_link = SubPageLink {
-            title: "Create Skill".into(),
+            title: "创建技能".into(),
             r#type: SubPageType::SkillCreator,
             description: None,
             search_aliases: &[],
@@ -5175,7 +5175,7 @@ fn render_editable_number_field<T: NumberFieldType + Send + Sync>(
 fn render_dropdown<T>(
     field: SettingField<T>,
     file: SettingsUiFile,
-    metadata: Option<&SettingsFieldMetadata>,
+    _metadata: Option<&SettingsFieldMetadata>,
     title: &'static str,
     description: &'static str,
     _window: &mut Window,
@@ -5186,9 +5186,7 @@ where
 {
     let variants = || -> &'static [T] { <T as strum::VariantArray>::VARIANTS };
     let labels = || -> &'static [&'static str] { <T as strum::VariantNames>::VARIANTS };
-    let should_do_titlecase = metadata
-        .and_then(|metadata| metadata.should_do_titlecase)
-        .unwrap_or(true);
+    let should_do_titlecase = false;
 
     let current_value = get_current_value(&SettingsStore::global(cx), &file, &field, cx);
     let (current_value, disabled) = current_value
@@ -5453,7 +5451,7 @@ pub mod test {
         pub fn test(window: &mut Window, cx: &mut Context<Self>) -> Self {
             let search_bar = cx.new(|cx| Editor::single_line(window, cx));
             let dummy_page = SettingsPage {
-                title: "Test",
+                title: "测试",
                 items: Box::new([]),
             };
             Self {
@@ -5895,7 +5893,7 @@ pub mod test {
                     ),
                     SettingsPageItem::SectionHeader("Last"),
                     git_integration,
-                    SettingsPageItem::SectionHeader("Hidden"),
+                    SettingsPageItem::SectionHeader("隐藏"),
                 ],
                 window,
                 cx,
@@ -6107,11 +6105,11 @@ pub mod test {
             );
             let setting = || test_action_link("Setting", None);
             settings_window.pages[1].items = vec![
-                SettingsPageItem::SectionHeader("Status Bar"),
+                SettingsPageItem::SectionHeader("状态栏"),
                 setting(),
-                SettingsPageItem::SectionHeader("Title Bar"),
+                SettingsPageItem::SectionHeader("标题栏"),
                 setting(),
-                SettingsPageItem::SectionHeader("Tab Bar"),
+                SettingsPageItem::SectionHeader("标签栏"),
                 setting(),
             ]
             .into_boxed_slice();

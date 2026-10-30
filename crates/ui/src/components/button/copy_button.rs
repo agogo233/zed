@@ -94,7 +94,7 @@ impl RenderOnce for CopyButton {
         let is_copied = state.read(cx).is_copied();
 
         let (icon, color, tooltip) = if is_copied {
-            (IconName::Check, Color::Success, "Copied!".into())
+            (IconName::Check, Color::Success, "已复制！".into())
         } else {
             (IconName::Copy, Color::Muted, self.tooltip_label)
         };

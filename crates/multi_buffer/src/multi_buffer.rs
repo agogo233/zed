@@ -2193,7 +2193,7 @@ impl MultiBuffer {
     }
 
     /// The title used for buffers not backed by a file and with no title of their own.
-    pub const DEFAULT_TITLE: &str = "untitled";
+    pub const DEFAULT_TITLE: &str = "未命名";
 
     pub fn title<'a>(&'a self, cx: &'a App) -> Cow<'a, str> {
         if let Some(title) = self.title.as_ref() {

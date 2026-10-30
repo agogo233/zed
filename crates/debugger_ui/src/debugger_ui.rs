@@ -29,65 +29,65 @@ pub mod tests;
 actions!(
     debugger,
     [
-        /// Starts a new debugging session.
+        /// 启动新的调试会话
         Start,
-        /// Continues all threads until the next breakpoint.
+        /// 继续执行所有线程，直到下一个断点
         Continue,
-        /// Continues the selected thread until the next breakpoint.
+        /// 继续执行所选线程，直到下一个断点
         ContinueThread,
-        /// Detaches the debugger from the running process.
+        /// 将调试器从正在运行的进程中分离
         Detach,
-        /// Pauses the currently running program.
+        /// 暂停当前运行的程序
         Pause,
-        /// Restarts the current debugging session.
+        /// 重启当前调试会话
         Restart,
-        /// Reruns the current debugging session with the same configuration.
+        /// 以相同配置重新运行当前调试会话
         RerunSession,
-        /// Steps into the next function call.
+        /// 进入下一个函数调用
         StepInto,
-        /// Steps over the current line.
+        /// 单步跳过当前行
         StepOver,
-        /// Steps out of the current function.
+        /// 跳出当前函数
         StepOut,
-        /// Steps back to the previous statement.
+        /// 返回上一条语句
         StepBack,
-        /// Stops the debugging session.
+        /// 停止调试会话
         Stop,
-        /// Toggles whether to ignore all breakpoints.
+        /// 切换是否忽略所有断点
         ToggleIgnoreBreakpoints,
-        /// Clears all breakpoints in the project.
+        /// 清除项目中的所有断点
         ClearAllBreakpoints,
-        /// Focuses on the debugger console panel.
+        /// 聚焦到调试器控制台面板
         FocusConsole,
-        /// Focuses on the variables panel.
+        /// 聚焦到变量面板
         FocusVariables,
-        /// Focuses on the breakpoint list panel.
+        /// 聚焦到断点列表面板
         FocusBreakpointList,
-        /// Focuses on the call stack frames panel.
+        /// 聚焦到调用堆栈帧面板
         FocusFrames,
-        /// Focuses on the loaded modules panel.
+        /// 聚焦到已加载模块面板
         FocusModules,
-        /// Focuses on the loaded sources panel.
+        /// 聚焦到已加载源文件面板
         FocusLoadedSources,
-        /// Focuses on the terminal panel.
+        /// 聚焦到终端面板
         FocusTerminal,
-        /// Toggles the thread picker dropdown.
+        /// 切换线程选择器下拉菜单
         ToggleThreadPicker,
-        /// Toggles the session picker dropdown.
+        /// 切换会话选择器下拉菜单
         ToggleSessionPicker,
-        /// Reruns the last debugging session.
+        /// 重新运行上一次调试会话
         #[action(deprecated_aliases = ["debugger::RerunLastSession"])]
         Rerun,
-        /// Toggles expansion of the selected item in the debugger UI.
+        /// 切换调试器界面中所选项目的展开状态
         ToggleExpandItem,
-        /// Toggle the user frame filter in the stack frame list
-        /// When toggled on, only frames from the user's code are shown
-        /// When toggled off, all frames are shown
+        /// 切换堆栈帧列表中的用户帧筛选器
+        /// 开启后，仅显示来自用户代码的帧
+        /// 关闭后，显示所有帧
         ToggleUserFrames,
     ]
 );
 
-/// Set a data breakpoint on the selected variable or memory region.
+/// 在选定的变量或内存区域上设置数据断点
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = debugger)]
 #[serde(deny_unknown_fields)]
@@ -103,7 +103,7 @@ pub struct ToggleDataBreakpoint {
 actions!(
     dev,
     [
-        /// Copies debug adapter launch arguments to clipboard.
+        /// 将调试适配器启动参数复制到剪贴板
         CopyDebugAdapterArguments
     ]
 );

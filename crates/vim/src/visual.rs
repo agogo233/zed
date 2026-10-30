@@ -24,45 +24,45 @@ use crate::{
 actions!(
     vim,
     [
-        /// Toggles visual mode.
+        /// 切换可视模式
         ToggleVisual,
-        /// Toggles visual line mode.
+        /// 切换可视行模式
         ToggleVisualLine,
-        /// Toggles visual block mode.
+        /// 切换可视块模式
         ToggleVisualBlock,
-        /// Deletes the visual selection.
+        /// 删除可视选区
         VisualDelete,
-        /// Deletes entire lines in visual selection.
+        /// 删除可视选区中的整行
         VisualDeleteLine,
-        /// Yanks (copies) the visual selection.
+        /// 复制可视模式下的选区
         VisualYank,
-        /// Yanks entire lines in visual selection.
+        /// 复制可视模式选区中的整行
         VisualYankLine,
-        /// Moves cursor to the other end of the selection.
+        /// 将光标移到选区的另一端
         OtherEnd,
-        /// Moves cursor to the other end of the selection (row-aware).
+        /// 将光标移到选区的另一端（感知行位置）
         OtherEndRowAware,
-        /// Selects the next occurrence of the current selection.
+        /// 选中当前选区的下一个匹配位置
         SelectNext,
-        /// Selects the previous occurrence of the current selection.
+        /// 选中当前选区的上一个匹配位置
         SelectPrevious,
-        /// Selects the next match of the current selection.
+        /// 选中当前选区的下一个匹配项
         SelectNextMatch,
-        /// Selects the previous match of the current selection.
+        /// 选中当前选区的上一个匹配项
         SelectPreviousMatch,
-        /// Selects the next smaller syntax node.
+        /// 选中下一个更小的语法节点
         SelectSmallerSyntaxNode,
-        /// Selects the next larger syntax node.
+        /// 选中下一个更大的语法节点
         SelectLargerSyntaxNode,
-        /// Selects the next syntax node sibling.
+        /// 选中下一个同级语法节点
         SelectNextSyntaxNode,
-        /// Selects the previous syntax node sibling.
+        /// 选中上一个同级语法节点
         SelectPreviousSyntaxNode,
-        /// Restores the previous visual selection.
+        /// 恢复上一个可视选区
         RestoreVisualSelection,
-        /// Inserts at the end of each line in visual selection.
+        /// 在可视选区每行末尾插入
         VisualInsertEndOfLine,
-        /// Inserts at the first non-whitespace character of each line.
+        /// 在每行第一个非空白字符处插入
         VisualInsertFirstNonWhiteSpace,
     ]
 );

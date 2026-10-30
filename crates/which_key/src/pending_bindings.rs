@@ -92,7 +92,7 @@ fn group_bindings(bindings: Vec<PendingBinding>) -> Vec<PendingBindingRow> {
             );
             result.push(PendingBindingRow {
                 keystrokes: Rc::from([first_keystroke]),
-                action_name: format!("+{longer_count} keybinds").into(),
+                action_name: format!("+{longer_count} 个键绑定").into(),
                 is_group: true,
             });
         } else {
@@ -113,7 +113,7 @@ fn binding_row(binding: PendingBinding) -> PendingBindingRow {
 
 const MAX_KEY_COLUMN_WIDTH: Rems = rems(12.5);
 const MIN_KEY_COLUMN_WIDTH: Rems = rems(3.);
-const HEADER_LABEL: &str = "is waiting for more keys…";
+const HEADER_LABEL: &str = "正在等待更多按键…";
 
 #[derive(IntoElement)]
 pub(crate) struct PendingBindings {

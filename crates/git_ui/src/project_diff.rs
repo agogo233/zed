@@ -42,26 +42,26 @@ use zed_actions::git as git_actions;
 actions!(
     git,
     [
-        /// Shows the diff against the configured diff base: working changes
-        /// relative to HEAD, or all branch changes relative to the default
-        /// branch, following the `git.diff_base` setting.
+        /// 按已配置的差异基准显示差异。
+        /// 以 HEAD 为基准时显示工作区更改，以默认分支为基准时显示当前分支的所有更改。
+        /// 具体取决于 `git.diff_base` 设置。
         Diff,
-        /// Shows working changes relative to HEAD.
+        /// 显示相对于 HEAD 的工作区更改
         DiffHead,
-        /// Toggles the git diff base between HEAD and the default branch.
+        /// 在 HEAD 与默认分支之间切换差异基准
         ToggleDiffBase,
-        /// Adds files to the git staging area.
+        /// 将文件添加到 Git 暂存区
         Add,
-        /// Opens a new agent thread with the branch diff for review.
+        /// 打开一个新的智能体会话，以审查分支差异
         ReviewDiff,
         LeaderAndFollower,
-        /// Compare with a specific branch
+        /// 与指定分支比较
         CompareWithBranch,
     ]
 );
 
-/// Shows the diff between the working directory and your default
-/// branch (typically main or master).
+/// 显示工作目录与默认分支之间的差异
+/// （默认分支通常为 main 或 master）
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = git, name = "DiffBranch", deprecated_aliases = ["git::BranchDiff"])]
 pub(crate) struct DeployBranchDiff;
@@ -242,7 +242,7 @@ impl ProjectDiff {
             DiffMultibuffer::new(
                 branch_diff,
                 Capability::ReadWrite,
-                "No uncommitted changes",
+                "没有未提交的更改",
                 move |editor, cx| {
                     editor.set_diff_hunk_renderer(Some(Arc::new(DefaultDiffHunkRenderer)), cx);
                     editor.rhs_editor().update(cx, |rhs_editor, _cx| {
@@ -447,7 +447,7 @@ impl Item for ProjectDiff {
     }
 
     fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
-        "Uncommitted Changes".into()
+        "未提交的更改".into()
     }
 
     fn telemetry_event_text(&self) -> Option<&'static str> {
@@ -846,7 +846,7 @@ impl Render for ProjectDiffToolbar {
                             .icon_size(IconSize::Small)
                             .disabled(!button_states.prev_next)
                             .tooltip(Tooltip::for_action_title_in(
-                                "Go to Previous Hunk",
+                                "跳转到上一个区块",
                                 &GoToPreviousHunk,
                                 &focus_handle,
                             ))
@@ -859,7 +859,7 @@ impl Render for ProjectDiffToolbar {
                             .icon_size(IconSize::Small)
                             .disabled(!button_states.prev_next)
                             .tooltip(Tooltip::for_action_title_in(
-                                "Go to Next Hunk",
+                                "跳转到下一个区块",
                                 &GoToHunk,
                                 &focus_handle,
                             ))
@@ -873,9 +873,9 @@ impl Render for ProjectDiffToolbar {
                 h_group_sm()
                     .when(button_states.selection, |this| {
                         this.child(
-                            Button::new("stage", "Toggle Staged")
+                            Button::new("stage", "切换暂存状态")
                                 .tooltip(Tooltip::for_action_title_in(
-                                    "Toggle Staged",
+                                    "切换暂存状态",
                                     &ToggleStaged,
                                     &focus_handle,
                                 ))
@@ -887,10 +887,10 @@ impl Render for ProjectDiffToolbar {
                     })
                     .when(!button_states.selection, |this| {
                         this.child(
-                            Button::new("stage", "Stage")
+                            Button::new("stage", "暂存")
                                 .disabled(!button_states.stage)
                                 .tooltip(Tooltip::for_action_title_in(
-                                    "Stage and Go to Next Hunk",
+                                    "暂存并跳转到下一个区块",
                                     &StageAndNext,
                                     &focus_handle,
                                 ))
@@ -899,10 +899,10 @@ impl Render for ProjectDiffToolbar {
                                 })),
                         )
                         .child(
-                            Button::new("unstage", "Unstage")
+                            Button::new("unstage", "取消暂存")
                                 .disabled(!button_states.unstage)
                                 .tooltip(Tooltip::for_action_title_in(
-                                    "Unstage and Go to Next Hunk",
+                                    "取消暂存并跳转到下一个区块",
                                     &UnstageAndNext,
                                     &focus_handle,
                                 ))
@@ -917,10 +917,10 @@ impl Render for ProjectDiffToolbar {
                 button_states.unstage_all && !button_states.stage_all,
                 |this| {
                     this.child(
-                        Button::new("unstage-all", "Unstage All")
+                        Button::new("unstage-all", "全部取消暂存")
                             .width(stage_all_button_width)
                             .tooltip(Tooltip::for_action_title_in(
-                                "Unstage All Changes",
+                                "取消暂存所有更改",
                                 &UnstageAll,
                                 &focus_handle,
                             ))
@@ -934,11 +934,11 @@ impl Render for ProjectDiffToolbar {
                 !button_states.unstage_all || button_states.stage_all,
                 |this| {
                     this.child(
-                        Button::new("stage-all", "Stage All")
+                        Button::new("stage-all", "暂存全部")
                             .width(stage_all_button_width)
                             .disabled(!button_states.stage_all)
                             .tooltip(Tooltip::for_action_title_in(
-                                "Stage All Changes",
+                                "暂存所有更改",
                                 &StageAll,
                                 &focus_handle,
                             ))
@@ -950,9 +950,9 @@ impl Render for ProjectDiffToolbar {
             )
             .child(Divider::vertical())
             .child(
-                Button::new("commit", "Commit")
+                Button::new("commit", "提交")
                     .tooltip(Tooltip::for_action_title_in(
-                        "Commit",
+                        "提交",
                         &Commit,
                         &focus_handle,
                     ))
@@ -978,7 +978,7 @@ pub(crate) fn render_send_review_to_agent_button(
 ) -> Button {
     Button::new(
         "send-review",
-        format!("Send Review to Agent ({})", review_count),
+        format!("将审阅意见发送至智能体 ({})", review_count),
     )
     .start_icon(
         Icon::new(IconName::ZedAssistant)
@@ -986,7 +986,7 @@ pub(crate) fn render_send_review_to_agent_button(
             .color(Color::Muted),
     )
     .tooltip(Tooltip::for_action_title_in(
-        "Send all review comments to the Agent panel",
+        "将所有审阅评论发送至智能体面板",
         &SendReviewToAgent,
         focus_handle,
     ))

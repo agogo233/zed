@@ -5,7 +5,7 @@ use project::project_settings::GoToDiagnosticSeverityFilter;
 use schemars::JsonSchema;
 use util::serde::default_true;
 
-/// Selects the next occurrence of the current selection.
+/// 选中当前选区的下一个匹配位置
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -14,7 +14,7 @@ pub struct SelectNext {
     pub replace_newest: bool,
 }
 
-/// Selects the previous occurrence of the current selection.
+/// 选中当前选区的上一个匹配位置
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -23,7 +23,7 @@ pub struct SelectPrevious {
     pub replace_newest: bool,
 }
 
-/// Moves the cursor to the beginning of the current line.
+/// 将光标移到当前行的开头
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -34,7 +34,7 @@ pub struct MoveToBeginningOfLine {
     pub stop_at_indent: bool,
 }
 
-/// Selects from the cursor to the beginning of the current line.
+/// 从光标选择到当前行的开头
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -45,7 +45,7 @@ pub struct SelectToBeginningOfLine {
     pub stop_at_indent: bool,
 }
 
-/// Deletes from the cursor to the beginning of the current line.
+/// 从光标删除到当前行行首
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -54,7 +54,7 @@ pub struct DeleteToBeginningOfLine {
     pub(super) stop_at_indent: bool,
 }
 
-/// Moves the cursor up by one page.
+/// 将光标向上移动一页
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -63,7 +63,7 @@ pub struct MovePageUp {
     pub(super) center_cursor: bool,
 }
 
-/// Moves the cursor down by one page.
+/// 将光标向下移动一页
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -72,7 +72,7 @@ pub struct MovePageDown {
     pub(super) center_cursor: bool,
 }
 
-/// Moves the cursor to the end of the current line.
+/// 将光标移到当前行的末尾
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -81,7 +81,7 @@ pub struct MoveToEndOfLine {
     pub stop_at_soft_wraps: bool,
 }
 
-/// Selects from the cursor to the end of the current line.
+/// 从光标选择到当前行的末尾
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -90,7 +90,7 @@ pub struct SelectToEndOfLine {
     pub(super) stop_at_soft_wraps: bool,
 }
 
-/// Toggles the display of available code actions at the cursor position.
+/// 切换光标处可用代码操作的显示
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -112,7 +112,7 @@ pub enum CodeActionSource {
     QuickActionBar,
 }
 
-/// Confirms and accepts the currently selected completion suggestion.
+/// 确认并接受当前选中的补全建议
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -121,7 +121,7 @@ pub struct ConfirmCompletion {
     pub item_ix: Option<usize>,
 }
 
-/// Composes multiple completion suggestions into a single completion.
+/// 将多个补全建议合并为单个补全
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -130,7 +130,7 @@ pub struct ComposeCompletion {
     pub item_ix: Option<usize>,
 }
 
-/// Confirms and applies the currently selected code action.
+/// 确认并应用当前选中的代码操作
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -139,7 +139,7 @@ pub struct ConfirmCodeAction {
     pub item_ix: Option<usize>,
 }
 
-/// Toggles comment markers for the selected lines.
+/// 切换所选行的注释标记
 #[derive(PartialEq, Clone, Deserialize, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -166,13 +166,13 @@ impl Default for ToggleComments {
     }
 }
 
-/// Toggles block comment markers for the selected text.
+/// 切换所选文本的块注释标记
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
 pub struct ToggleBlockComments;
 
-/// Moves the cursor up by a specified number of lines.
+/// 将光标向上移动指定行数
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -181,7 +181,7 @@ pub struct MoveUpByLines {
     pub(super) lines: u32,
 }
 
-/// Moves the cursor down by a specified number of lines.
+/// 将光标向下移动指定行数
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -190,7 +190,7 @@ pub struct MoveDownByLines {
     pub(super) lines: u32,
 }
 
-/// Extends selection up by a specified number of lines.
+/// 将选区向上扩展指定的行数
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -199,7 +199,7 @@ pub struct SelectUpByLines {
     pub(super) lines: u32,
 }
 
-/// Extends selection down by a specified number of lines.
+/// 将选区向下扩展指定的行数
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -208,7 +208,7 @@ pub struct SelectDownByLines {
     pub(super) lines: u32,
 }
 
-/// Expands all excerpts with selections.
+/// 展开所有包含选区的摘录
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -217,7 +217,7 @@ pub struct ExpandExcerpts {
     pub(super) lines: u32,
 }
 
-/// Expands excerpts above the current position.
+/// 展开当前位置上方的摘录
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -226,7 +226,7 @@ pub struct ExpandExcerptsUp {
     pub(super) lines: u32,
 }
 
-/// Expands excerpts below the current position.
+/// 展开当前位置下方的摘录
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -235,13 +235,13 @@ pub struct ExpandExcerptsDown {
     pub(super) lines: u32,
 }
 
-/// Handles text input in the editor.
+/// 处理编辑器中的文本输入
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 pub struct HandleInput(pub String);
 
-/// Deletes from the cursor to the end of the next word.
-/// Stops before the end of the next word, if whitespace sequences of length >= 2 are encountered.
+/// 从光标删除到下一个单词的末尾
+/// 如果遇到长度 >= 2 的空白序列，则在下一个单词末尾之前停止
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -253,8 +253,8 @@ pub struct DeleteToNextWordEnd {
     pub ignore_brackets: bool,
 }
 
-/// Deletes from the cursor to the start of the previous word.
-/// Stops before the start of the previous word, if whitespace sequences of length >= 2 are encountered.
+/// 从光标删除到上一个单词的开头
+/// 如果遇到长度 >= 2 的空白序列，则在前一个单词开头之前停止
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -266,8 +266,8 @@ pub struct DeleteToPreviousWordStart {
     pub ignore_brackets: bool,
 }
 
-/// Deletes from the cursor to the end of the next subword.
-/// Stops before the end of the next subword, if whitespace sequences of length >= 2 are encountered.
+/// 从光标删除到下一个子词的末尾
+/// 如果遇到长度 >= 2 的空白序列，则在下一个子词末尾之前停止
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -279,8 +279,8 @@ pub struct DeleteToNextSubwordEnd {
     pub ignore_brackets: bool,
 }
 
-/// Deletes from the cursor to the start of the previous subword.
-/// Stops before the start of the previous subword, if whitespace sequences of length >= 2 are encountered.
+/// 从光标删除到上一个子词的开头
+/// 如果遇到长度 >= 2 的空白序列，则在前一个子词开头之前停止
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -292,7 +292,7 @@ pub struct DeleteToPreviousSubwordStart {
     pub ignore_brackets: bool,
 }
 
-/// Cuts from cursor to end of line.
+/// 从光标剪切到行尾
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -301,12 +301,12 @@ pub struct CutToEndOfLine {
     pub stop_at_newlines: bool,
 }
 
-/// Folds all code blocks at the specified indentation level.
+/// 折叠指定缩进级别的所有代码块
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 pub struct FoldAtLevel(pub u32);
 
-/// Spawns the nearest available task from the current cursor position.
+/// 从当前光标位置运行最近的可用任务
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -329,7 +329,7 @@ pub enum UuidVersion {
     V7,
 }
 
-/// Splits selection into individual lines.
+/// 将选区拆分为单独的行
 #[derive(PartialEq, Clone, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -339,8 +339,8 @@ pub struct SplitSelectionIntoLines {
     pub keep_selections: bool,
 }
 
-/// Expands the diagnostic under the cursor, if any, in case diagnostics are not
-/// yet active. Otherwise, goes to the next diagnostic in the file.
+/// 如果诊断尚未激活，则展开光标下的诊断（如果有）。
+/// 否则，转到文件中的下一个诊断。
 #[derive(PartialEq, Clone, Default, Debug, Deserialize, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -349,8 +349,8 @@ pub struct GoToDiagnostic {
     pub severity: GoToDiagnosticSeverityFilter,
 }
 
-/// Expands the diagnostic under the cursor, if any, in case diagnostics are not
-/// yet active. Otherwise, goes to the previous diagnostic in the file.
+/// 如果诊断尚未激活，则展开光标下的诊断（如果有）。
+/// 否则，转到文件中的上一个诊断。
 #[derive(PartialEq, Clone, Default, Debug, Deserialize, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -359,7 +359,7 @@ pub struct GoToPreviousDiagnostic {
     pub severity: GoToDiagnosticSeverityFilter,
 }
 
-/// Adds a cursor above the current selection.
+/// 在当前选区上方添加光标
 #[derive(PartialEq, Clone, Default, Debug, Deserialize, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -368,7 +368,7 @@ pub struct AddSelectionAbove {
     pub skip_soft_wrap: bool,
 }
 
-/// Adds a cursor below the current selection.
+/// 在当前选区下方添加光标
 #[derive(PartialEq, Clone, Default, Debug, Deserialize, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -377,7 +377,7 @@ pub struct AddSelectionBelow {
     pub skip_soft_wrap: bool,
 }
 
-/// Inserts a snippet at the cursor.
+/// 在光标处插入代码片段
 #[derive(PartialEq, Clone, Default, Debug, Deserialize, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -397,9 +397,9 @@ pub struct InsertSnippet {
 actions!(
     debugger,
     [
-        /// Runs program execution to the current cursor position.
+        /// 运行程序至当前光标位置
         RunToCursor,
-        /// Evaluates the selected text in the debugger context.
+        /// 在调试器上下文中对所选文本求值
         EvaluateSelectedText
     ]
 );
@@ -407,7 +407,7 @@ actions!(
 actions!(
     go_to_line,
     [
-        /// Toggles the go to line dialog.
+        /// 切换跳转到行对话框
         #[action(name = "Toggle")]
         ToggleGoToLine
     ]
@@ -416,8 +416,8 @@ actions!(
 actions!(
     markdown,
     [
-        /// Toggles a block quote (`> `) prefix on the selected lines (or the
-        /// current line) while in Markdown files.
+        /// 切换选中行（或当前行）的块引用（`> `）前缀。
+        /// 此操作仅适用于 Markdown 文件。
         ToggleBlockQuote,
     ]
 );
@@ -425,557 +425,557 @@ actions!(
 actions!(
     editor,
     [
-        /// Accepts the full edit prediction.
+        /// 接受完整的编辑预测
         AcceptEditPrediction,
-        /// Amends the editor text with hint's edit (if sent).
+        /// 将内嵌提示的编辑（若有提供）应用到编辑器文本
         AcceptInlayHint,
-        /// Accepts a partial edit prediction.
+        /// 接受部分编辑预测
         #[action(deprecated_aliases = ["editor::AcceptPartialCopilotSuggestion"])]
         AcceptNextWordEditPrediction,
         AcceptNextLineEditPrediction,
-        /// Applies all diff hunks in the editor.
+        /// 应用编辑器中的所有差异区块
         ApplyAllDiffHunks,
-        /// Applies the diff hunk at the current position.
+        /// 应用当前位置的差异区块
         ApplyDiffHunk,
-        /// Deletes the character before the cursor.
+        /// 删除光标前的字符
         Backspace,
-        /// Shows git blame information for the current line.
+        /// 显示当前行的 Git 追溯信息
         BlameHover,
-        /// Cancels the current operation.
+        /// 取消当前操作
         Cancel,
-        /// Cancels the running flycheck operation.
+        /// 取消正在运行的 flycheck 操作
         CancelFlycheck,
-        /// Cancels pending language server work.
+        /// 取消待处理的语言服务器工作
         CancelLanguageServerWork,
-        /// Clears flycheck results.
+        /// 清除 flycheck 结果
         ClearFlycheck,
-        /// Confirms the rename operation.
+        /// 确认重命名操作
         ConfirmRename,
-        /// Confirms completion by inserting at cursor.
+        /// 通过在光标处插入来确认补全
         ConfirmCompletionInsert,
-        /// Confirms completion by replacing existing text.
+        /// 通过替换现有文本来确认补全
         ConfirmCompletionReplace,
-        /// Navigates to the first item in the context menu.
+        /// 跳转到上下文菜单的第一项
         ContextMenuFirst,
-        /// Navigates to the last item in the context menu.
+        /// 跳转到上下文菜单的最后一项
         ContextMenuLast,
-        /// Navigates to the next item in the context menu.
+        /// 跳转到上下文菜单的下一项
         ContextMenuNext,
-        /// Navigates to the previous item in the context menu.
+        /// 跳转到上下文菜单的上一项
         ContextMenuPrevious,
-        /// Converts indentation from tabs to spaces.
+        /// 将缩进从制表符转换为空格
         ConvertIndentationToSpaces,
-        /// Converts indentation from spaces to tabs.
+        /// 将缩进从空格转换为制表符
         ConvertIndentationToTabs,
-        /// Converts selected text to kebab-case.
+        /// 将所选文本转换为 kebab-case
         ConvertToKebabCase,
-        /// Converts selected text to lowerCamelCase.
+        /// 将所选文本转换为 lowerCamelCase
         ConvertToLowerCamelCase,
-        /// Converts selected text to lowercase.
+        /// 将所选文本转换为全小写
         ConvertToLowerCase,
-        /// Toggles the case of selected text.
+        /// 切换选中文本的大小写
         ConvertToOppositeCase,
-        /// Converts selected text to sentence case.
+        /// 将所选文本转换为句首字母大写
         ConvertToSentenceCase,
-        /// Converts selected text to snake_case.
+        /// 将所选文本转换为 snake_case
         ConvertToSnakeCase,
-        /// Converts selected text to Title Case.
+        /// 将所选文本转换为标题大小写
         ConvertToTitleCase,
-        /// Converts selected text to UpperCamelCase.
+        /// 将所选文本转换为 UpperCamelCase
         ConvertToUpperCamelCase,
-        /// Converts selected text to UPPERCASE.
+        /// 将所选文本转换为全大写
         ConvertToUpperCase,
-        /// Applies ROT13 cipher to selected text.
+        /// 对选中文本应用 ROT13 密码
         ConvertToRot13,
-        /// Applies ROT47 cipher to selected text.
+        /// 对选中文本应用 ROT47 密码
         ConvertToRot47,
-        /// Base64-encodes the selected text or word under cursor.
+        /// 对选中的文本或光标下的单词进行 Base64 编码
         ConvertToBase64,
-        /// Base64-decodes the selected text or word under cursor.
+        /// 对选中的文本或光标下的单词进行 Base64 解码
         ConvertFromBase64,
-        /// Copies selected text to the clipboard.
+        /// 将所选文本复制到剪贴板
         Copy,
-        /// Copies selected text to the clipboard with leading/trailing whitespace trimmed.
+        /// 将所选文本去除首尾空白后复制到剪贴板
         CopyAndTrim,
-        /// Copies the current file location to the clipboard.
+        /// 将当前文件位置复制到剪贴板
         CopyFileLocation,
-        /// Copies the highlighted text as JSON.
+        /// 将高亮文本以 JSON 格式复制
         CopyHighlightJson,
-        /// Copies the current file name to the clipboard.
+        /// 将当前文件名复制到剪贴板
         CopyFileName,
-        /// Copies the file name without extension to the clipboard.
+        /// 将不含文件扩展名的文件名复制到剪贴板
         CopyFileNameWithoutExtension,
-        /// Copies a permalink to the current line or selection.
+        /// 复制当前行或选区的永久链接
         CopyPermalinkToLine,
-        /// Cuts selected text to the clipboard.
+        /// 将选中文本剪切到剪贴板
         Cut,
-        /// Deletes the character after the cursor.
+        /// 删除光标后的字符
         Delete,
-        /// Deletes the current line.
+        /// 删除当前行
         DeleteLine,
-        /// Deletes from cursor to end of line.
+        /// 从光标删除到行尾
         DeleteToEndOfLine,
-        /// Diffs the text stored in the clipboard against the current selection.
+        /// 将剪贴板中的文本与当前选区进行差异比较
         DiffClipboardWithSelection,
-        /// Displays names of all active cursors.
+        /// 显示所有活动光标的名称
         DisplayCursorNames,
-        /// Duplicates the current line below.
+        /// 在当前行下方复制当前行
         DuplicateLineDown,
-        /// Duplicates the current line above.
+        /// 在当前行上方复制当前行
         DuplicateLineUp,
-        /// Duplicates the current selection.
+        /// 复制当前选区
         DuplicateSelection,
-        /// Expands all diff hunks in the editor.
+        /// 展开编辑器中的所有差异区块
         #[action(deprecated_aliases = ["editor::ExpandAllHunkDiffs"])]
         ExpandAllDiffHunks,
-        /// Collapses all diff hunks in the editor.
+        /// 折叠编辑器中所有差异区块
         CollapseAllDiffHunks,
-        /// Toggles all diff hunks in the editor. Collapses all hunks if any are
-        /// currently expanded, otherwise expands all hunks.
+        /// 切换编辑器中的所有差异区块。如果有任何区块已展开，
+        /// 则折叠所有区块，否则展开所有区块
         ToggleAllDiffHunks,
-        /// Expands macros recursively at cursor position.
+        /// 在光标位置递归展开宏
         ExpandMacroRecursively,
-        /// Finds the next match in the search.
+        /// 查找搜索中的下一个匹配项
         FindNextMatch,
-        /// Finds the previous match in the search.
+        /// 查找搜索中的上一个匹配项
         FindPreviousMatch,
-        /// Folds the current code block.
+        /// 折叠当前代码块
         Fold,
-        /// Folds all foldable regions in the editor.
+        /// 折叠编辑器中所有可折叠区域
         FoldAll,
-        /// Folds all code blocks at indentation level 1.
+        /// 折叠编辑器中缩进级别 1 的所有代码块
         #[action(name = "FoldAtLevel_1")]
         FoldAtLevel1,
-        /// Folds all code blocks at indentation level 2.
+        /// 折叠编辑器中缩进级别 2 的所有代码块
         #[action(name = "FoldAtLevel_2")]
         FoldAtLevel2,
-        /// Folds all code blocks at indentation level 3.
+        /// 折叠编辑器中缩进级别 3 的所有代码块
         #[action(name = "FoldAtLevel_3")]
         FoldAtLevel3,
-        /// Folds all code blocks at indentation level 4.
+        /// 折叠编辑器中缩进级别 4 的所有代码块
         #[action(name = "FoldAtLevel_4")]
         FoldAtLevel4,
-        /// Folds all code blocks at indentation level 5.
+        /// 折叠编辑器中缩进级别 5 的所有代码块
         #[action(name = "FoldAtLevel_5")]
         FoldAtLevel5,
-        /// Folds all code blocks at indentation level 6.
+        /// 折叠编辑器中缩进级别 6 的所有代码块
         #[action(name = "FoldAtLevel_6")]
         FoldAtLevel6,
-        /// Folds all code blocks at indentation level 7.
+        /// 折叠编辑器中缩进级别 7 的所有代码块
         #[action(name = "FoldAtLevel_7")]
         FoldAtLevel7,
-        /// Folds all code blocks at indentation level 8.
+        /// 折叠编辑器中缩进级别 8 的所有代码块
         #[action(name = "FoldAtLevel_8")]
         FoldAtLevel8,
-        /// Folds all code blocks at indentation level 9.
+        /// 折叠编辑器中缩进级别 9 的所有代码块
         #[action(name = "FoldAtLevel_9")]
         FoldAtLevel9,
-        /// Folds all function bodies in the editor.
+        /// 折叠编辑器中所有函数体
         FoldFunctionBodies,
-        /// Folds the current code block and all its children.
+        /// 折叠当前代码块及其所有子块
         FoldRecursive,
-        /// Folds the selected ranges.
+        /// 折叠选中的范围
         FoldSelectedRanges,
-        /// Toggles focus back to the last active buffer.
+        /// 将焦点切换回上次活动的缓冲区
         ToggleFocus,
-        /// Toggles folding at the current position.
+        /// 切换当前位置的折叠状态
         ToggleFold,
-        /// Toggles recursive folding at the current position.
+        /// 切换当前位置的递归折叠
         ToggleFoldRecursive,
-        /// Toggles all folds in a buffer or all excerpts in multibuffer.
+        /// 切换缓冲区中的所有折叠或多缓冲区中的所有摘录
         ToggleFoldAll,
-        /// Formats the entire document.
+        /// 格式化整个文档
         Format,
-        /// Formats only the selected text.
+        /// 仅格式化所选文本
         ///
-        /// This action is only available when the active formatter can format ranges.
-        /// When using a language server, this sends an LSP range formatting request for each
-        /// selection, and is hidden when the selected buffer's configured language server does
-        /// not advertise range-formatting support. When using Prettier, Prettier's own range
-        /// formatting is used to format the encompassing range of all selections, and resulting
-        /// edits outside the selected ranges are discarded. External command formatters do not
-        /// support range formatting and are skipped.
+        /// 此操作仅在活动格式化程序支持范围格式化时可用。
+        /// 使用语言服务器时，会为每个
+        /// 选区发送 LSP 范围格式化请求；当所选缓冲区配置的语言服务器
+        /// 未声明范围格式化支持时，该操作会被隐藏。使用 Prettier 时，Prettier 自带的范围
+        /// 格式化用于对所有选区的涵盖范围进行格式化，产生的
+        /// 所选范围之外的编辑将被丢弃。外部命令格式化程序
+        /// 不支持范围格式化，将被跳过。
         FormatSelections,
-        /// Goes to declaration in a split pane.
+        /// 在分割窗格中跳转到声明
         GoToDeclarationSplit,
-        /// Goes to definition in a split pane.
+        /// 在分割窗格中跳转到定义
         GoToDefinitionSplit,
-        /// Goes to the next diff hunk.
+        /// 跳转到下一个差异区块
         GoToHunk,
-        /// Goes to the previous diff hunk.
+        /// 跳转到上一个差异区块
         GoToPreviousHunk,
-        /// Goes to implementation in a split pane.
+        /// 在分割窗格中跳转到实现
         GoToImplementationSplit,
-        /// Goes to the next bookmark in the file.
+        /// 跳转到文件中的下一个书签
         GoToNextBookmark,
-        /// Goes to the next change in the file.
+        /// 跳转到文件中的下一处更改
         GoToNextChange,
-        /// Goes to the parent module of the current file.
+        /// 跳转到当前文件的父模块
         GoToParentModule,
-        /// Goes to the previous bookmark in the file.
+        /// 跳转到文件中的上一个书签
         GoToPreviousBookmark,
-        /// Goes to the previous change in the file.
+        /// 跳转到文件中的上一处更改
         GoToPreviousChange,
-        /// Goes to the next symbol.
+        /// 跳转到下一个符号
         GoToNextSymbol,
-        /// Goes to the previous symbol.
+        /// 跳转到上一个符号
         GoToPreviousSymbol,
-        /// Goes to the next reference to the symbol under the cursor.
+        /// 跳转到光标下符号的下一个引用
         GoToNextReference,
-        /// Goes to the previous reference to the symbol under the cursor.
+        /// 跳转到光标下符号的上一个引用
         GoToPreviousReference,
-        /// Goes to type definition in a split pane.
+        /// 在分割窗格中跳转到类型定义
         GoToTypeDefinitionSplit,
-        /// Goes to the next document highlight.
+        /// 跳转到下一个文档高亮
         GoToNextDocumentHighlight,
-        /// Goes to the previous document highlight.
+        /// 跳转到上一个文档高亮
         GoToPreviousDocumentHighlight,
-        /// Scrolls down by half a page.
+        /// 向下滚动半页
         HalfPageDown,
-        /// Scrolls up by half a page.
+        /// 向上滚动半页
         HalfPageUp,
-        /// Shows hover information for the symbol at cursor.
+        /// 显示光标处符号的悬停信息
         Hover,
-        /// Expands the selected debugger hover entry.
+        /// 展开选中的调试器悬停条目
         DebuggerHoverExpandSelected,
-        /// Collapses the selected debugger hover entry.
+        /// 折叠选中的调试器悬停条目
         DebuggerHoverCollapseSelected,
-        /// Selects the next debugger hover entry.
+        /// 选中下一个调试器悬停条目
         DebuggerHoverSelectNext,
-        /// Selects the previous debugger hover entry.
+        /// 选中上一个调试器悬停条目
         DebuggerHoverSelectPrevious,
-        /// Increases indentation of selected lines.
+        /// 增加所选行的缩进
         Indent,
-        /// Inserts a UUID v4 at cursor position.
+        /// 在光标位置插入 UUID v4
         InsertUuidV4,
-        /// Inserts a UUID v7 at cursor position.
+        /// 在光标位置插入 UUID v7
         InsertUuidV7,
-        /// Joins the current line with the next line.
+        /// 将当前行与下一行合并
         JoinLines,
-        /// Cuts to kill ring (Emacs-style).
+        /// 剪切到 kill ring（Emacs 风格）
         KillRingCut,
-        /// Yanks from kill ring (Emacs-style).
+        /// 从 kill ring 粘贴（Emacs 风格）
         KillRingYank,
-        /// Moves cursor down one line.
+        /// 将光标向下移动一行
         LineDown,
-        /// Moves cursor up one line.
+        /// 将光标向上移动一行
         LineUp,
-        /// Moves cursor left.
+        /// 将光标向左移动
         MoveLeft,
-        /// Moves the current line down.
+        /// 将当前行向下移动
         MoveLineDown,
-        /// Moves the current line up.
+        /// 将当前行向上移动
         MoveLineUp,
-        /// Moves cursor right.
+        /// 将光标向右移动
         MoveRight,
-        /// Moves cursor to the beginning of the document.
+        /// 将光标移到文档开头
         MoveToBeginning,
-        /// Moves cursor to the enclosing bracket.
+        /// 将光标移到外层括号处
         MoveToEnclosingBracket,
-        /// Selects the content within the nearest enclosing delimiters
-        /// (brackets, braces, parentheses, or quotes), excluding the
-        /// delimiters.
-        /// Repeating the action expands the selection to the next enclosing
-        /// pair.
+        /// 选择最近一对包围定界符内的内容
+        /// （方括号、花括号、圆括号或引号），不包括
+        /// 定界符。
+        /// 重复此操作会将选区扩展到下一对包围
+        /// 定界符。
         SelectInsideDelimiters,
-        /// Selects the nearest enclosing delimiters (brackets, braces,
-        /// parentheses, or quotes) together with the content between them.
-        /// Repeating the action expands the selection to the next enclosing
-        /// pair.
+        /// 选择最近的一对包围定界符（方括号、花括号、
+        /// 圆括号或引号）以及它们之间的内容。
+        /// 重复此操作会将选区扩展到下一对包围
+        /// 定界符。
         SelectAroundDelimiters,
-        /// Moves cursor to the end of the document.
+        /// 将光标移到文档末尾
         MoveToEnd,
-        /// Moves cursor to the end of the paragraph.
+        /// 将光标移到段落末尾
         MoveToEndOfParagraph,
-        /// Moves cursor to the start of the next comment paragraph.
+        /// 将光标移到下一个注释段落的开头
         MoveToNextCommentParagraph,
-        /// Moves cursor to the end of the next subword.
+        /// 将光标移到下一个子词的末尾
         MoveToNextSubwordEnd,
-        /// Moves cursor to the end of the next word.
+        /// 将光标移到下一个单词的末尾
         MoveToNextWordEnd,
-        /// Moves cursor to the start of the previous comment paragraph.
+        /// 将光标移到上一个注释段落的开头
         MoveToPreviousCommentParagraph,
-        /// Moves cursor to the start of the previous subword.
+        /// 将光标移到上一个子词的开头
         MoveToPreviousSubwordStart,
-        /// Moves cursor to the start of the previous word.
+        /// 将光标移到上一个单词的开头
         MoveToPreviousWordStart,
-        /// Moves cursor to the start of the paragraph.
+        /// 将光标移到段落开头
         MoveToStartOfParagraph,
-        /// Moves cursor to the start of the current excerpt.
+        /// 将光标移到当前摘录的开头
         MoveToStartOfExcerpt,
-        /// Moves cursor to the start of the next excerpt.
+        /// 将光标移到下一个摘录的开头
         MoveToStartOfNextExcerpt,
-        /// Moves cursor to the end of the current excerpt.
+        /// 将光标移到当前摘录的末尾
         MoveToEndOfExcerpt,
-        /// Moves cursor to the end of the previous excerpt.
+        /// 将光标移到上一个摘录的末尾
         MoveToEndOfPreviousExcerpt,
-        /// Moves cursor to the start of the next larger syntax node.
+        /// 将光标移到下一个更大语法节点的开头
         MoveToStartOfLargerSyntaxNode,
-        /// Moves cursor to the end of the next larger syntax node.
+        /// 将光标移到下一个更大语法节点的末尾
         MoveToEndOfLargerSyntaxNode,
-        /// Inserts a new line and moves cursor to it.
+        /// 插入新行并将光标移至该行
         Newline,
-        /// Inserts a new line above the current line.
+        /// 在当前行上方插入新行
         NewlineAbove,
-        /// Inserts a new line below the current line.
+        /// 在当前行下方插入新行
         NewlineBelow,
-        /// Navigates to the next edit prediction.
+        /// 跳转到下一个编辑预测
         NextEditPrediction,
-        /// Scrolls to the next screen.
+        /// 滚动到下一屏
         NextScreen,
-        /// Goes to the next snippet tabstop if one exists.
+        /// 跳转到下一个代码片段制表位（如果存在）
         NextSnippetTabstop,
-        /// Opens a view of all bookmarks in the project.
+        /// 打开项目中所有书签的视图
         ViewBookmarks,
-        /// Opens the context menu at cursor position.
+        /// 在光标位置打开上下文菜单
         OpenContextMenu,
-        /// Opens excerpts from the current file.
+        /// 打开当前文件的摘录
         OpenExcerpts,
-        /// Opens excerpts in a split pane.
+        /// 在分割窗格中打开摘录
         OpenExcerptsSplit,
-        /// Opens the proposed changes editor.
+        /// 打开建议更改编辑器
         OpenProposedChangesEditor,
-        /// Opens documentation for the symbol at cursor.
+        /// 打开光标处符号的文档
         OpenDocs,
-        /// Opens a permalink to the current line or selection.
+        /// 打开指向当前行或选区的永久链接
         OpenPermalinkToLine,
-        /// Opens the file whose name is selected in the editor.
+        /// 打开编辑器中所选文件名对应的文件
         #[action(deprecated_aliases = ["editor::OpenFile"])]
         OpenSelectedFilename,
-        /// Opens all selections in a multibuffer.
+        /// 在多缓冲区中打开所有选区
         OpenSelectionsInMultibuffer,
-        /// Opens the URL at cursor position.
+        /// 打开光标位置处的 URL
         OpenUrl,
-        /// Organizes import statements.
+        /// 整理导入语句
         OrganizeImports,
-        /// Decreases indentation of selected lines.
+        /// 减少所选行的缩进
         Outdent,
-        /// Automatically adjusts indentation based on context.
+        /// 根据上下文自动调整缩进
         AutoIndent,
-        /// Scrolls down by one page.
+        /// 向下滚动一页
         PageDown,
-        /// Scrolls up by one page.
+        /// 向上滚动一页
         PageUp,
-        /// Pastes from clipboard.
+        /// 从剪贴板粘贴
         Paste,
-        /// Navigates to the previous edit prediction.
+        /// 跳转到上一个编辑预测
         PreviousEditPrediction,
-        /// Goes to the previous snippet tabstop if one exists.
+        /// 跳转到上一个代码片段制表位（如果存在）
         PreviousSnippetTabstop,
-        /// Redoes the last undone edit.
+        /// 重做上次撤销的编辑
         Redo,
-        /// Redoes the last selection change.
+        /// 重做上次的选区更改
         RedoSelection,
-        /// Renames the symbol at cursor.
+        /// 重命名光标处的符号
         Rename,
-        /// Restarts the language server for the current file.
+        /// 重启当前文件的语言服务器
         RestartLanguageServer,
-        /// Reverses the order of selected lines.
+        /// 反转选定行的顺序
         ReverseLines,
-        /// Reloads the file from disk.
+        /// 从磁盘重新加载文件
         ReloadFile,
-        /// Rewraps text to fit within the preferred line length.
+        /// 将文本重新换行以适应首选行长度
         Rewrap,
-        /// Rotates selections or lines backward.
+        /// 向后轮换选区或行
         RotateSelectionsBackward,
-        /// Rotates selections or lines forward.
+        /// 向前轮换选区或行
         RotateSelectionsForward,
-        /// Runs flycheck diagnostics.
+        /// 运行 flycheck 诊断
         RunFlycheck,
-        /// Scrolls the cursor to the bottom of the viewport.
+        /// 滚动视口，使光标位于底部
         ScrollCursorBottom,
-        /// Scrolls the cursor to the center of the viewport.
+        /// 滚动视口，使光标位于中央
         ScrollCursorCenter,
-        /// Cycles cursor position between center, top, and bottom.
+        /// 依次滚动视口，使光标位于中央、顶部和底部
         ScrollCursorCenterTopBottom,
-        /// Scrolls the cursor to the top of the viewport.
+        /// 滚动视口，使光标位于顶部
         ScrollCursorTop,
-        /// Selects all text in the editor.
+        /// 选择编辑器中的所有文本
         SelectAll,
-        /// Selects all matches of the current selection.
+        /// 选择当前选区的所有匹配项
         SelectAllMatches,
-        /// Selects to the start of the current excerpt.
+        /// 选中至当前摘录开头
         SelectToStartOfExcerpt,
-        /// Selects to the start of the next excerpt.
+        /// 选中至下一个摘录开头
         SelectToStartOfNextExcerpt,
-        /// Selects to the end of the current excerpt.
+        /// 选中至当前摘录末尾
         SelectToEndOfExcerpt,
-        /// Selects to the end of the previous excerpt.
+        /// 选中至上一个摘录的末尾
         SelectToEndOfPreviousExcerpt,
-        /// Extends selection down.
+        /// 向下扩展选区
         SelectDown,
-        /// Selects the enclosing symbol.
+        /// 选中包含当前位置的符号
         SelectEnclosingSymbol,
-        /// Selects to the start of the next larger syntax node.
+        /// 选中至下一个更大语法节点的开头
         SelectToStartOfLargerSyntaxNode,
-        /// Selects to the end of the next larger syntax node.
+        /// 选中至下一个更大语法节点的末尾
         SelectToEndOfLargerSyntaxNode,
-        /// Selects the next larger syntax node.
+        /// 选中下一个更大的语法节点
         SelectLargerSyntaxNode,
-        /// Selects the next syntax node sibling.
+        /// 选中下一个同级语法节点
         SelectNextSyntaxNode,
-        /// Selects the previous syntax node sibling.
+        /// 选中上一个同级语法节点
         SelectPreviousSyntaxNode,
-        /// Extends selection left.
+        /// 向左扩展选区
         SelectLeft,
-        /// Selects the current line.
+        /// 选中当前行
         SelectLine,
-        /// Extends selection down by one page.
+        /// 向下扩展选区一页
         SelectPageDown,
-        /// Extends selection up by one page.
+        /// 向上扩展选区一页
         SelectPageUp,
-        /// Extends selection right.
+        /// 向右扩展选区
         SelectRight,
-        /// Selects the next smaller syntax node.
+        /// 选中下一个更小的语法节点
         SelectSmallerSyntaxNode,
-        /// Selects to the beginning of the document.
+        /// 选中至文档开头
         SelectToBeginning,
-        /// Selects to the end of the document.
+        /// 选中至文档末尾
         SelectToEnd,
-        /// Selects to the end of the paragraph.
+        /// 选中至段落末尾
         SelectToEndOfParagraph,
-        /// Selects to the end of the next subword.
+        /// 选中至下一个子词的末尾
         SelectToNextSubwordEnd,
-        /// Selects to the end of the next word.
+        /// 选中至下一个单词的末尾
         SelectToNextWordEnd,
-        /// Selects to the start of the previous subword.
+        /// 选中至上一个子词的开头
         SelectToPreviousSubwordStart,
-        /// Selects to the start of the previous word.
+        /// 选中至上一个单词的开头
         SelectToPreviousWordStart,
-        /// Selects to the start of the paragraph.
+        /// 选中至段落开头
         SelectToStartOfParagraph,
-        /// Extends selection up.
+        /// 向上扩展选区
         SelectUp,
-        /// Shows code completion suggestions at the cursor position.
+        /// 在光标位置显示代码补全建议
         ShowCompletions,
-        /// Shows the system character palette.
+        /// 显示系统字符面板
         ShowCharacterPalette,
-        /// Shows edit prediction at cursor.
+        /// 在光标处显示编辑预测
         ShowEditPrediction,
-        /// Shows signature help for the current function.
+        /// 显示当前函数的签名帮助
         ShowSignatureHelp,
-        /// Shows word completions.
+        /// 显示单词补全
         ShowWordCompletions,
-        /// Randomly shuffles selected lines.
+        /// 随机打乱所选行
         ShuffleLines,
-        /// Navigates to the next signature in the signature help popup.
+        /// 跳转到签名帮助弹窗中的下一个签名
         SignatureHelpNext,
-        /// Navigates to the previous signature in the signature help popup.
+        /// 跳转到签名帮助弹窗中的上一个签名
         SignatureHelpPrevious,
-        /// Sorts selected lines by length.
+        /// 按长度排序所选行
         SortLinesByLength,
-        /// Sorts selected lines case-insensitively.
+        /// 不区分大小写地排序所选行
         SortLinesCaseInsensitive,
-        /// Sorts selected lines case-sensitively.
+        /// 区分大小写地排序所选行
         SortLinesCaseSensitive,
-        /// Stops the language server for the current file.
+        /// 停止当前文件的语言服务器
         StopLanguageServer,
-        /// Switches between source and header files.
+        /// 在源文件和头文件之间切换
         SwitchSourceHeader,
-        /// Inserts a tab character or indents.
+        /// 插入制表符或缩进
         Tab,
-        /// Removes a tab character or outdents.
+        /// 移除制表符或减少缩进
         Backtab,
-        /// Toggles a bookmark at the current line.
+        /// 切换当前行的书签
         ToggleBookmark,
-        /// Toggles a bookmark at the current line, prompting for a label when adding one.
+        /// 在当前行切换书签，添加时提示输入标签
         ToggleBookmarkWithLabel,
-        /// Edits the bookmark's label at the current line.
+        /// 编辑当前行书签的标签
         EditBookmark,
-        /// Toggles a breakpoint at the current line.
+        /// 切换当前行的断点
         ToggleBreakpoint,
-        /// Toggles the case of selected text.
+        /// 切换选中文本的大小写
         ToggleCase,
-        /// Disables the breakpoint at the current line.
+        /// 禁用当前行的断点
         DisableBreakpoint,
-        /// Enables the breakpoint at the current line.
+        /// 启用当前行的断点
         EnableBreakpoint,
-        /// Edits the log message for a breakpoint.
+        /// 编辑断点的日志消息
         EditLogBreakpoint,
-        /// Toggles automatic signature help.
+        /// 切换自动签名帮助
         ToggleAutoSignatureHelp,
-        /// Toggles inline git blame display.
+        /// 切换内联 Git 追溯显示
         ToggleGitBlameInline,
-        /// Opens the git commit for the blame at cursor.
+        /// 打开光标处追溯信息对应的 Git 提交
         OpenGitBlameCommit,
-        /// Opens a blame of the file at the revision of the blame entry at cursor.
+        /// 打开光标处追溯条目对应修订版本的文件追溯
         BlameRevision,
-        /// Opens a blame of the file at the revision preceding the blame entry at cursor.
+        /// 打开光标处追溯条目上一个修订版本的文件追溯
         BlamePreviousRevision,
-        /// Toggles the diagnostics panel.
+        /// 切换诊断面板
         ToggleDiagnostics,
-        /// Toggles indent guides display.
+        /// 切换缩进参考线显示
         ToggleIndentGuides,
-        /// Toggles inlay hints display.
+        /// 切换内嵌提示显示
         ToggleInlayHints,
-        /// Toggles code lens display.
+        /// 切换 Code Lens 显示
         ToggleCodeLens,
-        /// Toggles semantic highlights display.
+        /// 切换语义高亮显示
         ToggleSemanticHighlights,
-        /// Toggles inline values display.
+        /// 切换内联值显示
         ToggleInlineValues,
-        /// Toggles inline diagnostics display.
+        /// 切换内联诊断显示
         ToggleInlineDiagnostics,
-        /// Toggles edit prediction feature.
+        /// 切换编辑预测功能
         ToggleEditPrediction,
-        /// Toggles line numbers display.
+        /// 切换行号显示
         ToggleLineNumbers,
-        /// Toggles the minimap display.
+        /// 切换小地图显示
         ToggleMinimap,
-        /// Swaps the start and end of the current selection.
+        /// 交换当前选区的起点和终点
         SwapSelectionEnds,
-        /// Sets a mark at the current position.
+        /// 在当前位置设置标记
         SetMark,
-        /// Toggles relative line numbers display.
+        /// 切换相对行号显示
         ToggleRelativeLineNumbers,
-        /// Toggles diff display for selected hunks.
+        /// 切换所选区块的差异显示
         #[action(deprecated_aliases = ["editor::ToggleHunkDiff"])]
         ToggleSelectedDiffHunks,
-        /// Stores the diff review comment locally (for later batch submission).
+        /// 将差异审阅评论保存到本地（供后续批量提交）
         SubmitDiffReviewComment,
-        /// Toggles the expanded state of the comments section in the overlay.
+        /// 切换叠加层中评论区的展开状态
         ToggleReviewCommentsExpanded,
-        /// Sends all stored review comments to the Agent panel.
+        /// 将所有已存储的审阅评论发送至智能体面板
         SendReviewToAgent,
-        /// Toggles the selection menu.
+        /// 切换选区菜单
         ToggleSelectionMenu,
-        /// Toggles soft wrap mode.
+        /// 切换自动换行模式
         ToggleSoftWrap,
-        /// Toggles the tab bar display.
+        /// 切换标签栏显示
         ToggleTabBar,
-        /// Transposes characters around cursor.
+        /// 转置光标处的字符
         Transpose,
-        /// Undoes the last edit.
+        /// 撤销上次编辑
         Undo,
-        /// Undoes the last selection change.
+        /// 撤销上一次选区更改
         UndoSelection,
-        /// Unfolds all folded regions.
+        /// 展开所有折叠区域
         UnfoldAll,
-        /// Unfolds lines at cursor.
+        /// 展开光标处的行
         UnfoldLines,
-        /// Unfolds recursively at cursor.
+        /// 在光标处递归展开
         UnfoldRecursive,
-        /// Removes duplicate lines (case-insensitive).
+        /// 移除重复行（不区分大小写）
         UniqueLinesCaseInsensitive,
-        /// Removes duplicate lines (case-sensitive).
+        /// 移除重复行（区分大小写）
         UniqueLinesCaseSensitive,
-        /// Removes the surrounding syntax node (for example brackets, or closures)
-        /// from the current selections.
+        /// 移除环绕语法节点（例如括号或闭包）。
+        /// 作用范围为当前选区。
         UnwrapSyntaxNode,
-        /// Wraps selections in tag specified by language.
+        /// 将选区包裹在语言指定的标签中
         WrapSelectionsInTag,
-        /// Wraps selections in an expanded Emmet abbreviation.
+        /// 将选区包裹在展开后的 Emmet 缩写中
         WrapWithAbbreviation,
-        /// Aligns selections from different rows into the same column
+        /// 将不同行的选区对齐到同一列
         AlignSelections,
-        /// Saves the current location to navigation history.
+        /// 将当前位置保存到导航历史
         SaveLocation,
-        /// Toggles breadcrumbs display.
+        /// 切换面包屑显示
         ToggleBreadcrumb,
     ]
 );
 
-/// Goes to the definition of the symbol at cursor.
+/// 跳转到光标处符号的定义
 #[derive(PartialEq, Clone, Default, Deserialize, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -986,7 +986,7 @@ pub struct GoToDefinition {
     pub open_results_in: Option<OpenResultsIn>,
 }
 
-/// Goes to the declaration of the symbol at cursor.
+/// 跳转到光标处符号的声明
 #[derive(PartialEq, Clone, Default, Deserialize, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -997,7 +997,7 @@ pub struct GoToDeclaration {
     pub open_results_in: Option<OpenResultsIn>,
 }
 
-/// Goes to the implementation of the symbol at cursor.
+/// 跳转到光标处符号的实现
 #[derive(PartialEq, Clone, Default, Deserialize, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -1008,7 +1008,7 @@ pub struct GoToImplementation {
     pub open_results_in: Option<OpenResultsIn>,
 }
 
-/// Goes to the type definition of the symbol at cursor.
+/// 跳转到光标处符号的类型定义
 #[derive(PartialEq, Clone, Default, Deserialize, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -1019,7 +1019,7 @@ pub struct GoToTypeDefinition {
     pub open_results_in: Option<OpenResultsIn>,
 }
 
-/// Finds all references to the symbol at cursor.
+/// 查找光标处符号的所有引用
 #[derive(PartialEq, Clone, Deserialize, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -1041,7 +1041,7 @@ impl Default for FindAllReferences {
     }
 }
 
-/// Edits a stored review comment inline.
+/// 内联编辑已存储的审阅评论
 #[derive(PartialEq, Clone, Deserialize, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -1049,7 +1049,7 @@ pub struct EditReviewComment {
     pub id: usize,
 }
 
-/// Deletes a stored review comment.
+/// 删除已存储的审阅评论
 #[derive(PartialEq, Clone, Deserialize, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -1057,7 +1057,7 @@ pub struct DeleteReviewComment {
     pub id: usize,
 }
 
-/// Confirms an inline edit of a review comment.
+/// 确认审阅评论的内联编辑
 #[derive(PartialEq, Clone, Deserialize, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]
@@ -1065,7 +1065,7 @@ pub struct ConfirmEditReviewComment {
     pub id: usize,
 }
 
-/// Cancels an inline edit of a review comment.
+/// 取消对审阅评论的内联编辑
 #[derive(PartialEq, Clone, Deserialize, JsonSchema, Action)]
 #[action(namespace = editor)]
 #[serde(deny_unknown_fields)]

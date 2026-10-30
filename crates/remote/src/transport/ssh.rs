@@ -242,12 +242,12 @@ impl RemoteEnvironment {
     fn parse_posix(output: &str) -> Result<Self> {
         let mut fields = output.splitn(5, '\0').skip(1);
 
-        let shell = parse_shell(fields.next().context("Missing remote shell")?, "sh");
-        let platform = parse_platform(fields.next().context("Missing remote platform")?)?;
-        let version = fields.next().context("Missing remote OS version")?;
+        let shell = parse_shell(fields.next().context("缺少远程 shell")?, "sh");
+        let platform = parse_platform(fields.next().context("缺少远程平台")?)?;
+        let version = fields.next().context("缺少远程操作系统版本")?;
         let status = fields
             .next()
-            .context("Missing remote OS version exit status")?;
+            .context("缺少远程操作系统版本的退出状态")?;
         let os_version = if status == "0" {
             super::parse_os_version(platform.os, version)
         } else {
@@ -265,10 +265,10 @@ impl RemoteEnvironment {
     fn parse_windows(output: &str) -> Result<Self> {
         let mut fields = output.splitn(5, '\0').skip(1);
 
-        let shell = parse_shell(fields.next().context("Missing remote shell")?, "cmd.exe");
+        let shell = parse_shell(fields.next().context("缺少远程 shell")?, "cmd.exe");
         let architecture = fields
             .next()
-            .context("Missing remote Windows architecture")?
+            .context("缺少远程 Windows 架构")?
             .trim();
         let platform = RemotePlatform {
             os: RemoteOs::Windows,
@@ -276,14 +276,14 @@ impl RemoteEnvironment {
                 "AMD64" => RemoteArch::X86_64,
                 "ARM64" => RemoteArch::Aarch64,
                 architecture => anyhow::bail!(
-                    "Prebuilt remote servers are not yet available for windows-{architecture}. See https://zed.dev/docs/remote-development"
+                    "尚未提供适用于 windows-{architecture} 的预构建远程服务器。参见 https://zed.dev/docs/remote-development"
                 ),
             },
         };
-        let version = fields.next().context("Missing remote OS version")?;
+        let version = fields.next().context("缺少远程操作系统版本")?;
         let status = fields
             .next()
-            .context("Missing remote OS version exit status")?
+            .context("缺少远程操作系统版本的退出状态")?
             .trim();
         let os_version = if status == "0" {
             super::parse_os_version(RemoteOs::Windows, version)
@@ -1647,7 +1647,7 @@ impl SshSocket {
         let script = RemoteEnvironment::posix_script();
         let output = command_output(self.environment_posix_command(), Some(script.as_bytes()))
             .await
-            .context("determining remote environment")?;
+            .context("确定远程环境")?;
         RemoteEnvironment::parse_posix(&output)
     }
 

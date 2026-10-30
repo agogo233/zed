@@ -832,9 +832,9 @@ impl Platform for LinuxPlatform {
         self.foreground_executor()
             .spawn(async move {
                 let title = if options.directories {
-                    "Open Folder"
+                    "打开文件夹"
                 } else {
-                    "Open File"
+                    "打开文件"
                 };
 
                 let request = match ashpd::desktop::file_chooser::OpenFileRequest::default()

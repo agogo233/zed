@@ -114,9 +114,9 @@ pub use zed_edit_prediction_delegate::ZedEditPredictionDelegate;
 actions!(
     edit_prediction,
     [
-        /// Resets the edit prediction onboarding state.
+        /// 重置编辑预测引导状态
         ResetOnboarding,
-        /// Clears the edit prediction history.
+        /// 清除编辑预测历史记录
         ClearHistory,
     ]
 );
@@ -3622,11 +3622,10 @@ fn show_free_plan_edit_predictions_ended_notice_once(user_store: &Entity<UserSto
         |cx| {
             cx.new(|cx| {
                 MessageNotification::new(
-                    "Edit predictions are no longer included in the Free plan. \
-                    Upgrade to Pro for unlimited edit predictions.",
+                    "免费方案不再包含编辑预测。升级至 Pro 可获得无限制编辑预测。",
                     cx,
                 )
-                .primary_message("Upgrade")
+                .primary_message("升级")
                 .primary_on_click(|_window, cx| {
                     telemetry::event!(
                         "Upgrade To Pro Clicked",

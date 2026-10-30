@@ -27,7 +27,7 @@ use zed_actions::ShowUpdateNotification;
 actions!(
     auto_update,
     [
-        /// Opens the release notes for the current version in a new tab.
+        /// 在新标签页中打开当前版本的发行说明
         ViewReleaseNotesLocally
     ]
 );
@@ -70,7 +70,7 @@ fn notify_release_notes_failed_to_show(
 
     impl WorkspaceError for ReleaseNotesError {
         fn primary_message(&self) -> SharedString {
-            "Couldn't load release notes".into()
+            "无法加载发行说明".into()
         }
         fn severity(&self) -> ErrorSeverity {
             ErrorSeverity::Error
@@ -78,7 +78,7 @@ fn notify_release_notes_failed_to_show(
         fn primary_action(&self) -> ErrorAction {
             self.url
                 .clone()
-                .map(|url| ErrorAction::link("View in Browser", url))
+                .map(|url| ErrorAction::link("在浏览器中查看", url))
                 .unwrap_or_else(ErrorAction::dismiss)
         }
     }
@@ -211,17 +211,17 @@ fn announcement_for_version(version: &Version, cx: &App) -> Option<AnnouncementC
     }
 
     Some(AnnouncementContent {
-        heading: "Introducing Delta".into(),
+        heading: "全新 Delta".into(),
         description:
-            "Built on DeltaDB, so your threads and code stay in sync across machines and teammates."
+            "基于 DeltaDB 构建，你的会话和代码可在多台设备与队友之间保持同步"
                 .into(),
         bullet_items: vec![
-            "Made by the Zed team, with the same quality and performance".into(),
-            "Work with teammates and agents in the same thread, live or later".into(),
-            "Pick up your thread on the web or your phone, without committing or pushing".into(),
+            "由 Zed 团队打造，拥有同样的品质与性能".into(),
+            "与队友和智能体在同一会话中协作，实时或事后均可".into(),
+            "在网页或手机上继续你的会话，无需提交或推送".into(),
         ],
-        primary_action_label: "Try Delta".into(),
-        secondary_action_label: "Learn More".into(),
+        primary_action_label: "试用 Delta".into(),
+        secondary_action_label: "了解详情".into(),
         primary_action_url: "https://delta.dev/".into(),
         secondary_action_url: "https://delta.dev/docs/getting-started".into(),
     })
@@ -324,8 +324,8 @@ fn show_update_notification(cx: &mut App) {
             move |cx| {
                 let workspace_handle = cx.entity().downgrade();
                 cx.new(|cx| {
-                    MessageNotification::new(format!("Updated to {app_name} {}", version), cx)
-                        .primary_message("View Release Notes")
+                    MessageNotification::new(format!("已更新至 {app_name} {}", version), cx)
+                        .primary_message("查看发行说明")
                         .primary_on_click(move |window, cx| {
                             if let Some(workspace) = workspace_handle.upgrade() {
                                 workspace.update(cx, |workspace, cx| {

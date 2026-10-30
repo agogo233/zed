@@ -365,23 +365,23 @@ impl Render for LanguageServerPrompt {
                                             "copy-description",
                                             request.message.clone(),
                                         )
-                                        .tooltip_label("Copy Description"),
+                                        .tooltip_label("复制描述"),
                                     )
                                     .child(
                                         IconButton::new(close_id, close_icon)
                                             .tooltip(move |_window, cx| {
                                                 if suppress {
                                                     Tooltip::with_meta(
-                                                        "Suppress",
+                                                        "屏蔽",
                                                         Some(&SuppressNotification),
-                                                        "Click to close",
+                                                        "点击关闭",
                                                         cx,
                                                     )
                                                 } else {
                                                     Tooltip::with_meta(
-                                                        "Close",
+                                                        "关闭",
                                                         Some(&menu::Cancel),
-                                                        "Suppress with shift-click",
+                                                        "Shift+点击屏蔽",
                                                         cx,
                                                     )
                                                 }
@@ -847,7 +847,7 @@ pub mod simple_message_notification {
                     )
                     .icon_size(IconSize::XSmall)
                     .icon_color(Color::Muted),
-                    Tooltip::text("More Options"),
+                    Tooltip::text("更多选项"),
                 )
                 .menu(move |window, cx| {
                     let entries = entries.clone();
@@ -1058,7 +1058,7 @@ pub mod simple_message_notification {
                 .when_some(copy_text, |el, text| {
                     el.child(
                         CopyButton::new("copy-notification-message", text)
-                            .tooltip_label("Copy Message"),
+                            .tooltip_label("复制消息"),
                     )
                 })
                 .when(show_close_button, |el| {
@@ -1067,20 +1067,20 @@ pub mod simple_message_notification {
                             .tooltip(move |_window, cx| {
                                 if suppress {
                                     Tooltip::with_meta(
-                                        "Suppress",
+                                        "屏蔽",
                                         Some(&SuppressNotification),
-                                        "Click to Close",
+                                        "点击关闭",
                                         cx,
                                     )
                                 } else if show_suppress_button {
                                     Tooltip::with_meta(
-                                        "Close",
+                                        "关闭",
                                         Some(&menu::Cancel),
-                                        "Shift-click to Suppress",
+                                        "Shift+点击屏蔽",
                                         cx,
                                     )
                                 } else {
-                                    Tooltip::for_action("Close", &menu::Cancel, cx)
+                                    Tooltip::for_action("关闭", &menu::Cancel, cx)
                                 }
                             })
                             .on_click(cx.listener(move |_, _, _, cx| {
@@ -1298,14 +1298,14 @@ pub mod simple_message_notification {
                     found [\"editor::Apply\"].\n\
                     • In binding \"ctrl-shift-r\", action \"editor::Reload\" is not registered.";
                 MessageNotification::new(long_message, cx)
-                    .primary_message("Open Keymap File")
+                    .primary_message("打开键映射文件")
                     .primary_icon(IconName::Settings)
             });
 
             struct PreviewError;
             impl WorkspaceError for PreviewError {
                 fn primary_message(&self) -> SharedString {
-                    "Something went wrong while loading your project.".into()
+                    "加载项目时出现问题".into()
                 }
 
                 fn primary_action(&self) -> ErrorAction {
@@ -1313,7 +1313,7 @@ pub mod simple_message_notification {
                 }
 
                 fn secondary_message(&self) -> Option<SharedString> {
-                    Some("Check your network connection and try again.".into())
+                    Some("检查网络连接并重试".into())
                 }
                 fn severity(&self) -> ErrorSeverity {
                     ErrorSeverity::Error
@@ -1343,7 +1343,7 @@ pub mod simple_message_notification {
             struct BasicError;
             impl WorkspaceError for BasicError {
                 fn primary_message(&self) -> SharedString {
-                    "Failed to save the file.".into()
+                    "保存文件失败".into()
                 }
                 fn primary_action(&self) -> ErrorAction {
                     ErrorAction::dismiss()
@@ -1375,17 +1375,17 @@ pub mod simple_message_notification {
             struct PortalSetupError;
             impl WorkspaceError for PortalSetupError {
                 fn primary_message(&self) -> SharedString {
-                    "Linux desktop portal initialization failed.".into()
+                    "Linux 桌面门户初始化失败".into()
                 }
                 fn secondary_message(&self) -> Option<SharedString> {
-                    Some("Zed needs an xdg-desktop-portal implementation to open files.".into())
+                    Some("Zed 需要 xdg-desktop-portal 实现才能打开文件".into())
                 }
                 fn severity(&self) -> ErrorSeverity {
                     ErrorSeverity::Critical
                 }
                 fn primary_action(&self) -> ErrorAction {
                     ErrorAction::link(
-                        "See Docs",
+                        "查看文档",
                         "https://zed.dev/docs/linux#i-cant-open-any-files",
                     )
                 }
@@ -1396,13 +1396,13 @@ pub mod simple_message_notification {
             struct UpdateRequiredError;
             impl WorkspaceError for UpdateRequiredError {
                 fn primary_message(&self) -> SharedString {
-                    "An update is required to continue using Zed AI.".into()
+                    "需要更新才能继续使用 Zed AI".into()
                 }
                 fn severity(&self) -> ErrorSeverity {
                     ErrorSeverity::Critical
                 }
                 fn primary_action(&self) -> ErrorAction {
-                    ErrorAction::link("Update Zed", "https://zed.dev/releases")
+                    ErrorAction::link("更新 Zed", "https://zed.dev/releases")
                 }
                 fn secondary_action(&self) -> Option<ErrorAction> {
                     Some(ErrorAction::dismiss())
@@ -1634,7 +1634,7 @@ where
             Ok(value) => Some(value),
             Err(err) => {
                 log::error!("Showing error notification in workspace: {err:?}");
-                workspace.show_error(format!("Error: {err}"), cx);
+                workspace.show_error(format!("错误：{err}"), cx);
                 None
             }
         }
@@ -1649,7 +1649,7 @@ where
             Ok(value) => Some(value),
             Err(err) => {
                 log::error!("{err:?}");
-                let message = format!("Error: {err}");
+                let message = format!("错误：{err}");
                 workspace
                     .update(cx, |workspace, cx| workspace.show_error(message, cx))
                     .ok();
@@ -1749,7 +1749,7 @@ where
                         display.push('.');
                     }
                     let detail = f(err, window, cx).unwrap_or(display);
-                    window.prompt(PromptLevel::Critical, &msg, Some(&detail), &["OK"], cx)
+                    window.prompt(PromptLevel::Critical, &msg, Some(&detail), &["确定"], cx)
                 }) {
                     prompt.await.ok();
                 }

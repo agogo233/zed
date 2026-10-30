@@ -82,12 +82,12 @@ const CURSOR_BLINK_INTERVAL: Duration = Duration::from_millis(500);
 #[derive(Clone, Debug, PartialEq)]
 pub struct ScrollTerminal(pub i32);
 
-/// Sends the specified text directly to the terminal.
+/// 将指定文本直接发送至终端
 #[derive(Clone, Debug, Default, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = terminal)]
 pub struct SendText(String);
 
-/// Sends a keystroke sequence to the terminal.
+/// 向终端发送按键序列
 #[derive(Clone, Debug, Default, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = terminal)]
 pub struct SendKeystroke(String);
@@ -95,12 +95,12 @@ pub struct SendKeystroke(String);
 actions!(
     terminal,
     [
-        /// Reruns the last executed task in the terminal.
+        /// 重新运行终端中上次执行的任务
         RerunTask,
     ]
 );
 
-/// Renames the terminal tab.
+/// 重命名终端标签页
 #[derive(Clone, Debug, Default, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = terminal)]
 pub struct RenameTerminal;
@@ -599,41 +599,41 @@ impl TerminalView {
         let context_menu = ContextMenu::build(window, cx, |menu, _, _| {
             menu.context(self.focus_handle.clone())
                 .when(self.shows_workspace_actions(), |menu| {
-                    menu.action("New Terminal", Box::new(NewTerminal::default()))
+                    menu.action("新建终端", Box::new(NewTerminal::default()))
                         .action(
-                            "New Center Terminal",
+                            "在中央区域新建终端",
                             Box::new(NewCenterTerminal::default()),
                         )
                         .separator()
                 })
-                .action("Copy", Box::new(Copy))
+                .action("复制", Box::new(Copy))
                 .when(
                     !self.read_only && !matches!(self.mode, TerminalMode::Embedded { .. }),
                     |menu| {
-                        menu.action("Paste", Box::new(Paste))
-                            .action("Paste Text", Box::new(PasteText))
+                        menu.action("粘贴", Box::new(Paste))
+                            .action("粘贴文本", Box::new(PasteText))
                     },
                 )
-                .action("Select All", Box::new(SelectAll))
+                .action("全选", Box::new(SelectAll))
                 .when(
                     !self.read_only && !matches!(self.mode, TerminalMode::Embedded { .. }),
-                    |menu| menu.action("Clear", Box::new(Clear)),
+                    |menu| menu.action("清除", Box::new(Clear)),
                 )
                 .when(
                     assistant_enabled && !matches!(self.mode, TerminalMode::Embedded { .. }),
                     |menu| {
                         menu.separator()
                             .when(!self.read_only, |menu| {
-                                menu.action("Inline Assist", Box::new(InlineAssist::default()))
+                                menu.action("内联辅助", Box::new(InlineAssist::default()))
                             })
                             .when(has_selection && self.shows_workspace_actions(), |menu| {
-                                menu.action("Add to Agent Thread", Box::new(AddSelectionToThread))
+                                menu.action("添加到智能体会话", Box::new(AddSelectionToThread))
                             })
                     },
                 )
                 .when(self.shows_workspace_actions(), |menu| {
                     menu.separator().action(
-                        "Close Terminal Tab",
+                        "关闭终端标签页",
                         Box::new(CloseActiveItem {
                             save_intent: None,
                             close_pinned: true,
@@ -1187,7 +1187,7 @@ impl TerminalView {
                 .size(ButtonSize::Compact)
                 .icon_color(Color::Default)
                 .shape(ui::IconButtonShape::Square)
-                .tooltip(move |_window, cx| Tooltip::for_action("Rerun task", &RerunTask, cx))
+                .tooltip(move |_window, cx| Tooltip::for_action("重新运行任务", &RerunTask, cx))
                 .on_click(move |_, window, cx| {
                     window.dispatch_action(Box::new(terminal_rerun_override(&task_id)), cx);
                 }),
@@ -1592,7 +1592,7 @@ impl Item for TerminalView {
                     .child(Label::new(title.clone()))
                     .child(h_flex().flex_grow_1().child(Divider::horizontal()))
                     .child(
-                        Label::new(format!("Process ID (PID): {}", pid))
+                        Label::new(format!("进程 ID (PID)：{}", pid))
                             .color(Color::Muted)
                             .size(LabelSize::Small),
                     )
@@ -1875,7 +1875,7 @@ impl Item for TerminalView {
     ) -> Vec<(SharedString, Box<dyn gpui::Action>)> {
         let terminal = self.terminal.read(cx);
         if terminal.task().is_none() {
-            vec![("Rename".into(), Box::new(RenameTerminal))]
+            vec![("重命名".into(), Box::new(RenameTerminal))]
         } else {
             Vec::new()
         }

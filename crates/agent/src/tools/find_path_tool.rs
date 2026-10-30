@@ -113,9 +113,9 @@ impl AgentTool for FindPathTool {
         input: Result<Self::Input, serde_json::Value>,
         _cx: &mut App,
     ) -> SharedString {
-        let mut title = "Find paths".to_string();
+        let mut title = "查找路径".to_string();
         if let Ok(input) = input {
-            title.push_str(&format!(" matching “`{}`”", input.glob));
+            title.push_str(&format!("（匹配“`{}`”）", input.glob));
         }
         title.into()
     }

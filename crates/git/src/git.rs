@@ -41,116 +41,116 @@ actions!(
     git,
     [
         // per-hunk
-        /// Toggles the staged state of the hunk or status entry at cursor.
+        /// 切换光标处区块或状态条目的暂存状态
         ToggleStaged,
-        /// Stage status entries between an anchor entry and the cursor.
+        /// 暂存锚点条目与光标之间的状态条目
         StageRange,
-        /// Stages the current hunk and moves to the next one.
+        /// 暂存当前区块并移动到下一个
         StageAndNext,
-        /// Unstages the current hunk and moves to the next one.
+        /// 取消暂存当前区块并移至下一个
         UnstageAndNext,
-        /// Restores the selected hunks to their original state.
+        /// 将选定区块恢复到原始状态
         #[action(deprecated_aliases = ["editor::RevertSelectedHunks"])]
         Restore,
-        /// Restores the selected hunks to their original state and moves to the
-        /// next one.
+        /// 将选定区块恢复到原始状态，
+        /// 并移至下一个区块
         RestoreAndNext,
         // per-file
-        /// Shows git blame information for the current file.
+        /// 显示当前文件的 Git 追溯信息
         #[action(deprecated_aliases = ["editor::ToggleGitBlame"])]
         Blame,
-        /// Shows the git history for the selected file, folder, or project.
+        /// 显示所选文件、文件夹或项目的 Git 历史
         FileHistory,
-        /// Opens a permalink for the selected file on its Git hosting provider.
+        /// 打开所选文件在其 Git 托管提供商上的永久链接
         OpenFilePermalink,
-        /// Copies a permalink for the selected file on its Git hosting provider.
+        /// 复制所选文件在其 Git 托管提供商上的永久链接
         CopyFilePermalink,
-        /// Opens the selected file in the editor without a diff view.
+        /// 在编辑器中打开所选文件，不显示差异视图
         ViewFile,
-        /// Stages the current file.
+        /// 暂存当前文件
         StageFile,
-        /// Unstages the current file.
+        /// 取消暂存当前文件
         UnstageFile,
         // per-section
-        /// Stages every entry in the section containing the selected entry.
+        /// 暂存所选条目所在分组中的所有条目
         StageSection,
-        /// Unstages every entry in the section containing the selected entry.
+        /// 取消暂存所选条目所在分组中的所有条目
         UnstageSection,
         // repo-wide
-        /// Stages all changes in the repository.
+        /// 暂存仓库中的所有更改
         StageAll,
-        /// Unstages all changes in the repository.
+        /// 取消暂存仓库中的所有更改
         UnstageAll,
-        /// Stashes all changes in the repository, including untracked files.
+        /// 贮藏仓库中的所有更改，包括未跟踪的文件
         StashAll,
-        /// Stashes tracked changes in the repository, leaving untracked files in place.
+        /// 贮藏仓库中已跟踪的更改，保留未跟踪的文件
         StashTracked,
-        /// Stashes staged changes in the repository, leaving unstaged changes in place.
+        /// 贮藏仓库中已暂存的更改，保留未暂存的更改
         StashStaged,
-        /// Pops the most recent stash.
+        /// 弹出最近的贮藏
         StashPop,
-        /// Apply the most recent stash.
+        /// 应用最近的贮藏
         StashApply,
-        /// Restores all tracked files to their last committed state.
+        /// 将所有已跟踪文件恢复到上次提交的状态
         RestoreTrackedFiles,
-        /// Moves all untracked files to trash.
+        /// 将所有未跟踪文件移至回收站
         TrashUntrackedFiles,
-        /// Undoes the last commit, keeping changes in the working directory.
+        /// 撤销上次提交，保留工作目录中的更改
         Uncommit,
-        /// Pushes commits to the remote repository.
+        /// 将提交推送到远程仓库
         Push,
-        /// Pushes commits to a specific remote branch.
+        /// 将提交推送到特定的远程分支
         PushTo,
-        /// Force pushes commits to the remote repository.
+        /// 强制推送提交至远程仓库
         ForcePush,
-        /// Pulls changes from the remote repository.
+        /// 从远程仓库拉取更改
         Pull,
-        /// Pulls changes from the remote repository with rebase.
+        /// 从远程仓库拉取更改并进行变基
         PullRebase,
-        /// Fetches changes from the remote repository.
+        /// 从远程仓库抓取更改
         Fetch,
-        /// Fetches changes from a specific remote.
+        /// 从指定远程抓取更改
         FetchFrom,
-        /// Creates a new commit with staged changes.
+        /// 使用已暂存的更改创建新提交
         Commit,
-        /// Runs the next commit with `git commit --no-verify`.
+        /// 使用 `git commit --no-verify` 执行下一次提交
         SkipHooks,
-        /// Amends the last commit with staged changes.
+        /// 使用已暂存的更改修正上次提交
         Amend,
-        /// Enable the --signoff option.
+        /// 启用 --signoff 选项
         Signoff,
-        /// Cancels the current git operation.
+        /// 取消当前 Git 操作
         Cancel,
-        /// Expands the commit message editor.
+        /// 展开提交消息编辑器
         ExpandCommitEditor,
-        /// Toggles whether the commit message editor fills all the available
-        /// vertical space within the git panel.
+        /// 切换提交消息编辑器是否填满
+        /// Git 面板内的垂直空间
         ToggleFillCommitEditor,
-        /// Toggles whether the commit message editor is shown in the git panel.
+        /// 切换是否在 Git 面板中显示提交消息编辑器
         ToggleCommitEditor,
-        /// Generates a commit message using AI.
+        /// 使用 AI 生成提交消息
         GenerateCommitMessage,
-        /// Initializes a new git repository.
+        /// 初始化新的 Git 仓库
         Init,
-        /// Opens all modified files in the editor.
+        /// 在编辑器中打开所有已修改的文件
         OpenModifiedFiles,
-        /// Opens the current file in a solo diff view.
+        /// 在独立差异视图中打开当前文件
         OpenFileDiff,
-        /// Clones a repository.
+        /// 克隆仓库
         Clone,
         ViewCommit,
-        /// Adds a file to .gitignore.
+        /// 将文件添加到 .gitignore
         AddToGitignore,
-        /// Adds a file to the repository's .git/info/exclude.
+        /// 将文件添加到仓库的 .git/info/exclude
         AddToGitInfoExclude,
-        /// Copies the current branch name to the clipboard.
+        /// 将当前分支名称复制到剪贴板
         CopyBranchName,
-        /// Creates a tag at HEAD.
+        /// 在 HEAD 创建标签
         CreateTagAtHead,
     ]
 );
 
-/// Renames a git branch.
+/// 重命名 Git 分支
 #[derive(Clone, Debug, Default, PartialEq, Deserialize, JsonSchema, Action)]
 #[action(namespace = git)]
 #[serde(deny_unknown_fields)]
@@ -162,7 +162,7 @@ pub struct RenameBranch {
     pub branch: Option<String>,
 }
 
-/// Restores a file to its last committed state, discarding local changes.
+/// 将文件恢复到上次提交的状态，丢弃本地更改
 #[derive(Clone, Debug, Default, PartialEq, Deserialize, JsonSchema, Action)]
 #[action(namespace = git, deprecated_aliases = ["editor::RevertFile"])]
 #[serde(deny_unknown_fields)]

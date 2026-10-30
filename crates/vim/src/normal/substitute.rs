@@ -11,9 +11,9 @@ use language::Point;
 actions!(
     vim,
     [
-        /// Substitutes characters in the current selection.
+        /// 替换当前选区中的字符
         Substitute,
-        /// Substitutes the entire line.
+        /// 替换整行
         SubstituteLine
     ]
 );

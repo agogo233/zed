@@ -18,11 +18,11 @@ pub(crate) enum IndentDirection {
 actions!(
     vim,
     [
-        /// Increases indentation of selected lines.
+        /// 增加所选行的缩进
         Indent,
-        /// Decreases indentation of selected lines.
+        /// 减少所选行的缩进
         Outdent,
-        /// Automatically adjusts indentation based on syntax.
+        /// 根据语法自动调整缩进
         AutoIndent
     ]
 );

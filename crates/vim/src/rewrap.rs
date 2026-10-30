@@ -6,7 +6,7 @@ use language::SelectionGoal;
 use schemars::JsonSchema;
 use serde::Deserialize;
 
-/// Rewraps the selected text to fit within the line width.
+/// 将选定文本重新换行以适应行宽
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 pub(crate) struct Rewrap {

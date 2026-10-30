@@ -78,7 +78,7 @@ impl Item for SharedScreen {
     }
 
     fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
-        format!("{}'s screen", self.user.username).into()
+        format!("{} 的屏幕", self.user.username).into()
     }
 
     fn telemetry_event_text(&self) -> Option<&'static str> {

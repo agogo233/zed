@@ -9,37 +9,37 @@ use crate::{FontFamilyName, FontFeaturesContent, FontSize, FontWeightContent};
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct ProjectTerminalSettingsContent {
-    /// What shell to use when opening a terminal.
+    /// 打开终端时使用的 Shell
     ///
-    /// Default: system
+    /// 默认值：system
     pub shell: Option<Shell>,
-    /// What working directory to use when launching the terminal
+    /// 启动终端时使用的工作目录
     ///
-    /// Default: current_project_directory
+    /// 默认值：current_project_directory
     pub working_directory: Option<WorkingDirectory>,
-    /// Any key-value pairs added to this list will be added to the terminal's
-    /// environment. Use `:` to separate multiple values.
+    /// 添加到此列表的任何键值对都将添加到终端的
+    /// 环境变量。使用 `:` 分隔多个值。
     ///
-    /// Default: {}
+    /// 默认值：{}
     pub env: Option<HashMap<String, String>>,
-    /// Activates the python virtual environment, if one is found, in the
-    /// terminal's working directory (as resolved by the working_directory
-    /// setting). Set this to "off" to disable this behavior.
+    /// 如果找到 Python 虚拟环境，则在
+    /// 终端工作目录中激活它（由 working_directory
+    /// 设置解析）。将此项设为 "off" 可禁用该行为。
     ///
-    /// Default: on
+    /// 默认值：on
     pub detect_venv: Option<VenvSettings>,
-    /// Regexes used to identify paths for hyperlink navigation.
+    /// 用于识别超链接导航路径的正则表达式
     ///
-    /// Default:
+    /// 默认值：
     ///
     /// ```json
     /// {
     ///   "terminal": {
     ///     "path_hyperlink_regexes": [
-    ///       // Python-style diagnostics
+    ///       // Python 风格的诊断信息
     ///       "File \"(?<path>[^\"]+)\", line (?<line>[0-9]+)",
-    ///       // Common path syntax with optional line, column, description, trailing punctuation, or
-    ///       // surrounding symbols or quotes
+    ///       // 通用路径语法，包含可选的行号、列号、描述、末尾标点符号，或
+    ///       // 周围的符号或引号
     ///       [
     ///         "(?x)",
     ///         "(?<path>",
@@ -63,10 +63,10 @@ pub struct ProjectTerminalSettingsContent {
     /// }
     /// ```
     ///
-    /// Use `"..."` to add regexes without repeating Zed's defaults. In project
-    /// settings, it extends the user or parent configuration value. Omit
-    /// `"..."` to replace the inherited list. Set `[]` to clear it. Omitting this
-    /// setting keeps the inherited list.
+    /// 使用 `"..."` 可在不重复 Zed 默认值的情况下添加正则表达式。在项目
+    /// 设置中，它会扩展用户配置或父级配置的值。省略
+    /// `"..."` 则会替换继承的列表。设为 `[]` 可将其清空。省略此
+    /// 设置会保留继承的列表。
     ///
     /// ```json
     /// {
@@ -80,29 +80,29 @@ pub struct ProjectTerminalSettingsContent {
     /// }
     /// ```
     ///
-    /// Inherited regexes are inserted at `"..."`, and duplicates keep their first
-    /// occurrence. Regexes are duplicates when their text is identical after
-    /// joining multiline entries with newlines.
+    /// 继承的正则表达式会插入到 `"..."` 所在位置，重复项保留
+    /// 首次出现的条目。当正则表达式的文本在
+    /// 将多行条目用换行符连接后相同时，即视为重复项。
     ///
-    /// Each regex can be a single string or an array of strings joined with
-    /// newlines. The marker is recognized only as a top-level string. To use
-    /// `...` as a regex matching three characters, write `["..."]` as an entry.
-    /// A `"..."` line inside a multiline entry is always regex text.
+    /// 每个正则表达式可以是单个字符串，也可以是用
+    /// 换行符连接的字符串数组。该标记只有作为顶层字符串时才会被识别。要将
+    /// `...` 用作匹配三个字符的正则表达式，应将 `["..."]` 写为一个条目。
+    /// 多行条目内的 `"..."` 行始终视为正则表达式文本。
     ///
-    /// The optional named capture `path` selects the hyperlink target. Without
-    /// it, the entire match is the target. With `path`, `line` and `column`
-    /// specify the position. Without a captured `line`, built-in suffix
-    /// processing parses `line:column` and `(line,column)` variants. The optional
-    /// `link` capture selects the clickable text, otherwise the entire match is
-    /// clickable.
+    /// 可选的命名捕获组 `path` 用于选择超链接目标。若没有
+    /// 该捕获组，则整个匹配内容即为目标。使用 `path` 时，`line` 和 `column`
+    /// 用于指定位置。若未捕获到 `line`，内置的后缀
+    /// 处理会解析 `line:column` 和 `(line,column)` 形式。可选的
+    /// `link` 捕获组用于选择可点击的文本，否则整个匹配内容均
+    /// 可点击。
     ///
-    /// Processing stops at the first regex that matches the terminal line, even
-    /// if the cursor is outside its clickable text. Put more specific regexes
-    /// before broader ones. Regexes use Rust's `regex` syntax. Invalid regexes
-    /// are logged and ignored. The `path_hyperlink_timeout_ms` setting controls
-    /// the discovery timeout. Setting it to `0` disables path hyperlinks.
+    /// 处理在第一个匹配终端行的正则表达式处停止，即使
+    /// 光标不在其可点击文本内也是如此。将更具体的正则表达式放在
+    /// 更宽泛的表达式之前。正则表达式使用 Rust 的 `regex` 语法。无效的正则表达式
+    /// 会被记录到日志中并忽略。`path_hyperlink_timeout_ms` 设置控制
+    /// 发现超时时间。将其设为 `0` 可禁用路径超链接。
     pub path_hyperlink_regexes: Option<PathHyperlinkRegexes>,
-    /// Timeout for hover and Cmd-click path hyperlink discovery in milliseconds.
+    /// 悬停及 Cmd 点击路径超链接发现的超时时间（毫秒）。
     ///
     /// Default: 1
     pub path_hyperlink_timeout_ms: Option<u64>,
@@ -113,128 +113,128 @@ pub struct ProjectTerminalSettingsContent {
 pub struct TerminalSettingsContent {
     #[serde(flatten)]
     pub project: ProjectTerminalSettingsContent,
-    /// Sets the terminal's font size.
+    /// 设置终端的字体大小
     ///
-    /// If this option is not included,
-    /// the terminal will default to matching the buffer's font size.
+    /// 如果未包含此选项，
+    /// 终端将默认使用与缓冲区相同的字体大小
     pub font_size: Option<FontSize>,
-    /// Sets the terminal's font family.
+    /// 设置终端的字体族
     ///
-    /// If this option is not included,
-    /// the terminal will default to matching the buffer's font family.
+    /// 如果未包含此选项，
+    /// 终端将默认使用与缓冲区相同的字体族
     pub font_family: Option<FontFamilyName>,
 
-    /// Sets the terminal's font fallbacks.
+    /// 设置终端的字体回退
     ///
-    /// If this option is not included,
-    /// the terminal will default to matching the buffer's font fallbacks.
+    /// 如果未包含此选项，
+    /// 终端将默认使用与缓冲区相同的字体回退
     #[schemars(extend("uniqueItems" = true))]
     pub font_fallbacks: Option<Vec<FontFamilyName>>,
 
-    /// Sets the terminal's line height.
+    /// 设置终端的行高
     ///
-    /// Default: comfortable
+    /// 默认值：comfortable
     pub line_height: Option<TerminalLineHeight>,
     pub font_features: Option<FontFeaturesContent>,
-    /// Sets the terminal's font weight in CSS weight units 0-900.
+    /// 以 CSS 粗细单位 0-900 设置终端的字体粗细
     pub font_weight: Option<FontWeightContent>,
-    /// Default cursor shape for the terminal.
-    /// Can be "bar", "block", "underline", or "hollow".
+    /// 终端的默认光标形状
+    /// 可以是 "bar"、"block"、"underline" 或 "hollow"。
     ///
-    /// Default: "block"
+    /// 默认值："block"
     pub cursor_shape: Option<CursorShapeContent>,
-    /// Sets the cursor blinking behavior in the terminal.
+    /// 设置终端中光标的闪烁行为
     ///
-    /// Default: terminal_controlled
+    /// 默认值：terminal_controlled
     pub blinking: Option<TerminalBlink>,
-    /// Sets whether Alternate Scroll mode (code: ?1007) is active by default.
-    /// Alternate Scroll mode converts mouse scroll events into up / down key
-    /// presses when in the alternate screen (e.g. when running applications
-    /// like vim or  less). The terminal can still set and unset this mode.
+    /// 设置交替滚动模式（代码：?1007）是否默认启用。
+    /// 交替滚动模式会在备用屏幕中转换鼠标滚动事件。
+    /// 转换结果为上 / 下方向键按下操作，例如运行
+    /// vim 或 less 时。终端仍可自行开启或关闭此模式。
     ///
-    /// Default: on
+    /// 默认值：on
     pub alternate_scroll: Option<AlternateScroll>,
-    /// Sets whether the option key behaves as the meta key.
+    /// 设置 Option 键是否作为 Meta 键使用
     ///
-    /// Default: false
+    /// 默认值：false
     pub option_as_meta: Option<bool>,
-    /// Whether or not selecting text in the terminal will automatically
-    /// copy to the system clipboard.
+    /// 在终端中选中文本是否会自动
+    /// 复制到系统剪贴板。
     ///
-    /// Default: false
+    /// 默认值：false
     pub copy_on_select: Option<bool>,
-    /// Whether to keep the text selection after copying it to the clipboard.
+    /// 是否在复制到剪贴板后保留文本选区
     ///
-    /// Default: true
+    /// 默认值：true
     pub keep_selection_on_copy: Option<bool>,
-    /// Whether cmd-click (ctrl-click on Linux and Windows) opens hyperlinks even
-    /// when the terminal application has enabled mouse reporting (e.g. vim with
-    /// mouse=a, htop). When false, these clicks are forwarded to the application
-    /// instead, and hyperlinks can still be opened with shift-cmd-click
-    /// (shift-ctrl-click).
+    /// cmd-click（在 Linux 和 Windows 上为 ctrl-click）是否会打开超链接，
+    /// 即使终端应用程序已启用鼠标报告（例如在 vim 中设置
+    /// mouse=a，或使用 htop）。若为 false，这些点击会转发给应用程序，
+    /// 此时仍可通过 shift-cmd-click
+    /// （shift-ctrl-click）打开超链接。
     ///
-    /// Default: true
+    /// 默认值：true
     pub open_links_in_mouse_mode: Option<bool>,
-    /// Whether to show the terminal button in the status bar.
+    /// 是否在状态栏中显示终端按钮
     ///
-    /// Default: true
+    /// 默认值：true
     pub button: Option<bool>,
     pub dock: Option<TerminalDockPosition>,
-    /// Whether the terminal panel should open on startup.
+    /// 启动时是否打开终端面板
     ///
-    /// Default: false
+    /// 默认值：false
     pub starts_open: Option<bool>,
-    /// Whether the terminal panel should use flexible (proportional) sizing.
+    /// 终端面板是否使用弹性（比例）尺寸
     ///
-    /// Default: true
+    /// 默认值：true
     pub flexible: Option<bool>,
-    /// Default width when the terminal is docked to the left or right.
+    /// 终端停靠到左侧或右侧时的默认宽度
     ///
-    /// Default: 640
+    /// 默认值：640
     pub default_width: Option<crate::PixelSetting>,
-    /// Default height when the terminal is docked to the bottom.
+    /// 终端停靠到底部时的默认高度
     ///
-    /// Default: 320
+    /// 默认值：320
     pub default_height: Option<crate::PixelSetting>,
-    /// The maximum number of lines to keep in the scrollback history.
-    /// Maximum allowed value is 100_000, all values above that will be treated as 100_000.
-    /// 0 disables the scrolling.
-    /// Existing terminals will not pick up this change until they are recreated.
-    /// See <a href="https://github.com/alacritty/alacritty/blob/cb3a79dbf6472740daca8440d5166c1d4af5029e/extra/man/alacritty.5.scd?plain=1#L207-L213">Alacritty documentation</a> for more information.
+    /// 滚动历史记录中保留的最大行数
+    /// 最大允许值为 100_000，超过该值的所有值将被视为 100_000
+    /// 0 表示禁用滚动
+    /// 现有终端需要重新创建后才能应用此更改
+    /// 有关更多信息，请参阅 <a href="https://github.com/alacritty/alacritty/blob/cb3a79dbf6472740daca8440d5166c1d4af5029e/extra/man/alacritty.5.scd?plain=1#L207-L213">Alacritty documentation</a>
     ///
-    /// Default: 10_000
+    /// 默认值：10_000
     pub max_scroll_history_lines: Option<usize>,
-    /// The multiplier for scrolling with the mouse wheel.
+    /// 鼠标滚轮滚动的倍数
     ///
-    /// Default: 1.0
+    /// 默认值：1.0
     pub scroll_multiplier: Option<f32>,
-    /// Toolbar related settings
+    /// 工具栏相关设置
     pub toolbar: Option<TerminalToolbarContent>,
-    /// Scrollbar-related settings
+    /// 滚动条相关设置
     pub scrollbar: Option<ScrollbarSettingsContent>,
-    /// The minimum APCA perceptual contrast between foreground and background colors.
+    /// 前景色与背景色之间的最小 APCA 感知对比度
     ///
-    /// APCA (Accessible Perceptual Contrast Algorithm) is more accurate than WCAG 2.x,
-    /// especially for dark mode. Values range from 0 to 106.
+    /// APCA（无障碍感知对比度算法）比 WCAG 2.x 更精确，
+    /// 尤其适用于深色模式。取值范围为 0 到 106。
     ///
-    /// Based on APCA Readability Criterion (ARC) Bronze Simple Mode:
+    /// 基于 APCA 可读性准则 (ARC) 铜级简单模式：
     /// https://readtech.org/ARC/tests/bronze-simple-mode/
-    /// - 0: No contrast adjustment
-    /// - 45: Minimum for large fluent text (36px+)
-    /// - 60: Minimum for other content text
-    /// - 75: Minimum for body text
-    /// - 90: Preferred for body text
+    /// - 0：不调整对比度
+    /// - 45：大号流畅可读文本（36px+）的最低要求
+    /// - 60：其他内容文本的最低要求
+    /// - 75：正文文本的最低要求
+    /// - 90：正文文本的推荐值
     ///
-    /// Default: 45
+    /// 默认值：45
     #[serde(serialize_with = "crate::serialize_optional_f32_with_two_decimal_places")]
     pub minimum_contrast: Option<f32>,
-    /// Whether to show a badge on the terminal panel icon with the count of open terminals.
+    /// 是否在终端面板图标上显示已打开终端数量的徽标
     ///
-    /// Default: false
+    /// 默认值：false
     pub show_count_badge: Option<bool>,
-    /// What to do when the `BEL` character (`\a`) is printed to terminal.
+    /// 当 `BEL` 字符（`\a`）输出到终端时执行的操作
     ///
-    /// Default: "system"
+    /// 默认值："system"
     pub bell: Option<TerminalBell>,
 }
 
@@ -250,7 +250,7 @@ crate::fallible_options::flattened_deserialize!(TerminalSettingsContent {
     defaults: {},
 });
 
-/// Shell configuration to open the terminal with.
+/// 打开终端时使用的 Shell 配置
 #[derive(
     Clone,
     Debug,
@@ -266,18 +266,21 @@ crate::fallible_options::flattened_deserialize!(TerminalSettingsContent {
 #[strum_discriminants(derive(strum::VariantArray, strum::VariantNames, strum::FromRepr))]
 #[serde(rename_all = "snake_case")]
 pub enum Shell {
-    /// Use the system's default terminal configuration in /etc/passwd
+    /// 使用 /etc/passwd 中的系统默认终端配置
     #[default]
+    #[strum_discriminants(strum(serialize = "系统"))]
     System,
-    /// Use a specific program with no arguments.
+    /// 使用不带参数的特定程序
+    #[strum_discriminants(strum(serialize = "程序"))]
     Program(String),
-    /// Use a specific program with arguments.
+    /// 使用带参数的特定程序
+    #[strum_discriminants(strum(serialize = "带参数"))]
     WithArguments {
-        /// The program to run.
+        /// 要运行的程序
         program: String,
-        /// The arguments to pass to the program.
+        /// 传递给程序的参数
         args: Vec<String>,
-        /// An optional string to override the title of the terminal tab
+        /// 用于覆盖终端标签页标题的可选字符串
         title_override: Option<String>,
     },
 }
@@ -296,20 +299,25 @@ pub enum Shell {
 #[strum_discriminants(derive(strum::VariantArray, strum::VariantNames, strum::FromRepr))]
 #[serde(rename_all = "snake_case")]
 pub enum WorkingDirectory {
-    /// Use the current file's directory, falling back to the project directory,
-    /// then the first project in the workspace.
+    /// 使用当前文件所在目录，回退至项目目录，
+    /// 然后回退到工作区中的第一个项目
+    #[strum_discriminants(strum(serialize = "当前文件目录"))]
     CurrentFileDirectory,
-    /// Use the current file's project directory. Fallback to the
-    /// first project directory strategy if unsuccessful.
+    /// 使用当前文件所在的项目目录。若不成功，
+    /// 则回退到首个项目目录策略。
+    #[strum_discriminants(strum(serialize = "当前项目目录"))]
     CurrentProjectDirectory,
-    /// Use the first project in this workspace's directory. Fallback to using
-    /// this platform's home directory.
+    /// 使用此工作区中第一个项目的目录，回退至
+    /// 此平台的主目录。
+    #[strum_discriminants(strum(serialize = "第一个项目目录"))]
     FirstProjectDirectory,
-    /// Always use this platform's home directory (if it can be found).
+    /// 始终使用此平台的主目录（如果可以找到）。
+    #[strum_discriminants(strum(serialize = "始终使用主目录"))]
     AlwaysHome,
-    /// Always use a specific directory. This value will be shell expanded.
-    /// If this path is not a valid directory the terminal will default to
-    /// this platform's home directory  (if it can be found).
+    /// 始终使用指定目录，此值将由 shell 展开。
+    /// 如果此路径不是有效目录，终端将默认使用
+    /// 此平台的主目录（如果可以找到）
+    #[strum_discriminants(strum(serialize = "始终"))]
     Always { directory: String },
 }
 
@@ -318,22 +326,22 @@ pub enum WorkingDirectory {
     Clone, Copy, Debug, Serialize, Deserialize, JsonSchema, MergeFrom, PartialEq, Eq, Default,
 )]
 pub struct ScrollbarSettingsContent {
-    /// When to show the scrollbar in the terminal.
+    /// 在终端中显示滚动条的时机
     ///
-    /// Default: inherits editor scrollbar settings
+    /// 默认值：继承编辑器滚动条设置
     pub show: Option<ShowScrollbar>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, JsonSchema, MergeFrom, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum TerminalLineHeight {
-    /// Use a line height that's comfortable for reading, 1.618
+    /// 使用舒适的阅读行高 1.618
     #[default]
     Comfortable,
-    /// Use a standard line height, 1.3. This option is useful for TUIs,
-    /// particularly if they use box characters
+    /// 使用标准行高 1.3，适用于 TUI，
+    /// 尤其是使用框线字符的 TUI 应用
     Standard,
-    /// Use a custom line height.
+    /// 使用自定义行高。
     Custom(#[serde(serialize_with = "crate::serialize_f32_with_two_decimal_places")] f32),
 }
 
@@ -347,9 +355,9 @@ impl TerminalLineHeight {
     }
 }
 
-/// When to show the scrollbar.
+/// 显示滚动条的时机
 ///
-/// Default: auto
+/// 默认值：auto
 #[derive(
     Copy,
     Clone,
@@ -366,15 +374,19 @@ impl TerminalLineHeight {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum ShowScrollbar {
-    /// Show the scrollbar if there's important information or
-    /// follow the system's configured behavior.
+    /// 当存在重要信息时显示滚动条，或
+    /// 跟随系统配置的行为。
     #[default]
+    #[strum(serialize = "自动")]
     Auto,
-    /// Match the system's configured behavior.
+    /// 匹配系统配置的行为
+    #[strum(serialize = "系统")]
     System,
-    /// Always show the scrollbar.
+    /// 始终显示滚动条。
+    #[strum(serialize = "始终")]
     Always,
-    /// Never show the scrollbar.
+    /// 从不显示滚动条
+    #[strum(serialize = "从不")]
     Never,
 }
 
@@ -395,14 +407,14 @@ pub enum ShowScrollbar {
 #[serde(rename_all = "snake_case")]
 // todo() -> combine with CursorShape
 pub enum CursorShapeContent {
-    /// Cursor is a block like `█`.
+    /// 光标为方块形，如 `█`
     #[default]
     Block,
-    /// Cursor is an underscore like `_`.
+    /// 光标为下划线形，如 `_`
     Underline,
-    /// Cursor is a vertical bar like `⎸`.
+    /// 光标为竖线形，如 `⎸`
     Bar,
-    /// Cursor is a hollow box like `▯`.
+    /// 光标为空心方块形，如 `▯`
     Hollow,
 }
 
@@ -421,12 +433,15 @@ pub enum CursorShapeContent {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum TerminalBlink {
-    /// Never blink the cursor, ignoring the terminal mode.
+    /// 从不闪烁光标，忽略终端模式
+    #[strum(serialize = "关闭")]
     Off,
-    /// Default the cursor blink to off, but allow the terminal to
-    /// set blinking.
+    /// 默认关闭光标闪烁，但允许终端
+    /// 设置光标闪烁。
+    #[strum(serialize = "由终端控制")]
     TerminalControlled,
-    /// Always blink the cursor, ignoring the terminal mode.
+    /// 始终闪烁光标，忽略终端模式
+    #[strum(serialize = "开启")]
     On,
 }
 
@@ -445,7 +460,9 @@ pub enum TerminalBlink {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum AlternateScroll {
+    #[strum(serialize = "开启")]
     On,
+    #[strum(serialize = "关闭")]
     Off,
 }
 
@@ -453,13 +470,13 @@ pub enum AlternateScroll {
 #[with_fallible_options]
 #[derive(Clone, Debug, Default, Serialize, Deserialize, JsonSchema, MergeFrom, PartialEq, Eq)]
 pub struct TerminalToolbarContent {
-    /// Whether to display the terminal title in breadcrumbs inside the terminal pane.
-    /// Only shown if the terminal title is not empty.
+    /// 是否在终端窗格内的面包屑中显示终端标题
+    /// 仅当终端标题不为空时显示。
     ///
-    /// The shell running in the terminal needs to be configured to emit the title.
-    /// Example: `echo -e "\e]2;New Title\007";`
+    /// 终端中运行的 Shell 需要配置为发出标题
+    /// 示例：`echo -e "\e]2;New Title\007";`
     ///
-    /// Default: true
+    /// 默认值：true
     pub breadcrumbs: Option<bool>,
 }
 
@@ -479,10 +496,12 @@ pub struct TerminalToolbarContent {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum TerminalBell {
-    /// Play an OS-specific alert sound.
+    /// 播放操作系统特定的提示音
     #[default]
+    #[strum(serialize = "系统")]
     System,
-    /// Do not play any sound.
+    /// 不播放任何声音
+    #[strum(serialize = "关闭")]
     Off,
 }
 
@@ -491,14 +510,14 @@ pub enum TerminalBell {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum CondaManager {
-    /// Automatically detect the conda manager
+    /// 自动检测 conda 管理器
     #[default]
     Auto,
-    /// Use conda
+    /// 使用 conda
     Conda,
-    /// Use mamba
+    /// 使用 mamba
     Mamba,
-    /// Use micromamba
+    /// 使用 micromamba
     Micromamba,
 }
 
@@ -508,15 +527,15 @@ pub enum VenvSettings {
     #[default]
     Off,
     On {
-        /// Default directories to search for virtual environments, relative
-        /// to the current working directory. We recommend overriding this
-        /// in your project's settings, rather than globally.
+        /// 搜索虚拟环境的默认目录，
+        /// 相对于当前工作目录。建议
+        /// 在项目设置中进行配置，而非全局配置。
         activate_script: Option<ActivateScript>,
         venv_name: Option<String>,
         directories: Option<Vec<PathBuf>>,
-        /// Preferred Conda manager to use when activating Conda environments.
+        /// 激活 Conda 环境时使用的首选 Conda 管理器
         ///
-        /// Default: auto
+        /// 默认值：auto
         conda_manager: Option<CondaManager>,
     },
 }
@@ -607,8 +626,11 @@ impl PathHyperlinkRegex {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum TerminalDockPosition {
+    #[strum(serialize = "左")]
     Left,
+    #[strum(serialize = "底部")]
     Bottom,
+    #[strum(serialize = "右")]
     Right,
 }
 

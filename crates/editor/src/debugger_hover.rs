@@ -120,8 +120,8 @@ impl DebuggerHoverView {
                             .shape(IconButtonShape::Square)
                             .icon_size(IconSize::Small)
                             .icon_color(Color::Muted)
-                            .aria_label("Copy Value")
-                            .tooltip(Tooltip::text("Copy Value"))
+                            .aria_label("复制值")
+                            .tooltip(Tooltip::text("复制值"))
                             .on_click(move |_, _, cx| {
                                 cx.write_to_clipboard(gpui::ClipboardItem::new_string(
                                     value.clone(),
@@ -134,8 +134,8 @@ impl DebuggerHoverView {
                                 .shape(IconButtonShape::Square)
                                 .icon_size(IconSize::Small)
                                 .icon_color(Color::Muted)
-                                .aria_label("Add to Watch")
-                                .tooltip(Tooltip::text("Add to Watch"))
+                                .aria_label("添加到监视")
+                                .tooltip(Tooltip::text("添加到监视"))
                                 .on_click(cx.listener(move |view, _, _, cx| {
                                     view.add_watch(expression.clone(), cx);
                                 })),
@@ -146,8 +146,8 @@ impl DebuggerHoverView {
                             .shape(IconButtonShape::Square)
                             .icon_size(IconSize::Small)
                             .icon_color(Color::Muted)
-                            .aria_label("Value Actions")
-                            .tooltip(Tooltip::text("Value Actions"))
+                            .aria_label("值操作")
+                            .tooltip(Tooltip::text("值操作"))
                             .on_click(cx.listener(move |view, _, window, cx| {
                                 view.variable_menu(variable.clone(), window, cx);
                             })),
@@ -240,7 +240,7 @@ impl DebuggerHoverView {
                     Ok(task) => task.await.map_err(|error| error.to_string()),
                     Err(error) => Err(error.to_string()),
                 },
-                None => Err(anyhow!("project is no longer available").to_string()),
+                None => Err(anyhow!("项目不再可用").to_string()),
             };
 
             this.update(cx, |this, cx| {
@@ -292,15 +292,15 @@ impl DebuggerHoverView {
         let view = cx.entity().downgrade();
         let menu = ContextMenu::build(window, cx, |menu, _, _| {
             menu.key_context("menu DebuggerHoverMenu")
-                .entry("Copy Value", None, move |_, cx| {
+                .entry("复制值", None, move |_, cx| {
                     cx.write_to_clipboard(gpui::ClipboardItem::new_string(variable.value.clone()));
                 })
                 .when_some(variable.evaluate_name, |menu, expression| {
                     let watch_expression = expression.clone();
-                    menu.entry("Copy as Expression", None, move |_, cx| {
+                    menu.entry("复制为表达式", None, move |_, cx| {
                         cx.write_to_clipboard(gpui::ClipboardItem::new_string(expression.clone()));
                     })
-                    .entry("Add to Watch", None, move |_, cx| {
+                    .entry("添加到监视", None, move |_, cx| {
                         view.update(cx, |view, cx| view.add_watch(watch_expression.clone(), cx))
                             .log_err();
                     })
@@ -348,7 +348,7 @@ impl DebuggerHoverView {
                 .flatten()
         });
         let Some(task) = task else {
-            self.operation_error = Some("The debug session is no longer paused here".into());
+            self.operation_error = Some("调试会话已不再在此处暂停".into());
             cx.notify();
             return;
         };
@@ -358,7 +358,7 @@ impl DebuggerHoverView {
             view.update(cx, |view, cx| {
                 view.operation_error = result
                     .err()
-                    .map(|error| format!("Could not add watch: {error}"));
+                    .map(|error| format!("无法添加监视：{error}"));
                 cx.notify();
             })
             .log_err();
@@ -473,7 +473,7 @@ impl DebuggerHoverView {
                     }
                 }
                 DebuggerHoverChildren::Loading => {
-                    entries.push(self.render_status_row("Loading…", depth + 1, cx));
+                    entries.push(self.render_status_row("正在加载…", depth + 1, cx));
                 }
                 DebuggerHoverChildren::Failed(error) => {
                     entries.push(self.render_status_row(error, depth + 1, cx));

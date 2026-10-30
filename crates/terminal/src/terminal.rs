@@ -611,37 +611,37 @@ mod domain_tests {
 actions!(
     terminal,
     [
-        /// Clears the terminal screen.
+        /// 清除终端屏幕
         Clear,
-        /// Copies selected text to the clipboard.
+        /// 将所选文本复制到剪贴板
         Copy,
-        /// Pastes from the clipboard.
+        /// 从剪贴板粘贴
         Paste,
-        /// Pastes the text from the clipboard.
+        /// 粘贴剪贴板中的文本
         PasteText,
-        /// Shows the character palette for special characters.
+        /// 显示特殊字符的字符面板
         ShowCharacterPalette,
-        /// Searches for text in the terminal.
+        /// 在终端中搜索文本
         SearchTest,
-        /// Scrolls up by one line.
+        /// 向上滚动一行
         ScrollLineUp,
-        /// Scrolls down by one line.
+        /// 向下滚动一行
         ScrollLineDown,
-        /// Scrolls up by one page.
+        /// 向上滚动一页
         ScrollPageUp,
-        /// Scrolls down by one page.
+        /// 向下滚动一页
         ScrollPageDown,
-        /// Scrolls up by half a page.
+        /// 向上滚动半页
         ScrollHalfPageUp,
-        /// Scrolls down by half a page.
+        /// 向下滚动半页
         ScrollHalfPageDown,
-        /// Scrolls to the top of the terminal buffer.
+        /// 滚动到终端缓冲区顶部
         ScrollToTop,
-        /// Scrolls to the bottom of the terminal buffer.
+        /// 滚动到终端缓冲区底部
         ScrollToBottom,
-        /// Toggles vi mode in the terminal.
+        /// 切换终端中的 vi 模式
         ToggleViMode,
-        /// Selects all text in the terminal.
+        /// 选择终端中的所有文本
         SelectAll,
     ]
 );

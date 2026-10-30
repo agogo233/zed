@@ -143,7 +143,7 @@ impl Item for KeyContextView {
     fn to_item_events(_: &Self::Event, _: &mut dyn FnMut(workspace::item::ItemEvent)) {}
 
     fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
-        "Keyboard Context".into()
+        "键盘上下文".into()
     }
 
     fn telemetry_event_text(&self) -> Option<&'static str> {
@@ -197,19 +197,19 @@ impl Render for KeyContextView {
                     });
                 }),
             )
-            .child(Label::new("Keyboard Context").size(LabelSize::Large))
-            .child(Label::new("This view lets you determine the current context stack for creating custom key bindings in Zed. When a keyboard shortcut is triggered, it also shows all the possible contexts it could have triggered in, and which one matched."))
+            .child(Label::new("键盘上下文").size(LabelSize::Large))
+            .child(Label::new("此视图允许你确定当前上下文堆栈，以便在 Zed 中创建自定义键绑定。触发键盘快捷键时，它还会显示所有可能触发的上下文及实际匹配的上下文。"))
             .child(
                 h_flex()
                     .mt_4()
                     .gap_4()
                     .child(
-                        Button::new("open_documentation", "Open Documentation")
+                        Button::new("open_documentation", "打开文档")
                             .style(ButtonStyle::Filled)
                             .on_click(|_, _, cx| cx.open_url("https://zed.dev/docs/key-bindings")),
                     )
                     .child(
-                        Button::new("view_default_keymap", "View Default Keymap")
+                        Button::new("view_default_keymap", "查看默认键映射")
                             .style(ButtonStyle::Filled)
                             .key_binding(ui::KeyBinding::for_action(
                                 &zed_actions::OpenDefaultKeymap,
@@ -220,7 +220,7 @@ impl Render for KeyContextView {
                             }),
                     )
                     .child(
-                        Button::new("edit_your_keymap", "Edit Keymap File")
+                        Button::new("edit_your_keymap", "编辑键映射文件")
                             .style(ButtonStyle::Filled)
                             .key_binding(ui::KeyBinding::for_action(&zed_actions::OpenKeymapFile, cx))
                             .on_click(|_, window, cx| {
@@ -229,7 +229,7 @@ impl Render for KeyContextView {
                     ),
             )
             .child(
-                Label::new("Current Context Stack")
+                Label::new("当前上下文堆栈")
                     .size(LabelSize::Large)
                     .mt_8(),
             )
@@ -249,26 +249,26 @@ impl Render for KeyContextView {
                     Label::new(format!("{} {}", primary, secondary)).ml(px(12. * (i + 1) as f32))
                 })
             })
-            .child(Label::new("Last Keystroke").mt_4().size(LabelSize::Large))
+            .child(Label::new("最后按键").mt_4().size(LabelSize::Large))
             .when_some(self.pending_keystrokes.as_ref(), |el, keystrokes| {
                 el.child(
                     Label::new(format!(
-                        "Waiting for more input: {}",
+                        "等待更多输入：{}",
                         keystrokes.iter().map(|k| k.unparse(cx.platform_info().os)).join(" ")
                     ))
                     .ml(px(12.)),
                 )
             })
             .when_some(self.last_keystrokes.as_ref(), |el, keystrokes| {
-                el.child(Label::new(format!("Typed: {}", keystrokes)).ml_4())
+                el.child(Label::new(format!("已输入：{}", keystrokes)).ml_4())
                     .children(
                         self.last_possibilities
                             .iter()
                             .map(|(name, predicate, state)| {
                                 let (text, color) = match state {
-                                    Some(true) => ("(match)", ui::Color::Success),
-                                    Some(false) => ("(low precedence)", ui::Color::Hint),
-                                    None => ("(no match)", ui::Color::Error),
+                                    Some(true) => ("（匹配）", ui::Color::Success),
+                                    Some(false) => ("（低优先级）", ui::Color::Hint),
+                                    None => ("（不匹配）", ui::Color::Error),
                                 };
                                 h_flex()
                                     .gap_2()
@@ -280,8 +280,8 @@ impl Render for KeyContextView {
                     )
             })
             .when_some(key_equivalents, |el, key_equivalents| {
-                el.child(Label::new("Key Equivalents").mt_4().size(LabelSize::Large))
-                    .child(Label::new("Shortcuts defined using some characters have been remapped so that shortcuts can be typed without holding option."))
+                el.child(Label::new("等效按键").mt_4().size(LabelSize::Large))
+                    .child(Label::new("使用某些字符定义的快捷键已被重新映射，以便无需按住 Option 键即可输入"))
                     .children(
                         key_equivalents
                             .iter()

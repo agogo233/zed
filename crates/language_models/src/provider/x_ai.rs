@@ -371,11 +371,11 @@ fn supported_thinking_effort_levels(model: &x_ai::Model) -> Vec<LanguageModelEff
         .filter_map(|effort| {
             let (name, value) = match effort {
                 open_ai::ReasoningEffort::None => return None,
-                open_ai::ReasoningEffort::Minimal => ("Minimal", "minimal"),
-                open_ai::ReasoningEffort::Low => ("Low", "low"),
-                open_ai::ReasoningEffort::Medium => ("Medium", "medium"),
-                open_ai::ReasoningEffort::High => ("High", "high"),
-                open_ai::ReasoningEffort::XHigh => ("Extra High", "xhigh"),
+                open_ai::ReasoningEffort::Minimal => ("最低", "minimal"),
+                open_ai::ReasoningEffort::Low => ("低", "low"),
+                open_ai::ReasoningEffort::Medium => ("中等", "medium"),
+                open_ai::ReasoningEffort::High => ("高", "high"),
+                open_ai::ReasoningEffort::XHigh => ("超高", "xhigh"),
                 open_ai::ReasoningEffort::Max => return None, // Not supported by any xAI models
             };
 

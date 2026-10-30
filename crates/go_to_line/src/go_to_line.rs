@@ -313,7 +313,7 @@ impl Render for GoToLine {
             } else {
                 self.current_line.saturating_sub(offset.unsigned_abs())
             };
-            format!("Go to line {target_line} ({offset:+} from current)").into()
+            format!("跳转到第 {target_line} 行（当前位置偏移 {offset:+}）").into()
         } else {
             match self.line_and_char_from_query(cx) {
                 Some((line, Some(character))) => {

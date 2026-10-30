@@ -1676,12 +1676,12 @@ impl Item for MarkdownPreviewView {
         // full path for files outside the project. The directories needed to tell apart files
         // with the same name are shown in the description.
         let title = match editor {
-            Some(editor) if params.truncate_title_middle => format!("Preview {}", editor.title(cx)),
+            Some(editor) if params.truncate_title_middle => format!("预览 {}", editor.title(cx)),
             Some(editor) => format!(
-                "Preview {}",
+                "预览 {}",
                 util::truncate_and_trailoff(&editor.title(cx), max_title_len)
             ),
-            None => "Markdown Preview".to_string(),
+            None => "Markdown 预览".to_string(),
         };
         let description = editor
             .zip(params.detail)
@@ -1728,9 +1728,9 @@ impl Item for MarkdownPreviewView {
             .as_ref()
             .map(|editor_state| {
                 let title = editor_state.editor.read(cx).tab_content_text(detail, cx);
-                format!("Preview {title}").into()
+                format!("预览 {title}").into()
             })
-            .unwrap_or_else(|| SharedString::from("Markdown Preview"))
+            .unwrap_or_else(|| SharedString::from("Markdown 预览"))
     }
 
     // Save As writes the source file, so suggest its name rather than the tab text, which can be a
@@ -1739,7 +1739,7 @@ impl Item for MarkdownPreviewView {
         self.active_editor
             .as_ref()
             .map(|editor_state| editor_state.editor.read(cx).suggested_filename(cx))
-            .unwrap_or_else(|| SharedString::from("Markdown Preview"))
+            .unwrap_or_else(|| SharedString::from("Markdown 预览"))
     }
 
     fn tab_tooltip_text(&self, cx: &App) -> Option<SharedString> {
@@ -1759,7 +1759,7 @@ impl Item for MarkdownPreviewView {
         _: &mut Window,
         _: &mut Context<Self>,
     ) -> Vec<(SharedString, Box<dyn Action>)> {
-        vec![("Show Source".into(), Box::new(CloseAndReturnToEditor))]
+        vec![("显示源文件".into(), Box::new(CloseAndReturnToEditor))]
     }
 
     fn added_to_workspace(
@@ -1978,7 +1978,7 @@ impl Render for MarkdownPreviewView {
                                         menu.when_some(focus, |menu, focus| menu.context(focus))
                                             .when_some(selected_text, |menu, text| {
                                                 menu.entry(
-                                                    "Copy",
+                                                    "复制",
                                                     Some(Box::new(markdown::Copy)),
                                                     move |_, cx| {
                                                         cx.write_to_clipboard(
@@ -1991,7 +1991,7 @@ impl Render for MarkdownPreviewView {
                                             })
                                             .when_some(selected_markdown, |menu, text| {
                                                 menu.entry(
-                                                    "Copy as Markdown",
+                                                    "复制为 Markdown",
                                                     Some(Box::new(markdown::CopyAsMarkdown)),
                                                     move |_, cx| {
                                                         cx.write_to_clipboard(
@@ -2003,7 +2003,7 @@ impl Render for MarkdownPreviewView {
                                                 )
                                             })
                                             .when_some(context_menu_link, |menu, url| {
-                                                menu.entry("Copy Link", None, move |_, cx| {
+                                                menu.entry("复制链接", None, move |_, cx| {
                                                     cx.write_to_clipboard(
                                                         ClipboardItem::new_string(url.to_string()),
                                                     );

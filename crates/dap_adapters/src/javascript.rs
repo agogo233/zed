@@ -72,7 +72,7 @@ impl JsDebugAdapter {
         }
 
         delegate.output_to_console(format!(
-            "Installing {} for WebAssembly debugging...",
+            "正在安装用于 WebAssembly 调试的 {}...",
             Self::DWARF_DEBUGGING_PACKAGE_NAME
         ));
         node_runtime
@@ -561,7 +561,7 @@ impl DebugAdapter for JsDebugAdapter {
                 && let Err(error) = self.install_dwarf_debugging(delegate).await
             {
                 delegate.output_to_console(format!(
-                    "Failed to install {}: {error:#}",
+                    "安装 {} 失败：{error:#}",
                     Self::DWARF_DEBUGGING_PACKAGE_NAME
                 ));
                 log::error!(

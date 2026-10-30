@@ -359,7 +359,7 @@ pub trait DebuggerProvider {
     fn active_thread_state(&self, cx: &App) -> Option<ThreadStatus>;
 }
 
-/// Opens a file or directory.
+/// 打开一个文件或目录
 #[derive(Clone, PartialEq, Deserialize, JsonSchema, Action)]
 #[action(namespace = workspace)]
 pub struct Open {
@@ -385,127 +385,127 @@ impl Default for Open {
 actions!(
     workspace,
     [
-        /// Activates the next pane in the workspace.
+        /// 激活工作区中的下一个窗格
         ActivateNextPane,
-        /// Activates the previous pane in the workspace.
+        /// 激活工作区中的上一个窗格
         ActivatePreviousPane,
-        /// Activates the last pane in the workspace.
+        /// 激活工作区中的最后一个窗格
         ActivateLastPane,
-        /// Moves focus to the next major region of the window (editor, open
-        /// panels, status bar), cycling and wrapping around. Intended as a
-        /// discoverable, screen-reader-friendly way to navigate the window.
+        /// 将焦点移至窗口的下一个主要区域，
+        /// 包括编辑器、打开的面板和状态栏，并循环切换、在末尾回绕。
+        /// 这是一种易于发现且适合屏幕阅读器的窗口导航方式。
         FocusNextPart,
-        /// Moves focus to the previous major region of the window. See
-        /// [`FocusNextPart`].
+        /// 将焦点移至窗口的上一个主要区域。参见
+        /// [`FocusNextPart`]。
         FocusPreviousPart,
-        /// Switches to the next window.
+        /// 切换到下一个窗口
         ActivateNextWindow,
-        /// Switches to the previous window.
+        /// 切换到上一个窗口
         ActivatePreviousWindow,
-        /// Adds a folder to the current project.
+        /// 向当前项目添加文件夹
         AddFolderToProject,
-        /// Clears all bookmarks in the project.
+        /// 清除项目中的所有书签
         ClearBookmarks,
-        /// Clears all notifications.
+        /// 清除所有通知
         ClearAllNotifications,
-        /// Clears all navigation history, including forward/backward navigation, recently opened files, and recently closed tabs. **This action is irreversible**.
+        /// 清除所有导航历史记录，包括前进/后退导航、最近打开的文件和最近关闭的标签页。**此操作不可撤销**。
         ClearNavigationHistory,
-        /// Closes the active dock.
+        /// 关闭活动停靠栏
         CloseActiveDock,
-        /// Closes all docks.
+        /// 关闭所有停靠栏
         CloseAllDocks,
-        /// Toggles all docks.
+        /// 切换所有停靠栏
         ToggleAllDocks,
-        /// Closes the current window.
+        /// 关闭当前窗口
         CloseWindow,
-        /// Closes the current project.
+        /// 关闭当前项目
         CloseProject,
-        /// Opens the feedback dialog.
+        /// 打开反馈对话框
         Feedback,
-        /// Follows the next collaborator in the session.
+        /// 跟随会话中的下一位协作者
         FollowNextCollaborator,
-        /// Moves the focused panel to the next position.
+        /// 将聚焦面板移到下一个位置
         MoveFocusedPanelToNextPosition,
-        /// Creates a new file.
+        /// 创建新文件
         NewFile,
-        /// Creates a new file in a vertical split.
+        /// 在垂直分割窗格中创建新文件
         NewFileSplitVertical,
-        /// Creates a new file in a horizontal split.
+        /// 在水平分割窗格中创建新文件
         NewFileSplitHorizontal,
-        /// Opens a new search.
+        /// 打开新的搜索
         NewSearch,
-        /// Opens a new window.
+        /// 打开一个新窗口
         NewWindow,
-        /// Opens multiple files.
+        /// 打开多个文件
         OpenFiles,
-        /// Opens the current location in terminal.
+        /// 在终端中打开当前位置
         OpenInTerminal,
-        /// Opens the component preview.
+        /// 打开组件预览
         OpenComponentPreview,
-        /// Reloads the active item.
+        /// 重新加载当前活动项
         ReloadActiveItem,
-        /// Reopens the most recently dismissed picker in the current window.
+        /// 重新打开当前窗口中最近关闭的选择器
         ReopenLastPicker,
-        /// Resets the active dock to its default size.
+        /// 将当前停靠栏重置为默认大小
         ResetActiveDockSize,
-        /// Resets all open docks to their default sizes.
+        /// 将所有已打开的停靠栏重置为默认大小
         ResetOpenDocksSize,
-        /// Resets all panes in the center group to equal sizes, preserving the split layout.
+        /// 将中央组中的所有窗格重置为相同大小，同时保留分割布局
         ResetPaneSizes,
-        /// Reloads the application
+        /// 重新加载应用程序
         Reload,
-        /// Formats and saves the current file, regardless of the format_on_save setting.
+        /// 格式化并保存当前文件，忽略 format_on_save 设置
         FormatAndSave,
-        /// Saves the current file with a new name.
+        /// 将当前文件另存为新文件
         SaveAs,
-        /// Saves without formatting.
+        /// 保存时不进行格式化
         SaveWithoutFormat,
-        /// Shuts down all debug adapters.
+        /// 关闭所有调试适配器
         ShutdownDebugAdapters,
-        /// Suppresses the current notification.
+        /// 屏蔽当前通知
         SuppressNotification,
-        /// Toggles the bottom dock.
+        /// 切换底部停靠栏
         ToggleBottomDock,
-        /// Toggles centered layout mode.
+        /// 切换居中布局模式
         ToggleCenteredLayout,
-        /// Toggles edit prediction feature globally for all files.
+        /// 全局切换所有文件的编辑预测功能
         ToggleEditPrediction,
-        /// Toggles the left dock.
+        /// 切换左侧停靠栏
         ToggleLeftDock,
-        /// Toggles the right dock.
+        /// 切换右侧停靠栏
         ToggleRightDock,
-        /// Toggles zoom on the active pane.
+        /// 切换活动窗格的缩放
         ToggleZoom,
-        /// Toggles maximizing the active editor pane within the center area,
-        /// hiding other split panes but leaving docks/panels unaffected.
+        /// 切换中央区域内活动编辑器窗格的最大化状态，
+        /// 隐藏其他拆分窗格，但不影响停靠栏和面板。
         ToggleEditorZoom,
-        /// Toggles read-only mode for the active item (if supported by that item).
+        /// 切换活动项的只读模式（如果该项支持）
         ToggleReadOnlyFile,
-        /// Zooms in on the active pane.
+        /// 放大活动窗格
         ZoomIn,
-        /// Zooms out of the active pane.
+        /// 缩小活动窗格
         ZoomOut,
-        /// If any worktrees are in restricted mode, shows a modal with possible actions.
-        /// If the modal is shown already, closes it without trusting any worktree.
+        /// 如果任何工作树处于受限模式，则显示包含可用操作的模态框。
+        /// 如果模态框已显示，则关闭它而不信任任何工作树
         ToggleWorktreeSecurity,
-        /// Clears all trusted worktrees, placing them in restricted mode on next open.
-        /// Requires restart to take effect on already opened projects.
+        /// 清除对所有工作树的信任，使其在下次打开时进入受限模式。
+        /// 需要重启才能对已打开的项目生效
         ClearTrustedWorktrees,
-        /// Stops following a collaborator.
+        /// 停止跟随协作者
         Unfollow,
-        /// Restores the banner.
+        /// 恢复横幅
         RestoreBanner,
-        /// Toggles expansion of the selected item.
+        /// 切换所选项的展开状态
         ToggleExpandItem,
     ]
 );
 
-/// Activates a specific pane by its index.
+/// 按索引激活特定窗格
 #[derive(Clone, Deserialize, PartialEq, JsonSchema, Action)]
 #[action(namespace = workspace)]
 pub struct ActivatePane(pub usize);
 
-/// Moves an item to a specific pane by index.
+/// 将项移至指定索引的窗格
 #[derive(Clone, Deserialize, PartialEq, JsonSchema, Action)]
 #[action(namespace = workspace)]
 #[serde(deny_unknown_fields)]
@@ -522,7 +522,7 @@ fn default_1() -> usize {
     1
 }
 
-/// Moves an item to a pane in the specified direction.
+/// 将项移至指定方向的窗格
 #[derive(Clone, Deserialize, PartialEq, JsonSchema, Action)]
 #[action(namespace = workspace)]
 #[serde(deny_unknown_fields)]
@@ -535,7 +535,7 @@ pub struct MoveItemToPaneInDirection {
     pub clone: bool,
 }
 
-/// Creates a new file in a split of the desired direction.
+/// 在指定方向的分割窗格中创建新文件
 #[derive(Clone, Deserialize, PartialEq, JsonSchema, Action)]
 #[action(namespace = workspace)]
 #[serde(deny_unknown_fields)]
@@ -545,7 +545,7 @@ fn default_right() -> SplitDirection {
     SplitDirection::Right
 }
 
-/// Saves all open files in the workspace.
+/// 保存工作区中所有打开的文件
 #[derive(Clone, PartialEq, Debug, Deserialize, JsonSchema, Action)]
 #[action(namespace = workspace)]
 #[serde(deny_unknown_fields)]
@@ -554,7 +554,7 @@ pub struct SaveAll {
     pub save_intent: Option<SaveIntent>,
 }
 
-/// Saves the current file with the specified options.
+/// 使用指定选项保存当前文件
 #[derive(Clone, PartialEq, Debug, Deserialize, JsonSchema, Action)]
 #[action(namespace = workspace)]
 #[serde(deny_unknown_fields)]
@@ -563,12 +563,12 @@ pub struct Save {
     pub save_intent: Option<SaveIntent>,
 }
 
-/// Moves Focus to the central panes in the workspace.
+/// 将焦点移至工作区中央窗格
 #[derive(Clone, Debug, PartialEq, Eq, Action)]
 #[action(namespace = workspace)]
 pub struct FocusCenterPane;
 
-///  Closes all items and panes in the workspace.
+///  关闭工作区中所有项和窗格
 #[derive(Clone, PartialEq, Debug, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = workspace)]
 #[serde(deny_unknown_fields)]
@@ -577,7 +577,7 @@ pub struct CloseAllItemsAndPanes {
     pub save_intent: Option<SaveIntent>,
 }
 
-/// Closes all inactive tabs and panes in the workspace.
+/// 关闭工作区中所有非活动标签页和窗格
 #[derive(Clone, PartialEq, Debug, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = workspace)]
 #[serde(deny_unknown_fields)]
@@ -586,7 +586,7 @@ pub struct CloseInactiveTabsAndPanes {
     pub save_intent: Option<SaveIntent>,
 }
 
-/// Closes the active item across all panes.
+/// 关闭所有窗格中的活动项
 #[derive(Clone, PartialEq, Debug, Deserialize, Default, JsonSchema, Action)]
 #[action(namespace = workspace)]
 #[serde(deny_unknown_fields)]
@@ -597,7 +597,7 @@ pub struct CloseItemInAllPanes {
     pub close_pinned: bool,
 }
 
-/// Sends a sequence of keystrokes to the active element.
+/// 向当前活动元素发送按键序列
 #[derive(Clone, Deserialize, PartialEq, JsonSchema, Action)]
 #[action(namespace = workspace)]
 pub struct SendKeystrokes(pub String);
@@ -605,13 +605,13 @@ pub struct SendKeystrokes(pub String);
 actions!(
     project_symbols,
     [
-        /// Toggles the project symbols search.
+        /// 切换项目符号搜索
         #[action(name = "Toggle")]
         ToggleProjectSymbols
     ]
 );
 
-/// Toggles the file finder interface.
+/// 切换文件查找界面
 #[derive(Default, PartialEq, Eq, Clone, Deserialize, JsonSchema, Action)]
 #[action(namespace = file_finder, name = "Toggle")]
 #[serde(deny_unknown_fields)]
@@ -622,7 +622,7 @@ pub struct ToggleFileFinder {
     pub include_ignored: Option<bool>,
 }
 
-/// Opens a new terminal in the center.
+/// 在中央区域打开一个新终端
 #[derive(Default, PartialEq, Eq, Clone, Deserialize, JsonSchema, Action)]
 #[action(namespace = workspace)]
 #[serde(deny_unknown_fields)]
@@ -632,7 +632,7 @@ pub struct NewCenterTerminal {
     pub local: bool,
 }
 
-/// Opens a new terminal.
+/// 打开一个新终端
 #[derive(Default, PartialEq, Eq, Clone, Deserialize, JsonSchema, Action)]
 #[action(namespace = workspace)]
 #[serde(deny_unknown_fields)]
@@ -642,7 +642,7 @@ pub struct NewTerminal {
     pub local: bool,
 }
 
-/// Increases size of a currently focused dock by a given amount of pixels.
+/// 将当前聚焦的停靠栏增大指定像素
 #[derive(Clone, PartialEq, Deserialize, JsonSchema, Action)]
 #[action(namespace = workspace)]
 #[serde(deny_unknown_fields)]
@@ -652,7 +652,7 @@ pub struct IncreaseActiveDockSize {
     pub px: u32,
 }
 
-/// Decreases size of a currently focused dock by a given amount of pixels.
+/// 将当前聚焦的停靠栏减小指定像素
 #[derive(Clone, PartialEq, Deserialize, JsonSchema, Action)]
 #[action(namespace = workspace)]
 #[serde(deny_unknown_fields)]
@@ -662,7 +662,7 @@ pub struct DecreaseActiveDockSize {
     pub px: u32,
 }
 
-/// Increases size of all currently visible docks uniformly, by a given amount of pixels.
+/// 将所有当前可见停靠栏均匀增大指定像素
 #[derive(Clone, PartialEq, Deserialize, JsonSchema, Action)]
 #[action(namespace = workspace)]
 #[serde(deny_unknown_fields)]
@@ -672,7 +672,7 @@ pub struct IncreaseOpenDocksSize {
     pub px: u32,
 }
 
-/// Decreases size of all currently visible docks uniformly, by a given amount of pixels.
+/// 将所有当前可见的停靠栏均匀减小指定像素
 #[derive(Clone, PartialEq, Deserialize, JsonSchema, Action)]
 #[action(namespace = workspace)]
 #[serde(deny_unknown_fields)]
@@ -685,31 +685,31 @@ pub struct DecreaseOpenDocksSize {
 actions!(
     workspace,
     [
-        /// Activates the pane to the left.
+        /// 激活左侧的窗格
         ActivatePaneLeft,
-        /// Activates the pane to the right.
+        /// 激活右侧的窗格
         ActivatePaneRight,
-        /// Activates the pane above.
+        /// 激活上方的窗格
         ActivatePaneUp,
-        /// Activates the pane below.
+        /// 激活下方的窗格
         ActivatePaneDown,
-        /// Swaps the current pane with the one to the left.
+        /// 将当前窗格与左侧窗格交换
         SwapPaneLeft,
-        /// Swaps the current pane with the one to the right.
+        /// 将当前窗格与右侧窗格交换
         SwapPaneRight,
-        /// Swaps the current pane with the one above.
+        /// 将当前窗格与上方窗格交换
         SwapPaneUp,
-        /// Swaps the current pane with the one below.
+        /// 将当前窗格与下方窗格交换
         SwapPaneDown,
         // Swaps the current pane with the first available adjacent pane (searching in order: below, above, right, left) and activates that pane.
         SwapPaneAdjacent,
-        /// Move the current pane to be at the far left.
+        /// 将当前窗格移至最左侧
         MovePaneLeft,
-        /// Move the current pane to be at the far right.
+        /// 将当前窗格移至最右侧
         MovePaneRight,
-        /// Move the current pane to be at the very top.
+        /// 将当前窗格移至最顶部
         MovePaneUp,
-        /// Move the current pane to be at the very bottom.
+        /// 将当前窗格移至最底部
         MovePaneDown,
     ]
 );
@@ -805,11 +805,11 @@ fn handle_file_permalink(
             }
             Err(err) => {
                 let action = if copy {
-                    "copy file permalink"
+                    "复制文件永久链接"
                 } else {
-                    "open file permalink"
+                    "打开文件永久链接"
                 };
-                let message = format!("Failed to {action}: {err}");
+                let message = format!("{action}失败：{err}");
                 anyhow::Result::<()>::Err(err).log_err();
 
                 workspace
@@ -834,7 +834,7 @@ impl PartialEq for Toast {
     }
 }
 
-/// Opens a new terminal with the specified working directory.
+/// 以指定工作目录打开一个新终端
 #[derive(Debug, Default, Clone, Deserialize, PartialEq, JsonSchema, Action)]
 #[action(namespace = workspace)]
 #[serde(deny_unknown_fields)]
@@ -3785,9 +3785,9 @@ impl Workspace {
                     let answer = cx.update(|window, cx| {
                         window.prompt(
                             PromptLevel::Warning,
-                            "Do you want to leave the current call?",
+                            "是否要离开当前通话？",
                             None,
-                            &["Close window and hang up", "Cancel"],
+                            &["关闭窗口并挂断", "取消"],
                             cx,
                         )
                     })?;
@@ -4033,9 +4033,9 @@ impl Workspace {
                         );
                         window.prompt(
                             PromptLevel::Warning,
-                            "Do you want to save all changes in the following files?",
+                            "是否要保存以下文件中的所有更改？",
                             Some(&detail),
-                            &["Save all", "Discard all", "Cancel"],
+                            &["全部保存", "全部放弃", "取消"],
                             cx,
                         )
                     })?;
@@ -4339,7 +4339,7 @@ impl Workspace {
     ) {
         let project = self.project.read(cx);
         if project.is_via_collab() {
-            self.show_error("You cannot add folders to someone else's project", cx);
+            self.show_error("不能向他人的项目添加文件夹", cx);
             return;
         }
         let paths = self.prompt_for_open_path(
@@ -6764,7 +6764,7 @@ impl Workspace {
                     cx,
                 )
                 .detach_and_prompt_err(
-                    "Failed to join project",
+                    "加入项目失败",
                     window,
                     cx,
                     |error, _, _| Some(format!("{error:#}")),
@@ -8303,25 +8303,25 @@ impl Workspace {
                             window,
                             cx,
                         )
-                        .detach_and_prompt_err("Failed to save", window, cx, |_, _, _| None);
+                        .detach_and_prompt_err("保存失败", window, cx, |_, _, _| None);
                 }))
                 .on_action(cx.listener(|workspace, _: &FormatAndSave, window, cx| {
                     workspace
                         .save_active_item(SaveIntent::FormatAndSave, window, cx)
-                        .detach_and_prompt_err("Failed to save", window, cx, |_, _, _| None);
+                        .detach_and_prompt_err("保存失败", window, cx, |_, _, _| None);
                 }))
                 .on_action(cx.listener(
                     |workspace, _: &SaveWithoutFormat, window, cx| {
                         workspace
                             .save_active_item(SaveIntent::SaveWithoutFormat, window, cx)
-                            .detach_and_prompt_err("Failed to save", window, cx, |_, _, _| None);
+                            .detach_and_prompt_err("保存失败", window, cx, |_, _, _| None);
                     },
                 ))
             })
             .on_action(cx.listener(|workspace, _: &SaveAs, window, cx| {
                 workspace
                     .save_active_item(SaveIntent::SaveAs, window, cx)
-                    .detach_and_prompt_err("Failed to save", window, cx, |_, _, _| None);
+                    .detach_and_prompt_err("保存失败", window, cx, |_, _, _| None);
             }))
             .on_action(
                 cx.listener(|workspace, _: &ActivatePreviousPane, window, cx| {
@@ -8871,9 +8871,9 @@ impl Workspace {
         // window. We only make it focusable in that case so it never adds a
         // hitbox or intercepts mouse focus for other users.
         let (dock_element_id, dock_label) = match position {
-            DockPosition::Left => ("left-dock", "Left dock"),
-            DockPosition::Right => ("right-dock", "Right dock"),
-            DockPosition::Bottom => ("bottom-dock", "Bottom dock"),
+            DockPosition::Left => ("left-dock", "左侧停靠栏"),
+            DockPosition::Right => ("right-dock", "右侧停靠栏"),
+            DockPosition::Bottom => ("bottom-dock", "底部停靠栏"),
         };
         let dock_is_open = dock.read(cx).is_open();
         let a11y_active = window.is_a11y_active();
@@ -9092,7 +9092,7 @@ impl Workspace {
         div()
             .id("editor-region")
             .role(gpui::Role::Main)
-            .aria_label("Editor")
+            .aria_label("编辑器")
             .when(window.is_a11y_active(), |this| {
                 this.track_focus(&self.region_focus_handles.editor)
             })
@@ -9689,8 +9689,8 @@ fn notify_if_database_failed(window: WindowHandle<MultiWorkspace>, cx: &mut Asyn
                         cx,
                         |cx| {
                             cx.new(|cx| {
-                                MessageNotification::new("Failed to load the database file.", cx)
-                                    .primary_message("File an Issue")
+                                MessageNotification::new("加载数据库文件失败", cx)
+                                    .primary_message("提交议题")
                                     .primary_icon(IconName::Plus)
                                     .primary_on_click(|window, cx| {
                                         window.dispatch_action(Box::new(FileBugReport), cx)
@@ -9855,7 +9855,7 @@ impl Render for Workspace {
                         .track_focus(&self.titlebar_focus_handle)
                         .tab_group()
                         .role(gpui::Role::Toolbar)
-                        .aria_label("Title bar")
+                        .aria_label("标题栏")
                         .on_key_down(cx.listener(
                             |workspace, event: &gpui::KeyDownEvent, window, cx| {
                                 if event.keystroke.modifiers.modified() {
@@ -10657,31 +10657,31 @@ fn restore_native_window_state(
 actions!(
     collab,
     [
-        /// Opens the channel notes for the current call.
+        /// 打开当前通话的频道笔记
         ///
-        /// Use `collab_panel::OpenSelectedChannelNotes` to open the channel notes for the selected
-        /// channel in the collab panel.
+        /// 使用 `collab_panel::OpenSelectedChannelNotes` 打开协作面板中所选
+        /// 频道的频道笔记。
         ///
-        /// If you want to open a specific channel, use `zed::OpenZedUrl` with a channel notes URL -
-        /// can be copied via "Copy link to section" in the context menu of the channel notes
-        /// buffer. These URLs look like `https://zed.dev/channel/channel-name-CHANNEL_ID/notes`.
+        /// 如果要打开特定频道，使用 `zed::OpenZedUrl` 并附带频道笔记 URL -
+        /// 可通过频道笔记缓冲区上下文菜单中的“复制章节链接”复制。
+        /// 这些 URL 的格式为 `https://zed.dev/channel/channel-name-CHANNEL_ID/notes`。
         OpenChannelNotes,
-        /// Mutes your microphone.
+        /// 将麦克风静音
         Mute,
-        /// Deafens yourself (mute both microphone and speakers).
+        /// 禁用所有音频（同时静音麦克风和扬声器）
         Deafen,
-        /// Leaves the current call.
+        /// 离开当前通话
         LeaveCall,
-        /// Shares the current project with collaborators.
+        /// 与协作者共享当前项目
         ShareProject,
-        /// Shares your screen with collaborators.
+        /// 与协作者共享屏幕
         ScreenShare,
-        /// Copies the current room name and session id for debugging purposes.
+        /// 将当前房间名称和会话 ID 复制到剪贴板（用于调试）
         CopyRoomId,
     ]
 );
 
-/// Opens the channel notes for a specific channel by its ID.
+/// 通过 ID 打开指定频道的频道笔记
 #[derive(Clone, PartialEq, Deserialize, JsonSchema, Action)]
 #[action(namespace = collab)]
 #[serde(deny_unknown_fields)]
@@ -10692,9 +10692,9 @@ pub struct OpenChannelNotesById {
 actions!(
     zed,
     [
-        /// Opens the Zed log file.
+        /// 打开 Zed 日志文件
         OpenLog,
-        /// Reveals the Zed log file in the system file manager.
+        /// 在系统文件管理器中显示 Zed 日志文件
         RevealLogInFileManager
     ]
 );
@@ -10739,9 +10739,9 @@ async fn join_channel_internal(
                 .update(cx, |_, window, cx| {
                     window.prompt(
                         PromptLevel::Warning,
-                        "Do you want to switch channels?",
-                        Some("Leaving this call will unshare your current project."),
-                        &["Yes, Join Channel", "Cancel"],
+                        "是否要切换频道？",
+                        Some("离开此通话将取消共享你的当前项目"),
+                        &["是，加入频道", "取消"],
                         cx,
                     )
                 })?
@@ -10946,7 +10946,7 @@ pub fn join_channel(
                 active_window
                     .update(cx, |_, window, cx| {
                         let detail: SharedString = match err.error_code() {
-                            ErrorCode::SignedOut => "Please sign in to continue.".into(),
+                            ErrorCode::SignedOut => "请登录后继续".into(),
                             ErrorCode::UpgradeRequired => concat!(
                                 "Your are running an unsupported version of Zed. ",
                                 "Please update to continue."
@@ -10963,15 +10963,15 @@ pub fn join_channel(
                             )
                             .into(),
                             ErrorCode::Disconnected => {
-                                "Please check your internet connection and try again.".into()
+                                "请检查网络连接后重试".into()
                             }
-                            _ => format!("{}\n\nPlease try again.", err).into(),
+                            _ => format!("{}\n\n请重试", err).into(),
                         };
                         window.prompt(
                             PromptLevel::Critical,
-                            "Failed to join channel",
+                            "加入频道失败",
                             Some(&detail),
-                            &["OK"],
+                            &["确定"],
                             cx,
                         )
                     })?
@@ -11546,7 +11546,7 @@ pub fn open_paths(
                 workspace.update(cx, |workspace, cx| {
                     for item in open_task.iter().flatten() {
                         if let Err(e) = item {
-                            workspace.show_error(format!("Error: {e}"), cx);
+                            workspace.show_error(format!("错误：{e}"), cx);
                         }
                     }
                 });
@@ -11597,10 +11597,10 @@ pub fn open_paths(
                     workspace.update(cx, |workspace, cx| {
                         workspace.show_notification(NotificationId::unique::<OpenInWsl>(), cx, move |cx| {
                             let display_path = util::markdown::MarkdownInlineCode(&path.to_string_lossy());
-                            let msg = format!("{display_path} is inside a WSL filesystem, some features may not work unless you open it with WSL remote");
+                            let msg = format!("{display_path} 位于 WSL 文件系统中，部分功能可能无法正常使用，建议通过 WSL 远程方式打开");
                             cx.new(move |cx| {
                                 MessageNotification::new(msg, cx)
-                                    .primary_message("Open in WSL")
+                                    .primary_message("在 WSL 中打开")
                                     .primary_icon(IconName::FolderOpen)
                                     .primary_on_click(move |window, cx| {
                                         window.dispatch_action(Box::new(remote::OpenWslPath {
@@ -11895,7 +11895,7 @@ async fn open_remote_project_inner(
         for error in project_path_errors {
             if error.error_code() == proto::ErrorCode::DevServerProjectPathDoesNotExist {
                 if let Some(path) = error.error_tag("path") {
-                    workspace.show_error(format!("'{path}' does not exist"), cx)
+                    workspace.show_error(format!("'{path}' 不存在"), cx)
                 }
             } else {
                 workspace.show_error(format!("{error}"), cx)
@@ -12046,9 +12046,9 @@ pub fn reload(cx: &mut App) {
             .update(cx, |_, window, cx| {
                 window.prompt(
                     PromptLevel::Info,
-                    "Are you sure you want to restart?",
+                    "确定要重启吗？",
                     None,
-                    &["Restart", "Cancel"],
+                    &["重启", "取消"],
                     cx,
                 )
             })

@@ -53,10 +53,10 @@ use zed_actions::search::ToggleIncludeIgnored;
 actions!(
     file_finder,
     [
-        /// Selects the previous item in the file finder.
+        /// 选中文件查找器中的上一项
         SelectPrevious,
-        /// Opens the selected file in the editor without dismissing the file finder,
-        /// so additional files can be opened in sequence.
+        /// 在编辑器中打开所选文件，同时不关闭文件查找器，
+        /// 以便继续依次打开其他文件
         OpenWithoutDismiss
     ]
 );
@@ -1946,7 +1946,7 @@ impl PickerDelegate for FileFinderDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Search project files...".into()
+        "搜索项目文件...".into()
     }
 
     fn searchbar_trailer(
@@ -1959,9 +1959,9 @@ impl PickerDelegate for FileFinderDelegate {
         // Clicking includes ignored files unless they're already included, in
         // which case it excludes them again (see `handle_toggle_ignored`).
         let tooltip_label = if including_ignored {
-            "Exclude Ignored Files"
+            "排除已忽略文件"
         } else {
-            "Include Ignored Files"
+            "包含已忽略文件"
         };
 
         let filter_button = IconButton::new("filter-ignored", IconName::FileIgnored)
@@ -2219,7 +2219,7 @@ impl PickerDelegate for FileFinderDelegate {
                     ..Default::default()
                 };
                 let mut message = picker::HighlightedTextBuilder::default();
-                message.push_plain("Create file ");
+                message.push_plain("创建文件 ");
                 message.push_styled(project_path.path.display(path_style), path_highlight);
                 message.push_plain("?");
                 Some(picker::PreviewUpdate::message(message.build()))
@@ -2259,14 +2259,14 @@ impl PickerDelegate for FileFinderDelegate {
         let open_label: SharedString = if self.selected_matches.len() > 1 {
             "Open multiple".into()
         } else {
-            "Open File".into()
+            "打开文件".into()
         };
         vec![
-            picker::PickerAction::header("Split…"),
-            picker::PickerAction::button("Left", pane::SplitLeft::default().boxed_clone()),
-            picker::PickerAction::button("Right", pane::SplitRight::default().boxed_clone()),
-            picker::PickerAction::button("Up", pane::SplitUp::default().boxed_clone()),
-            picker::PickerAction::button("Down", pane::SplitDown::default().boxed_clone()),
+            picker::PickerAction::header("拆分…"),
+            picker::PickerAction::button("左", pane::SplitLeft::default().boxed_clone()),
+            picker::PickerAction::button("右", pane::SplitRight::default().boxed_clone()),
+            picker::PickerAction::button("向上", pane::SplitUp::default().boxed_clone()),
+            picker::PickerAction::button("向下", pane::SplitDown::default().boxed_clone()),
             picker::PickerAction::separator(),
             picker::PickerAction::button(open_label, menu::Confirm.boxed_clone()),
         ]

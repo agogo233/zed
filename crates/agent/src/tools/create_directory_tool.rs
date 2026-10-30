@@ -96,9 +96,9 @@ impl AgentTool for CreateDirectoryTool {
         _cx: &mut App,
     ) -> SharedString {
         if let Ok(input) = input {
-            format!("Create directory {}", MarkdownInlineCode(&input.path)).into()
+            format!("创建目录 {}", MarkdownInlineCode(&input.path)).into()
         } else {
-            "Create directory".into()
+            "创建目录".into()
         }
     }
 

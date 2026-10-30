@@ -283,10 +283,10 @@ impl SubagentCardState {
             thread_title.or(label)
         };
         title.unwrap_or_else(|| match self.status {
-            SubagentStatus::Canceled => "Subagent Canceled".into(),
-            SubagentStatus::Failed => "Subagent Failed".into(),
+            SubagentStatus::Canceled => "子智能体已取消".into(),
+            SubagentStatus::Failed => "子智能体失败".into(),
             SubagentStatus::Running | SubagentStatus::Completed | SubagentStatus::Unknown => {
-                "Spawning Agent…".into()
+                "正在启动智能体…".into()
             }
         })
     }

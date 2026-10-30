@@ -16,7 +16,7 @@ use crate::{
     state::{Mode, SearchState},
 };
 
-/// Moves to the next search match.
+/// 移到下一个搜索匹配项
 #[derive(Clone, Debug, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -29,7 +29,7 @@ pub(crate) struct MoveToNext {
     regex: bool,
 }
 
-/// Moves to the previous search match.
+/// 移到上一个搜索匹配项
 #[derive(Clone, Debug, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -42,7 +42,7 @@ pub(crate) struct MoveToPrevious {
     regex: bool,
 }
 
-/// Searches for the word under the cursor without moving.
+/// 搜索光标下的词（不移动光标）
 #[derive(Clone, Debug, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -55,7 +55,7 @@ pub(crate) struct SearchUnderCursor {
     regex: bool,
 }
 
-/// Searches for the word under the cursor without moving (backwards).
+/// 搜索光标下的词（向后，不移动光标）
 #[derive(Clone, Debug, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -68,7 +68,7 @@ pub(crate) struct SearchUnderCursorPrevious {
     regex: bool,
 }
 
-/// Initiates a search operation with the specified parameters.
+/// 使用指定参数发起搜索操作
 #[derive(Clone, Debug, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -79,7 +79,7 @@ pub(crate) struct Search {
     regex: bool,
 }
 
-/// Executes a find command to search for patterns in the buffer.
+/// 执行查找命令以在缓冲区中搜索模式
 #[derive(Clone, Debug, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
@@ -109,11 +109,11 @@ pub struct Replacement {
 actions!(
     vim,
     [
-        /// Submits the current search query.
+        /// 提交当前搜索查询
         SearchSubmit,
-        /// Moves to the next search match.
+        /// 移到下一个搜索匹配项
         MoveToNextMatch,
-        /// Moves to the previous search match.
+        /// 移到上一个搜索匹配项
         MoveToPreviousMatch
     ]
 );

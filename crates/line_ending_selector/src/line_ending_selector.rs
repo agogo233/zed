@@ -13,7 +13,7 @@ use workspace::ModalView;
 actions!(
     line_ending_selector,
     [
-        /// Toggles the line ending selector modal.
+        /// 切换行尾选择器对话框
         Toggle
     ]
 );
@@ -119,7 +119,7 @@ impl PickerDelegate for LineEndingSelectorDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
-        "Select a line ending…".into()
+        "选择行尾格式…".into()
     }
 
     fn match_count(&self) -> usize {

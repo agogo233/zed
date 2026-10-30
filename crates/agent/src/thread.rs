@@ -812,7 +812,7 @@ pub trait ThreadEnvironment {
         _cx: &mut App,
     ) -> Result<Rc<dyn SubagentHandle>> {
         Err(anyhow::anyhow!(
-            "Resuming subagent sessions is not supported"
+            "不支持恢复子智能体会话"
         ))
     }
 
@@ -827,7 +827,7 @@ pub trait ThreadEnvironment {
         let _ = request;
         let _ = cx;
         Task::ready(Err(anyhow::anyhow!(
-            "Creating sibling threads is not supported in this environment"
+            "此环境不支持创建同级会话"
         )))
     }
 
@@ -835,7 +835,7 @@ pub trait ThreadEnvironment {
     fn list_available_agents(&self, cx: &mut App) -> Result<AvailableAgents> {
         let _ = cx;
         Err(anyhow::anyhow!(
-            "Listing available agents is not supported in this environment"
+            "此环境不支持列出可用的智能体"
         ))
     }
 }
@@ -1005,12 +1005,12 @@ impl ToolPermissionContext {
             return acp_thread::PermissionOptions::Flat(vec![
                 acp_v2::PermissionOption::new(
                     acp_v2::PermissionOptionId::new("allow"),
-                    "Yes",
+                    "是",
                     acp_v2::PermissionOptionKind::AllowOnce,
                 ),
                 acp_v2::PermissionOption::new(
                     acp_v2::PermissionOptionId::new("deny"),
-                    "No",
+                    "否",
                     acp_v2::PermissionOptionKind::RejectOnce,
                 ),
             ]);
@@ -1021,12 +1021,12 @@ impl ToolPermissionContext {
             return acp_thread::PermissionOptions::Flat(vec![
                 acp_v2::PermissionOption::new(
                     acp_v2::PermissionOptionId::new("allow"),
-                    "Allow",
+                    "允许",
                     acp_v2::PermissionOptionKind::AllowOnce,
                 ),
                 acp_v2::PermissionOption::new(
                     acp_v2::PermissionOptionId::new("deny"),
-                    "Deny",
+                    "拒绝",
                     acp_v2::PermissionOptionKind::RejectOnce,
                 ),
             ]);
@@ -1050,12 +1050,12 @@ impl ToolPermissionContext {
                     choices.push(acp_thread::PermissionOptionChoice {
                         allow: acp_v2::PermissionOption::new(
                             acp_v2::PermissionOptionId::new(format!("always_allow:{}", tool_name)),
-                            format!("Always for {}", tool_name.replace('_', " ")),
+                            format!("始终用于 {}", tool_name.replace('_', " ")),
                             acp_v2::PermissionOptionKind::AllowAlways,
                         ),
                         deny: acp_v2::PermissionOption::new(
                             acp_v2::PermissionOptionId::new(format!("always_deny:{}", tool_name)),
-                            format!("Always for {}", tool_name.replace('_', " ")),
+                            format!("始终用于 {}", tool_name.replace('_', " ")),
                             acp_v2::PermissionOptionKind::RejectAlways,
                         ),
                         sub_patterns: vec![],
@@ -1063,12 +1063,12 @@ impl ToolPermissionContext {
                     choices.push(acp_thread::PermissionOptionChoice {
                         allow: acp_v2::PermissionOption::new(
                             acp_v2::PermissionOptionId::new("allow"),
-                            "Only this time",
+                            "仅本次",
                             acp_v2::PermissionOptionKind::AllowOnce,
                         ),
                         deny: acp_v2::PermissionOption::new(
                             acp_v2::PermissionOptionId::new("deny"),
-                            "Only this time",
+                            "仅本次",
                             acp_v2::PermissionOptionKind::RejectOnce,
                         ),
                         sub_patterns: vec![],
@@ -1159,9 +1159,9 @@ impl ToolPermissionContext {
 
             if let (Some(pattern), Some(display)) = (pattern, pattern_display) {
                 let button_text = if tool_name == TerminalTool::NAME {
-                    format!("Always for `{}` commands", display)
+                    format!("始终用于 `{}` 命令", display)
                 } else {
-                    format!("Always for `{}`", display)
+                    format!("始终用于 `{}`", display)
                 };
                 push_choice(
                     button_text,
@@ -1175,7 +1175,7 @@ impl ToolPermissionContext {
         }
 
         push_choice(
-            "Only this time".to_string(),
+            "仅本次".to_string(),
             "allow".to_string(),
             "deny".to_string(),
             acp_v2::PermissionOptionKind::AllowOnce,
@@ -2851,9 +2851,9 @@ impl Thread {
             acp_v2::ContentBlock::Resource(resource) => match resource.resource {
                 acp_v2::EmbeddedResourceResource::TextResourceContents(resource) => resource.uri,
                 acp_v2::EmbeddedResourceResource::BlobResourceContents(resource) => resource.uri,
-                _ => anyhow::bail!("Native agent does not support this embedded resource variant"),
+                _ => anyhow::bail!("原生智能体不支持此嵌入资源变体"),
             },
-            _ => anyhow::bail!("Native agent does not support this content block variant"),
+            _ => anyhow::bail!("原生智能体不支持此内容块变体"),
         };
 
         self.messages.push(Arc::new(Message::Agent(AgentMessage {
@@ -3024,7 +3024,7 @@ impl Thread {
                                         )
                                     })?;
                                     return Err(
-                                        retry_error.context("Automatic context compaction failed")
+                                        retry_error.context("自动上下文压缩失败")
                                     );
                                 }
                             }
@@ -3036,7 +3036,7 @@ impl Thread {
                                     Some(error_message),
                                 )
                             })?;
-                            return Err(error.context("Automatic context compaction failed"));
+                            return Err(error.context("自动上下文压缩失败"));
                         }
                     }
                 }
@@ -3247,7 +3247,7 @@ impl Thread {
                         this.set_model(fallback.clone(), cx);
                     })?;
                     event_stream.send_retry(acp_thread::RetryStatus {
-                        last_error: "Safety filter triggered".into(),
+                        last_error: "安全过滤器已触发".into(),
                         attempt: 1,
                         max_attempts: 1,
                         started_at: Instant::now(),
@@ -6083,12 +6083,12 @@ impl ToolCallEventStream {
             acp_thread::PermissionOptionChoice {
                 allow: acp_v2::PermissionOption::new(
                     acp_v2::PermissionOptionId::new(format!("always_allow_mcp:{tool_id}")),
-                    format!("Always for {display_name} MCP tool"),
+                    format!("始终用于 {display_name} MCP 工具"),
                     acp_v2::PermissionOptionKind::AllowAlways,
                 ),
                 deny: acp_v2::PermissionOption::new(
                     acp_v2::PermissionOptionId::new(format!("always_deny_mcp:{tool_id}")),
-                    format!("Always for {display_name} MCP tool"),
+                    format!("始终用于 {display_name} MCP 工具"),
                     acp_v2::PermissionOptionKind::RejectAlways,
                 ),
                 sub_patterns: vec![],
@@ -6096,12 +6096,12 @@ impl ToolCallEventStream {
             acp_thread::PermissionOptionChoice {
                 allow: acp_v2::PermissionOption::new(
                     acp_v2::PermissionOptionId::new("allow"),
-                    "Only this time",
+                    "仅本次",
                     acp_v2::PermissionOptionKind::AllowOnce,
                 ),
                 deny: acp_v2::PermissionOption::new(
                     acp_v2::PermissionOptionId::new("deny"),
-                    "Only this time",
+                    "仅本次",
                     acp_v2::PermissionOptionKind::RejectOnce,
                 ),
                 sub_patterns: vec![],
@@ -6218,14 +6218,14 @@ impl ToolCallEventStream {
             reason,
         };
         let allow_thread_label = if self.is_subagent(cx) {
-            "Allow for this subagent"
+            "在此子智能体中允许"
         } else {
-            "Allow for this thread"
+            "在此会话中允许"
         };
         let options = acp_thread::PermissionOptions::Flat(vec![
             acp_v2::PermissionOption::new(
                 acp_v2::PermissionOptionId::new(acp_thread::SandboxPermission::AllowOnce.as_id()),
-                "Allow once",
+                "允许一次",
                 acp_v2::PermissionOptionKind::AllowOnce,
             ),
             acp_v2::PermissionOption::new(
@@ -6235,12 +6235,12 @@ impl ToolCallEventStream {
             ),
             acp_v2::PermissionOption::new(
                 acp_v2::PermissionOptionId::new(acp_thread::SandboxPermission::AllowAlways.as_id()),
-                "Allow always",
+                "始终允许",
                 acp_v2::PermissionOptionKind::AllowAlways,
             ),
             acp_v2::PermissionOption::new(
                 acp_v2::PermissionOptionId::new(acp_thread::SandboxPermission::Deny.as_id()),
-                "Deny",
+                "拒绝",
                 acp_v2::PermissionOptionKind::RejectOnce,
             ),
         ]);
@@ -6351,12 +6351,12 @@ impl ToolCallEventStream {
         let options = acp_thread::PermissionOptions::Flat(vec![
             acp_v2::PermissionOption::new(
                 acp_v2::PermissionOptionId::new(acp_thread::SandboxPermission::AllowOnce.as_id()),
-                "Continue",
+                "继续",
                 acp_v2::PermissionOptionKind::AllowOnce,
             ),
             acp_v2::PermissionOption::new(
                 acp_v2::PermissionOptionId::new(acp_thread::SandboxPermission::Deny.as_id()),
-                "Abort",
+                "中止",
                 acp_v2::PermissionOptionKind::RejectOnce,
             ),
         ]);
@@ -6432,12 +6432,12 @@ impl ToolCallEventStream {
                 Ok(())
             }
             Some(acp_thread::SandboxPermission::Deny) => {
-                Err(anyhow!("Permission to run tool denied by user"))
+                Err(anyhow!("用户拒绝了运行工具的权限"))
             }
             None => {
                 let other = outcome.option_id.0.as_ref();
                 debug_assert!(false, "unexpected sandbox permission option_id: {other}");
-                Err(anyhow!("Permission to run tool denied by user"))
+                Err(anyhow!("用户拒绝了运行工具的权限"))
             }
         }
     }
@@ -6588,9 +6588,9 @@ impl ToolCallEventStream {
             format!("Retry (attempt {retries})")
         };
         let allow_thread_label = if self.is_subagent(cx) {
-            "Run without sandbox for this subagent"
+            "此子智能体在沙盒外运行"
         } else {
-            "Run without sandbox for this thread"
+            "此会话在沙盒外运行"
         };
         let options = acp_thread::PermissionOptions::Flat(vec![
             // Retry isn't an allow/deny choice; the UI renders it with its own
@@ -6605,7 +6605,7 @@ impl ToolCallEventStream {
             ),
             acp_v2::PermissionOption::new(
                 acp_v2::PermissionOptionId::new(acp_thread::SandboxPermission::AllowOnce.as_id()),
-                "Run without sandbox once",
+                "在沙盒外运行一次",
                 acp_v2::PermissionOptionKind::AllowOnce,
             ),
             acp_v2::PermissionOption::new(
@@ -6615,12 +6615,12 @@ impl ToolCallEventStream {
             ),
             acp_v2::PermissionOption::new(
                 acp_v2::PermissionOptionId::new(acp_thread::SandboxPermission::AllowAlways.as_id()),
-                "Always run without sandbox",
+                "始终在沙盒外运行",
                 acp_v2::PermissionOptionKind::AllowAlways,
             ),
             acp_v2::PermissionOption::new(
                 acp_v2::PermissionOptionId::new(acp_thread::SandboxPermission::Deny.as_id()),
-                "Deny",
+                "拒绝",
                 acp_v2::PermissionOptionKind::RejectOnce,
             ),
         ]);
@@ -6944,7 +6944,7 @@ impl ToolCallEventStream {
         cx: &AsyncApp,
     ) -> Result<()> {
         let option_id = outcome.option_id.0.as_ref();
-        let err = || Err(anyhow!("Permission to run tool denied by user"));
+        let err = || Err(anyhow!("用户拒绝了运行工具的权限"));
 
         let always_permission = option_id
             .strip_prefix("always_allow:")
@@ -7158,9 +7158,9 @@ impl UserMessageContent {
             acp_v2::ContentBlock::Resource(resource) => match &resource.resource {
                 acp_v2::EmbeddedResourceResource::TextResourceContents(_)
                 | acp_v2::EmbeddedResourceResource::BlobResourceContents(_) => Ok(()),
-                _ => anyhow::bail!("Native agent does not support this embedded resource variant"),
+                _ => anyhow::bail!("原生智能体不支持此嵌入资源变体"),
             },
-            _ => anyhow::bail!("Native agent does not support this content block variant"),
+            _ => anyhow::bail!("原生智能体不支持此内容块变体"),
         }
     }
 
@@ -7209,9 +7209,9 @@ impl UserMessageContent {
                     // TODO
                     Self::Text("[blob]".to_string())
                 }
-                _ => anyhow::bail!("Native agent does not support this embedded resource variant"),
+                _ => anyhow::bail!("原生智能体不支持此嵌入资源变体"),
             },
-            _ => anyhow::bail!("Native agent does not support this content block variant"),
+            _ => anyhow::bail!("原生智能体不支持此内容块变体"),
         })
     }
 }
@@ -7448,7 +7448,7 @@ mod tests {
                     Some("Choose an action".into()),
                     vec![acp_v2::PermissionOption::new(
                         acp_v2::PermissionOptionId::new("discard"),
-                        "Discard",
+                        "放弃",
                         acp_v2::PermissionOptionKind::RejectOnce,
                     )],
                     cx,
@@ -9375,7 +9375,7 @@ mod tests {
                 ),
                 (
                     "allow_thread",
-                    "Allow for this thread",
+                    "在此会话中允许",
                     acp_v2::PermissionOptionKind::AllowAlways,
                 ),
                 (
@@ -9452,9 +9452,9 @@ mod tests {
             options,
             vec![
                 ("retry", "Retry"),
-                ("allow", "Run without sandbox once"),
-                ("allow_thread", "Run without sandbox for this thread"),
-                ("allow_always", "Always run without sandbox"),
+                ("allow", "在沙盒外运行一次"),
+                ("allow_thread", "此会话在沙盒外运行"),
+                ("allow_always", "始终在沙盒外运行"),
                 ("deny", "Deny"),
             ]
         );
@@ -9621,12 +9621,12 @@ mod tests {
             acp_thread::PermissionOptionChoice {
                 allow: acp_v2::PermissionOption::new(
                     acp_v2::PermissionOptionId::new("always_allow:test_tool"),
-                    "Always allow",
+                    "始终允许",
                     acp_v2::PermissionOptionKind::AllowAlways,
                 ),
                 deny: acp_v2::PermissionOption::new(
                     acp_v2::PermissionOptionId::new("always_deny:test_tool"),
-                    "Always deny",
+                    "始终拒绝",
                     acp_v2::PermissionOptionKind::RejectAlways,
                 ),
                 sub_patterns: vec![],
@@ -9634,12 +9634,12 @@ mod tests {
             acp_thread::PermissionOptionChoice {
                 allow: acp_v2::PermissionOption::new(
                     acp_v2::PermissionOptionId::new("allow"),
-                    "Allow once",
+                    "允许一次",
                     acp_v2::PermissionOptionKind::AllowOnce,
                 ),
                 deny: acp_v2::PermissionOption::new(
                     acp_v2::PermissionOptionId::new("deny"),
-                    "Deny once",
+                    "拒绝一次",
                     acp_v2::PermissionOptionKind::RejectOnce,
                 ),
                 sub_patterns: vec![],

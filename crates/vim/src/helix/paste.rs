@@ -8,7 +8,7 @@ use crate::{
     state::{Mode, Register},
 };
 
-/// Pastes text from the specified register at the cursor position.
+/// 将指定寄存器中的文本粘贴到光标位置
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]

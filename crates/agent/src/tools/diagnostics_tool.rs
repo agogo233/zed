@@ -151,9 +151,9 @@ impl AgentTool for DiagnosticsTool {
             Some(path) if !path.is_empty() => Some(path),
             _ => None,
         }) {
-            format!("Check diagnostics for {}", MarkdownInlineCode(&path)).into()
+            format!("检查 {} 的诊断", MarkdownInlineCode(&path)).into()
         } else {
-            "Check project diagnostics".into()
+            "检查项目诊断".into()
         }
     }
 

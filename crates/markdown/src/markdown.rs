@@ -576,9 +576,9 @@ pub type CodeBlockTransformFn =
 actions!(
     markdown,
     [
-        /// Copies the selected text to the clipboard.
+        /// 将选中文本复制到剪贴板
         Copy,
-        /// Copies the selected text as markdown to the clipboard.
+        /// 将选中文本以 Markdown 格式复制到剪贴板
         CopyAsMarkdown
     ]
 );
@@ -2139,11 +2139,11 @@ impl MarkdownElement {
 
         let header = kind.map(|kind| {
             let (icon_name, label) = match kind {
-                BlockQuoteKind::Note => (IconName::Info, "Note"),
-                BlockQuoteKind::Tip => (IconName::Sparkle, "Tip"),
-                BlockQuoteKind::Important => (IconName::Chat, "Important"),
-                BlockQuoteKind::Warning => (IconName::Warning, "Warning"),
-                BlockQuoteKind::Caution => (IconName::Stop, "Caution"),
+                BlockQuoteKind::Note => (IconName::Info, "注意"),
+                BlockQuoteKind::Tip => (IconName::Sparkle, "提示"),
+                BlockQuoteKind::Important => (IconName::Chat, "重要"),
+                BlockQuoteKind::Warning => (IconName::Warning, "警告"),
+                BlockQuoteKind::Caution => (IconName::Stop, "警示"),
             };
             h_flex()
                 .gap_1()
@@ -3530,14 +3530,14 @@ fn image_fallback_element(
         .filter(|alt| !alt.is_empty())
         .unwrap_or_else(|| dest_url.clone());
 
-    let label = format!("Failed to Load: {link_label}");
+    let label = format!("加载失败：{link_label}");
 
     div()
         .id("image-fallback")
         .min_w_0()
         .child(Label::new(label).color(Color::Warning).underline())
         .tooltip(Tooltip::text(
-            "Image failed to load. Open `zed: log` for more details.",
+            "图片加载失败。打开 `zed: log` 查看更多详情。",
         ))
         .when(open_image_url_on_click, |this| {
             this.cursor_pointer()
@@ -3606,9 +3606,9 @@ fn render_wrap_code_block_button(
     markdown: Entity<Markdown>,
 ) -> impl IntoElement {
     let (icon, tooltip) = if is_wrapped {
-        (IconName::TextUnwrap, "Unwrap Content")
+        (IconName::TextUnwrap, "取消内容换行")
     } else {
-        (IconName::TextWrap, "Wrap Content")
+        (IconName::TextWrap, "内容换行")
     };
     let button_id = ElementId::NamedChild(
         Arc::new(ElementId::from(("wrap-code-block", markdown.entity_id()))),

@@ -67,8 +67,8 @@ enum HelixJumpNavigationOverlay {}
 pub(crate) const HELIX_JUMP_OVERLAY_KEY: NavigationOverlayKey =
     NavigationOverlayKey::unique::<HelixJumpNavigationOverlay>();
 
-/// Number is used to manage vim's count. Pushing a digit
-/// multiplies the current value by 10 and adds the digit.
+/// 数字用于管理 vim 的计数。
+/// 按下数字键会将当前值乘以 10 并加上该数字
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 struct Number(usize);
@@ -103,7 +103,7 @@ struct PushFindBackward {
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
-/// Selects the next object.
+/// 选中下一个对象
 struct PushHelixNext {
     around: bool,
 }
@@ -111,7 +111,7 @@ struct PushHelixNext {
 #[derive(Clone, Deserialize, JsonSchema, PartialEq, Action)]
 #[action(namespace = vim)]
 #[serde(deny_unknown_fields)]
-/// Selects the previous object.
+/// 选中上一个对象
 struct PushHelixPrevious {
     around: bool,
 }
@@ -166,107 +166,107 @@ struct PushLiteral {
 actions!(
     vim,
     [
-        /// Switches to normal mode.
+        /// 切换到普通模式
         SwitchToNormalMode,
-        /// Switches to insert mode.
+        /// 切换到插入模式
         SwitchToInsertMode,
-        /// Switches to replace mode.
+        /// 切换到替换模式
         SwitchToReplaceMode,
-        /// Switches to visual mode.
+        /// 切换到可视模式
         SwitchToVisualMode,
-        /// Switches to visual line mode.
+        /// 切换到可视行模式
         SwitchToVisualLineMode,
-        /// Switches to visual block mode.
+        /// 切换到可视块模式
         SwitchToVisualBlockMode,
-        /// Switches to Helix-style normal mode.
+        /// 切换到 Helix 风格的普通模式
         SwitchToHelixNormalMode,
-        /// Clears any pending operators.
+        /// 清除所有待执行的操作符
         ClearOperators,
-        /// Clears the exchange register.
+        /// 清除交换寄存器
         ClearExchange,
-        /// Inserts a tab character.
+        /// 插入制表符
         Tab,
-        /// Inserts a newline.
+        /// 插入换行符
         Enter,
-        /// Selects inner text object.
+        /// 选择内部文本对象
         InnerObject,
-        /// Maximizes the current pane.
+        /// 最大化当前窗格
         MaximizePane,
-        /// Resets all pane sizes to default.
+        /// 将所有窗格大小重置为默认值
         ResetPaneSizes,
-        /// Resizes the pane to the right.
+        /// 向右调整窗格大小
         ResizePaneRight,
-        /// Resizes the pane to the left.
+        /// 向左调整窗格大小
         ResizePaneLeft,
-        /// Resizes the pane upward.
+        /// 向上调整窗格大小
         ResizePaneUp,
-        /// Resizes the pane downward.
+        /// 向下调整窗格大小
         ResizePaneDown,
-        /// Starts a change operation.
+        /// 开始修改操作
         PushChange,
-        /// Starts a delete operation.
+        /// 开始删除操作
         PushDelete,
-        /// Exchanges text regions.
+        /// 交换文本区域
         Exchange,
-        /// Starts a yank operation.
+        /// 开始复制操作
         PushYank,
-        /// Starts a replace operation.
+        /// 开始替换操作
         PushReplace,
-        /// Deletes surrounding characters.
+        /// 删除周围字符
         PushDeleteSurrounds,
-        /// Sets a mark at the current position.
+        /// 在当前位置设置标记
         PushMark,
-        /// Toggles the marks view.
+        /// 切换标记视图
         ToggleMarksView,
-        /// Starts a forced motion.
+        /// 开始强制移动操作
         PushForcedMotion,
-        /// Starts an indent operation.
+        /// 开始缩进操作
         PushIndent,
-        /// Starts an outdent operation.
+        /// 开始取消缩进操作
         PushOutdent,
-        /// Starts an auto-indent operation.
+        /// 开始自动缩进操作
         PushAutoIndent,
-        /// Starts a rewrap operation.
+        /// 开始重新换行操作
         PushRewrap,
-        /// Starts a shell command operation.
+        /// 开始 Shell 命令操作
         PushShellCommand,
-        /// Converts to lowercase.
+        /// 转换为小写
         PushLowercase,
-        /// Converts to uppercase.
+        /// 转换为大写
         PushUppercase,
-        /// Toggles case.
+        /// 切换大小写
         PushOppositeCase,
-        /// Applies ROT13 encoding.
+        /// 应用 ROT13 编码
         PushRot13,
-        /// Applies ROT47 encoding.
+        /// 应用 ROT47 编码
         PushRot47,
-        /// Toggles the registers view.
+        /// 切换寄存器视图
         ToggleRegistersView,
-        /// Selects a register.
+        /// 选择一个寄存器
         PushRegister,
-        /// Starts recording to a register.
+        /// 开始录制到寄存器
         PushRecordRegister,
-        /// Replays a register.
+        /// 回放寄存器
         PushReplayRegister,
-        /// Replaces with register contents.
+        /// 用寄存器内容替换
         PushReplaceWithRegister,
-        /// Toggles comments.
+        /// 切换注释
         PushToggleComments,
-        /// Toggles block comments.
+        /// 切换块注释
         PushToggleBlockComments,
-        /// Selects (count) next menu item
+        /// 选择（计数）下一个菜单项
         MenuSelectNext,
-        /// Selects (count) previous menu item
+        /// 选择（计数）上一个菜单项
         MenuSelectPrevious,
-        /// Clears count or toggles project panel focus
+        /// 清除计数或切换项目面板焦点
         ToggleProjectPanelFocus,
-        /// Starts a match operation.
+        /// 开始匹配操作
         PushHelixMatch,
-        /// Adds surrounding characters in Helix mode.
+        /// 在 Helix 模式下添加周围字符
         PushHelixSurroundAdd,
-        /// Replaces surrounding characters in Helix mode.
+        /// 在 Helix 模式下替换周围字符
         PushHelixSurroundReplace,
-        /// Deletes surrounding characters in Helix mode.
+        /// 在 Helix 模式下删除周围字符
         PushHelixSurroundDelete,
     ]
 );
@@ -275,9 +275,9 @@ actions!(
 actions!(
     workspace,
     [
-        /// Toggles Vim mode on or off.
+        /// 开启或关闭 Vim 模式
         ToggleVimMode,
-        /// Toggles Helix mode on or off.
+        /// 开启或关闭 Helix 模式
         ToggleHelixMode,
     ]
 );

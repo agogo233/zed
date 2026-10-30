@@ -512,14 +512,14 @@ impl MessageEditor {
                 let has_selection = editor.has_non_empty_selection(&editor.display_snapshot(cx));
 
                 Some(ContextMenu::build(window, cx, |menu, _, _| {
-                    menu.action("Cut", Box::new(editor::actions::Cut))
+                    menu.action("剪切", Box::new(editor::actions::Cut))
                         .action_disabled_when(
                             !has_selection,
-                            "Copy",
+                            "复制",
                             Box::new(editor::actions::Copy),
                         )
-                        .action("Paste", Box::new(editor::actions::Paste))
-                        .action("Paste as Plain Text", Box::new(PasteRaw))
+                        .action("粘贴", Box::new(editor::actions::Paste))
+                        .action("粘贴为纯文本", Box::new(PasteRaw))
                 }))
             });
 
@@ -1491,7 +1491,7 @@ impl MessageEditor {
                     .ok()
                     .and_then(|r| r.ok())
                     .flatten()
-                    .ok_or_else(|| anyhow!("Could not determine default branch"))?;
+                    .ok_or_else(|| anyhow!("无法确定默认分支"))?;
 
                 cx.update(|window, cx| {
                     let mention_uri = MentionUri::GitDiff {
@@ -1751,7 +1751,7 @@ impl MessageEditor {
             }
         }
         visible.push(acp_v2::ContentBlock::Text(acp_v2::TextContent::new(
-            "\n[Unsupported message content — this message cannot be edited or resent]",
+            "\n[不支持的消息内容，此消息无法编辑或重新发送]",
         )));
         self.set_message(visible, window, cx);
     }
@@ -2856,7 +2856,7 @@ mod tests {
         }
 
         fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
-            "Test".into()
+            "测试".into()
         }
     }
 

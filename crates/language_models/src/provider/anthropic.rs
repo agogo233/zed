@@ -375,11 +375,8 @@ impl LanguageModelProvider for AnthropicLanguageModelProvider {
 
     fn fast_mode_confirmation(&self, _cx: &App) -> Option<FastModeConfirmation> {
         Some(FastModeConfirmation {
-            title: "Enable Fast Mode for Anthropic?".into(),
-            message: "Fast mode lets requests use your Anthropic Priority Tier capacity, which \
-                Anthropic prioritizes over standard requests during peak load. Requires a \
-                Priority Tier commitment with Anthropic; without one, requests behave the same \
-                as the standard tier."
+            title: "为 Anthropic 启用快速模式？".into(),
+            message: "快速模式允许请求使用你的 Anthropic Priority Tier 容量，Anthropic 会在高峰负载期间优先处理此类请求。需要 Anthropic 的 Priority Tier 承诺；如果没有，请求的行为与标准层相同。"
                 .into(),
         })
     }

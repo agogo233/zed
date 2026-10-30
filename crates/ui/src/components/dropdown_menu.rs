@@ -337,24 +337,24 @@ impl Component for DropdownMenu {
         });
 
         let menu_with_submenu = ContextMenu::build(window, cx, |this, _, _| {
-            this.entry("Toggle All Docks", None, |_, _| {})
-                .submenu("Editor Layout", |menu, _, _| {
-                    menu.entry("Split Up", None, |_, _| {})
-                        .entry("Split Down", None, |_, _| {})
+            this.entry("切换所有停靠栏", None, |_, _| {})
+                .submenu("编辑器布局", |menu, _, _| {
+                    menu.entry("向上拆分", None, |_, _| {})
+                        .entry("向下拆分", None, |_, _| {})
                         .separator()
-                        .entry("Split Side", None, |_, _| {})
+                        .entry("侧向拆分", None, |_, _| {})
                 })
                 .separator()
-                .entry("Project Panel", None, |_, _| {})
-                .entry("Outline Panel", None, |_, _| {})
+                .entry("项目面板", None, |_, _| {})
+                .entry("大纲面板", None, |_, _| {})
                 .separator()
                 .submenu("Autofill", |menu, _, _| {
                     menu.entry("Contact…", None, |_, _| {})
-                        .entry("Passwords…", None, |_, _| {})
+                        .entry("密码…", None, |_, _| {})
                 })
                 .submenu_with_icon("Predict", IconName::ZedPredict, |menu, _, _| {
-                    menu.entry("Everywhere", None, |_, _| {})
-                        .entry("At Cursor", None, |_, _| {})
+                    menu.entry("所有位置", None, |_, _| {})
+                        .entry("在光标处", None, |_, _| {})
                         .entry("Over Here", None, |_, _| {})
                         .entry("Over There", None, |_, _| {})
                 })

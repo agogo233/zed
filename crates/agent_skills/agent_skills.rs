@@ -64,7 +64,7 @@ impl SkillLoadWarning {
                 actual_len,
                 max_len,
             } => format!(
-                "Skill description is {actual_len} characters, exceeding the {max_len}-character limit. The skill was loaded, but long descriptions may consume more model-context tokens."
+                "技能描述共 {actual_len} 个字符，超过了 {max_len} 个字符的限制。技能已加载，但过长的描述可能会消耗更多模型上下文 Token。"
             ),
         }
     }
@@ -531,7 +531,7 @@ pub fn validate_description(description: &str) -> Result<(), &'static str> {
     }
     if description.chars().count() > MAX_SKILL_DESCRIPTION_LEN {
         return Err(formatcp!(
-            "Skill description must be at most {MAX_SKILL_DESCRIPTION_LEN} characters"
+            "技能描述不得超过 {MAX_SKILL_DESCRIPTION_LEN} 个字符"
         ));
     }
     Ok(())
@@ -634,7 +634,7 @@ pub async fn load_skill_frontmatter(
         .await
         .map_err(|e| SkillLoadError {
             path: skill_file_path.clone(),
-            message: format!("Failed to read SKILL.md metadata: {}", e),
+            message: format!("读取 SKILL.md 元数据失败：{}", e),
         })?;
     if let Some(metadata) = metadata
         && metadata.len > MAX_SKILL_FILE_SIZE as u64
@@ -642,7 +642,7 @@ pub async fn load_skill_frontmatter(
         return Err(SkillLoadError {
             path: skill_file_path.clone(),
             message: format!(
-                "SKILL.md file exceeds maximum size of {}KB",
+                "SKILL.md 文件超过最大大小 {}KB",
                 MAX_SKILL_FILE_SIZE / 1024
             ),
         });
@@ -653,7 +653,7 @@ pub async fn load_skill_frontmatter(
         .await
         .map_err(|e| SkillLoadError {
             path: skill_file_path.clone(),
-            message: format!("Failed to read file: {}", e),
+            message: format!("读取文件失败：{}", e),
         })?;
 
     parse_skill_frontmatter(&skill_file_path, &content, source).map_err(|e| SkillLoadError {
@@ -672,7 +672,7 @@ pub async fn read_skill_body(
 ) -> Result<String, SkillLoadError> {
     let content = fs.load(skill_file_path).await.map_err(|e| SkillLoadError {
         path: skill_file_path.to_path_buf(),
-        message: format!("Failed to read file: {}", e),
+        message: format!("读取文件失败：{}", e),
     })?;
 
     read_skill_body_from_content(skill_file_path, &content)
@@ -826,23 +826,23 @@ pub fn encode_skill_share_link(skill_file_content: &str) -> String {
 /// produced by [`encode_skill_share_link`].
 pub fn decode_skill_share_link(link: &str) -> Result<String> {
     use base64::Engine as _;
-    let url = Url::parse(link).context("skill share link is not a valid URL")?;
+    let url = Url::parse(link).context("技能共享链接不是有效的 URL")?;
     anyhow::ensure!(
         url.scheme() == SKILL_SHARE_LINK_SCHEME && url.host_str() == Some(SKILL_SHARE_LINK_HOST),
-        "not a skill share link"
+        "不是技能共享链接"
     );
     let data = url
         .query_pairs()
         .find_map(|(key, value)| (key == SKILL_SHARE_LINK_DATA_PARAM).then_some(value))
-        .context("skill share link is missing the `data` parameter")?;
+        .context("技能共享链接缺少 `data` 参数")?;
     let bytes = base64::engine::general_purpose::URL_SAFE_NO_PAD
         .decode(data.as_bytes())
-        .context("skill share link `data` is not valid base64")?;
+        .context("技能共享链接的 `data` 不是有效的 base64")?;
     anyhow::ensure!(
         bytes.len() <= MAX_SKILL_FILE_SIZE,
-        "shared skill exceeds the maximum size of {MAX_SKILL_FILE_SIZE} bytes"
+        "共享技能超过最大大小 {MAX_SKILL_FILE_SIZE} 字节"
     );
-    let content = String::from_utf8(bytes).context("skill share link `data` is not valid UTF-8")?;
+    let content = String::from_utf8(bytes).context("技能共享链接的 `data` 不是有效的 UTF-8")?;
     Ok(content)
 }
 

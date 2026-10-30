@@ -378,11 +378,11 @@ impl LanguageModelProvider for CloudLanguageModelProvider {
             None
         } else {
             match state.user_store.read(cx).plan() {
-                Some(Plan::ZedPro) => Some("Subscribed to Pro".into()),
-                Some(Plan::ZedProTrial) => Some("Subscribed to Pro Trial".into()),
-                Some(Plan::ZedStudent) => Some("Subscribed to Student".into()),
-                Some(Plan::ZedBusiness) => Some("Subscribed to Business".into()),
-                Some(Plan::ZedVip) => Some("Subscribed to VIP".into()),
+                Some(Plan::ZedPro) => Some("已订阅 Pro".into()),
+                Some(Plan::ZedProTrial) => Some("已订阅 Pro 试用".into()),
+                Some(Plan::ZedStudent) => Some("已订阅 Student".into()),
+                Some(Plan::ZedBusiness) => Some("已订阅 Business".into()),
+                Some(Plan::ZedVip) => Some("已订阅 VIP".into()),
                 Some(Plan::ZedFree) | None => None,
             }
         };
@@ -403,21 +403,18 @@ impl LanguageModelProvider for CloudLanguageModelProvider {
     }
 
     fn authentication_error_message(&self) -> SharedString {
-        "Failed to sign in with your Zed account (401).".into()
+        "使用 Zed 帐户登录失败（401）".into()
     }
 
     fn missing_credentials_error_message(&self) -> SharedString {
-        "You are not signed in to your Zed account. \
-        Sign in to continue."
+        "你尚未登录 Zed 帐户。登录以继续。"
             .into()
     }
 
     fn fast_mode_confirmation(&self, _cx: &App) -> Option<FastModeConfirmation> {
         Some(FastModeConfirmation {
-            title: "Enable Fast Mode for Zed?".into(),
-            message: "Fast mode routes requests through the upstream provider's fast mode or priority tier. The \
-                upstream provider's premium per-token pricing applies and is passed through to \
-                your Zed billing."
+            title: "为 Zed 启用快速模式？".into(),
+            message: "快速模式会通过上游提供商的快速模式或优先层路由请求。请求将按上游提供商较高的 token 单价计费，并计入你的 Zed 账单。"
                 .into(),
         })
     }
@@ -507,34 +504,34 @@ fn zed_ai_description(
     eligible_for_trial: bool,
 ) -> &'static str {
     if !is_connected {
-        return "Sign in to have access to Zed's complete agentic experience with hosted models.";
+        return "登录以获得 Zed 完整的智能体体验，包含托管模型";
     }
 
     match plan {
         Some(Plan::ZedPro) => {
-            "You have access to Zed's hosted models through your Pro subscription."
+            "你可通过 Pro 订阅使用 Zed 的托管模型"
         }
         Some(Plan::ZedProTrial) => {
-            "Your Pro trial includes $5 of GPT Luna and unlimited edit predictions for 14 days from trial start."
+            "你的 Pro 试用包含 GPT Luna $5 额度和无限制编辑预测，有效期为自试用开始起的 14 天"
         }
         Some(Plan::ZedStudent) => {
-            "You have access to Zed's hosted models through your Student subscription."
+            "你可通过 Student 订阅使用 Zed 的托管模型"
         }
         Some(Plan::ZedBusiness) => {
             if is_zed_model_provider_enabled {
-                "You have access to Zed's hosted models through your organization."
+                "你可通过所在组织使用 Zed 的托管模型"
             } else {
-                "Zed's hosted models are disabled by your organization's configuration."
+                "Zed 的托管模型已被你所在组织的配置禁用"
             }
         }
         Some(Plan::ZedVip) => {
-            "You have access to Zed's hosted models through your VIP subscription."
+            "你可通过 VIP 订阅使用 Zed 的托管模型"
         }
         Some(Plan::ZedFree) | None => {
             if eligible_for_trial {
-                "Start a free trial with $5 of GPT Luna and unlimited edit predictions for 14 days from trial start."
+                "开始免费试用，可获得 GPT Luna $5 额度和无限制编辑预测，有效期为自试用开始起的 14 天"
             } else {
-                "Subscribe for access to Zed's hosted models."
+                "订阅以使用 Zed 的托管模型"
             }
         }
     }
@@ -555,7 +552,7 @@ impl RenderOnce for ZedAiConfiguration {
         );
 
         let manage_subscription_buttons = if has_paid_plan {
-            Button::new("manage_settings", "Manage Subscription")
+            Button::new("manage_settings", "管理订阅")
                 .when(!self.compact, |this| {
                     this.full_width().label_size(LabelSize::Small)
                 })
@@ -564,7 +561,7 @@ impl RenderOnce for ZedAiConfiguration {
                 .on_click(|_, _, cx| cx.open_url(&zed_urls::account_url(cx)))
                 .into_any_element()
         } else if self.plan.is_none() || self.eligible_for_trial {
-            Button::new("start_trial", "Start Free Trial")
+            Button::new("start_trial", "开始免费试用")
                 .when(!self.compact, |this| {
                     this.full_width().label_size(LabelSize::Small)
                 })
@@ -573,7 +570,7 @@ impl RenderOnce for ZedAiConfiguration {
                 .on_click(|_, _, cx| cx.open_url(&zed_urls::start_trial_url(cx)))
                 .into_any_element()
         } else {
-            Button::new("upgrade", "Upgrade to Pro")
+            Button::new("upgrade", "升级至 Pro")
                 .when(!self.compact, |this| {
                     this.full_width().label_size(LabelSize::Small)
                 })
@@ -588,7 +585,7 @@ impl RenderOnce for ZedAiConfiguration {
                 .gap_2()
                 .when(!self.compact, |this| this.child(Label::new(description)))
                 .child(
-                    Button::new("sign_in", "Sign In to use Zed AI")
+                    Button::new("sign_in", "登录以使用 Zed AI")
                         .start_icon(
                             Icon::new(IconName::Github)
                                 .size(IconSize::Small)
@@ -611,7 +608,7 @@ impl RenderOnce for ZedAiConfiguration {
             .map(|this| {
                 if self.account_too_young {
                     this.child(YoungAccountBanner).child(
-                        Button::new("upgrade", "Upgrade to Pro")
+                        Button::new("upgrade", "升级至 Pro")
                             .style(ui::ButtonStyle::Tinted(ui::TintColor::Accent))
                             .when(!self.compact, |this| this.full_width())
                             .on_click(|_, _, cx| {

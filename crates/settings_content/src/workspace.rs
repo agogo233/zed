@@ -13,234 +13,234 @@ use crate::{
 #[with_fallible_options]
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct WorkspaceSettingsContent {
-    /// Active pane styling settings.
+    /// 活动窗格样式设置。
     pub active_pane_modifiers: Option<ActivePaneModifiers>,
-    /// The text rendering mode to use.
+    /// 要使用的文本渲染模式
     ///
-    /// Default: platform_default
+    /// 默认值：platform_default
     pub text_rendering_mode: Option<TextRenderingMode>,
-    /// Whether to render windows using the Display P3 color space (macOS only).
+    /// 是否使用 Display P3 色彩空间渲染窗口（仅限 macOS）
     ///
-    /// Default: false
+    /// 默认值：false
     pub use_display_p3: Option<bool>,
-    /// Layout mode for the bottom dock
+    /// 底部停靠栏的布局模式
     ///
-    /// Default: contained
+    /// 默认值：contained
     pub bottom_dock_layout: Option<BottomDockLayout>,
-    /// Direction to split horizontally.
+    /// 指定水平拆分方向
     ///
-    /// Default: "up"
+    /// 默认值："up"
     pub pane_split_direction_horizontal: Option<PaneSplitDirectionHorizontal>,
-    /// Direction to split vertically.
+    /// 指定垂直拆分方向
     ///
-    /// Default: "left"
+    /// 默认值："left"
     pub pane_split_direction_vertical: Option<PaneSplitDirectionVertical>,
-    /// Centered layout related settings.
+    /// 居中布局相关设置。
     pub centered_layout: Option<CenteredLayoutSettings>,
-    /// Whether or not to prompt the user to confirm before closing the application.
+    /// 关闭应用程序前是否提示用户确认
     ///
-    /// Default: false
+    /// 默认值：false
     pub confirm_quit: Option<bool>,
-    /// Whether or not to show the call status icon in the status bar.
+    /// 是否在状态栏中显示通话状态图标
     ///
-    /// Default: true
+    /// 默认值：true
     pub show_call_status_icon: Option<bool>,
-    /// When to automatically save edited buffers.
+    /// 何时自动保存已编辑的缓冲区
     ///
-    /// Default: off
+    /// 默认值：off
     pub autosave: Option<AutosaveSetting>,
-    /// Controls previous session restoration in freshly launched Zed instance.
-    /// Values: empty_tab, last_workspace, last_session, launchpad
-    /// Default: last_session
+    /// 控制新启动的 Zed 实例对上次会话的恢复方式
+    /// 可选值：empty_tab、last_workspace、last_session、launchpad
+    /// 默认值：last_session
     pub restore_on_startup: Option<RestoreOnStartupBehavior>,
-    /// The default behavior when opening paths from the CLI without
-    /// an explicit `-e` or `-n` flag.
+    /// 从 CLI 打开路径且未指定
+    /// 显式的 `-e` 或 `-n` 标志时的默认行为。
     ///
-    /// Default: existing_window
+    /// 默认值：existing_window
     pub cli_default_open_behavior: Option<CliDefaultOpenBehavior>,
-    /// The default behavior when opening projects from the UI.
+    /// 从 UI 打开项目时的默认行为。
     ///
-    /// Default: existing_window
+    /// 默认值：existing_window
     pub default_open_behavior: Option<DefaultOpenBehavior>,
-    /// Whether to attempt to restore previous file's state when opening it again.
-    /// The state is stored per pane.
-    /// When disabled, defaults are applied instead of the state restoration.
+    /// 再次打开文件时是否尝试恢复之前的文件状态
+    /// 状态按窗格存储
+    /// 禁用时，将应用默认值而非恢复状态
     ///
-    /// E.g. for editors, selections, folds and scroll positions are restored, if the same file is closed and, later, opened again in the same pane.
-    /// When disabled, a single selection in the very beginning of the file, zero scroll position and no folds state is used as a default.
+    /// 例如，对于编辑器，如果在同一窗格中关闭后再次打开同一文件，则会恢复选区、折叠和滚动位置
+    /// 禁用时，默认使用文件开头的单个选区、零滚动位置和无折叠状态
     ///
-    /// Default: true
+    /// 默认值：true
     pub restore_on_file_reopen: Option<bool>,
-    /// Whether to reveal an already open file in an existing pane instead of opening it in the active pane.
+    /// 是否在现有窗格中显示已打开的文件，而非在活动窗格中打开它
     ///
-    /// Default: false
+    /// 默认值：false
     pub reveal_if_open: Option<bool>,
-    /// The size of the workspace split drop targets on the outer edges.
-    /// Given as a fraction that will be multiplied by the smaller dimension of the workspace.
+    /// 工作区拆分时外边缘放置目标的大小
+    /// 以分数形式给出，将乘以工作区较小的尺寸
     ///
-    /// Default: `0.2` (20% of the smaller dimension of the workspace)
+    /// 默认值：`0.2`（工作区较小边长的 20%）
     #[serde(serialize_with = "serialize_optional_f32_with_two_decimal_places")]
     pub drop_target_size: Option<f32>,
-    /// Whether to close the window when using 'close active item' on a workspace with no tabs
+    /// 在没有标签页的工作区中使用“关闭活动项”时是否关闭窗口
     ///
-    /// Default: auto ("on" on macOS, "off" otherwise)
+    /// 默认值：auto（macOS 上为 "on"，其他平台为 "off"）
     pub when_closing_with_no_tabs: Option<CloseWindowWhenNoItems>,
-    /// Whether to optimize Zed's interface for assistive technology such as
-    /// screen readers.
+    /// 是否针对辅助技术优化 Zed 的界面，例如
+    /// 屏幕阅读器
     ///
-    /// Default: false
+    /// 默认值：false
     pub accessible_mode: Option<bool>,
-    /// Whether to use the system provided dialogs for Open and Save As.
-    /// When set to false, Zed will use the built-in keyboard-first pickers.
+    /// 是否使用系统提供的对话框进行打开和另存为操作
+    /// 设为 false 时，Zed 将使用内置的键盘优先选择器
     ///
-    /// Default: true
+    /// 默认值：true
     pub use_system_path_prompts: Option<bool>,
-    /// Whether to use the system provided prompts.
-    /// When set to false, Zed will use the built-in prompts.
-    /// Note that this setting has no effect on Linux, where Zed will always
-    /// use the built-in prompts.
+    /// 是否使用系统提供的对话框
+    /// 设为 false 时，Zed 将使用内置对话框
+    /// 注意：此设置在 Linux 上无效，Zed 将始终
+    /// 使用内置对话框。
     ///
-    /// Default: true
+    /// 默认值：true
     pub use_system_prompts: Option<bool>,
-    /// Aliases for the command palette. When you type a key in this map,
-    /// it will be assumed to equal the value.
+    /// 命令面板的别名。当你在此映射中输入键名时，
+    /// 将被视为等同于对应的值。
     ///
-    /// Default: {}
+    /// 默认值：{}
     #[serde(default)]
     pub command_aliases: HashMap<String, CommandAliasTarget>,
-    /// Maximum open tabs in a pane. Will not close an unsaved
-    /// tab. Set to `None` for unlimited tabs.
+    /// 窗格中的最大打开标签页数。不会关闭未保存的
+    /// 标签页。设为 `None` 则不限制标签页数量。
     ///
-    /// Default: none
+    /// 默认值：none
     pub max_tabs: Option<NonZeroUsize>,
-    /// What to show when opening a new window.
+    /// 打开新窗口时显示的内容
     /// Values: empty_tab, launchpad, readme
-    /// Default: launchpad
+    /// 默认值：launchpad
     pub on_new_window: Option<OnNewWindow>,
-    /// What to do when the last window is closed
+    /// 最后一个窗口关闭时执行的操作
     ///
-    /// Default: auto (nothing on macOS, "app quit" otherwise)
+    /// 默认值：auto（macOS 上不执行任何操作，其他平台为 "app quit"）
     pub on_last_window_closed: Option<OnLastWindowClosed>,
-    /// Whether to resize all the panels in a dock when resizing the dock.
+    /// 调整停靠区大小时是否同时调整其中所有面板的大小
     ///
-    /// Default: ["left"]
+    /// 默认值：["left"]
     pub resize_all_panels_in_dock: Option<Vec<DockPosition>>,
-    /// Whether to automatically close files that have been deleted on disk.
+    /// 是否自动关闭磁盘上已被删除的文件
     ///
-    /// Default: false
+    /// 默认值：false
     pub close_on_file_delete: Option<bool>,
-    /// Whether to allow windows to tab together based on the user's tabbing preference (macOS only).
+    /// 是否根据用户的标签页偏好将窗口合并为标签页（仅限 macOS）
     ///
-    /// Default: false
+    /// 默认值：false
     pub use_system_window_tabs: Option<bool>,
-    /// Which fullscreen mode the `zed::ToggleFullScreen` action enters (macOS only).
+    /// `zed::ToggleFullScreen` 操作所进入的全屏模式（仅限 macOS）
     ///
-    /// Default: native
+    /// 默认值：native
     pub fullscreen_mode: Option<FullscreenMode>,
-    /// Whether to show padding for zoomed panels.
-    /// When enabled, zoomed bottom panels will have some top padding,
-    /// while zoomed left/right panels will have padding to the right/left (respectively).
+    /// 是否为缩放后的面板显示内边距
+    /// 启用后，已缩放的底部面板顶部将有一些内边距，
+    /// 已缩放的左/右面板则分别在右/左侧添加内边距
     ///
-    /// Default: true
+    /// 默认值：true
     pub zoomed_padding: Option<bool>,
-    /// Whether invoking a panel's `ToggleFocus` action while the panel is
-    /// already focused closes the panel, instead of just moving focus back
-    /// to the editor. This only applies to a panel's focus-toggle action, not
-    /// to its regular visibility-toggle action.
+    /// 面板已聚焦时调用其 `ToggleFocus` 操作是否
+    /// 会关闭该面板，而非仅将焦点移回
+    /// 编辑器。这仅适用于面板的焦点切换操作，而
+    /// 不适用于其常规的可见性切换操作。
     ///
-    /// Default: false
+    /// 默认值：false
     pub close_panel_on_toggle: Option<bool>,
-    /// Window title template.
+    /// 窗口标题模板。
     ///
-    /// Available variables are `${projectName}`, `${fileName}`,
-    /// `${filePath}`, `${relativePath}`, `${fileStem}`, `${remoteName}`,
-    /// `${remoteHost}`, `${appName}`, `${branch}`,
-    /// and `${separator}`.
-    /// `${separator}` is omitted when adjacent variables are empty,
-    /// but literal text is preserved.
-    /// The collaboration indicator, when present, is appended after the
-    /// rendered template.
-    /// If the template renders to nothing, the default template is used instead.
+    /// 可用变量为 `${projectName}`、`${fileName}`、
+    /// `${filePath}`、`${relativePath}`、`${fileStem}`、`${remoteName}`、
+    /// `${remoteHost}`、`${appName}`、`${branch}`
+    /// 和 `${separator}`。
+    /// 当相邻变量为空时会省略 `${separator}`，
+    /// 但仍会保留字面文本。
+    /// 协作指示器（如果存在）会附加在
+    /// 渲染后的模板之后。
+    /// 如果模板渲染结果为空，则改用默认模板。
     ///
-    /// Default: `${projectName}${separator}${fileName}`
+    /// 默认值：`${projectName}${separator}${fileName}`
     pub window_title_format: Option<String>,
-    /// String substituted for `${separator}` in the window title format.
-    /// Include any surrounding whitespace in the value.
+    /// 窗口标题格式中用于替换 `${separator}` 的字符串。
+    /// 该值应包含前后的空白字符。
     ///
-    /// Default: ` — `
+    /// 默认值：` — `
     pub window_title_separator: Option<String>,
-    /// Controls whether Zed or the window manager or compositor draws window decorations on Linux.
+    /// 控制在 Linux 上由 Zed 还是窗口管理器或合成器绘制窗口装饰
     ///
-    /// Default: client
+    /// 默认值：client
     pub window_decorations: Option<WindowDecorations>,
-    /// Whether the focused panel follows the mouse location
-    /// Default: false
+    /// 是否将焦点切换到鼠标所在的面板。
+    /// 默认值：false
     pub focus_follows_mouse: Option<FocusFollowsMouse>,
 }
 
 #[with_fallible_options]
 #[derive(Clone, Default, Debug, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct ItemSettingsContent {
-    /// Whether to show the Git file status on a tab item.
+    /// 是否在标签页上显示 Git 文件状态
     ///
-    /// Default: false
+    /// 默认值：false
     pub git_status: Option<bool>,
-    /// Position of the close button in a tab.
+    /// 标签页关闭按钮的位置
     ///
-    /// Default: right
+    /// 默认值：right
     pub close_position: Option<ClosePosition>,
-    /// Whether to show the file icon for a tab.
+    /// 是否在标签页中显示文件图标
     ///
-    /// Default: false
+    /// 默认值：false
     pub file_icons: Option<bool>,
-    /// What to do after closing the current tab.
+    /// 关闭当前标签页后执行的操作
     ///
-    /// Default: history
+    /// 默认值：history
     pub activate_on_close: Option<ActivateOnClose>,
-    /// Which files containing diagnostic errors/warnings to mark in the tabs.
-    /// This setting can take the following three values:
+    /// 在标签页中标记哪些包含诊断错误/警告的文件
+    /// 此设置可取以下三个值：
     ///
-    /// Default: off
+    /// 默认值：off
     pub show_diagnostics: Option<ShowDiagnostics>,
-    /// Whether to always show the close button on tabs.
+    /// 是否始终在标签页上显示关闭按钮
     ///
-    /// Default: false
+    /// 默认值：false
     pub show_close_button: Option<ShowCloseButton>,
 }
 
 #[with_fallible_options]
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct PreviewTabsSettingsContent {
-    /// Whether to show opened editors as preview tabs.
-    /// Preview tabs do not stay open, are reused until explicitly set to be kept open opened (via double-click or editing) and show file names in italic.
+    /// 是否将已打开的编辑器显示为预览标签页
+    /// 预览标签页不会持久保留，会被复用，直到显式设置为保持打开状态（通过双击或编辑），文件名以斜体显示
     ///
-    /// Default: true
+    /// 默认值：true
     pub enabled: Option<bool>,
-    /// Whether to open tabs in preview mode when opened from the project panel
-    /// with a single click or the `project_panel::Open` action.
+    /// 在项目面板中
+    /// 通过单击或 `project_panel::Open` 操作打开时，是否以预览模式打开标签页
     ///
-    /// Default: true
+    /// 默认值：true
     pub enable_preview_from_project_panel: Option<bool>,
-    /// Whether to open tabs in preview mode when selected from the file finder.
+    /// 从文件查找器中选择时，是否以预览模式打开标签页
     ///
-    /// Default: false
+    /// 默认值：false
     pub enable_preview_from_file_finder: Option<bool>,
-    /// Whether to open tabs in preview mode when opened from a multibuffer.
+    /// 从多缓冲区打开时，是否以预览模式打开标签页
     ///
-    /// Default: true
+    /// 默认值：true
     pub enable_preview_from_multibuffer: Option<bool>,
-    /// Whether to open tabs in preview mode when code navigation is used to open a multibuffer.
+    /// 在使用代码导航打开多缓冲区时，是否以预览模式打开标签页
     ///
-    /// Default: false
+    /// 默认值：false
     pub enable_preview_multibuffer_from_code_navigation: Option<bool>,
-    /// Whether to open tabs in preview mode when code navigation is used to open a single file.
+    /// 在使用代码导航打开单个文件时，是否以预览模式打开标签页
     ///
-    /// Default: true
+    /// 默认值：true
     pub enable_preview_file_from_code_navigation: Option<bool>,
-    /// Whether to keep tabs in preview mode when code navigation is used to navigate away from them.
-    /// If `enable_preview_file_from_code_navigation` or `enable_preview_multibuffer_from_code_navigation` is also true, the new tab may replace the existing one.
+    /// 在使用代码导航离开标签页时，是否保持标签页处于预览模式
+    /// 如果 `enable_preview_file_from_code_navigation` 或 `enable_preview_multibuffer_from_code_navigation` 也为 true，新标签页可能会替换现有标签页
     ///
-    /// Default: false
+    /// 默认值：false
     pub enable_keep_preview_on_code_navigation: Option<bool>,
 }
 
@@ -259,8 +259,10 @@ pub struct PreviewTabsSettingsContent {
 )]
 #[serde(rename_all = "lowercase")]
 pub enum ClosePosition {
+    #[strum(serialize = "左")]
     Left,
     #[default]
+    #[strum(serialize = "右")]
     Right,
 }
 
@@ -279,9 +281,12 @@ pub enum ClosePosition {
 )]
 #[serde(rename_all = "lowercase")]
 pub enum ShowCloseButton {
+    #[strum(serialize = "始终")]
     Always,
     #[default]
+    #[strum(serialize = "悬停")]
     Hover,
+    #[strum(serialize = "隐藏")]
     Hidden,
 }
 
@@ -302,8 +307,11 @@ pub enum ShowCloseButton {
 #[serde(rename_all = "snake_case")]
 pub enum ShowDiagnostics {
     #[default]
+    #[strum(serialize = "关闭")]
     Off,
+    #[strum(serialize = "错误")]
     Errors,
+    #[strum(serialize = "全部")]
     All,
 }
 
@@ -323,8 +331,11 @@ pub enum ShowDiagnostics {
 #[serde(rename_all = "snake_case")]
 pub enum ActivateOnClose {
     #[default]
+    #[strum(serialize = "历史记录")]
     History,
+    #[strum(serialize = "相邻标签页")]
     Neighbour,
+    #[strum(serialize = "左侧相邻标签页")]
     LeftNeighbour,
 }
 
@@ -332,18 +343,18 @@ pub enum ActivateOnClose {
 #[derive(Copy, Clone, PartialEq, Debug, Default, Serialize, Deserialize, JsonSchema, MergeFrom)]
 #[serde(rename_all = "snake_case")]
 pub struct ActivePaneModifiers {
-    /// Size of the border surrounding the active pane.
-    /// When set to 0, the active pane doesn't have any border.
-    /// The border is drawn inset.
+    /// 活动窗格周围边框的大小
+    /// 设为 0 时，活动窗格没有任何边框
+    /// 边框以内嵌方式绘制
     ///
-    /// Default: `0.0`
+    /// 默认值：`0.0`
     pub border_size: Option<crate::PixelSetting>,
-    /// Opacity of inactive panels.
-    /// When set to 1.0, the inactive panes have the same opacity as the active one.
-    /// If set to 0, the inactive panes content will not be visible at all.
-    /// Values are clamped to the [0.0, 1.0] range.
+    /// 非活动窗格的不透明度。
+    /// 设为 1.0 时，非活动窗格与活动窗格的不透明度相同
+    /// 如果设置为 0，非活动窗格的内容将完全不可见
+    /// 值被限制在 [0.0, 1.0] 范围内
     ///
-    /// Default: `1.0`
+    /// 默认值：`1.0`
     #[schemars(range(min = 0.0, max = 1.0))]
     pub inactive_opacity: Option<InactiveOpacity>,
 }
@@ -363,14 +374,18 @@ pub struct ActivePaneModifiers {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum BottomDockLayout {
-    /// Contained between the left and right docks
+    /// 位于左右停靠栏之间
     #[default]
+    #[strum(serialize = "两栏之间")]
     Contained,
-    /// Takes up the full width of the window
+    /// 占据窗口的完整宽度
+    #[strum(serialize = "完整")]
     Full,
-    /// Extends under the left dock while snapping to the right dock
+    /// 延伸至左侧停靠栏下方，同时贴靠右侧停靠栏
+    #[strum(serialize = "左对齐")]
     LeftAligned,
-    /// Extends under the right dock while snapping to the left dock
+    /// 延伸至右侧停靠栏下方，同时贴靠左侧停靠栏
+    #[strum(serialize = "右对齐")]
     RightAligned,
 }
 
@@ -389,17 +404,19 @@ pub enum BottomDockLayout {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum FullscreenMode {
-    /// Use macOS's native fullscreen, which moves the window into its own
-    /// Mission Control space.
+    /// 使用 macOS 原生全屏模式，将窗口移入其专属的
+    /// Mission Control 空间
     #[default]
+    #[strum(serialize = "原生")]
     Native,
-    /// Resize the window to cover the entire screen, including the menu bar and,
-    /// on notched displays, the area around the notch.
+    /// 将窗口调整为覆盖整个屏幕（包括菜单栏），并
+    /// 在带刘海的显示器上覆盖刘海周围的区域
+    #[strum(serialize = "简单")]
     Simple,
 }
 
-/// Configures what draws Zed's window decorations on Linux.
-/// This setting has no effect on other platforms.
+/// 指定在 Linux 上由哪个组件绘制 Zed 的窗口装饰。
+/// 此设置对其他平台无效。
 #[derive(
     Copy,
     Clone,
@@ -415,11 +432,13 @@ pub enum FullscreenMode {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum WindowDecorations {
-    /// Zed draws its own window decorations/titlebar (client-side decoration).
+    /// Zed 自行绘制窗口装饰/标题栏（客户端装饰）
     #[default]
+    #[strum(serialize = "客户端")]
     Client,
-    /// The window manager or compositor draws the server-side window
-    /// decorations (not supported by GNOME Wayland).
+    /// 服务器端窗口装饰由窗口管理器或合成器绘制。
+    /// GNOME Wayland 不支持此模式。
+    #[strum(serialize = "服务器端")]
     Server,
 }
 
@@ -438,12 +457,15 @@ pub enum WindowDecorations {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum CloseWindowWhenNoItems {
-    /// Match platform conventions by default, so "on" on macOS and "off" everywhere else
+    /// 默认遵循平台惯例，因此 macOS 上为“开启”，其他平台上为“关闭”
     #[default]
+    #[strum(serialize = "平台默认")]
     PlatformDefault,
-    /// Close the window when there are no tabs
+    /// 没有标签页时关闭窗口
+    #[strum(serialize = "关闭窗口")]
     CloseWindow,
-    /// Leave the window open when there are no tabs
+    /// 没有标签页时保持窗口打开
+    #[strum(serialize = "保持窗口打开")]
     KeepWindowOpen,
 }
 
@@ -473,12 +495,12 @@ impl CloseWindowWhenNoItems {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum CliDefaultOpenBehavior {
-    /// Open directories as a new workspace in the current Zed window's sidebar.
+    /// 将目录作为新工作区在当前 Zed 窗口的侧边栏中打开。
     #[default]
-    #[strum(serialize = "Add to Existing Window")]
+    #[strum(serialize = "添加到现有窗口")]
     ExistingWindow,
-    /// Open paths in a new window unless they are subpaths of an existing project.
-    #[strum(serialize = "Open a New Window")]
+    /// 在新窗口中打开路径，除非它们是现有项目的子路径
+    #[strum(serialize = "打开新窗口")]
     NewWindow,
 }
 
@@ -498,12 +520,12 @@ pub enum CliDefaultOpenBehavior {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum DefaultOpenBehavior {
-    /// Open projects in the current Zed window.
+    /// 在当前 Zed 窗口中打开项目。
     #[default]
-    #[strum(serialize = "Add to Existing Window")]
+    #[strum(serialize = "添加到现有窗口")]
     ExistingWindow,
-    /// Open projects in a new window.
-    #[strum(serialize = "Open a New Window")]
+    /// 在新窗口中打开项目。
+    #[strum(serialize = "打开新窗口")]
     NewWindow,
 }
 
@@ -523,73 +545,77 @@ pub enum DefaultOpenBehavior {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum RestoreOnStartupBehavior {
-    /// Always start with an empty editor tab
+    /// 始终以空编辑器标签页启动
     #[serde(alias = "none")]
+    #[strum(serialize = "空标签页")]
     EmptyTab,
-    /// Restore the workspace that was closed last.
+    /// 还原上次关闭的工作区
+    #[strum(serialize = "上次工作区")]
     LastWorkspace,
-    /// Restore all workspaces that were open when quitting Zed.
+    /// 还原退出 Zed 时打开的所有工作区
     #[default]
+    #[strum(serialize = "上次会话")]
     LastSession,
-    /// Show the launchpad with recent projects (no tabs).
+    /// 显示含有最近项目的启动台（无标签页）
+    #[strum(serialize = "启动台")]
     Launchpad,
 }
 
 #[with_fallible_options]
 #[derive(Clone, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Debug, PartialEq)]
 pub struct TabBarSettingsContent {
-    /// Whether or not to show the tab bar in the editor.
+    /// 是否在编辑器中显示标签栏
     ///
-    /// Default: true
+    /// 默认值：true
     pub show: Option<bool>,
-    /// Whether or not to show the navigation history buttons in the tab bar.
+    /// 是否在标签栏中显示导航历史按钮
     ///
-    /// Default: true
+    /// 默认值：true
     pub show_nav_history_buttons: Option<bool>,
-    /// Whether or not to show the tab bar buttons.
+    /// 是否显示标签栏按钮
     ///
-    /// Default: true
+    /// 默认值：true
     pub show_tab_bar_buttons: Option<bool>,
-    /// Whether or not to show pinned tabs in a separate row.
-    /// When enabled, pinned tabs appear in a top row and unpinned tabs in a bottom row.
+    /// 是否在单独一行中显示固定标签页
+    /// 启用后，已固定标签页显示在顶行，未固定标签页显示在底行
     ///
-    /// Default: false
+    /// 默认值：false
     pub show_pinned_tabs_in_separate_row: Option<bool>,
 }
 
 #[with_fallible_options]
 #[derive(Clone, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Debug, PartialEq, Eq)]
 pub struct StatusBarSettingsContent {
-    /// Whether to show the status bar.
+    /// 是否显示状态栏
     ///
-    /// Default: true
+    /// 默认值：true
     #[serde(rename = "experimental.show")]
     pub show: Option<bool>,
-    /// Whether to show the name of the active file in the status bar.
+    /// 是否在状态栏中显示活动文件的名称
     ///
-    /// Default: false
+    /// 默认值：false
     pub show_active_file: Option<bool>,
-    /// Whether to display the active language button in the status bar.
+    /// 是否在状态栏中显示当前语言按钮
     ///
-    /// Default: true
+    /// 默认值：true
     pub active_language_button: Option<bool>,
-    /// Whether to show the cursor position button in the status bar.
+    /// 是否在状态栏中显示光标位置按钮
     ///
-    /// Default: true
+    /// 默认值：true
     pub cursor_position_button: Option<bool>,
-    /// Whether to show active line endings button in the status bar.
+    /// 是否在状态栏中显示当前行尾按钮
     ///
-    /// Default: false
+    /// 默认值：false
     pub line_endings_button: Option<bool>,
-    /// Whether to show the active encoding button in the status bar.
+    /// 是否在状态栏中显示当前编码按钮
     ///
-    /// Default: non_utf8
+    /// 默认值：non_utf8
     pub active_encoding_button: Option<EncodingDisplayOptions>,
-    /// Whether to show an indicator while multi-stroke input is pending.
-    /// If the input has a timeout, a countdown is shown and hovering the indicator pauses it.
-    /// Its binding preview popover is disabled when the which-key popup is enabled.
+    /// 是否在多键输入等待期间显示指示器。
+    /// 如果输入设有超时，则会显示倒计时，将鼠标悬停在该指示器上可暂停倒计时。
+    /// 启用 which-key 弹出窗口时，其绑定预览弹出框会被禁用。
     ///
-    /// Default: true
+    /// 默认值：true
     pub pending_keystrokes_indicator: Option<bool>,
 }
 
@@ -609,9 +635,12 @@ pub struct StatusBarSettingsContent {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum EncodingDisplayOptions {
+    #[strum(serialize = "已启用")]
     Enabled,
+    #[strum(serialize = "已禁用")]
     Disabled,
     #[default]
+    #[strum(serialize = "非 UTF-8")]
     NonUtf8,
 }
 impl EncodingDisplayOptions {
@@ -642,13 +671,17 @@ impl EncodingDisplayOptions {
 #[strum_discriminants(derive(strum::VariantArray, strum::VariantNames, strum::FromRepr))]
 #[serde(rename_all = "snake_case")]
 pub enum AutosaveSetting {
-    /// Disable autosave.
+    /// 禁用自动保存
+    #[strum_discriminants(strum(serialize = "关闭"))]
     Off,
-    /// Save after inactivity period of `milliseconds`.
+    /// 在 `milliseconds` 毫秒无活动后自动保存
+    #[strum_discriminants(strum(serialize = "延迟后"))]
     AfterDelay { milliseconds: DelayMs },
-    /// Autosave when focus changes.
+    /// 焦点改变时自动保存。
+    #[strum_discriminants(strum(serialize = "焦点切换时"))]
     OnFocusChange,
-    /// Autosave when the active window changes.
+    /// 活动窗口改变时自动保存。
+    #[strum_discriminants(strum(serialize = "窗口切换时"))]
     OnWindowChange,
 }
 
@@ -678,7 +711,9 @@ impl AutosaveSetting {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum PaneSplitDirectionHorizontal {
+    #[strum(serialize = "向上")]
     Up,
+    #[strum(serialize = "向下")]
     Down,
 }
 
@@ -697,7 +732,9 @@ pub enum PaneSplitDirectionHorizontal {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum PaneSplitDirectionVertical {
+    #[strum(serialize = "左")]
     Left,
+    #[strum(serialize = "右")]
     Right,
 }
 
@@ -705,15 +742,15 @@ pub enum PaneSplitDirectionVertical {
 #[serde(rename_all = "snake_case")]
 #[with_fallible_options]
 pub struct CenteredLayoutSettings {
-    /// The relative width of the left padding of the central pane from the
-    /// workspace when the centered layout is used.
+    /// 使用居中布局时，中央窗格左侧内边距相对于
+    /// 工作区的相对宽度。
     ///
-    /// Default: 0.2
+    /// 默认值：0.2
     pub left_padding: Option<CenteredPaddingSettings>,
     // The relative width of the right padding of the central pane from the
     // workspace when the centered layout is used.
     ///
-    /// Default: 0.2
+    /// 默认值：0.2
     pub right_padding: Option<CenteredPaddingSettings>,
 }
 
@@ -733,10 +770,12 @@ pub struct CenteredLayoutSettings {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum OnNewWindow {
-    /// Show an empty untitled buffer when opening a new window
+    /// 打开新窗口时显示一个空的未命名缓冲区
+    #[strum(serialize = "空标签页")]
     EmptyTab,
-    /// Show the launchpad with recent projects when opening a new window
+    /// 打开新窗口时显示含有最近项目的启动台
     #[default]
+    #[strum(serialize = "启动台")]
     Launchpad,
     /// Open a root-level README in a preview tab when opening a project with no open items.
     /// Leave the pane empty if no README is found.
@@ -758,10 +797,12 @@ pub enum OnNewWindow {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum OnLastWindowClosed {
-    /// Match platform conventions by default, so don't quit on macOS, and quit on other platforms
+    /// 默认遵循平台惯例，在 macOS 上不退出，在其他平台上退出
     #[default]
+    #[strum(serialize = "平台默认")]
     PlatformDefault,
-    /// Quit the application the last window is closed
+    /// 关闭最后一个窗口时退出应用程序
+    #[strum(serialize = "退出应用")]
     QuitApp,
 }
 
@@ -781,12 +822,15 @@ pub enum OnLastWindowClosed {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum TextRenderingMode {
-    /// Use platform default behavior.
+    /// 使用平台默认行为。
     #[default]
+    #[strum(serialize = "平台默认")]
     PlatformDefault,
-    /// Use subpixel (ClearType-style) text rendering.
+    /// 使用亚像素（ClearType 风格）文本渲染。
+    #[strum(serialize = "亚像素")]
     Subpixel,
-    /// Use grayscale text rendering.
+    /// 使用灰度文本渲染。
+    #[strum(serialize = "灰度")]
     Grayscale,
 }
 
@@ -802,127 +846,127 @@ impl OnLastWindowClosed {
 #[with_fallible_options]
 #[derive(Clone, PartialEq, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Debug)]
 pub struct ProjectPanelAutoOpenSettings {
-    /// Whether to automatically open newly created files in the editor.
+    /// 是否在编辑器中自动打开新创建的文件
     ///
-    /// Default: true
+    /// 默认值：true
     pub on_create: Option<bool>,
-    /// Whether to automatically open files after pasting or duplicating them.
+    /// 是否在粘贴或复制文件后自动打开这些文件
     ///
-    /// Default: true
+    /// 默认值：true
     pub on_paste: Option<bool>,
-    /// Whether to automatically open files dropped from external sources.
+    /// 是否自动打开从外部来源拖放的文件
     ///
-    /// Default: true
+    /// 默认值：true
     pub on_drop: Option<bool>,
 }
 
 #[with_fallible_options]
 #[derive(Clone, PartialEq, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Debug)]
 pub struct ProjectPanelSettingsContent {
-    /// Whether to show the project panel button in the status bar.
+    /// 是否在状态栏中显示项目面板按钮
     ///
-    /// Default: true
+    /// 默认值：true
     pub button: Option<bool>,
-    /// Whether to hide gitignore files in the project panel.
+    /// 是否在项目面板中隐藏被 .gitignore 忽略的文件
     ///
-    /// Default: false
+    /// 默认值：false
     pub hide_gitignore: Option<bool>,
-    /// Customize default width (in pixels) taken by project panel
+    /// 自定义项目面板的默认宽度（像素）
     ///
-    /// Default: 240
+    /// 默认值：240
     pub default_width: Option<crate::PixelSetting>,
-    /// The position of project panel
+    /// 项目面板的位置
     ///
-    /// Default: right (Agentic layout), left (Classic layout)
+    /// 默认值：right（Agentic 布局），left（Classic 布局）
     pub dock: Option<DockSide>,
     // TODO
     pub title_tooltip_delay: Option<ProjectPanelTitleTooltipDelay>,
-    /// Spacing between worktree entries in the project panel.
+    /// 项目面板中工作树条目之间的间距
     ///
-    /// Default: comfortable
+    /// 默认值：comfortable
     pub entry_spacing: Option<ProjectPanelEntrySpacing>,
-    /// Whether to show file icons in the project panel.
+    /// 是否在项目面板中显示文件图标
     ///
-    /// Default: true
+    /// 默认值：true
     pub file_icons: Option<bool>,
-    /// What to show for directories in the project panel.
+    /// 项目面板中目录的显示方式
     ///
-    /// Default: icon
+    /// 默认值：icon
     pub folder_indicator: Option<FolderIndicator>,
-    /// Whether to show the git status in the project panel.
+    /// 是否在项目面板中显示 Git 状态
     ///
-    /// Default: true
+    /// 默认值：true
     pub git_status: Option<bool>,
-    /// Amount of indentation (in pixels) for nested items.
+    /// 嵌套项的缩进量（以像素为单位）。
     ///
-    /// Default: 20
+    /// 默认值：20
     pub indent_size: Option<crate::PixelSetting>,
-    /// Whether to reveal it in the project panel automatically,
-    /// when a corresponding project entry becomes active.
-    /// Gitignored entries are never auto revealed.
+    /// 是否在项目面板中自动显示，
+    /// 当对应的项目条目变为活动状态时。
+    /// 被 Git 忽略的条目永远不会自动显示。
     ///
-    /// Default: true
+    /// 默认值：true
     pub auto_reveal_entries: Option<bool>,
-    /// Whether to fold directories automatically
-    /// when directory has only one directory inside.
+    /// 是否自动折叠目录。
+    /// 仅当目录中只有一个子目录时生效。
     ///
-    /// Default: true
+    /// 默认值：true
     pub auto_fold_dirs: Option<bool>,
-    /// Whether to show folder names with bold text in the project panel.
+    /// 是否在项目面板中以粗体显示文件夹名称
     ///
-    /// Default: false
+    /// 默认值：false
     pub bold_folder_labels: Option<bool>,
-    /// Whether the project panel should open on startup.
+    /// 启动时是否打开项目面板
     ///
-    /// Default: true
+    /// 默认值：true
     pub starts_open: Option<bool>,
-    /// Scrollbar-related settings
+    /// 滚动条相关设置
     pub scrollbar: Option<ProjectPanelScrollbarSettingsContent>,
-    /// Which files containing diagnostic errors/warnings to mark in the project panel.
+    /// 在项目面板中标记哪些包含诊断错误/警告的文件
     ///
-    /// Default: all
+    /// 默认值：all
     pub show_diagnostics: Option<ShowDiagnostics>,
-    /// Settings related to indent guides in the project panel.
+    /// 项目面板中与缩进参考线相关的设置
     pub indent_guides: Option<ProjectPanelIndentGuidesSettings>,
-    /// Whether to hide the root entry when only one folder is open in the window.
+    /// 当窗口中只有一个文件夹时是否隐藏根条目
     ///
-    /// Default: false
+    /// 默认值：false
     pub hide_root: Option<bool>,
-    /// Whether to hide the hidden entries in the project panel.
+    /// 是否在项目面板中隐藏隐藏文件条目
     ///
-    /// Default: false
+    /// 默认值：false
     pub hide_hidden: Option<bool>,
-    /// Whether to stick parent directories at top of the project panel.
+    /// 是否将父目录固定在项目面板顶部
     ///
-    /// Default: true
+    /// 默认值：true
     pub sticky_scroll: Option<bool>,
-    /// Whether to enable drag-and-drop operations in the project panel.
+    /// 是否在项目面板中启用拖放操作
     ///
-    /// Default: true
+    /// 默认值：true
     pub drag_and_drop: Option<bool>,
-    /// Settings for automatically opening files.
+    /// 自动打开文件的设置
     pub auto_open: Option<ProjectPanelAutoOpenSettings>,
-    /// How to order sibling entries in the project panel.
+    /// 项目面板中同级条目的排序方式
     ///
-    /// Default: directories_first
+    /// 默认值：directories_first
     pub sort_mode: Option<ProjectPanelSortMode>,
-    /// Whether to sort file and folder names case-sensitively in the project panel.
-    /// This works in combination with `sort_mode`. `sort_mode` controls how files and
-    /// directories are grouped, while this setting controls how names are compared.
+    /// 是否在项目面板中区分大小写地排序文件和文件夹名称。
+    /// 此项与 `sort_mode` 配合使用。`sort_mode` 控制文件和目录的分组方式。
+    /// 此设置则控制名称的比较方式。
     ///
-    /// Default: default
+    /// 默认值：default
     pub sort_order: Option<ProjectPanelSortOrder>,
-    /// Whether to show error and warning count badges next to file names in the project panel.
+    /// 是否在项目面板中的文件名旁显示错误和警告计数徽标
     ///
-    /// Default: false
+    /// 默认值：false
     pub diagnostic_badges: Option<bool>,
-    /// Whether to show a git status indicator next to file names in the project panel.
+    /// 是否在项目面板中的文件名旁显示 Git 状态指示器
     ///
-    /// Default: false
+    /// 默认值：false
     pub git_status_indicator: Option<bool>,
 }
 
-/// Controls the width of the git diff hunk indicators in the gutter.
+/// 控制装订线中 Git 差异区块指示器的宽度
 #[derive(
     Clone,
     Copy,
@@ -938,12 +982,15 @@ pub struct ProjectPanelSettingsContent {
 #[strum_discriminants(derive(strum::VariantArray, strum::VariantNames, strum::FromRepr))]
 #[serde(rename_all = "snake_case")]
 pub enum ProjectPanelTitleTooltipDelay {
-    /// Default is 1500ms.
+    /// 默认值为 1500 ms
     #[default]
+    #[strum_discriminants(strum(serialize = "默认"))]
     Default,
-    /// A custom offset in milliseconds for the tooltip show delay.
+    /// 工具提示显示前的自定义延迟（毫秒）
+    #[strum_discriminants(strum(serialize = "自定义"))]
     Custom(crate::DelayMs),
-    /// Disables the tooltip
+    /// 禁用工具提示
+    #[strum_discriminants(strum(serialize = "已禁用"))]
     Disabled,
 }
 
@@ -963,10 +1010,12 @@ pub enum ProjectPanelTitleTooltipDelay {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum ProjectPanelEntrySpacing {
-    /// Comfortable spacing of entries.
+    /// 条目的舒适间距
     #[default]
+    #[strum(serialize = "舒适")]
     Comfortable,
-    /// The standard spacing of entries.
+    /// 条目的标准间距
+    #[strum(serialize = "标准")]
     Standard,
 }
 
@@ -986,12 +1035,15 @@ pub enum ProjectPanelEntrySpacing {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum FolderIndicator {
-    /// Show a folder icon.
+    /// 显示文件夹图标
     #[default]
+    #[strum(serialize = "图标")]
     Icon,
-    /// Show a disclosure chevron.
+    /// 显示展开箭头
+    #[strum(serialize = "箭头")]
     Chevron,
-    /// Show a disclosure chevron followed by a folder icon.
+    /// 先显示展开箭头，再显示文件夹图标
+    #[strum(serialize = "两者")]
     Both,
 }
 
@@ -1021,12 +1073,15 @@ impl FolderIndicator {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum ProjectPanelSortMode {
-    /// Show directories first, then files
+    /// 先显示目录，后显示文件
     #[default]
+    #[strum(serialize = "目录优先")]
     DirectoriesFirst,
-    /// Mix directories and files together
+    /// 文件夹与文件混合显示
+    #[strum(serialize = "混合")]
     Mixed,
-    /// Show files first, then directories
+    /// 先显示文件，再显示目录
+    #[strum(serialize = "文件优先")]
     FilesFirst,
 }
 
@@ -1046,23 +1101,28 @@ pub enum ProjectPanelSortMode {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum ProjectPanelSortOrder {
-    /// Case-insensitive natural sort with lowercase preferred in ties.
-    /// Numbers in file names are compared by value (e.g., `file2` before `file10`).
+    /// 不区分大小写的自然排序，排序结果相同时小写名称优先。
+    /// 文件名中的数字按数值比较（例如，`file2` 在 `file10` 之前）。
     #[default]
+    #[strum(serialize = "默认")]
     Default,
-    /// Uppercase names are grouped before lowercase names, with case-insensitive
-    /// natural sort within each group. Dot-prefixed names sort before both groups.
+    /// 大写名称排在小写名称之前，在各组内使用不区分大小写的
+    /// 自然排序。以点开头的名称排在两组之前。
+    #[strum(serialize = "大写优先")]
     Upper,
-    /// Lowercase names are grouped before uppercase names, with case-insensitive
-    /// natural sort within each group. Dot-prefixed names sort before both groups.
+    /// 小写名称排在大写名称之前，在各组内使用不区分大小写的
+    /// 自然排序。以点开头的名称排在两组之前。
+    #[strum(serialize = "小写优先")]
     Lower,
-    /// Pure Unicode codepoint comparison. No case folding, no natural number sorting.
-    /// Uppercase ASCII sorts before lowercase. Accented characters sort after ASCII.
+    /// 纯 Unicode 码位比较，不进行大小写折叠，不进行自然数排序
+    /// ASCII 大写字母排在小写字母之前，带重音字符排在 ASCII 字符之后
+    #[strum(serialize = "Unicode")]
     Unicode,
-    /// Files are grouped by their last extension (case-insensitive) in ascending order,
-    /// with extensionless files, including dotfiles such as `.gitignore`, first.
-    /// Dotfiles with a further suffix, such as `.config.json`, keep that extension.
-    /// Within a group, names use the default natural sort.
+    /// 文件按其最后一个扩展名（不区分大小写）升序分组，
+    /// 没有扩展名的文件（包括 `.gitignore` 等点文件）排在最前。
+    /// 带有额外后缀的点文件（如 `.config.json`）保留该扩展名。
+    /// 组内名称使用默认的自然排序。
+    #[strum(serialize = "文件扩展名")]
     Extension,
 }
 
@@ -1093,15 +1153,15 @@ impl From<ProjectPanelSortOrder> for util::paths::SortOrder {
     Copy, Clone, Debug, Serialize, Deserialize, JsonSchema, MergeFrom, PartialEq, Eq, Default,
 )]
 pub struct ProjectPanelScrollbarSettingsContent {
-    /// When to show the scrollbar in the project panel.
+    /// 在项目面板中显示滚动条的时机
     ///
-    /// Default: inherits editor scrollbar settings
+    /// 默认值：继承编辑器滚动条设置
     pub show: Option<ShowScrollbar>,
-    /// Whether to allow horizontal scrolling in the project panel.
-    /// When false, the view is locked to the leftmost position and
-    /// long file names are clipped.
+    /// 是否允许在项目面板中水平滚动
+    /// 为 false 时，视图将锁定到最左侧位置，
+    /// 过长的文件名将被截断。
     ///
-    /// Default: true
+    /// 默认值：true
     pub horizontal_scroll: Option<bool>,
 }
 
@@ -1113,7 +1173,7 @@ pub struct ProjectPanelIndentGuidesSettings {
     pub show: Option<ShowIndentGuides>,
 }
 
-/// Controls how semantic tokens from language servers are used for syntax highlighting.
+/// 控制语言服务器的语义标记在语法高亮中的使用方式
 #[derive(
     Debug,
     PartialEq,
@@ -1131,23 +1191,26 @@ pub struct ProjectPanelIndentGuidesSettings {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum SemanticTokens {
-    /// Do not request semantic tokens from language servers.
+    /// 不从语言服务器请求语义标记
     #[default]
+    #[strum(serialize = "关闭")]
     Off,
-    /// Use LSP semantic tokens together with tree-sitter highlighting.
+    /// 将 LSP 语义标记与 tree-sitter 高亮结合使用
+    #[strum(serialize = "组合")]
     Combined,
-    /// Use LSP semantic tokens exclusively, replacing tree-sitter highlighting.
+    /// 完全使用 LSP 语义标记，替换 tree-sitter 高亮
+    #[strum(serialize = "完整")]
     Full,
 }
 
 impl SemanticTokens {
-    /// Returns true if semantic tokens should be requested from language servers.
+    /// 如果应从语言服务器请求语义标记，则返回 true
     pub fn enabled(&self) -> bool {
         self != &Self::Off
     }
 
-    /// Returns true if tree-sitter syntax highlighting should be used.
-    /// In `full` mode, tree-sitter is disabled in favor of LSP semantic tokens.
+    /// 如果应使用 tree-sitter 语法高亮，则返回 true
+    /// 在 `full` 模式下，tree-sitter 将被禁用，改用 LSP 语义标记。
     pub fn use_tree_sitter(&self) -> bool {
         self != &Self::Full
     }
@@ -1169,15 +1232,17 @@ impl SemanticTokens {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum DocumentFoldingRanges {
-    /// Do not request folding ranges from language servers; use tree-sitter and indent-based folding.
+    /// 不从语言服务器请求折叠范围，改用 tree-sitter 和基于缩进的折叠
     #[default]
+    #[strum(serialize = "关闭")]
     Off,
-    /// Use LSP folding wherever possible, falling back to tree-sitter and indent-based folding when no results were returned by the server.
+    /// 尽可能使用 LSP 折叠，当服务器未返回结果时回退到 tree-sitter 和基于缩进的折叠
+    #[strum(serialize = "开启")]
     On,
 }
 
 impl DocumentFoldingRanges {
-    /// Returns true if LSP folding ranges should be requested from language servers.
+    /// 如果应从语言服务器请求 LSP 折叠范围，则返回 true
     pub fn enabled(&self) -> bool {
         self != &Self::Off
     }
@@ -1199,18 +1264,20 @@ impl DocumentFoldingRanges {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum DocumentSymbols {
-    /// Use tree-sitter queries to compute document symbols for outlines and breadcrumbs (default).
+    /// 使用 tree-sitter 查询计算用于大纲和面包屑的文档符号（默认）
     #[default]
     #[serde(alias = "tree_sitter")]
+    #[strum(serialize = "关闭")]
     Off,
-    /// Use the language server's `textDocument/documentSymbol` LSP response for outlines and
-    /// breadcrumbs. When enabled, tree-sitter is not used for document symbols.
+    /// 使用语言服务器的 `textDocument/documentSymbol` LSP 响应生成大纲和
+    /// 面包屑。启用后，将不使用 tree-sitter 计算文档符号。
     #[serde(alias = "language_server")]
+    #[strum(serialize = "开启")]
     On,
 }
 
 impl DocumentSymbols {
-    /// Returns true if LSP document symbols should be used instead of tree-sitter.
+    /// 如果应使用 LSP 文档符号而非 tree-sitter，则返回 true
     pub fn lsp_enabled(&self) -> bool {
         self == &Self::On
     }

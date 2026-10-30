@@ -95,11 +95,8 @@ pub static MINIDUMP_ENDPOINT: LazyLock<Option<String>> = LazyLock::new(|| {
         .or_else(|| env::var("ZED_MINIDUMP_ENDPOINT").ok())
 });
 
-pub fn should_install_crash_handler(channel: ReleaseChannel) -> bool {
-    matches!(
-        env::var("ZED_GENERATE_MINIDUMPS").as_deref(),
-        Ok("true" | "1")
-    ) || (channel != ReleaseChannel::Dev && MINIDUMP_ENDPOINT.is_some())
+pub fn should_install_crash_handler(_channel: ReleaseChannel) -> bool {
+    false
 }
 
 static DOTNET_PROJECT_FILES_REGEX: LazyLock<Regex> = LazyLock::new(|| {
@@ -658,6 +655,13 @@ impl Telemetry {
     }
 
     pub async fn flush_events_inner(self: &Arc<Self>) -> Result<()> {
+        if !self.metrics_enabled() {
+            let mut state = self.state.lock();
+            state.events_queue.clear();
+            state.flush_events_task.take();
+            return Ok(());
+        }
+
         let (json_bytes, request_body) = {
             let mut state = self.state.lock();
             state.first_event_date_time = None;

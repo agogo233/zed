@@ -252,7 +252,7 @@ struct AutoUpdateSetting(bool);
 
 /// Whether or not to automatically check for updates.
 ///
-/// Default: true
+/// Default: false
 impl Settings for AutoUpdateSetting {
     fn from_settings(content: &settings::SettingsContent) -> Self {
         Self(content.auto_update.unwrap())
@@ -275,71 +275,22 @@ pub fn init(client: Arc<Client>, cx: &mut App) {
     .detach();
 
     let version = release_channel::AppVersion::global(cx);
-    let auto_updater = cx.new(|cx| {
-        let updater = AutoUpdater::new(version, client, cx);
-
-        let poll_for_updates = ReleaseChannel::try_global(cx)
-            .map(|channel| channel.poll_for_updates())
-            .unwrap_or(false);
-
-        if option_env!("ZED_UPDATE_EXPLANATION").is_none()
-            && env::var("ZED_UPDATE_EXPLANATION").is_err()
-            && poll_for_updates
-        {
-            let mut update_subscription = AutoUpdateSetting::get_global(cx)
-                .0
-                .then(|| updater.start_polling(cx));
-
-            cx.observe_global::<SettingsStore>(move |updater: &mut AutoUpdater, cx| {
-                if AutoUpdateSetting::get_global(cx).0 {
-                    if update_subscription.is_none() {
-                        update_subscription = Some(updater.start_polling(cx))
-                    }
-                } else {
-                    update_subscription.take();
-                }
-            })
-            .detach();
-        }
-
-        updater
-    });
+    let auto_updater = cx.new(|cx| AutoUpdater::new(version, client, cx));
     cx.set_global(GlobalAutoUpdate(Some(auto_updater)));
 }
 
 pub fn check(_: &Check, window: &mut Window, cx: &mut App) {
-    if let Some(message) = option_env!("ZED_UPDATE_EXPLANATION")
+    let message = option_env!("ZED_UPDATE_EXPLANATION")
         .map(ToOwned::to_owned)
         .or_else(|| env::var("ZED_UPDATE_EXPLANATION").ok())
-    {
-        drop(window.prompt(
-            gpui::PromptLevel::Info,
-            "Zed was installed via a package manager.",
-            Some(&message),
-            &["OK"],
-            cx,
-        ));
-        return;
-    }
-
-    if !ReleaseChannel::try_global(cx)
-        .map(|channel| channel.poll_for_updates())
-        .unwrap_or(false)
-    {
-        return;
-    }
-
-    if let Some(updater) = AutoUpdater::get(cx) {
-        updater.update(cx, |updater, cx| updater.poll(UpdateCheckType::Manual, cx));
-    } else {
-        drop(window.prompt(
-            gpui::PromptLevel::Info,
-            "Could not check for updates",
-            Some("Auto-updates disabled for non-bundled app."),
-            &["OK"],
-            cx,
-        ));
-    }
+        .unwrap_or_else(|| "Updates are distributed via GitHub Releases.".to_string());
+    drop(window.prompt(
+        gpui::PromptLevel::Info,
+        "This build does not check zed.dev for updates.",
+        Some(&message),
+        &["OK"],
+        cx,
+    ));
 }
 
 pub fn release_notes_url(cx: &mut App) -> Option<String> {
@@ -1384,7 +1335,7 @@ mod tests {
     impl Global for InstallOverride {}
 
     #[gpui::test]
-    fn test_auto_update_defaults_to_true(cx: &mut TestAppContext) {
+    fn test_auto_update_defaults_to_false(cx: &mut TestAppContext) {
         cx.update(|cx| {
             let mut store = SettingsStore::new(cx, &settings::default_settings());
             store
@@ -1394,7 +1345,7 @@ mod tests {
                 .set_user_settings("{}", cx)
                 .expect("Unable to set user settings");
             cx.set_global(store);
-            assert!(AutoUpdateSetting::get_global(cx).0);
+            assert!(!AutoUpdateSetting::get_global(cx).0);
         });
     }
 

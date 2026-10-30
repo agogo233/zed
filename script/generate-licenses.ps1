@@ -29,7 +29,10 @@ try {
 
 if ($needsInstall) {
     Write-Host "Installing cargo-about@$CARGO_ABOUT_VERSION..."
+    $oldWrapper = $env:RUSTC_WRAPPER
+    $env:RUSTC_WRAPPER = $null
     cargo install "cargo-about@$CARGO_ABOUT_VERSION"
+    $env:RUSTC_WRAPPER = $oldWrapper
 }
 
 Write-Host "Generating cargo licenses"

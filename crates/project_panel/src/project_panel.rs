@@ -2842,10 +2842,10 @@ impl ProjectPanel {
         S: AsRef<str>,
     {
         let (message_start, confirmation_label, detail) = match kind {
-            RemovalKind::Trash => ("移至回收站", "Trash", None),
+            RemovalKind::Trash => ("移至回收站", "移至回收站", None),
             RemovalKind::Delete => (
                 "永久删除",
-                "Delete",
+                "删除",
                 Some("此操作无法撤销。"),
             ),
         };

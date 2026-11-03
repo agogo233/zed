@@ -1891,13 +1891,13 @@ impl ConversationView {
                 .unwrap_or_else(|| "正在加载…".into()),
             ServerState::LoadError { error, .. } => match error {
                 LoadError::Unsupported { .. } => {
-                    format!("Upgrade {}", self.agent.agent_id()).into()
+                    format!("升级 {}", self.agent.agent_id()).into()
                 }
                 LoadError::FailedToInstall(_) => {
-                    format!("Failed to Install {}", self.agent.agent_id()).into()
+                    format!("安装 {} 失败", self.agent.agent_id()).into()
                 }
-                LoadError::Exited { .. } => format!("{} Exited", self.agent.agent_id()).into(),
-                LoadError::Other(_) => format!("Error Loading {}", self.agent.agent_id()).into(),
+                LoadError::Exited { .. } => format!("{} 已退出", self.agent.agent_id()).into(),
+                LoadError::Other(_) => format!("加载 {} 出错", self.agent.agent_id()).into(),
             },
         }
     }

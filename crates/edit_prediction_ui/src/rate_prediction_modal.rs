@@ -1411,22 +1411,22 @@ struct FeedbackCompletionProvider;
 
 impl FeedbackCompletionProvider {
     const FAILURE_MODES: &'static [(&'static str, &'static str)] = &[
-        ("@location", "Unexpected location"),
-        ("@malformed", "Incomplete, cut off, or syntax error"),
+        ("@location", "位置不符合预期"),
+        ("@malformed", "不完整、被截断或存在语法错误"),
         (
             "@deleted",
-            "Deleted code that should be kept (use `@reverted` if it undid a recent edit)",
+            "删除了应保留的代码（如果撤销了最近的编辑，请使用 `@reverted`）",
         ),
-        ("@style", "Wrong coding style or conventions"),
-        ("@repetitive", "Repeated existing code"),
-        ("@hallucinated", "Referenced non-existent symbols"),
-        ("@formatting", "Wrong indentation or structure"),
-        ("@aggressive", "Changed more than expected"),
-        ("@conservative", "Too cautious, changed too little"),
-        ("@context", "Ignored or misunderstood context"),
-        ("@reverted", "Undid recent edits"),
-        ("@cursor_position", "Cursor placed in unhelpful position"),
-        ("@whitespace", "Unwanted whitespace or newline changes"),
+        ("@style", "编码风格或约定不正确"),
+        ("@repetitive", "重复了已有代码"),
+        ("@hallucinated", "引用了不存在的符号"),
+        ("@formatting", "缩进或结构不正确"),
+        ("@aggressive", "改动超出预期"),
+        ("@conservative", "过于保守，改动过少"),
+        ("@context", "忽略或误解了上下文"),
+        ("@reverted", "撤销了最近的编辑"),
+        ("@cursor_position", "光标位置没有帮助"),
+        ("@whitespace", "不需要的空白或换行更改"),
     ];
 }
 

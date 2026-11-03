@@ -17,13 +17,13 @@ pub enum AiSettingItemStatus {
 impl AiSettingItemStatus {
     fn tooltip_text(&self) -> &'static str {
         match self {
-            Self::Stopped => "Server is stopped.",
-            Self::Starting => "Server is starting.",
-            Self::Running => "Server is active.",
-            Self::Error => "Server has an error.",
-            Self::AuthRequired => "Authentication Required.",
-            Self::ClientSecretRequired => "Client Secret Required.",
-            Self::Authenticating => "Waiting for Authorization…",
+            Self::Stopped => "服务器已停止。",
+            Self::Starting => "服务器正在启动。",
+            Self::Running => "服务器运行中。",
+            Self::Error => "服务器出错。",
+            Self::AuthRequired => "需要身份验证。",
+            Self::ClientSecretRequired => "需要客户端密钥。",
+            Self::Authenticating => "正在等待授权…",
         }
     }
 

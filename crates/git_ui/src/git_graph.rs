@@ -2801,9 +2801,9 @@ impl GitGraph {
     ) {
         let is_path_history = matches!(self.log_source, LogSource::Path(_));
         let columns: &[&str] = if is_path_history {
-            &["Description", "Date", "Author", "Commit"]
+            &["描述", "日期", "作者", "提交"]
         } else {
-            &["Refs", "Graph", "Description", "Date", "Author", "Commit"]
+            &["引用", "图", "描述", "日期", "作者", "提交"]
         };
 
         let filter = self.column_visibility.clone();
@@ -3141,7 +3141,7 @@ impl GitGraph {
                                     let focus_handle = self.focus_handle.clone();
                                     move |_window, cx: &mut App| {
                                         Tooltip::for_action_in(
-                                            "Close Details Panel",
+                                            "关闭详情面板",
                                             &Cancel,
                                             &focus_handle,
                                             cx,
@@ -3361,7 +3361,7 @@ impl GitGraph {
                                         )
                                         .tooltip({
                                             move |_window, cx: &mut App| {
-                                                Tooltip::simple("Open In Browser", cx)
+                                                Tooltip::simple("在浏览器中打开", cx)
                                             }
                                         })
                                         .start_icon(
@@ -4298,9 +4298,9 @@ impl GitGraph {
                             }))
                             .tooltip({
                                 let label = if !collapsed {
-                                    "Hide Commit Message"
+                                    "隐藏提交消息"
                                 } else {
-                                    "Show Commit Message"
+                                    "显示提交消息"
                                 };
 
                                 move |_window, cx: &mut App| Tooltip::simple(label, cx)

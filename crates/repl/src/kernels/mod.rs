@@ -694,13 +694,13 @@ impl KernelStatus {
 impl ToString for KernelStatus {
     fn to_string(&self) -> String {
         match self {
-            KernelStatus::Idle => "Idle".to_string(),
-            KernelStatus::Busy => "Busy".to_string(),
-            KernelStatus::Starting => "Starting".to_string(),
-            KernelStatus::Error => "Error".to_string(),
-            KernelStatus::ShuttingDown => "Shutting Down".to_string(),
-            KernelStatus::Shutdown => "Shutdown".to_string(),
-            KernelStatus::Restarting => "Restarting".to_string(),
+            KernelStatus::Idle => "空闲".to_string(),
+            KernelStatus::Busy => "忙碌".to_string(),
+            KernelStatus::Starting => "正在启动".to_string(),
+            KernelStatus::Error => "错误".to_string(),
+            KernelStatus::ShuttingDown => "正在关闭".to_string(),
+            KernelStatus::Shutdown => "已关闭".to_string(),
+            KernelStatus::Restarting => "正在重启".to_string(),
         }
     }
 }

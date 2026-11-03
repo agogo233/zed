@@ -90,7 +90,7 @@ impl WslRemoteConnection {
             has_wsl_interop: false,
             home_dir: None,
         };
-        delegate.set_status(Some("Detecting WSL environment"), cx);
+        delegate.set_status(Some("正在检测 WSL 环境"), cx);
         this.shell = this
             .detect_shell()
             .await
@@ -304,7 +304,7 @@ impl WslRemoteConnection {
         delegate: &Arc<dyn RemoteClientDelegate>,
         cx: &mut AsyncApp,
     ) -> Result<()> {
-        delegate.set_status(Some("Uploading remote server"), cx);
+        delegate.set_status(Some("正在上传远程服务器"), cx);
 
         if let Some(parent) = dst_path.parent() {
             let parent = parent.display(PathStyle::Unix);
@@ -331,7 +331,7 @@ impl WslRemoteConnection {
                 log::warn!(
                     "failed to upload remote server via /mnt, falling back to wsl.exe stdin: {cp_err:#}"
                 );
-                delegate.set_status(Some("Streaming remote server into WSL"), cx);
+                delegate.set_status(Some("正在将远程服务器流式传输到 WSL"), cx);
                 self.stream_file_into_wsl(src_path, dst_path)
                     .await
                     .with_context(|| {
@@ -421,7 +421,7 @@ impl WslRemoteConnection {
         delegate: &Arc<dyn RemoteClientDelegate>,
         cx: &mut AsyncApp,
     ) -> Result<()> {
-        delegate.set_status(Some("Extracting remote server"), cx);
+        delegate.set_status(Some("正在解压远程服务器"), cx);
 
         let tmp_path_str = tmp_path.display(PathStyle::Unix);
         let dst_path_str = dst_path.display(PathStyle::Unix);
@@ -459,7 +459,7 @@ impl RemoteConnection for WslRemoteConnection {
         delegate: Arc<dyn RemoteClientDelegate>,
         cx: &mut AsyncApp,
     ) -> Task<Result<i32>> {
-        delegate.set_status(Some("Starting proxy"), cx);
+        delegate.set_status(Some("正在启动代理"), cx);
 
         let Some(remote_binary_path) = &self.remote_binary_path else {
             return Task::ready(Err(anyhow!("Remote binary path not set")));

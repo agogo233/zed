@@ -2654,7 +2654,7 @@ mod tests {
         cx.run_until_parked();
         assert!(cx.has_pending_prompt());
 
-        cx.simulate_prompt_answer("Force Delete");
+        cx.simulate_prompt_answer("强制删除");
         cx.run_until_parked();
 
         let repo_branches = branch_list
@@ -2733,7 +2733,7 @@ mod tests {
         cx.run_until_parked();
         assert!(cx.has_pending_prompt());
 
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         cx.run_until_parked();
         assert!(!cx.has_pending_prompt());
 

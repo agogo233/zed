@@ -1002,23 +1002,23 @@ impl ExtensionsPage {
             match self.filter {
                 ExtensionFilter::All => {
                     if has_search {
-                        "No extensions that match your search."
+                        "没有匹配搜索的扩展。"
                     } else {
-                        "No extensions."
+                        "暂无扩展。"
                     }
                 }
                 ExtensionFilter::Installed => {
                     if has_search {
-                        "No installed extensions that match your search."
+                        "没有匹配搜索的已安装扩展。"
                     } else {
-                        "No installed extensions."
+                        "暂无已安装的扩展。"
                     }
                 }
                 ExtensionFilter::NotInstalled => {
                     if has_search {
-                        "No not installed extensions that match your search."
+                        "没有匹配搜索的未安装扩展。"
                     } else {
-                        "No not installed extensions."
+                        "暂无未安装的扩展。"
                     }
                 }
             }

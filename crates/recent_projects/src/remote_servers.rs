@@ -1368,10 +1368,10 @@ impl PickerDelegate for RemoteServerPickerDelegate {
                             window.dispatch_action(menu::SecondaryConfirm.boxed_clone(), cx)
                         }),
                 )
-                .child(confirm_button("Open".into()))
+                .child(confirm_button("打开".into()))
                 .into_any_element()
         } else {
-            confirm_button("Select".into()).into_any_element()
+            confirm_button("选择".into()).into_any_element()
         };
 
         Some(
@@ -2431,7 +2431,7 @@ impl RemoteServerProjects {
                             .pb_1()
                             .child(
                                 ModalHeader::new().child(
-                                    Headline::new("Dev Containers").size(HeadlineSize::XSmall),
+                                    Headline::new("开发容器").size(HeadlineSize::XSmall),
                                 ),
                             )
                             .child(ListSeparator)

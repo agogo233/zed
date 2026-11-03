@@ -599,12 +599,12 @@ impl<T: 'static> PromptEditor<T> {
     fn thumbs_up(&mut self, _: &ThumbsUpResult, _window: &mut Window, cx: &mut Context<Self>) {
         match &self.session_state.completion {
             CompletionState::Pending => {
-                self.toast("Can't rate, still generating...", None, cx);
+                self.toast("无法评分，仍在生成中…", None, cx);
                 return;
             }
             CompletionState::Rated => {
                 self.toast(
-                    "Already rated this completion",
+                    "已对此补全评分",
                     Some(self.session_state.session_id),
                     cx,
                 );
@@ -614,7 +614,7 @@ impl<T: 'static> PromptEditor<T> {
                 let model_info = self.model_selector.read(cx).active_model(cx);
                 let (model_id, use_streaming_tools) = {
                     let Some(model) = model_info else {
-                        self.toast("No configured model", None, cx);
+                        self.toast("未配置模型", None, cx);
                         return;
                     };
                     (
@@ -659,12 +659,12 @@ impl<T: 'static> PromptEditor<T> {
     fn thumbs_down(&mut self, _: &ThumbsDownResult, _window: &mut Window, cx: &mut Context<Self>) {
         match &self.session_state.completion {
             CompletionState::Pending => {
-                self.toast("Can't rate, still generating...", None, cx);
+                self.toast("无法评分，仍在生成中…", None, cx);
                 return;
             }
             CompletionState::Rated => {
                 self.toast(
-                    "Already rated this completion",
+                    "已对此补全评分",
                     Some(self.session_state.session_id),
                     cx,
                 );
@@ -674,7 +674,7 @@ impl<T: 'static> PromptEditor<T> {
                 let model_info = self.model_selector.read(cx).active_model(cx);
                 let (model_telemetry_id, use_streaming_tools) = {
                     let Some(model) = model_info else {
-                        self.toast("No configured model", None, cx);
+                        self.toast("未配置模型", None, cx);
                         return;
                     };
                     (

@@ -8248,7 +8248,7 @@ mod tests {
         });
 
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Save all");
+        cx.simulate_prompt_answer("全部保存");
         save.await.unwrap();
         assert_item_labels(&pane, [], cx);
 
@@ -8268,7 +8268,7 @@ mod tests {
         });
 
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Discard all");
+        cx.simulate_prompt_answer("全部放弃");
         save.await.unwrap();
         assert_item_labels(&pane, [], cx);
 
@@ -8298,7 +8298,7 @@ mod tests {
         });
 
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Discard all");
+        cx.simulate_prompt_answer("全部放弃");
         close_task.await.unwrap();
         assert_item_labels(&pane, [], cx);
 
@@ -8322,7 +8322,7 @@ mod tests {
         });
 
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         close_task.await.unwrap();
         assert_item_labels(&pane, ["Dirty*^"], cx);
     }
@@ -8361,7 +8361,7 @@ mod tests {
         });
 
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Discard all");
+        cx.simulate_prompt_answer("全部放弃");
         close_task.await.unwrap();
         assert_item_labels(&pane, [], cx);
 
@@ -8403,7 +8403,7 @@ mod tests {
         });
 
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Don't Save");
+        cx.simulate_prompt_answer("不保存");
         close_task.await.unwrap();
         assert_item_labels(&pane, [], cx);
 
@@ -8536,7 +8536,7 @@ mod tests {
         });
 
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Discard all");
+        cx.simulate_prompt_answer("全部放弃");
         close_task.await.unwrap();
         assert_item_labels(&pane, [], cx);
 
@@ -8652,7 +8652,7 @@ mod tests {
         });
 
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Save all");
+        cx.simulate_prompt_answer("全部保存");
         save.await.unwrap();
         assert_item_labels(&pane, ["C", "A*^"], cx);
 
@@ -8683,7 +8683,7 @@ mod tests {
         });
 
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Discard all");
+        cx.simulate_prompt_answer("全部放弃");
         save.await.unwrap();
         assert_item_labels(&pane, ["C", "A*^"], cx);
     }

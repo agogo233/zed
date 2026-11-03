@@ -174,7 +174,7 @@ fn general_page(cx: &App) -> SettingsPage {
             }),
             SettingsPageItem::SettingItem(SettingItem {
                 title: "打开新窗口时",
-                description: "What to show when opening a new window; Readme opens a project's README when no items are open, leaving the pane empty if none is found.",
+                description: "打开新窗口时显示的内容；Readme 会在没有打开项时打开项目的 README，若未找到则保持窗格为空。",
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("on_new_window"),
@@ -6904,8 +6904,8 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "Debugger Panel Default Width",
-                description: "Default width in pixels when the debug panel is docked to the left or right.",
+                title: "调试器面板默认宽度",
+                description: "调试面板停靠在左侧或右侧时的默认宽度（像素）。",
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("debugger.default_width"),
@@ -6923,8 +6923,8 @@ fn panels_page() -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "Debugger Panel Default Height",
-                description: "Default height in pixels when the debug panel is docked to the bottom.",
+                title: "调试器面板默认高度",
+                description: "调试面板停靠在底部时的默认高度（像素）。",
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("debugger.default_height"),
@@ -8270,8 +8270,8 @@ fn version_control_page() -> SettingsPage {
             SettingsPageItem::DynamicItem(DynamicItem {
                 discriminant: SettingItem {
                     files: USER,
-                    title: "Auto Fetch",
-                    description: "Automatically fetch the default branch's remote and the current branch's upstream remote.",
+                    title: "自动 Fetch",
+                    description: "自动获取默认分支的远程以及当前分支的上游远程。",
                     field: Box::new(SettingField::<bool> {
                         organization_override: None,
                         json_path: Some("git.auto_fetch.enabled"),
@@ -8310,8 +8310,8 @@ fn version_control_page() -> SettingsPage {
                     vec![],
                     vec![SettingItem {
                         files: USER,
-                        title: "Auto Fetch Interval",
-                        description: "How long to wait between automatic fetches, in seconds. (min: 15)",
+                        title: "自动 Fetch 间隔",
+                        description: "自动获取之间的等待时间（秒，最小 15）。",
                         field: Box::new(SettingField::<u64> {
                             organization_override: None,
                             json_path: Some("git.auto_fetch.interval_secs"),

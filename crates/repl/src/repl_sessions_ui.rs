@@ -244,7 +244,7 @@ impl Render for ReplSessionsPage {
         if kernel_specifications.is_empty() {
             let instructions = "要在编辑器中交互式运行代码，需要安装并配置 Jupyter 内核";
 
-            return ReplSessionsContainer::new("No Jupyter Kernels Available")
+            return ReplSessionsContainer::new("没有可用的 Jupyter 内核")
                 .child(Label::new(instructions))
                 .child(
                     h_flex().w_full().p_4().justify_center().gap_2().child(
@@ -266,7 +266,7 @@ impl Render for ReplSessionsPage {
         if sessions.is_empty() {
             let instructions = "要在 Jupyter 内核中运行代码，选中代码并使用 'repl::Run' 命令";
 
-            return ReplSessionsContainer::new("No Jupyter Kernel Sessions").child(
+            return ReplSessionsContainer::new("没有 Jupyter 内核会话").child(
                 v_flex()
                     .child(Label::new(instructions))
                     .child(KeyBinding::for_action(&Run, cx)),

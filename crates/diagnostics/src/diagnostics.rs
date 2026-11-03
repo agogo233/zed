@@ -752,7 +752,7 @@ impl Item for ProjectDiagnosticsEditor {
     }
 
     fn tab_tooltip_text(&self, _: &App) -> Option<SharedString> {
-        Some("Project Diagnostics".into())
+        Some("项目诊断".into())
     }
 
     fn tab_content_text(&self, _detail: usize, _: &App) -> SharedString {

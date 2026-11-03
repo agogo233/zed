@@ -2257,7 +2257,7 @@ impl PickerDelegate for FileFinderDelegate {
         _cx: &mut Context<Picker<Self>>,
     ) -> Vec<picker::PickerAction> {
         let open_label: SharedString = if self.selected_matches.len() > 1 {
-            "Open multiple".into()
+            "打开多个文件".into()
         } else {
             "打开文件".into()
         };

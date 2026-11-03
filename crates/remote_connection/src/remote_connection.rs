@@ -119,7 +119,7 @@ impl RemoteConnectionPrompt {
     pub fn confirm(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         if let Some((_, tx)) = self.prompt.take() {
             self.prompt_cancellation_task.take();
-            self.status_message = Some("Connecting".into());
+            self.status_message = Some("正在连接".into());
 
             let pw = self.editor.text(cx);
             if let Ok(secure) = EncryptedPassword::try_from(pw.as_ref()) {

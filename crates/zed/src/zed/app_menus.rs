@@ -125,7 +125,7 @@ pub fn app_menus(cx: &mut App) -> Vec<Menu> {
                     if cfg!(not(target_os = "macos")) {
                         "打开文件夹..."
                     } else {
-                        "Open…"
+                        "打开…"
                     },
                     workspace::Open::default(),
                 ),

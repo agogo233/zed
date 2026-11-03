@@ -1940,28 +1940,28 @@ impl ThreadView {
                 .map(|(submission_id, record)| {
                     let (status, detail, settled): (SharedString, Option<SharedString>, bool) =
                         match &record.state {
-                            SubmissionState::Pending => ("Sending…".into(), None, false),
+                            SubmissionState::Pending => ("正在发送…".into(), None, false),
                             SubmissionState::Accepted { echoed: false, .. } => (
-                                "Waiting…".into(),
-                                Some("The agent accepted this message but hasn't shown it yet.".into()),
+                                "正在等待…".into(),
+                                Some("智能体已接受此消息，但尚未显示。".into()),
                                 false,
                             ),
                             SubmissionState::Disconnected { receipt: Some(_) } => (
-                                "Connection lost".into(),
-                                Some("The agent accepted this message, then the connection was lost.".into()),
+                                "连接已断开".into(),
+                                Some("智能体已接受此消息，随后连接断开。".into()),
                                 true,
                             ),
                             SubmissionState::Disconnected { receipt: None } => (
-                                "Connection lost".into(),
-                                Some("The connection was lost before the agent confirmed this message.".into()),
+                                "连接已断开".into(),
+                                Some("智能体确认此消息前连接已断开。".into()),
                                 true,
                             ),
                             SubmissionState::Failed(error) => (
-                                "Failed".into(),
+                                "失败".into(),
                                 Some(util::truncate_and_trailoff(error, 500).into()),
                                 true,
                             ),
-                            SubmissionState::Cancelled => ("Cancelled".into(), None, true),
+                            SubmissionState::Cancelled => ("已取消".into(), None, true),
                             _ => ("消息".into(), None, false),
                         };
                     let preview: String =
@@ -3929,9 +3929,9 @@ impl ThreadView {
 
         let retry_message = if state.max_attempts == 1 {
             if next_attempt_in_secs == 1 {
-                "Retrying. Next attempt in 1 second.".to_string()
+                "正在重试。1 秒后进行下次尝试。".to_string()
             } else {
-                format!("Retrying. Next attempt in {next_attempt_in_secs} seconds.")
+                format!("正在重试。{next_attempt_in_secs} 秒后进行下次尝试。")
             }
         } else if next_attempt_in_secs == 1 {
             format!(
@@ -8984,9 +8984,9 @@ impl ThreadView {
     ) -> Div {
         let own_session_id = self.thread.read(cx).session_id().clone();
         let (icon, direction, participant) = match message.side(&own_session_id) {
-            SessionMessageSide::Outgoing { recipient } => (IconName::Send, "To", recipient),
-            SessionMessageSide::Incoming { sender } => (IconName::Envelope, "From", sender),
-            SessionMessageSide::Unknown => (IconName::Envelope, "Message between sessions", None),
+            SessionMessageSide::Outgoing { recipient } => (IconName::Send, "发送至", recipient),
+            SessionMessageSide::Incoming { sender } => (IconName::Envelope, "来自", sender),
+            SessionMessageSide::Unknown => (IconName::Envelope, "会话间消息", None),
         };
         let participant = participant.map(|session_id| {
             match self.session_participant_label(session_id, cx) {
@@ -8995,7 +8995,7 @@ impl ThreadView {
                     .child(
                         Button::new(("session-message-participant", entry_ix), label)
                             .label_size(LabelSize::Small)
-                            .tooltip(Tooltip::text("Open Session"))
+                            .tooltip(Tooltip::text("打开会话"))
                             .on_click(cx.listener({
                                 let session_id = session_id.clone();
                                 move |this, _, window, cx| {
@@ -9010,7 +9010,7 @@ impl ThreadView {
                     )
                     .into_any_element(),
                 // The RFD allows messages naming a session this conversation never learned about.
-                None => Label::new("Unavailable Session")
+                None => Label::new("会话不可用")
                     .size(LabelSize::Small)
                     .color(Color::Muted)
                     .into_any_element(),
@@ -9255,7 +9255,7 @@ impl ThreadView {
         let working_dir = working_dir
             .as_ref()
             .map(|path| path.display().to_string())
-            .unwrap_or_else(|| "current directory".to_string());
+            .unwrap_or_else(|| "当前目录".to_string());
 
         let command_element = self.render_collapsible_command(
             header_group.clone(),
@@ -9414,7 +9414,7 @@ impl ThreadView {
         let (title, detail, docs_section): (SharedString, SharedString, Option<&'static str>) =
             match reason {
                 SandboxNotAppliedReason::ErrorLinuxWsl(error) => (
-                    "Couldn't create a sandbox".into(),
+                    "无法创建沙盒".into(),
                     error.user_facing_message().into(),
                     Some(error.docs_section()),
                 ),
@@ -12166,7 +12166,7 @@ impl ThreadView {
                             .size(IconSize::Small)
                             .color(Color::Muted),
                     )
-                    .tooltip(Tooltip::text("Subagent Status Unknown"))
+                    .tooltip(Tooltip::text("子智能体状态未知"))
                     .into_any_element(),
             });
 

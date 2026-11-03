@@ -2973,10 +2973,10 @@ impl CollabPanel {
                     channel_link = Some(channel.link(cx));
                     (channel_icon, channel_tooltip_text) = match channel.visibility {
                         proto::ChannelVisibility::Public => {
-                            (Some(IconName::Hash), Some("Copy Public Channel Link"))
+                            (Some(IconName::Hash), Some("复制公开频道链接"))
                         }
                         proto::ChannelVisibility::Members => {
-                            (Some(IconName::Lock), Some("Copy Private Channel Link"))
+                            (Some(IconName::Lock), Some("复制私有频道链接"))
                         }
                     };
 

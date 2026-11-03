@@ -47,7 +47,7 @@ impl CopyButton {
             message: message.into(),
             icon_size: IconSize::Small,
             disabled: false,
-            tooltip_label: "Copy".into(),
+            tooltip_label: "复制".into(),
             visible_on_hover: None,
             custom_on_click: None,
         }

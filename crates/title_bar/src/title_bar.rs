@@ -974,9 +974,9 @@ impl TitleBar {
 
         let display_label: SharedString = if let Some(ref name) = creation_in_progress {
             if is_switch {
-                format!("Loading {}…", name).into()
+                format!("正在加载 {}…", name).into()
             } else {
-                format!("Creating {}…", name).into()
+                format!("正在创建 {}…", name).into()
             }
         } else {
             worktree_label.clone()
@@ -1318,7 +1318,7 @@ impl TitleBar {
                         .separator()
                     })
                     .when(is_signed_in, |this| {
-                        let mut this = this.header("Organization");
+                        let mut this = this.header("组织");
 
                         for (organization, plan) in &organizations {
                             let organization = organization.clone();

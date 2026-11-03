@@ -189,9 +189,10 @@ where
 }
 
 #[derive(strum::EnumIter, strum::VariantNames)]
-#[strum(serialize_all = "title_case")]
 enum TrashCancel {
+    #[strum(serialize = "移至回收站")]
     Trash,
+    #[strum(serialize = "取消")]
     Cancel,
 }
 
@@ -418,7 +419,7 @@ fn git_panel_view_options_menu(
 
         context_menu
             .context(focus_handle.clone())
-            .header("View")
+            .header("视图")
             .item({
                 let view_options_menu_state = view_options_menu_state.clone();
                 ContextMenuEntry::new("列表")
@@ -449,7 +450,7 @@ fn git_panel_view_options_menu(
             })
             .when(!state.tree_view, |this| {
                 this.separator()
-                    .header("Sort By")
+                    .header("排序方式")
                     .item({
                         let view_options_menu_state = view_options_menu_state.clone();
                         ContextMenuEntry::new("路径")
@@ -480,7 +481,7 @@ fn git_panel_view_options_menu(
                     })
             })
             .separator()
-            .header("Group By")
+            .header("分组方式")
             .item({
                 let view_options_menu_state = view_options_menu_state.clone();
                 ContextMenuEntry::new("无")
@@ -3386,9 +3387,10 @@ impl GitPanel {
         }
 
         #[derive(strum::EnumIter, strum::VariantNames)]
-        #[strum(serialize_all = "title_case")]
         enum RestoreCancel {
+            #[strum(serialize = "还原已跟踪文件")]
             RestoreTrackedFiles,
+            #[strum(serialize = "取消")]
             Cancel,
         }
         let prompt = prompt(
@@ -4277,9 +4279,10 @@ impl GitPanel {
                 Ok(true)
             } else {
                 #[derive(strum::EnumIter, strum::VariantNames)]
-                #[strum(serialize_all = "title_case")]
                 enum CancelUncommit {
+                    #[strum(serialize = "撤销提交")]
                     Uncommit,
+                    #[strum(serialize = "取消")]
                     Cancel,
                 }
                 let detail = format!(
@@ -4287,7 +4290,7 @@ impl GitPanel {
                     pushed_to.into_iter().join(", ")
                 );
                 let result = cx
-                    .update(|window, cx| prompt("Are you sure?", Some(&detail), window, cx))?
+                    .update(|window, cx| prompt("确定要撤销提交吗？", Some(&detail), window, cx))?
                     .await?;
 
                 match result {
@@ -8643,8 +8646,8 @@ impl GitPanel {
                     Some("所有冲突已标记为已解决")
                 } else {
                     match stage_intent {
-                        StageIntent::Stage => Some("Stage All"),
-                        StageIntent::Unstage => Some("Unstage All"),
+                        StageIntent::Stage => Some("全部暂存"),
+                        StageIntent::Unstage => Some("全部取消暂存"),
                         StageIntent::Toggle => None,
                     }
                 };
@@ -17103,7 +17106,7 @@ mod tests {
         });
 
         assert!(cx.has_pending_prompt(), "bulk revert should prompt once");
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         cx.executor().run_until_parked();
 
         assert!(fs.is_file(path!("/project/a.txt").as_ref()).await);
@@ -17171,7 +17174,7 @@ mod tests {
         });
 
         assert!(cx.has_pending_prompt());
-        cx.simulate_prompt_answer("Trash");
+        cx.simulate_prompt_answer("移至回收站");
         cx.executor().run_until_parked();
 
         assert!(
@@ -17200,7 +17203,7 @@ mod tests {
             panel.clean_all(&TrashUntrackedFiles, window, cx);
         });
         assert!(cx.has_pending_prompt());
-        cx.simulate_prompt_answer("Trash");
+        cx.simulate_prompt_answer("移至回收站");
         cx.executor().run_until_parked();
 
         assert!(!fs.is_file(path!("/project/untracked.txt").as_ref()).await);

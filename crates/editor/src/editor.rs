@@ -2224,7 +2224,7 @@ impl Editor {
                             Self::open_transaction_for_hidden_buffers(
                                 workspace,
                                 transaction.clone(),
-                                "Rename".to_string(),
+                                "重命名".to_string(),
                                 window,
                                 cx,
                             );
@@ -4534,10 +4534,10 @@ impl Editor {
         let toggle_state_entry: Option<(&str, Box<dyn Action>)> =
             breakpoint.as_ref().map(|bp| match bp.1.state {
                 BreakpointState::Enabled => {
-                    ("Disable", crate::actions::DisableBreakpoint.boxed_clone())
+                    ("禁用", crate::actions::DisableBreakpoint.boxed_clone())
                 }
                 BreakpointState::Disabled => {
-                    ("Enable", crate::actions::EnableBreakpoint.boxed_clone())
+                    ("启用", crate::actions::EnableBreakpoint.boxed_clone())
                 }
             });
 

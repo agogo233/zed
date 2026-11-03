@@ -317,7 +317,7 @@ async fn build_remote_server_from_source(
         let rustup = which("rustup", cx)
             .await?
             .context("rustup not found on $PATH, install rustup (see https://rustup.rs/)")?;
-        delegate.set_status(Some("Adding rustup target for cross-compilation"), cx);
+        delegate.set_status(Some("正在添加用于交叉编译的 rustup 目标"), cx);
         log::info!("adding rustup target");
         run_cmd(
             new_command(rustup)
@@ -390,7 +390,7 @@ async fn build_remote_server_from_source(
 
     match remote_build_mode {
         RemoteServerBuildMode::Native => {
-            delegate.set_status(Some("Building remote server binary from source"), cx);
+            delegate.set_status(Some("正在从源码构建远程服务器二进制文件"), cx);
             log::info!("building remote server binary from source");
         }
         RemoteServerBuildMode::Zig => {
@@ -405,7 +405,7 @@ async fn build_remote_server_from_source(
             ensure_rustup_target(&triple, delegate, cx).await?;
 
             if which("cargo-zigbuild", cx).await?.is_none() {
-                delegate.set_status(Some("Installing cargo-zigbuild for cross-compilation"), cx);
+                delegate.set_status(Some("正在安装用于交叉编译的 cargo-zigbuild"), cx);
                 log::info!("installing cargo-zigbuild");
                 run_cmd(new_command("cargo").args(["install", "--locked", "cargo-zigbuild"]))
                     .await?;
@@ -436,7 +436,7 @@ async fn build_remote_server_from_source(
 
             ensure_rustup_target(&triple, delegate, cx).await?;
 
-            delegate.set_status(Some("Adding llvm-tools for cross-compilation"), cx);
+            delegate.set_status(Some("正在添加用于交叉编译的 llvm-tools"), cx);
             log::info!("adding llvm-tools component");
             run_cmd(
                 new_command("rustup")
@@ -488,7 +488,7 @@ async fn build_remote_server_from_source(
         .with_extension(if platform.os.is_windows() { "exe" } else { "" });
 
     let path = if !build_remote_server.contains("nocompress") {
-        delegate.set_status(Some("Compressing binary"), cx);
+        delegate.set_status(Some("正在压缩二进制文件"), cx);
 
         #[cfg(not(target_os = "windows"))]
         let archive_path = {

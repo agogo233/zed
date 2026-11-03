@@ -1069,7 +1069,7 @@ impl Render for LspLogToolbarItemView {
                                 row.server_name.0, row.worktree_root_name,
                             ))
                         })
-                        .unwrap_or_else(|| "No server selected".into()),
+                        .unwrap_or_else(|| "未选择服务器".into()),
                 )
                 .end_icon(
                     Icon::new(IconName::ChevronDown)

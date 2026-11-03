@@ -688,7 +688,7 @@ impl MentionSet {
         cx.spawn(async move |_, _| {
             let content = diagnostics_task
                 .await?
-                .unwrap_or_else(|| "No diagnostics found.".into());
+                .unwrap_or_else(|| "未找到诊断信息。".into());
             Ok(Mention::Text {
                 content,
                 tracked_buffers: Vec::new(),
@@ -720,7 +720,7 @@ impl MentionSet {
             let diff_text = diff_receiver.await??;
             if diff_text.is_empty() {
                 Ok(Mention::Text {
-                    content: "No changes found in branch diff.".into(),
+                    content: "分支差异中未找到更改。".into(),
                     tracked_buffers: Vec::new(),
                 })
             } else {

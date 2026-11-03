@@ -935,11 +935,11 @@ impl Render for Session {
                         })),
                 ),
             ),
-            Kernel::StartingKernel(_) => (Some("Starting".into()), None),
-            Kernel::ErroredLaunch(err) => (Some(format!("Error: {err}")), None),
-            Kernel::ShuttingDown => (Some("Shutting Down".into()), None),
-            Kernel::Shutdown => (Some("Shutdown".into()), None),
-            Kernel::Restarting => (Some("Restarting".into()), None),
+            Kernel::StartingKernel(_) => (Some("正在启动".into()), None),
+            Kernel::ErroredLaunch(err) => (Some(format!("错误：{err}")), None),
+            Kernel::ShuttingDown => (Some("正在关闭".into()), None),
+            Kernel::Shutdown => (Some("已关闭".into()), None),
+            Kernel::Restarting => (Some("正在重启".into()), None),
         };
 
         KernelListItem::new(self.kernel_specification.clone())

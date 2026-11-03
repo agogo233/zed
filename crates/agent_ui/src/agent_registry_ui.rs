@@ -299,23 +299,23 @@ impl AgentRegistryPage {
             match self.filter {
                 RegistryFilter::All => {
                     if has_search {
-                        "No agents match your search."
+                        "没有匹配搜索的智能体。"
                     } else {
-                        "No agents available."
+                        "暂无可用智能体。"
                     }
                 }
                 RegistryFilter::Installed => {
                     if has_search {
-                        "No installed agents match your search."
+                        "没有匹配搜索的已安装智能体。"
                     } else {
-                        "No installed agents."
+                        "暂无已安装的智能体。"
                     }
                 }
                 RegistryFilter::NotInstalled => {
                     if has_search {
-                        "No uninstalled agents match your search."
+                        "没有匹配搜索的未安装智能体。"
                     } else {
-                        "No uninstalled agents."
+                        "暂无未安装的智能体。"
                     }
                 }
             }

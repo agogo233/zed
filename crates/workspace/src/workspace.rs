@@ -13453,7 +13453,7 @@ mod tests {
             w.prepare_to_close(CloseIntent::CloseWindow, window, cx)
         });
         cx.executor().run_until_parked();
-        cx.simulate_prompt_answer("Cancel"); // cancel save all
+        cx.simulate_prompt_answer("取消"); // cancel save all
         cx.executor().run_until_parked();
         assert!(!cx.has_pending_prompt());
         assert!(!task.await.unwrap());
@@ -13536,7 +13536,7 @@ mod tests {
             .unwrap();
 
         // User cancels the save prompt from workspace B
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         cx.run_until_parked();
 
         // Window should still exist because workspace B's close was cancelled
@@ -13613,7 +13613,7 @@ mod tests {
             .unwrap();
 
         // Cancel the prompt — user stays on workspace B.
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         cx.run_until_parked();
         let removed = remove_task.await.unwrap();
         assert!(!removed, "removal should have been cancelled");
@@ -13645,7 +13645,7 @@ mod tests {
         cx.run_until_parked();
 
         // Accept the save prompt.
-        cx.simulate_prompt_answer("Don't Save");
+        cx.simulate_prompt_answer("不保存");
         cx.run_until_parked();
         let removed = remove_task.await.unwrap();
         assert!(removed, "removal should have succeeded");
@@ -13739,7 +13739,7 @@ mod tests {
             "closing a no-folder workspace with a dirty serializable item should prompt, \
              since the workspace will not be reachable after close"
         );
-        cx.simulate_prompt_answer("Don't Save");
+        cx.simulate_prompt_answer("不保存");
         cx.executor().run_until_parked();
 
         assert!(task.await.unwrap());
@@ -13775,7 +13775,7 @@ mod tests {
         cx.executor().run_until_parked();
 
         assert!(cx.has_pending_prompt());
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         cx.executor().run_until_parked();
 
         assert!(!workspace.read_with(cx, |workspace, _| workspace.removing));
@@ -13809,7 +13809,7 @@ mod tests {
         cx.executor().run_until_parked();
 
         assert!(cx.has_pending_prompt());
-        cx.simulate_prompt_answer("Save");
+        cx.simulate_prompt_answer("保存");
         cx.executor().run_until_parked();
 
         assert!(!workspace.read_with(cx, |workspace, _| workspace.removing));
@@ -13885,7 +13885,7 @@ mod tests {
             "replacing a workspace with a dirty serializable item should prompt, \
              since the workspace will be detached afterwards"
         );
-        cx.simulate_prompt_answer("Don't Save");
+        cx.simulate_prompt_answer("不保存");
         cx.executor().run_until_parked();
 
         assert!(task.await.unwrap());
@@ -13964,7 +13964,7 @@ mod tests {
             "a save/discard prompt should be shown for the dirty scratch item \
              when its serialization fails"
         );
-        cx.simulate_prompt_answer("Don't Save");
+        cx.simulate_prompt_answer("不保存");
         cx.executor().run_until_parked();
 
         // Preparing to close succeeds, even though serialization failed.
@@ -14026,7 +14026,7 @@ mod tests {
         cx.executor().run_until_parked();
 
         assert!(cx.has_pending_prompt());
-        cx.simulate_prompt_answer("Save all");
+        cx.simulate_prompt_answer("全部保存");
 
         cx.executor().run_until_parked();
 
@@ -14041,7 +14041,7 @@ mod tests {
         assert!(cx.has_pending_prompt());
 
         // Cancel saving item 3.
-        cx.simulate_prompt_answer("Discard Edits");
+        cx.simulate_prompt_answer("放弃编辑");
         cx.executor().run_until_parked();
 
         // Item 3 is reloaded. There's a prompt to save item 4.
@@ -14183,7 +14183,7 @@ mod tests {
 
         // With best-effort close, cancelling item 1 keeps it open but items 4
         // and (3,4) still close since their entries exist in left pane.
-        cx.simulate_prompt_answer("Cancel");
+        cx.simulate_prompt_answer("取消");
         close.await;
 
         right_pane.read_with(cx, |pane, _| {
@@ -14217,7 +14217,7 @@ mod tests {
         // But we can only save whole items, so saving (2,3) for entry 3 includes 2.
         // assert!(!details.contains("2.txt"));
 
-        cx.simulate_prompt_answer("Save all");
+        cx.simulate_prompt_answer("全部保存");
         cx.executor().run_until_parked();
         close.await;
 
@@ -17497,7 +17497,7 @@ mod tests {
             cx.has_pending_prompt(),
             "Dirty multi buffer should prompt a save dialog"
         );
-        cx.simulate_prompt_answer("Save");
+        cx.simulate_prompt_answer("保存");
         cx.background_executor.run_until_parked();
         close_multi_buffer_task
             .await

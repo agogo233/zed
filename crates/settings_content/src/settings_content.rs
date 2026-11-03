@@ -639,7 +639,7 @@ impl Default for TelemetrySettingsContent {
 }
 
 #[with_fallible_options]
-#[derive(Default, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema, Clone, MergeFrom)]
+#[derive(Default, Debug, PartialEq, Serialize, Deserialize, JsonSchema, Clone, MergeFrom)]
 pub struct DebuggerSettingsContent {
     /// 确定步进粒度
     ///
@@ -669,6 +669,14 @@ pub struct DebuggerSettingsContent {
     ///
     /// 默认值：Bottom
     pub dock: Option<DockPosition>,
+    /// Default width of the debug panel in pixels when docked to the left or right.
+    ///
+    /// Default: 300
+    pub default_width: Option<PixelSetting>,
+    /// Default height of the debug panel in pixels when docked to the bottom.
+    ///
+    /// Default: 300
+    pub default_height: Option<PixelSetting>,
 }
 
 /// 步进请求 `next`、`stepIn`、`stepOut` 和 `stepBack` 中一次“步进”的粒度

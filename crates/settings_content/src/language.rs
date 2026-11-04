@@ -131,6 +131,10 @@ impl EditPredictionProvider {
 #[with_fallible_options]
 #[derive(Clone, Debug, Default, Serialize, Deserialize, JsonSchema, MergeFrom, PartialEq)]
 pub struct EditPredictionSettingsContent {
+    /// 是否在状态栏中显示编辑预测按钮。
+    ///
+    /// 默认值：true
+    pub button: Option<bool>,
     /// 确定要使用的编辑预测提供商
     pub provider: Option<EditPredictionProvider>,
     /// 对匹配这些 glob 模式的文件禁用编辑预测

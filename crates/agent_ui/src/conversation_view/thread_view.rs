@@ -2723,6 +2723,32 @@ impl ThreadView {
         cx.notify();
     }
 
+    fn cancel_tool_call(&self, tool_call_id: acp_v2::ToolCallId, cx: &mut Context<Self>) {
+        let cancellation = self
+            .thread
+            .update(cx, |thread, cx| thread.cancel_tool_call(&tool_call_id, cx));
+        cx.spawn(async move |this, cx| {
+            if let Err(error) = cancellation.await {
+                this.update(cx, |this, cx| this.handle_thread_error(error, cx))
+                    .log_err();
+            }
+        })
+        .detach();
+    }
+
+    fn cancel_terminal(&self, terminal_id: acp_v2::TerminalId, cx: &mut Context<Self>) {
+        let cancellation = self
+            .thread
+            .update(cx, |thread, cx| thread.cancel_terminal(&terminal_id, cx));
+        cx.spawn(async move |this, cx| {
+            if let Err(error) = cancellation.await {
+                this.update(cx, |this, cx| this.handle_thread_error(error, cx))
+                    .log_err();
+            }
+        })
+        .detach();
+    }
+
     fn cancel_thread(&self, thread: &Entity<AcpThread>, cx: &mut Context<Self>) -> Task<()> {
         let cancellation = thread.update(cx, |thread, cx| thread.cancel(cx));
         cx.spawn(async move |this, cx| {
@@ -5580,20 +5606,34 @@ impl ThreadView {
     }
 
     fn render_activity_status_label(&self, cx: &Context<Self>) -> Option<impl IntoElement> {
-        let (id, label, tooltip) = match self.thread.read(cx).foreground_activity() {
+        let thread = self.thread.read(cx);
+        let (id, label, tooltip): (_, SharedString, _) = match thread.foreground_activity() {
             ForegroundActivity::Unconfirmed => (
                 "activity-unconfirmed",
-                "活动状态未确认",
+                "活动状态未确认".into(),
                 "会话已连接，但智能体尚未报告其活动状态。可以手动发送；自动发送会等待空闲状态得到确认。",
             ),
             ForegroundActivity::Unknown => (
                 "activity-unknown",
-                "活动状态未知",
+                "活动状态未知".into(),
                 "智能体目前无法判断自己是否正在工作。可以手动发送；自动发送会等待空闲状态得到确认。",
             ),
-            ForegroundActivity::Idle
-            | ForegroundActivity::Running
-            | ForegroundActivity::RequiresAction => return None,
+            ForegroundActivity::Idle => {
+                let background_count = thread.background_work().map_or(0, <[_]>::len);
+                if background_count == 0 {
+                    return None;
+                }
+                (
+                    "activity-background",
+                    if background_count == 1 {
+                        "1 task in background".into()
+                    } else {
+                        format!("{background_count} tasks in background").into()
+                    },
+                    "The agent finished responding, but work it started keeps running in the background, such as a dev server or a scheduled task.",
+                )
+            }
+            ForegroundActivity::Running | ForegroundActivity::RequiresAction => return None,
         };
         Some(
             div()
@@ -9225,7 +9265,7 @@ impl ThreadView {
         let command_finished = output.is_some()
             && !matches!(
                 tool_call.status(),
-                ToolCallStatus::InProgress | ToolCallStatus::Pending
+                ToolCallStatus::InProgress | ToolCallStatus::Pending | ToolCallStatus::Paused
             );
         let truncated_output =
             output.is_some_and(|output| output.original_content_len > output.content.len());
@@ -9330,6 +9370,14 @@ impl ThreadView {
                     }
                 })
             })
+        })
+        .when(terminal_data.can_cancel(), |header| {
+            let terminal_id = terminal_data.id().clone();
+            header
+                .on_stop(cx.listener(move |this, _event, _window, cx| {
+                    this.cancel_terminal(terminal_id.clone(), cx);
+                }))
+                .stop_description("Asks the agent to stop this process. Its output stays here.")
         })
         .when_some(truncated_tooltip, |header, tooltip| {
             header.truncated(tooltip)
@@ -9750,6 +9798,7 @@ impl ThreadView {
                 }
                 ToolCallStatus::Pending
                 | ToolCallStatus::InProgress
+                | ToolCallStatus::Paused
                 | ToolCallStatus::Completed
                 | ToolCallStatus::Failed
                 | ToolCallStatus::Canceled => v_flex()
@@ -9997,6 +10046,42 @@ impl ThreadView {
                                                         )
                                                     })
                                                 }),
+                                        )
+                                    })
+                                    .when(
+                                        tool_call.status() == ToolCallStatus::Paused,
+                                        |this| {
+                                            this.child(
+                                                div()
+                                                    .id(("paused-tool-call", entry_ix))
+                                                    .pr_0p5()
+                                                    .tooltip(Tooltip::text("Paused"))
+                                                    .child(
+                                                        Icon::new(IconName::DebugPause)
+                                                            .color(Color::Muted)
+                                                            .size(IconSize::Small),
+                                                    ),
+                                            )
+                                        },
+                                    )
+                                    .when(tool_call.can_cancel(), |this| {
+                                        let tool_call_id = tool_call.id.clone();
+                                        this.child(
+                                            IconButton::new(
+                                                ("stop-tool-call", entry_ix),
+                                                IconName::Stop,
+                                            )
+                                            .icon_size(IconSize::Small)
+                                            .icon_color(Color::Error)
+                                            .tooltip(Tooltip::text("Stop Tool Call"))
+                                            .on_click(cx.listener(
+                                                move |this, _, _window, cx| {
+                                                    this.cancel_tool_call(
+                                                        tool_call_id.clone(),
+                                                        cx,
+                                                    );
+                                                },
+                                            )),
                                         )
                                     })
                                     .when(tool_call_output_focus, |this| {

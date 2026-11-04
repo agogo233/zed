@@ -16260,15 +16260,15 @@ pub(crate) mod tests {
                     .map(|choice| choice.allow.name.as_ref())
                     .collect();
                 assert!(
-                    labels.contains(&"Always for terminal"),
+                    labels.contains(&"始终用于 terminal"),
                     "Missing 'Always for terminal' option"
                 );
                 assert!(
-                    labels.contains(&"Always for `cargo build` commands"),
+                    labels.contains(&"始终用于 `cargo build` 命令"),
                     "Missing pattern option"
                 );
                 assert!(
-                    labels.contains(&"Only this time"),
+                    labels.contains(&"仅本次"),
                     "Missing 'Only this time' option"
                 );
             }
@@ -16357,11 +16357,11 @@ pub(crate) mod tests {
                     .map(|choice| choice.allow.name.as_ref())
                     .collect();
                 assert!(
-                    labels.contains(&"Always for edit file"),
+                    labels.contains(&"始终用于 edit file"),
                     "Missing 'Always for edit file' option"
                 );
                 assert!(
-                    labels.contains(&"Always for `src/`"),
+                    labels.contains(&"始终用于 `src/`"),
                     "Missing path pattern option"
                 );
             } else {
@@ -16452,11 +16452,11 @@ pub(crate) mod tests {
                     .map(|choice| choice.allow.name.as_ref())
                     .collect();
                 assert!(
-                    labels.contains(&"Always for fetch"),
+                    labels.contains(&"始终用于 fetch"),
                     "Missing 'Always for fetch' option"
                 );
                 assert!(
-                    labels.contains(&"Always for `docs.rs`"),
+                    labels.contains(&"始终用于 `docs.rs`"),
                     "Missing domain pattern option"
                 );
             } else {
@@ -16556,11 +16556,11 @@ pub(crate) mod tests {
                     .map(|choice| choice.allow.name.as_ref())
                     .collect();
                 assert!(
-                    labels.contains(&"Always for terminal"),
+                    labels.contains(&"始终用于 terminal"),
                     "Missing 'Always for terminal' option"
                 );
                 assert!(
-                    labels.contains(&"Only this time"),
+                    labels.contains(&"仅本次"),
                     "Missing 'Only this time' option"
                 );
                 // Should NOT contain a pattern option
@@ -17550,7 +17550,7 @@ pub(crate) mod tests {
             "the embedded child's dropdown should open"
         );
         let choice = cx
-            .debug_bounds("MENU_ITEM-Always for terminal")
+            .debug_bounds("MENU_ITEM-始终用于 terminal")
             .expect("the rendered dropdown should offer the terminal-wide choice");
         cx.simulate_click(choice.center(), gpui::Modifiers::default());
         cx.run_until_parked();
@@ -17558,7 +17558,7 @@ pub(crate) mod tests {
         if with_patterns {
             for _ in 0..2 {
                 let pattern = cx
-                    .debug_bounds("MENU_ITEM-Always for `sort` commands")
+                    .debug_bounds("MENU_ITEM-始终用于 `sort` 命令")
                     .expect("the rendered persistent dropdown should offer the sort pattern");
                 cx.simulate_click(pattern.center(), gpui::Modifiers::default());
                 cx.run_until_parked();
@@ -17680,7 +17680,7 @@ pub(crate) mod tests {
                 assert!(child_request_ids.insert(request_id));
                 cx.run_until_parked();
                 assert!(
-                    cx.debug_bounds("PERMISSION_BUTTONS-embedded-permission-child-Only this time")
+                    cx.debug_bounds("PERMISSION_BUTTONS-embedded-permission-child-仅本次")
                         .is_some(),
                     "the running child card should display a fresh default selection in the root"
                 );
@@ -17706,9 +17706,9 @@ pub(crate) mod tests {
                 });
                 let selected_buttons = cx
                     .debug_bounds(if with_patterns {
-                        "PERMISSION_BUTTONS-embedded-permission-child-Always for selected commands"
+                        "PERMISSION_BUTTONS-embedded-permission-child-始终用于所选命令"
                     } else {
-                        "PERMISSION_BUTTONS-embedded-permission-child-Always for terminal"
+                        "PERMISSION_BUTTONS-embedded-permission-child-始终用于 terminal"
                     })
                     .expect("the embedded card must render the shared selection");
 
@@ -17782,7 +17782,7 @@ pub(crate) mod tests {
                         });
                         assert!(
                             cx.debug_bounds(
-                                "PERMISSION_BUTTONS-embedded-permission-child-Only this time"
+                                "PERMISSION_BUTTONS-embedded-permission-child-仅本次"
                             )
                             .is_some(),
                             "a superseding request must not inherit the previous UUID's selection"
@@ -19219,7 +19219,7 @@ pub(crate) mod tests {
             );
         });
         let legacy_selector: &'static str =
-            Box::leak(format!("PERMISSION_BUTTONS-{session_id}-Only this time").into_boxed_str());
+            Box::leak(format!("PERMISSION_BUTTONS-{session_id}-仅本次").into_boxed_str());
         assert!(cx.debug_bounds(legacy_selector).is_some());
         click_generic_permission(generic_id, None, cx);
         assert_eq!(
@@ -20521,7 +20521,7 @@ pub(crate) mod tests {
         active_thread(&conversation_view, cx).read_with(cx, |view, cx| {
             for (session_id, expected) in [
                 ("child", Some("Investigator")),
-                (root_session_id.0.as_ref(), Some("Main Agent")),
+                (root_session_id.0.as_ref(), Some("主智能体")),
                 ("unknown", None),
             ] {
                 assert_eq!(

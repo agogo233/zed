@@ -1376,9 +1376,9 @@ impl Render for RatePredictionsModal {
                                             .p_2()
                                             .child(
                                                 Label::new(concat!(
-                                                    "No completions yet. ",
-                                                    "Use the editor to generate some, ",
-                                                    "and make sure to rate them!"
+                                                    "尚无补全。",
+                                                    "请在编辑器中生成一些补全，",
+                                                    "并为其评分！"
                                                 ))
                                                 .color(Color::Muted),
                                             )

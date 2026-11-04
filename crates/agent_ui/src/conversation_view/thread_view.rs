@@ -68,7 +68,7 @@ pub(super) fn subagent_label(thread: &AcpThread) -> SharedString {
         .subagent_association()
         .and_then(|association| association.title.clone())
         .or_else(|| thread.title())
-        .unwrap_or_else(|| "Subagent".into())
+        .unwrap_or_else(|| "子智能体".into())
 }
 
 /// Most agents echo an accepted prompt almost immediately, so the in-flight status row
@@ -1484,7 +1484,7 @@ impl ThreadView {
     ) -> Task<Result<(Vec<acp_v2::ContentBlock>, Vec<Entity<Buffer>>)>> {
         if message_editor.read(cx).editor().read(cx).read_only(cx) {
             return Task::ready(Err(anyhow!(
-                "This draft contains unsupported content and cannot be edited or sent. Discard the draft to write a new message."
+                "此草稿包含不支持的内容，无法编辑或发送。请丢弃草稿后再撰写新消息。"
             )));
         }
         let expand = self.as_native_thread(cx).is_some_and(|thread| {
@@ -1870,7 +1870,7 @@ impl ThreadView {
             if !content.iter().all(acp_thread::content::can_convert_to_v1) {
                 self.handle_thread_error(
                     anyhow!(
-                        "This saved submission contains unsupported content and cannot be restored. The original submission has been kept."
+                        "此已保存的提交包含不支持的内容，无法还原。原始提交已保留。"
                     ),
                     cx,
                 );
@@ -2181,7 +2181,7 @@ impl ThreadView {
         if self.message_editor.read(cx).editor().read(cx).read_only(cx) {
             self.handle_thread_error(
                 anyhow!(
-                    "This draft contains unsupported content and cannot be edited or sent. Discard the draft to write a new message."
+                    "此草稿包含不支持的内容，无法编辑或发送。请丢弃草稿后再撰写新消息。"
                 ),
                 cx,
             );
@@ -2546,7 +2546,7 @@ impl ThreadView {
         if self.message_editor.read(cx).editor().read(cx).read_only(cx) {
             self.handle_thread_error(
                 anyhow!(
-                    "This draft contains unsupported content and cannot be edited or sent. Discard the draft to write a new message."
+                    "此草稿包含不支持的内容，无法编辑或发送。请丢弃草稿后再撰写新消息。"
                 ),
                 cx,
             );
@@ -2612,13 +2612,13 @@ impl ThreadView {
                 ThreadError::ZedPaymentRequired => (
                     "payment_required",
                     None,
-                    "You reached your free usage limit. Upgrade to Zed Pro for more prompts."
+                    "已达到免费使用额度。请升级到 Zed Pro 以获取更多提示次数。"
                         .into(),
                 ),
                 ThreadError::Refusal => {
                     let model_or_agent_name = self.current_model_name(cx);
                     let message = format!(
-                        "{} refused to respond to this prompt. This can happen when a model believes the prompt violates its content policy or safety guidelines, so rephrasing it can sometimes address the issue.",
+                        "{} 拒绝回应此提示。当模型认为提示违反内容政策或安全准则时可能发生，改写提示有时可以解决。",
                         model_or_agent_name
                     );
                     ("refusal", None, message.into())
@@ -2636,39 +2636,39 @@ impl ThreadView {
                 ThreadError::RateLimitExceeded { provider } => (
                     "rate_limit_exceeded",
                     None,
-                    format!("{provider}'s rate limit was reached.").into(),
+                    format!("{provider} 已达到速率限制。").into(),
                 ),
                 ThreadError::ServerOverloaded { provider } => (
                     "server_overloaded",
                     None,
-                    format!("{provider}'s servers are temporarily unavailable.").into(),
+                    format!("{provider} 的服务器暂时不可用。").into(),
                 ),
                 ThreadError::PromptTooLarge => (
                     "prompt_too_large",
                     None,
-                    "Context too large for the model's context window.".into(),
+                    "上下文超出模型的上下文窗口。".into(),
                 ),
                 ThreadError::NoCredentials { provider } => (
                     "no_api_key",
                     None,
-                    format!("No credentials configured for {provider}.").into(),
+                    format!("尚未为 {provider} 配置凭据。").into(),
                 ),
                 ThreadError::StreamError { provider } => (
                     "stream_error",
                     None,
-                    format!("Connection to {provider}'s API was interrupted.").into(),
+                    format!("与 {provider} API 的连接已中断。").into(),
                 ),
                 ThreadError::AuthenticationFailed { provider } => (
                     "invalid_api_key",
                     None,
-                    format!("Authentication with {provider} failed.").into(),
+                    format!("与 {provider} 的身份验证失败。").into(),
                 ),
                 ThreadError::PermissionDenied { provider, message } => (
                     "permission_denied",
                     None,
                     message.clone().unwrap_or_else(|| {
                         format!(
-                            "{provider}'s API rejected the request due to insufficient permissions."
+                            "{provider} 的 API 因权限不足拒绝了请求。"
                         )
                         .into()
                     }),
@@ -2679,15 +2679,15 @@ impl ThreadView {
                 ThreadError::MaxOutputTokens => (
                     "max_output_tokens",
                     None,
-                    "Model reached its maximum output length.".into(),
+                    "模型已达到最大输出长度。".into(),
                 ),
                 ThreadError::NoModelSelected => {
-                    ("no_model_selected", None, "No model selected.".into())
+                    ("no_model_selected", None, "未选择模型。".into())
                 }
                 ThreadError::ApiError { provider } => (
                     "api_error",
                     None,
-                    format!("{provider}'s API returned an unexpected error.").into(),
+                    format!("{provider} 的 API 返回了意外错误。").into(),
                 ),
                 ThreadError::Other {
                     acp_error_code,
@@ -3184,7 +3184,7 @@ impl ThreadView {
     ) -> bool {
         if self.message_editor.read(cx).editor().read(cx).read_only(cx) {
             self.handle_thread_error(
-                anyhow!("Discard the unsupported draft before moving a queued message into the composer."),
+                anyhow!("请先丢弃不支持的草稿，再将排队消息移入编辑器。"),
                 cx,
             );
             return false;
@@ -3196,7 +3196,7 @@ impl ThreadView {
                 .all(acp_thread::content::can_convert_to_v1)
         }) {
             self.handle_thread_error(
-                anyhow!("This queued message contains unsupported content and cannot be edited."),
+                anyhow!("此排队消息包含不支持的内容，无法编辑。"),
                 cx,
             );
             return false;
@@ -5190,7 +5190,7 @@ impl ThreadView {
         pending_edits: bool,
         cx: &Context<Self>,
     ) -> Div {
-        const EDIT_NOT_READY_TOOLTIP_LABEL: &str = "Wait until file edits are complete.";
+        const EDIT_NOT_READY_TOOLTIP_LABEL: &str = "请等待文件编辑完成。";
 
         let focus_handle = self.focus_handle(cx);
 
@@ -5626,11 +5626,11 @@ impl ThreadView {
                 (
                     "activity-background",
                     if background_count == 1 {
-                        "1 task in background".into()
+                        "1 个后台任务".into()
                     } else {
-                        format!("{background_count} tasks in background").into()
+                        format!("{background_count} 个后台任务").into()
                     },
-                    "The agent finished responding, but work it started keeps running in the background, such as a dev server or a scheduled task.",
+                    "智能体已完成回复，但其启动的工作仍在后台运行，例如开发服务器或定时任务。",
                 )
             }
             ForegroundActivity::Running | ForegroundActivity::RequiresAction => return None,
@@ -6138,7 +6138,7 @@ impl ThreadView {
             (ThreadSandbox::Sandboxed(settings_policy), ThreadSandbox::Unsandboxed) => {
                 let settings = augment_settings_sandbox_policy(&settings_policy, baseline);
                 SandboxStatusTooltip::disabled_for_thread(sandbox_section(
-                    "Defined in your settings:",
+                    "定义于设置中：",
                     &settings,
                     true,
                 ))
@@ -6151,7 +6151,7 @@ impl ThreadView {
                 let thread = SandboxPolicyDisplay::from_policy(&thread_policy);
                 // Omit the per-thread section when it grants nothing extra.
                 let thread = (!sandbox_policy_grants_nothing(&thread))
-                    .then(|| sandbox_section("Allowed for this thread:", &thread, false));
+                    .then(|| sandbox_section("此会话允许：", &thread, false));
                 SandboxStatusTooltip::enabled(
                     sandbox_section("Defined in your settings:", &settings, true),
                     thread,
@@ -6466,7 +6466,7 @@ impl ThreadView {
         let label = selected
             .clone()
             .or(default_effort_level)
-            .map_or("Select Effort".into(), |effort| effort.name);
+            .map_or("选择力度".into(), |effort| effort.name);
 
         let (label_color, icon) = if self.thinking_effort_menu_handle.is_deployed() {
             (Color::Accent, IconName::ChevronUp)
@@ -7271,10 +7271,10 @@ fn network_grants_nothing(network: &SandboxNetPolicy) -> bool {
 fn sandbox_fs_rows(fs: &SandboxFsDisplay) -> Vec<SandboxRow> {
     match fs {
         SandboxFsDisplay::Unrestricted => vec![SandboxRow::message(
-            "All paths except protected Git metadata",
+            "除受保护的 Git 元数据外的所有路径",
         )],
         SandboxFsDisplay::Restricted(entries) if entries.is_empty() => {
-            vec![SandboxRow::message("None")]
+            vec![SandboxRow::message("无")]
         }
         SandboxFsDisplay::Restricted(entries) => entries
             .iter()
@@ -7295,9 +7295,9 @@ fn sandbox_fs_rows(fs: &SandboxFsDisplay) -> Vec<SandboxRow> {
 fn sandbox_network_rows(network: &SandboxNetPolicy) -> Vec<SandboxRow> {
     match network {
         SandboxNetPolicy::Unrestricted => vec![SandboxRow::message("所有域名（不受限制）")],
-        SandboxNetPolicy::Blocked => vec![SandboxRow::message("None")],
+        SandboxNetPolicy::Blocked => vec![SandboxRow::message("无")],
         SandboxNetPolicy::Restricted { allowed_domains } if allowed_domains.is_empty() => {
-            vec![SandboxRow::message("None")]
+            vec![SandboxRow::message("无")]
         }
         SandboxNetPolicy::Restricted { allowed_domains } => allowed_domains
             .iter()
@@ -9163,7 +9163,7 @@ impl ThreadView {
         let conversation = self.conversation.read(cx);
         let thread = conversation.thread(session_id)?.read(cx);
         Some(if thread.parent_session_id().is_none() {
-            "Main Agent".into()
+            "主智能体".into()
         } else {
             subagent_label(thread)
         })
@@ -9377,7 +9377,7 @@ impl ThreadView {
                 .on_stop(cx.listener(move |this, _event, _window, cx| {
                     this.cancel_terminal(terminal_id.clone(), cx);
                 }))
-                .stop_description("Asks the agent to stop this process. Its output stays here.")
+                .stop_description("请求智能体停止此进程。其输出仍会保留在此处。")
         })
         .when_some(truncated_tooltip, |header, tooltip| {
             header.truncated(tooltip)
@@ -10055,7 +10055,7 @@ impl ThreadView {
                                                 div()
                                                     .id(("paused-tool-call", entry_ix))
                                                     .pr_0p5()
-                                                    .tooltip(Tooltip::text("Paused"))
+                                                    .tooltip(Tooltip::text("已暂停"))
                                                     .child(
                                                         Icon::new(IconName::DebugPause)
                                                             .color(Color::Muted)
@@ -10073,7 +10073,7 @@ impl ThreadView {
                                             )
                                             .icon_size(IconSize::Small)
                                             .icon_color(Color::Error)
-                                            .tooltip(Tooltip::text("Stop Tool Call"))
+                                            .tooltip(Tooltip::text("停止工具调用"))
                                             .on_click(cx.listener(
                                                 move |this, _, _window, cx| {
                                                     this.cancel_tool_call(
@@ -10919,13 +10919,13 @@ impl ThreadView {
 
         let dropdown_label: SharedString =
             if matches!(selection, Some(PermissionSelection::SelectedPatterns(_))) {
-                "Always for selected commands".into()
+                "始终用于所选命令".into()
             } else {
                 choices
                     .get(selected_index)
                     .or(choices.last())
                     .map(|choice| choice.label())
-                    .unwrap_or_else(|| "Only this time".into())
+                    .unwrap_or_else(|| "仅本次".into())
             };
         let permission_buttons_selector = {
             let session_id = session_id.clone();
@@ -12770,7 +12770,7 @@ impl ThreadView {
 
     fn render_zed_payment_required_error(&self, cx: &mut Context<Self>) -> Callout {
         const ERROR_MESSAGE: &str =
-            "You reached your free usage limit. Upgrade to Zed Pro for more prompts.";
+            "已达到免费使用额度。请升级到 Zed Pro 以获取更多提示次数。";
 
         Callout::new()
             .severity(Severity::Error)
@@ -12911,8 +12911,8 @@ impl ThreadView {
     }
 
     fn render_prompt_too_large_error(&self, cx: &mut Context<Self>) -> Callout {
-        const MESSAGE: &str = "This conversation is too long for the model's context window. \
-            Start a new thread or remove some attached files to continue.";
+        const MESSAGE: &str = "此对话过长，超出模型的上下文窗口。\
+            请新建会话或移除部分附加文件后再继续。";
 
         Callout::new()
             .severity(Severity::Error)
@@ -12976,7 +12976,7 @@ impl ThreadView {
                         {
                             this.handle_thread_error(
                                 anyhow!(
-                                    "This saved submission cannot be restored into the composer. The original submission and draft have been kept."
+                                    "此已保存的提交无法还原到编辑器。原始提交和草稿已保留。"
                                 ),
                                 cx,
                             );

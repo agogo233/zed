@@ -10948,18 +10948,18 @@ pub fn join_channel(
                         let detail: SharedString = match err.error_code() {
                             ErrorCode::SignedOut => "请登录后继续".into(),
                             ErrorCode::UpgradeRequired => concat!(
-                                "Your are running an unsupported version of Zed. ",
-                                "Please update to continue."
+                                "当前运行的 Zed 版本不受支持。",
+                                "请更新后继续。"
                             )
                             .into(),
                             ErrorCode::NoSuchChannel => concat!(
-                                "No matching channel was found. ",
-                                "Please check the link and try again."
+                                "未找到匹配的频道。",
+                                "请检查链接后重试。"
                             )
                             .into(),
                             ErrorCode::Forbidden => concat!(
-                                "This channel is private, and you do not have access. ",
-                                "Please ask someone to add you and try again."
+                                "此频道为私有频道，你没有访问权限。",
+                                "请让他人将你加入后再试。"
                             )
                             .into(),
                             ErrorCode::Disconnected => {

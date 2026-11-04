@@ -1149,7 +1149,7 @@ impl ToolPermissionContext {
 
         if shell_supports_always_allow {
             push_choice(
-                format!("Always for {}", tool_name.replace('_', " ")),
+                format!("始终用于 {}", tool_name.replace('_', " ")),
                 format!("always_allow:{}", tool_name),
                 format!("always_deny:{}", tool_name),
                 acp_v2::PermissionOptionKind::AllowAlways,

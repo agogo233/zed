@@ -369,10 +369,10 @@ mod tests {
         );
         assert_eq!(labeled.title(None).as_ref(), "Explore");
         for (status, title) in [
-            (SubagentStatus::Running, "Spawning Agent…"),
-            (SubagentStatus::Completed, "Spawning Agent…"),
-            (SubagentStatus::Failed, "Subagent Failed"),
-            (SubagentStatus::Canceled, "Subagent Canceled"),
+            (SubagentStatus::Running, "正在启动智能体…"),
+            (SubagentStatus::Completed, "正在启动智能体…"),
+            (SubagentStatus::Failed, "子智能体失败"),
+            (SubagentStatus::Canceled, "子智能体已取消"),
         ] {
             assert_eq!(card(None, status, None).title(None).as_ref(), title);
         }

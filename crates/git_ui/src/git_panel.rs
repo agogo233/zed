@@ -741,9 +741,9 @@ impl StageIntent {
 
     fn label(self, stage_status: impl FnOnce() -> StageStatus) -> &'static str {
         if self.resolve_with(stage_status) {
-            "Stage"
+            "暂存"
         } else {
-            "Unstage"
+            "取消暂存"
         }
     }
 }
@@ -3482,7 +3482,7 @@ impl GitPanel {
             let failed_count = errors.len();
             if let Some(first_error) = errors.into_iter().next() {
                 return Err(anyhow::anyhow!(
-                    "Failed to trash {failed_count} of {total_count} files: {first_error:#}"
+                    "将 {failed_count} / {total_count} 个文件移至回收站失败：{first_error:#}"
                 ));
             }
             Ok(())
@@ -5166,13 +5166,13 @@ impl GitPanel {
                 )
             };
 
-            let branch = branch.ok_or_else(|| anyhow::anyhow!("No active branch"))?;
+            let branch = branch.ok_or_else(|| anyhow::anyhow!("没有活动分支"))?;
             let source_branch = branch
                 .upstream
                 .as_ref()
                 .filter(|upstream| matches!(upstream.tracking, UpstreamTracking::Tracked(_)))
                 .and_then(|upstream| upstream.branch_name())
-                .ok_or_else(|| anyhow::anyhow!("No remote configured for repository"))?;
+                .ok_or_else(|| anyhow::anyhow!("仓库未配置远程"))?;
             let source_branch = source_branch.to_string();
 
             let remote_url = branch
@@ -5185,19 +5185,19 @@ impl GitPanel {
                 })
                 .or(remote_origin.as_deref())
                 .or(remote_upstream.as_deref())
-                .ok_or_else(|| anyhow::anyhow!("No remote configured for repository"))?;
+                .ok_or_else(|| anyhow::anyhow!("仓库未配置远程"))?;
             let remote_url = remote_url.to_string();
 
             let provider_registry = GitHostingProviderRegistry::global(cx);
             let Some((provider, parsed_remote)) =
                 git::parse_git_remote_url(provider_registry, &remote_url)
             else {
-                return Err(anyhow::anyhow!("Unsupported remote URL: {}", remote_url));
+                return Err(anyhow::anyhow!("不支持的远程 URL：{}", remote_url));
             };
 
             let Some(url) = provider.build_create_pull_request_url(&parsed_remote, &source_branch)
             else {
-                return Err(anyhow::anyhow!("Unable to construct pull request URL"));
+                return Err(anyhow::anyhow!("无法构造拉取请求 URL"));
             };
 
             cx.open_url(url.as_str());
@@ -5285,7 +5285,7 @@ impl GitPanel {
                     let current_branch = if always_select {
                         None
                     } else {
-                        let current_branch = repo.branch.as_ref().context("No active branch")?;
+                        let current_branch = repo.branch.as_ref().context("没有活动分支")?;
                         Some(current_branch.name().to_string())
                     };
                     anyhow::Ok(repo.get_remotes(current_branch, is_push))

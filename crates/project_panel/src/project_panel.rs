@@ -2689,7 +2689,7 @@ impl ProjectPanel {
                 if let Err(e) = task.await {
                     panel
                         .update(cx, |panel, cx| {
-                            let message = format!("Failed to restore {}: {}", file_name, e);
+                            let message = format!("还原 {} 失败：{}", file_name, e);
                             let toast = StatusToast::new(message, cx, |this, _| {
                                 this.icon(
                                     Icon::new(IconName::XCircle)
@@ -2761,7 +2761,7 @@ impl ProjectPanel {
                 if let Err(e) = receiver.await? {
                     if let Some(workspace) = workspace.upgrade() {
                         cx.update(|cx| {
-                            let message = format!("Failed to add to .gitignore: {}", e);
+                            let message = format!("添加到 .gitignore 失败：{}", e);
                             let toast = StatusToast::new(message, cx, |this, _| {
                                 this.icon(Icon::new(IconName::XCircle).color(Color::Error))
                                     .dismiss_button(true)
@@ -2808,7 +2808,7 @@ impl ProjectPanel {
                 if let Err(e) = receiver.await? {
                     if let Some(workspace) = workspace.upgrade() {
                         cx.update(|cx| {
-                            let message = format!("Failed to add to .git/info/exclude: {}", e);
+                            let message = format!("添加到 .git/info/exclude 失败：{}", e);
                             let toast = StatusToast::new(message, cx, |this, _| {
                                 this.icon(Icon::new(IconName::XCircle).color(Color::Error))
                                     .dismiss_button(true)
@@ -8429,7 +8429,7 @@ fn git_status_indicator(git_status: GitSummary) -> Option<(&'static str, Color)>
 fn explain_move_error(err: anyhow::Error, names: Option<&(String, String)>) -> anyhow::Error {
     match names {
         Some((from, to)) if already_exists_error(&err) => err.context(format!(
-            "Failed to move `{from}` to `{to}`. A file or folder already exists there."
+            "无法将 `{from}` 移动到 `{to}`。目标位置已存在文件或文件夹。"
         )),
         _ => err,
     }

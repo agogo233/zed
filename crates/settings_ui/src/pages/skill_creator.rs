@@ -1242,7 +1242,7 @@ async fn write_skill_to_worktree(
     let Some(host_check) = project.read_with(cx, |project, cx| {
         project.host_path_is_dir(&skill_dir_abs_path, cx)
     }) else {
-        anyhow::bail!("You can't create skills in a project someone shared with you.");
+        anyhow::bail!("无法在他人分享给你的项目中创建技能。");
     };
     let existing_is_dir = host_check.await.with_context(|| {
         format!(

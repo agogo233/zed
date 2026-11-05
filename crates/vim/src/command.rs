@@ -494,7 +494,7 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
             else {
                 // TODO implement save_as with absolute path
                 Task::ready(Err::<(), _>(anyhow!(
-                    "Cannot save buffer with absolute path"
+                    "无法使用绝对路径保存缓冲区"
                 )))
                 .detach_and_prompt_err(
                     "保存失败",

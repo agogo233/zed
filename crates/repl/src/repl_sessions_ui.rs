@@ -273,7 +273,7 @@ impl Render for ReplSessionsPage {
             );
         }
 
-        ReplSessionsContainer::new("Jupyter Kernel Sessions").children(sessions)
+        ReplSessionsContainer::new("Jupyter 内核会话").children(sessions)
     }
 }
 

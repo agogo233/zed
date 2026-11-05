@@ -295,7 +295,7 @@ impl EditPredictionContextView {
                     ])
                 }
                 table = table.row(vec![
-                    "Total Time".into_any_element(),
+                    "总耗时".into_any_element(),
                     format!("{} ms", (run.finished_at.unwrap_or(t0) - t0).as_millis())
                         .into_any_element(),
                 ]);

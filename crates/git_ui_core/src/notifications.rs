@@ -24,7 +24,7 @@ pub fn open_output(
     let editor = cx.new(|cx| {
         let mut editor = Editor::for_buffer(buffer, None, window, cx);
         editor.buffer().update(cx, |buffer, cx| {
-            buffer.set_title(format!("Output from git {operation}"), cx);
+            buffer.set_title(format!("git {operation} 的输出"), cx);
         });
         editor.set_read_only(true);
         editor
@@ -43,9 +43,9 @@ fn is_non_fast_forward_error(error_message: &str) -> bool {
 
 fn git_error_toast_title(action: &str, message: &str) -> String {
     if action == "push" && is_non_fast_forward_error(message) {
-        "Push rejected: fetch and integrate remote changes before pushing again".to_string()
+        "推送被拒绝：请先拉取并整合远程更改后再推送".to_string()
     } else {
-        format!("git {action} failed")
+        format!("git {action} 失败")
     }
 }
 

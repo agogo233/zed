@@ -432,9 +432,9 @@ pub(crate) fn extension_provides_label(provides: ExtensionProvides) -> &'static 
         ExtensionProvides::Grammars => "语法",
         ExtensionProvides::LanguageServers => "语言服务器",
         ExtensionProvides::ContextServers => "MCP 服务器",
-        ExtensionProvides::AgentServers => "Agent Servers",
-        ExtensionProvides::SlashCommands => "Slash Commands",
-        ExtensionProvides::IndexedDocsProviders => "Indexed Docs Providers",
+        ExtensionProvides::AgentServers => "智能体服务器",
+        ExtensionProvides::SlashCommands => "斜杠命令",
+        ExtensionProvides::IndexedDocsProviders => "索引文档提供商",
         ExtensionProvides::Snippets => "代码片段",
         ExtensionProvides::DebugAdapters => "调试适配器",
     }

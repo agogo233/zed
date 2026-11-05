@@ -18,7 +18,7 @@ pub fn clone_and_open(
         files: false,
         directories: true,
         multiple: false,
-        prompt: Some("Select as Repository Destination".into()),
+        prompt: Some("选择仓库保存位置".into()),
     });
 
     window

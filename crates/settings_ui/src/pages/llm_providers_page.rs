@@ -1274,13 +1274,13 @@ fn parse_open_ai_model(
         display_name: None,
         max_completion_tokens: Some(parse_u64_field(
             &model.max_completion_tokens,
-            "Max Completion Tokens",
+            "最大补全 Token 数",
         )?),
         max_output_tokens: Some(parse_u64_field(
             &model.max_output_tokens,
-            "Max Output Tokens",
+            "最大输出 Token 数",
         )?),
-        max_tokens: parse_u64_field(&model.max_tokens, "Max Tokens")?,
+        max_tokens: parse_u64_field(&model.max_tokens, "最大 Token 数")?,
         reasoning_effort: model.supports_thinking.then_some(model.reasoning_effort),
         capabilities: OpenAiCompatibleModelCapabilities {
             tools: model.supports_tools,
@@ -1302,11 +1302,11 @@ fn parse_anthropic_model(
     Ok(AnthropicCompatibleAvailableModel {
         name: parse_model_name(model)?,
         display_name: None,
-        max_tokens: parse_u64_field(&model.max_tokens, "Max Tokens")?,
+        max_tokens: parse_u64_field(&model.max_tokens, "最大 Token 数")?,
         tool_override: None,
         max_output_tokens: Some(parse_u64_field(
             &model.max_output_tokens,
-            "Max Output Tokens",
+            "最大输出 Token 数",
         )?),
         default_temperature: None,
         extra_beta_headers: Vec::new(),

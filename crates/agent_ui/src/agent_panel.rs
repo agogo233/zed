@@ -540,8 +540,8 @@ pub fn init(cx: &mut App) {
 
                     let content_blocks = vec![
                         acp_v2::ContentBlock::Text(acp_v2::TextContent::new(
-                            "Please review this branch diff carefully. Point out any issues, \
-                             potential bugs, or improvement opportunities you find.\n\n"
+                            "请仔细审查此分支差异。指出你发现的任何问题、\
+                             潜在缺陷或改进机会。\n\n"
                                 .to_string(),
                         )),
                         acp_v2::ContentBlock::Resource(acp_v2::EmbeddedResource::new(
@@ -803,7 +803,7 @@ fn build_conflict_resolution_prompt(conflicts: &[ConflictContent]) -> Vec<acp_v2
         let conflict = &conflicts[0];
 
         blocks.push(acp_v2::ContentBlock::Text(acp_v2::TextContent::new(
-            "Please resolve the following merge conflict in ",
+            "请解决以下文件中的合并冲突：",
         )));
         let mention = MentionUri::File {
             abs_path: PathBuf::from(conflict.file_path.clone()),
@@ -814,11 +814,10 @@ fn build_conflict_resolution_prompt(conflicts: &[ConflictContent]) -> Vec<acp_v2
 
         blocks.push(acp_v2::ContentBlock::Text(acp_v2::TextContent::new(
             indoc::formatdoc!(
-                "\nThe conflict is between branch `{ours}` (ours) and `{theirs}` (theirs).
+                "\n冲突发生在分支 `{ours}`（我方）与 `{theirs}`（对方）之间。
 
-                Analyze both versions carefully and resolve the conflict by editing \
-                the file directly. Choose the resolution that best preserves the intent \
-                of both changes, or combine them if appropriate.
+                请仔细分析两个版本，并直接编辑文件以解决冲突。\
+                选择最能保留双方改动意图的方案，或在合适时将两者合并。
 
                 ",
                 ours = conflict.ours_branch_name,
@@ -827,21 +826,18 @@ fn build_conflict_resolution_prompt(conflicts: &[ConflictContent]) -> Vec<acp_v2
         )));
     } else {
         let n = conflicts.len();
-        let unique_files: HashSet<&str> = conflicts.iter().map(|c| c.file_path.as_str()).collect();
         let ours = &conflicts[0].ours_branch_name;
         let theirs = &conflicts[0].theirs_branch_name;
         blocks.push(acp_v2::ContentBlock::Text(acp_v2::TextContent::new(
             indoc::formatdoc!(
-                "Please resolve all {n} merge conflicts below.
+                "请解决以下全部 {n} 处合并冲突。
 
-                The conflicts are between branch `{ours}` (ours) and `{theirs}` (theirs).
+                冲突发生在分支 `{ours}`（我方）与 `{theirs}`（对方）之间。
 
-                For each conflict, analyze both versions carefully and resolve them \
-                by editing the file{suffix} directly. Choose resolutions that best preserve \
-                the intent of both changes, or combine them if appropriate.
+                对每处冲突，请仔细分析两个版本，并直接编辑文件以解决。\
+                选择最能保留双方改动意图的方案，或在合适时将两者合并。
 
                 ",
-                suffix = if unique_files.len() > 1 { "s" } else { "" },
             ),
         )));
     }
@@ -861,14 +857,13 @@ fn build_conflicted_files_resolution_prompt(
     }
 
     let instruction = indoc::indoc!(
-        "The following files have unresolved merge conflicts. Please open each \
-         file, find the conflict markers (`<<<<<<<` / `=======` / `>>>>>>>`), \
-         and resolve every conflict by editing the files directly.
+        "以下文件存在未解决的合并冲突。请打开每个文件，\
+         找到冲突标记（`<<<<<<<` / `=======` / `>>>>>>>`），\
+         并直接编辑文件以解决每一处冲突。
 
-         Choose resolutions that best preserve the intent of both changes, \
-         or combine them if appropriate.
+         选择最能保留双方改动意图的方案，或在合适时将两者合并。
 
-         Files with conflicts:
+         存在冲突的文件：
          ",
     );
 

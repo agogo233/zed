@@ -973,7 +973,7 @@ impl AttachMode {
     ) -> Entity<Self> {
         let definition = ZedDebugConfig {
             adapter: debugger.unwrap_or(DebugAdapterName("".into())).0,
-            label: "Attach New Session Setup".into(),
+            label: "附加新会话设置".into(),
             request: dap::DebugRequest::Attach(task::AttachRequest { process_id: None }),
             stop_on_entry: Some(false),
         };

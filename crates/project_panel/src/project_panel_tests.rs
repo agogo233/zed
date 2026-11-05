@@ -6280,21 +6280,21 @@ async fn test_drag_onto_existing_name_shows_clear_error(cx: &mut gpui::TestAppCo
             None,
             "root",
             false,
-            "Error: Failed to move `a/1.json` to `1.json`. A file or folder already exists there.",
+            "Error: 无法将 `a/1.json` 移动到 `1.json`。目标位置已存在文件或文件夹。",
         ),
         (
             "root/a/1.json",
             None,
             "root/1.json",
             true,
-            "Error: Failed to move `a/1.json` to `1.json`. A file or folder already exists there.",
+            "Error: 无法将 `a/1.json` 移动到 `1.json`。目标位置已存在文件或文件夹。",
         ),
         (
             "root/x/y",
             Some("root/x"),
             "root/target",
             false,
-            "Error: Failed to move `x` to `target/x`. A file or folder already exists there.",
+            "Error: 无法将 `x` 移动到 `target/x`。目标位置已存在文件或文件夹。",
         ),
     ] {
         workspace.update(cx, |workspace, cx| {
@@ -6345,7 +6345,7 @@ async fn test_drag_onto_existing_name_shows_clear_error(cx: &mut gpui::TestAppCo
 fn test_explain_move_error() {
     let names = ("a/1.json".to_string(), "1.json".to_string());
     let explained_message =
-        "Failed to move `a/1.json` to `1.json`. A file or folder already exists there.";
+        "无法将 `a/1.json` 移动到 `1.json`。目标位置已存在文件或文件夹。";
 
     let local_collision =
         anyhow::Error::from(std::io::Error::from(std::io::ErrorKind::AlreadyExists))

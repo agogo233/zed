@@ -610,7 +610,7 @@ impl TitleBar {
             RemoteConnectionOptions::Ssh(_) => ("远程项目", IconName::Server),
             RemoteConnectionOptions::Wsl(_) => ("远程项目", IconName::Linux),
             RemoteConnectionOptions::Docker(_dev_container_connection) => {
-                ("Dev Container", IconName::Box)
+                ("开发容器", IconName::Box)
             }
             #[cfg(any(test, feature = "test-support"))]
             RemoteConnectionOptions::Mock(_) => ("Mock Remote Project", IconName::Server),

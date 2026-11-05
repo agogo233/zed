@@ -1491,11 +1491,11 @@ impl FileFinderDelegate {
                 } => (
                     channel_name.to_string(),
                     string_match.positions.clone(),
-                    "Channel Notes".to_string(),
+                    "频道笔记".to_string(),
                     vec![],
                 ),
                 Match::CreateNew(project_path) => (
-                    format!("Create File: {}", project_path.path.display(path_style)),
+                    format!("创建文件：{}", project_path.path.display(path_style)),
                     vec![],
                     String::from(""),
                     vec![],

@@ -312,11 +312,11 @@ impl KernelSpecification {
             Self::PythonEnv(spec) => SharedString::from(
                 spec.environment_kind
                     .clone()
-                    .unwrap_or_else(|| "Python Environment".to_string()),
+                    .unwrap_or_else(|| "Python 环境".to_string()),
             ),
-            Self::JupyterServer(_) => "Jupyter Server".into(),
-            Self::SshRemote(_) => "SSH Remote".into(),
-            Self::WslRemote(_) => "WSL Remote".into(),
+            Self::JupyterServer(_) => "Jupyter 服务器".into(),
+            Self::SshRemote(_) => "SSH 远程".into(),
+            Self::WslRemote(_) => "WSL 远程".into(),
         }
     }
 
@@ -356,9 +356,9 @@ impl KernelSpecification {
                 .as_ref()
                 .map(|kind| SharedString::from(kind.clone())),
             Self::Jupyter(_) => Some("Jupyter".into()),
-            Self::JupyterServer(_) => Some("Jupyter Server".into()),
-            Self::SshRemote(_) => Some("SSH Remote".into()),
-            Self::WslRemote(_) => Some("WSL Remote".into()),
+            Self::JupyterServer(_) => Some("Jupyter 服务器".into()),
+            Self::SshRemote(_) => Some("SSH 远程".into()),
+            Self::WslRemote(_) => Some("WSL 远程".into()),
         }
     }
 

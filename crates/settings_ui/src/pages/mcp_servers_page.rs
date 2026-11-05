@@ -870,8 +870,8 @@ pub(crate) fn open_mcp_server_form(
         "配置 MCP 服务器"
     } else {
         match transport {
-            McpTransport::Stdio => "Add Local MCP Server",
-            McpTransport::Http => "Add Remote MCP Server",
+            McpTransport::Stdio => "添加本地 MCP 服务器",
+            McpTransport::Http => "添加远程 MCP 服务器",
         }
     };
 

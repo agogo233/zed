@@ -381,16 +381,16 @@ impl Render for EditPredictionButton {
                         missing_token = edit_prediction::EditPredictionStore::try_global(cx)
                             .is_some_and(|ep_store| !ep_store.read(cx).has_mercury_api_token(cx));
                         tooltip_meta = if missing_token {
-                            "Missing API key for Mercury"
+                            "缺少 Mercury API 密钥"
                         } else if mercury_has_error {
-                            "Mercury free tier limit reached"
+                            "已达到 Mercury 免费额度上限"
                         } else {
-                            "Powered by Mercury"
+                            "由 Mercury 驱动"
                         };
                     }
                     _ => {
                         ep_icon = if enabled { icons.base } else { icons.disabled };
-                        tooltip_meta = "Powered by Zeta"
+                        tooltip_meta = "由 Zeta 驱动"
                     }
                 };
 

@@ -1136,7 +1136,7 @@ impl Item for ProjectSearchView {
             .is_empty()
             .not()
             .then(|| query_text.into())
-            .or_else(|| Some("Project Search".into()))
+            .or_else(|| Some("项目搜索".into()))
     }
 
     fn act_as_type<'a>(

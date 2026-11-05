@@ -1165,7 +1165,7 @@ impl RunningState {
                     }
                 };
                 let Some(mut task) = task_template.resolve_task("debug-build-task", &task_context) else {
-                    anyhow::bail!("Could not resolve task variables within a debug scenario");
+                    anyhow::bail!("无法解析调试场景中的任务变量");
                 };
 
                 let locator_name = if let Some(locator_name) = locator_name {
@@ -1253,7 +1253,7 @@ impl RunningState {
                     .context("Failed to wait for completed task")?;
 
                 if !exit_status.success() {
-                    anyhow::bail!("Build failed");
+                    anyhow::bail!("构建失败");
                 }
                 Some((task.resolved.clone(), locator_name, extra_config))
             } else {

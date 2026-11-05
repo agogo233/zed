@@ -999,7 +999,7 @@ struct SessionCloseErrors {
 
 impl std::fmt::Display for SessionCloseErrors {
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(formatter, "Failed to close agent sessions")?;
+        write!(formatter, "关闭智能体会话失败")?;
         for (session_id, error) in &self.failures {
             write!(formatter, "\n{session_id}: {error:#}")?;
         }

@@ -729,7 +729,7 @@ impl<T: 'static> PromptEditor<T> {
                         .autohide();
 
                         if let Some(uuid) = uuid {
-                            toast = toast.on_click("Click to copy rating ID", move |_, cx| {
+                            toast = toast.on_click("点击复制评分 ID", move |_, cx| {
                                 cx.write_to_clipboard(ClipboardItem::new_string(uuid.to_string()));
                             });
                         };

@@ -227,7 +227,7 @@ pub fn render_ollama_model_picker(
         .unwrap_or_else(|| DEFAULT_OLLAMA_API_URL.into());
 
     let trigger_value: SharedString = if current_value.is_empty() {
-        "Select a model…".into()
+        "选择模型…".into()
     } else {
         current_value.clone()
     };

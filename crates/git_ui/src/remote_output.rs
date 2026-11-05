@@ -124,10 +124,8 @@ pub fn format_output(action: &RemoteAction, output: RemoteCommandOutput) -> Succ
                 let files_changed = get_changes(&output).log_err();
                 let message = if let Some(files_changed) = files_changed {
                     format!(
-                        "Received {} file change{} from {}",
-                        files_changed,
-                        if files_changed == 1 { "" } else { "s" },
-                        remote_ref.name
+                        "已从 {} 接收 {} 个文件更改",
+                        remote_ref.name, files_changed
                     )
                 } else {
                     format!("已从 {} 快进", remote_ref.name)
@@ -140,10 +138,8 @@ pub fn format_output(action: &RemoteAction, output: RemoteCommandOutput) -> Succ
                 let files_changed = get_changes(&output).log_err();
                 let message = if let Some(files_changed) = files_changed {
                     format!(
-                        "Merged {} file change{} from {}",
-                        files_changed,
-                        if files_changed == 1 { "" } else { "s" },
-                        remote_ref.name
+                        "已从 {} 合并 {} 个文件更改",
+                        remote_ref.name, files_changed
                     )
                 } else {
                     format!("已从 {} 合并", remote_ref.name)

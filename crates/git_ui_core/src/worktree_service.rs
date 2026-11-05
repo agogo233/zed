@@ -153,7 +153,7 @@ impl WorktreeFetchError {
     }
 
     fn output(&self) -> String {
-        format!("git fetch {} failed:\n{:#}", self.remote_name, self.source)
+        format!("git fetch {} 失败：\n{:#}", self.remote_name, self.source)
     }
 }
 
@@ -161,9 +161,9 @@ impl fmt::Display for WorktreeFetchError {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
             formatter,
-            "git fetch {} failed while creating worktree from {}: {}",
-            self.remote_name,
+            "从 {} 创建工作树时 git fetch {} 失败：{}",
             self.remote_branch_name(),
+            self.remote_name,
             self.source
         )
     }
@@ -795,10 +795,10 @@ fn create_worktree_workspace_inner(
         show_error_toast(
             toast_workspace,
             "worktree create",
-            anyhow!("No git repositories found in the project"),
+            anyhow!("项目中未找到 Git 仓库"),
             cx,
         );
-        return Task::ready(Err(anyhow!("No git repositories found in the project")));
+        return Task::ready(Err(anyhow!("项目中未找到 Git 仓库")));
     }
 
     if remote_connection_options.is_some() {
@@ -811,11 +811,11 @@ fn create_worktree_workspace_inner(
             show_error_toast(
                 toast_workspace,
                 "worktree create",
-                anyhow!("Cannot create worktree: remote connection is not active"),
+                anyhow!("无法创建工作树：远程连接未激活"),
                 cx,
             );
             return Task::ready(Err(anyhow!(
-                "Cannot create worktree: remote connection is not active"
+                "无法创建工作树：远程连接未激活"
             )));
         }
     }

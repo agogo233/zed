@@ -351,7 +351,7 @@ impl Output {
                                                 let mut multi_buffer =
                                                     MultiBuffer::singleton(buffer.clone(), cx);
                                                 multi_buffer
-                                                    .set_title("Full Error".to_string(), cx);
+                                                    .set_title("完整错误".to_string(), cx);
                                                 multi_buffer
                                             });
                                             Editor::for_multibuffer(multibuffer, None, window, cx)
@@ -401,7 +401,7 @@ impl Output {
                     content: cx.new(|_| json_view),
                     display_id,
                 },
-                Err(_) => Output::Message("Failed to parse JSON".to_string()),
+                Err(_) => Output::Message("解析 JSON 失败".to_string()),
             },
             Some(MimeType::Plain(text)) => Output::Plain {
                 content: cx.new(|cx| TerminalOutput::from(text, window, cx)),
@@ -419,7 +419,7 @@ impl Output {
                     content: cx.new(|_| view),
                     display_id,
                 },
-                Err(error) => Output::Message(format!("Failed to load image: {}", error)),
+                Err(error) => Output::Message(format!("加载图片失败：{}", error)),
             },
             Some(MimeType::DataTable(data)) => Output::Table {
                 content: cx.new(|cx| TableView::new(data, window, cx)),
@@ -439,7 +439,7 @@ impl Output {
                 },
             },
             // Any other media types are not supported
-            _ => Output::Message("Unsupported media type".to_string()),
+            _ => Output::Message("不支持的媒体类型".to_string()),
         }
     }
 }

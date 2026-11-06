@@ -612,8 +612,8 @@ pub struct LanguageSettingsContent {
     ///
     /// 默认值：same
     pub soft_wrap_indent: Option<SoftWrapIndent>,
-    /// 对行进行软换行的列位置，适用于
-    /// 已启用软换行的缓冲区。
+    /// 对行进行软换行的列位置，适用于已启用软换行的缓冲区。
+    /// `editor::Rewrap` 操作默认也会换行到此列，无论是否启用软换行。
     ///
     /// 默认值：80
     pub preferred_line_length: Option<u32>,

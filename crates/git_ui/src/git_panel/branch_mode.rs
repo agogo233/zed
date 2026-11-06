@@ -704,9 +704,9 @@ impl GitPanel {
 
     pub(super) fn render_changes_mode_menu(&self, cx: &mut Context<Self>) -> impl IntoElement {
         let label: SharedString = match (self.is_branch_mode(), self.branch_base.effective()) {
-            (true, Some(base_ref)) => format!("Since {base_ref}").into(),
-            (true, None) => "Branch Changes".into(),
-            (false, _) => "Uncommitted".into(),
+            (true, Some(base_ref)) => format!("自 {base_ref} 以来").into(),
+            (true, None) => "分支更改".into(),
+            (false, _) => "未提交".into(),
         };
         let panel = cx.weak_entity();
 
@@ -720,7 +720,7 @@ impl GitPanel {
                             .size(IconSize::XSmall)
                             .color(Color::Muted),
                     ),
-                Tooltip::text("Choose Which Changes to Show"),
+                Tooltip::text("选择要显示的更改"),
             )
             .menu(move |window, cx| Some(Self::changes_mode_menu(panel.clone(), window, cx)))
             .anchor(Anchor::TopLeft)
@@ -738,7 +738,7 @@ impl GitPanel {
             // The check goes at the end so "Uncommitted" lines up with the
             // submenu trigger, which has no check slot.
             menu.toggleable_entry(
-                "Uncommitted",
+                "未提交",
                 !is_branch_mode,
                 IconPosition::End,
                 Some(ShowUncommittedChanges.boxed_clone()),
@@ -753,7 +753,7 @@ impl GitPanel {
                     }
                 },
             )
-            .submenu("Compare Against Base", move |menu, window, cx| {
+            .submenu("与基准比较", move |menu, window, cx| {
                 Self::compare_against_base_submenu(menu, panel.clone(), window, cx)
             })
         })
@@ -827,17 +827,17 @@ impl GitPanel {
         let message: SharedString = if branch_list
             .is_some_and(|branch_list| branch_list.tree_diff_error().is_some())
         {
-            "Couldn't load branch changes".into()
+            "无法加载分支更改".into()
         } else if branch_list.is_some_and(|branch_list| branch_list.statuses_by_path().is_none())
             || self.branch_base.is_resolving()
         {
             // Only the first load for a base shows this, so refreshes after
             // every status change don't flicker.
-            "Loading branch changes…".into()
+            "正在加载分支更改…".into()
         } else if let Some(base_ref) = self.branch_base.effective() {
-            format!("No changes since {base_ref}").into()
+            format!("自 {base_ref} 以来无更改").into()
         } else {
-            "No default branch found. Pick a base branch.".into()
+            "未找到默认分支。请选择一个基准分支。".into()
         };
 
         h_flex()
@@ -861,7 +861,7 @@ impl GitPanel {
                 .context(self.focus_handle.clone())
                 .when(is_file_or_bulk, |context_menu| {
                     context_menu
-                        .action("Open Diff", menu::Confirm.boxed_clone())
+                        .action("打开差异", menu::Confirm.boxed_clone())
                         .action(titles.view_file, ViewFile.boxed_clone())
                         .separator()
                 })

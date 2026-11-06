@@ -283,10 +283,10 @@ pub fn check(_: &Check, window: &mut Window, cx: &mut App) {
     let message = option_env!("ZED_UPDATE_EXPLANATION")
         .map(ToOwned::to_owned)
         .or_else(|| env::var("ZED_UPDATE_EXPLANATION").ok())
-        .unwrap_or_else(|| "Updates are distributed via GitHub Releases.".to_string());
+        .unwrap_or_else(|| "更新通过 GitHub Releases 分发。".to_string());
     drop(window.prompt(
         gpui::PromptLevel::Info,
-        "This build does not check zed.dev for updates.",
+        "此构建不会向 zed.dev 检查更新。",
         Some(&message),
         &["确定"],
         cx,

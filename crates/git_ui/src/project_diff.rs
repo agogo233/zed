@@ -1473,7 +1473,7 @@ mod tests {
         assert_ne!(diff_item.entity_id(), unstaged_item.entity_id());
         let unstaged_editor = workspace.update(cx, |workspace, cx| {
             let active_item = workspace.active_item(cx).unwrap();
-            assert_eq!(active_item.tab_content_text(0, cx), "Unstaged Changes");
+            assert_eq!(active_item.tab_content_text(0, cx), "未暂存的更改");
             active_item
                 .act_as::<DiffMultibuffer>(cx)
                 .unwrap()
@@ -1506,7 +1506,7 @@ mod tests {
         assert_eq!(diff_item.entity_id(), uncommitted_item.entity_id());
         assert_eq!(
             uncommitted_item.read_with(cx, |diff, cx| diff.tab_content_text(0, cx)),
-            "Uncommitted Changes"
+            "未提交的更改"
         );
         let uncommitted_editor = uncommitted_item
             .read_with(cx, |diff, cx| diff.editor(cx).read(cx).rhs_editor().clone());
@@ -1533,7 +1533,7 @@ mod tests {
         let staged_editor = workspace.update(cx, |workspace, cx| {
             workspace.active_item_as::<StagedDiff>(cx).unwrap();
             let active_item = workspace.active_item(cx).unwrap();
-            assert_eq!(active_item.tab_content_text(0, cx), "Staged Changes");
+            assert_eq!(active_item.tab_content_text(0, cx), "已暂存的更改");
             active_item
                 .act_as::<DiffMultibuffer>(cx)
                 .unwrap()

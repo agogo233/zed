@@ -812,7 +812,7 @@ mod tests {
                     .serialized_item_kind(),
                 "StagedDiff"
             );
-            assert_eq!(active_item.tab_content_text(0, cx), "Staged Changes");
+            assert_eq!(active_item.tab_content_text(0, cx), "已暂存的更改");
             assert!(!active_item.can_save(cx));
         });
     }
@@ -1035,7 +1035,7 @@ mod tests {
                     .serialized_item_kind(),
                 "StagedDiff"
             );
-            assert_eq!(active_item.tab_content_text(0, cx), "Staged Changes");
+            assert_eq!(active_item.tab_content_text(0, cx), "已暂存的更改");
             assert!(!active_item.can_save(cx));
             assert_eq!(workspace.items_of_type::<ProjectDiff>(cx).count(), 0);
             assert_eq!(workspace.items_of_type::<StagedDiff>(cx).count(), 1);

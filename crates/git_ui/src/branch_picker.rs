@@ -1292,7 +1292,7 @@ impl PickerDelegate for BranchListDelegate {
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
         match self.state {
-            PickerState::List if self.is_select_only() => "Select a branch…",
+            PickerState::List if self.is_select_only() => "选择分支…",
             PickerState::List | PickerState::NewRemote | PickerState::NewBranch => {
                 "切换分支，或输入以创建分支…"
             }

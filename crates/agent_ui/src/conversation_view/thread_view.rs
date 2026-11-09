@@ -4876,7 +4876,7 @@ impl ThreadView {
                     .min_w_0()
                     .gap_1()
                     .child(
-                        Label::new("Plan")
+                        Label::new("计划")
                             .size(LabelSize::Small)
                             .color(Color::Muted),
                     )
@@ -4894,7 +4894,7 @@ impl ThreadView {
                 .min_w_0()
                 .gap_1()
                 .child(
-                    Label::new("Plan")
+                    Label::new("计划")
                         .size(LabelSize::Small)
                         .color(Color::Muted),
                 )
@@ -4927,7 +4927,7 @@ impl ThreadView {
                 IconButton::new("dismiss-plan", IconName::Close)
                     .icon_size(IconSize::XSmall)
                     .shape(ui::IconButtonShape::Square)
-                    .tooltip(Tooltip::text("Clear Plan"))
+                    .tooltip(Tooltip::text("清除计划"))
                     .on_click(cx.listener(|this, _, _, cx| {
                         this.thread.update(cx, |thread, cx| thread.clear_plan(cx));
                         cx.stop_propagation();

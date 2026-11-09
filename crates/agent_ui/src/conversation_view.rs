@@ -12275,8 +12275,8 @@ pub(crate) mod tests {
             gpui::Modifiers::default(),
         );
         let copy_response = cx
-            .debug_bounds("MENU_ITEM-Copy This Agent Response")
-            .expect("Copy This Agent Response");
+            .debug_bounds("MENU_ITEM-复制此智能体响应")
+            .expect("复制此智能体响应");
         cx.simulate_click(copy_response.center(), gpui::Modifiers::default());
         let copied = cx
             .update(|_, cx| cx.read_from_clipboard().and_then(|item| item.text()))
@@ -12375,7 +12375,7 @@ pub(crate) mod tests {
                 gpui::MouseButton::Right,
                 gpui::Modifiers::default(),
             );
-            let copy = cx.debug_bounds("MENU_ITEM-Copy Link").expect("Copy Link");
+            let copy = cx.debug_bounds("MENU_ITEM-复制链接").expect("复制链接");
             cx.simulate_click(copy.center(), gpui::Modifiers::default());
             let copied = cx.update(|_, cx| cx.read_from_clipboard().and_then(|item| item.text()));
             assert_eq!(copied.as_deref(), Some(expected));
@@ -12394,9 +12394,9 @@ pub(crate) mod tests {
             gpui::MouseButton::Right,
             gpui::Modifiers::default(),
         );
-        assert!(cx.debug_bounds("MENU_ITEM-Copy Link").is_none());
+        assert!(cx.debug_bounds("MENU_ITEM-复制链接").is_none());
         assert!(
-            cx.debug_bounds("MENU_ITEM-Copy This Agent Response")
+            cx.debug_bounds("MENU_ITEM-复制此智能体响应")
                 .is_some()
         );
     }

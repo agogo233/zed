@@ -848,9 +848,9 @@ pub struct GitPanelSettingsContent {
 #[with_fallible_options]
 #[derive(Clone, PartialEq, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Debug)]
 pub struct GitGraphSettingsContent {
-    /// Whether to show relative or absolute dates in graph rows.
+    /// 图行中显示相对日期还是绝对日期。
     ///
-    /// Default: absolute
+    /// 默认值：absolute
     pub date_style: Option<GitDateStyle>,
 }
 

@@ -490,7 +490,7 @@ impl CommitView {
         let raw_new_text = file.new_text.unwrap_or_default();
         let old_text = if is_binary { None } else { raw_old_text };
         let new_text = if is_binary {
-            "(binary file not shown)".to_string()
+            "（未显示二进制文件）".to_string()
         } else {
             raw_new_text
         };

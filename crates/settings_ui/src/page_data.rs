@@ -8757,10 +8757,10 @@ fn version_control_page() -> SettingsPage {
 
     fn stash_picker_section() -> [SettingsPageItem; 2] {
         [
-            SettingsPageItem::SectionHeader("Stash Picker"),
+            SettingsPageItem::SectionHeader("贮藏选择器"),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "Date Style",
-                description: "Show relative or absolute dates in the stash picker.",
+                title: "日期样式",
+                description: "在贮藏选择器中显示相对日期还是绝对日期",
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git.stash_picker.date_style"),
@@ -8790,10 +8790,10 @@ fn version_control_page() -> SettingsPage {
 
     fn git_graph_section() -> [SettingsPageItem; 2] {
         [
-            SettingsPageItem::SectionHeader("Git Graph"),
+            SettingsPageItem::SectionHeader("Git 图"),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "Date Style",
-                description: "Show relative or absolute dates in graph rows.",
+                title: "日期样式",
+                description: "在图行中显示相对日期还是绝对日期",
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("git_graph.date_style"),
@@ -9585,8 +9585,8 @@ fn ai_page(cx: &App) -> SettingsPage {
                 files: USER,
             }),
             SettingsPageItem::SettingItem(SettingItem {
-                title: "Auto-Generate Thread Titles",
-                description: "Whether to automatically generate a title for Zed Agent threads using the summary model. When disabled, titles are only created when manually requested.",
+                title: "自动生成会话标题",
+                description: "是否使用摘要模型自动为 Zed 智能体会话生成标题。禁用后，仅在手动请求时创建标题。",
                 field: Box::new(SettingField {
                     organization_override: None,
                     json_path: Some("agent.auto_generate_thread_titles"),

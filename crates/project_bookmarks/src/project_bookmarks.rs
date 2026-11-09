@@ -136,7 +136,7 @@ impl PickerDelegate for ProjectBookmarksDelegate {
     }
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> std::sync::Arc<str> {
-        "Search for a bookmark...".into()
+        "搜索书签…".into()
     }
 
     fn update_matches(

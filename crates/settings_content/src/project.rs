@@ -708,7 +708,7 @@ pub struct GitSettings {
     ///
     /// 默认值： ../worktrees
     pub worktree_directory: Option<String>,
-    /// Settings for automatically fetching the default branch's remote and the current branch's upstream remote.
+    /// 自动获取默认分支远程仓库以及当前分支上游远程仓库的设置。
     pub auto_fetch: Option<AutoFetchSettingsContent>,
 }
 
@@ -716,14 +716,14 @@ pub struct GitSettings {
 #[derive(Clone, Copy, PartialEq, Debug, Default, Serialize, Deserialize, JsonSchema, MergeFrom)]
 #[serde(rename_all = "snake_case")]
 pub struct AutoFetchSettingsContent {
-    /// Whether to automatically fetch in the background.
+    /// 是否在后台自动获取。
     ///
     /// 默认值：false
     pub enabled: Option<bool>,
-    /// How long to wait between automatic fetches, in seconds.
-    /// Only used when `enabled` is true. (min: 15)
+    /// 自动获取的间隔秒数。
+    /// 仅在 `enabled` 为 true 时使用。（最小值：15）
     ///
-    /// Default: 60
+    /// 默认值：60
     pub interval_secs: Option<u64>,
 }
 
@@ -875,17 +875,21 @@ pub struct BranchPickerSettingsContent {
 )]
 #[serde(rename_all = "snake_case")]
 pub enum GitDateStyle {
+    /// 相对日期
     #[default]
+    #[strum(serialize = "相对")]
     Relative,
+    /// 绝对日期
+    #[strum(serialize = "绝对")]
     Absolute,
 }
 
 #[with_fallible_options]
 #[derive(Clone, Copy, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct StashPickerSettings {
-    /// Whether to show relative or absolute dates.
+    /// 是否显示相对日期或绝对日期。
     ///
-    /// Default: relative
+    /// 默认值：relative
     pub date_style: Option<GitDateStyle>,
 }
 

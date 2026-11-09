@@ -400,6 +400,11 @@ pub struct AgentSettingsContent {
     ///
     /// 默认值：true
     pub show_merge_conflict_indicator: Option<bool>,
+    /// 是否使用摘要模型自动为 Zed 智能体会话生成标题。
+    /// 禁用后，仅在手动请求时创建标题（例如通过会话的「重新生成会话标题」操作）。
+    ///
+    /// 默认值：true
+    pub auto_generate_thread_titles: Option<bool>,
     /// 逐工具权限规则，用于精细控制哪些工具操作
     /// 需要确认。
     ///

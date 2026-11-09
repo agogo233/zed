@@ -637,6 +637,12 @@ impl std::fmt::Debug for ContextServerCommand {
 #[with_fallible_options]
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema, MergeFrom)]
 pub struct GitSettings {
+    /// 绝对 Git 日期的格式："locale"、"iso"，或 strftime 格式，
+    /// 例如 "%Y-%m-%d %H:%M" 或 "%b %d, %Y"。无效格式将回退到 "locale"。
+    ///
+    /// 默认值：locale
+    #[schemars(extend("examples" = ["locale", "iso", "%Y-%m-%d %H:%M", "%b %d, %Y"]))]
+    pub date_format: Option<String>,
     /// 是否启用 Git 集成
     ///
     /// 默认值：true
@@ -661,6 +667,8 @@ pub struct GitSettings {
     ///
     /// 默认值：on
     pub branch_picker: Option<BranchPickerSettingsContent>,
+    /// 贮藏选择器设置
+    pub stash_picker: Option<StashPickerSettings>,
     /// 文件差异设置
     pub file_diff: Option<FileDiffSettingsContent>,
     /// 区块在编辑器中的视觉显示方式
@@ -790,6 +798,10 @@ pub enum InlineBlameLocation {
 #[derive(Clone, Copy, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema, MergeFrom)]
 #[serde(rename_all = "snake_case")]
 pub struct InlineBlameSettings {
+    /// 是否显示相对日期或绝对日期。
+    ///
+    /// 默认值：relative
+    pub date_style: Option<GitDateStyle>,
     /// 是否将 Git 追溯数据内联显示于
     /// 当前聚焦的行。
     ///
@@ -823,6 +835,10 @@ pub struct InlineBlameSettings {
 #[derive(Clone, Copy, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema, MergeFrom)]
 #[serde(rename_all = "snake_case")]
 pub struct BlameSettings {
+    /// 是否在追溯装订线中显示相对日期或绝对日期。
+    ///
+    /// 默认值：relative
+    pub date_style: Option<GitDateStyle>,
     /// 是否显示提交作者的头像
     ///
     /// 默认值：true
@@ -833,10 +849,44 @@ pub struct BlameSettings {
 #[derive(Clone, Copy, PartialEq, Debug, Default, Serialize, Deserialize, JsonSchema, MergeFrom)]
 #[serde(rename_all = "snake_case")]
 pub struct BranchPickerSettingsContent {
+    /// 是否显示相对日期或绝对日期。
+    ///
+    /// 默认值：relative
+    pub date_style: Option<GitDateStyle>,
     /// 是否将作者名称显示为提交信息的一部分
     ///
     /// 默认值：false
     pub show_author_name: Option<bool>,
+}
+
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    PartialEq,
+    Eq,
+    Default,
+    Serialize,
+    Deserialize,
+    JsonSchema,
+    MergeFrom,
+    strum::VariantArray,
+    strum::VariantNames,
+)]
+#[serde(rename_all = "snake_case")]
+pub enum GitDateStyle {
+    #[default]
+    Relative,
+    Absolute,
+}
+
+#[with_fallible_options]
+#[derive(Clone, Copy, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema, MergeFrom)]
+pub struct StashPickerSettings {
+    /// Whether to show relative or absolute dates.
+    ///
+    /// Default: relative
+    pub date_style: Option<GitDateStyle>,
 }
 
 #[with_fallible_options]

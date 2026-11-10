@@ -760,9 +760,9 @@ async fn test_open_path_prompt_window_choices(cx: &mut TestAppContext) {
                 assert_eq!(
                     options.prompt.as_deref(),
                     Some(if default_new_window {
-                        "Open in New Window"
+                        "在新窗口中打开"
                     } else {
-                        "Open in This Window"
+                        "在当前窗口中打开"
                     })
                 );
                 (key != "escape").then(|| vec![PathBuf::from(path!("/root/file.txt"))])

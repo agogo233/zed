@@ -162,9 +162,9 @@ impl OpenPathDelegate {
         }
         delegate.with_footer(Arc::new(move |_, cx| {
             let (primary_label, secondary_label) = if mode == OpenPathPromptMode::NewWindow {
-                ("New Window", "This Window")
+                ("新窗口", "当前窗口")
             } else {
-                ("This Window", "New Window")
+                ("当前窗口", "新窗口")
             };
             Some(
                 h_flex()

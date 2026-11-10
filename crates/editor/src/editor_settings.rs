@@ -82,21 +82,21 @@ pub struct CursorAnimationSettings {
 
 #[derive(Clone, Copy, Debug)]
 pub struct CommitViewSettings {
-    /// Whether newly opened commit views show the full commit description.
+    /// 新打开的提交视图是否显示完整提交描述
     ///
-    /// Default: false
+    /// 默认值：false
     pub expand_description: bool,
-    /// Whether newly opened commit views expand every changed file.
+    /// 新打开的提交视图是否展开所有更改文件
     ///
-    /// Default: true
+    /// 默认值：true
     pub expand_files: bool,
 }
 
 #[derive(Clone, Copy, Debug)]
 pub struct FileDiffSettings {
-    /// Whether newly opened file diffs show the full file instead of changes only.
+    /// 新打开的文件差异是否显示完整文件，而非仅显示更改
     ///
-    /// Default: true
+    /// 默认值：true
     pub show_full_file: bool,
 }
 #[derive(Debug, Clone)]

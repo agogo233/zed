@@ -8879,9 +8879,63 @@ fn version_control_page() -> SettingsPage {
         ]
     }
 
-    fn file_diff_section() -> [SettingsPageItem; 2] {
+    fn commit_view_section() -> [SettingsPageItem; 4] {
         [
-            SettingsPageItem::SectionHeader("文件差异"),
+            SettingsPageItem::SectionHeader("Git 提交视图"),
+            SettingsPageItem::SettingItem(SettingItem {
+                title: "默认展开描述",
+                description: "新打开的提交视图是否显示完整提交描述",
+                field: Box::new(SettingField {
+                    organization_override: None,
+                    json_path: Some("git.commit_view.expand_description"),
+                    pick: |settings_content| {
+                        settings_content
+                            .git
+                            .as_ref()?
+                            .commit_view
+                            .as_ref()?
+                            .expand_description
+                            .as_ref()
+                    },
+                    write: |settings_content, value, _| {
+                        settings_content
+                            .git
+                            .get_or_insert_default()
+                            .commit_view
+                            .get_or_insert_default()
+                            .expand_description = value;
+                    },
+                }),
+                metadata: None,
+                files: USER,
+            }),
+            SettingsPageItem::SettingItem(SettingItem {
+                title: "默认展开文件",
+                description: "新打开的提交视图是否展开所有更改文件",
+                field: Box::new(SettingField {
+                    organization_override: None,
+                    json_path: Some("git.commit_view.expand_files"),
+                    pick: |settings_content| {
+                        settings_content
+                            .git
+                            .as_ref()?
+                            .commit_view
+                            .as_ref()?
+                            .expand_files
+                            .as_ref()
+                    },
+                    write: |settings_content, value, _| {
+                        settings_content
+                            .git
+                            .get_or_insert_default()
+                            .commit_view
+                            .get_or_insert_default()
+                            .expand_files = value;
+                    },
+                }),
+                metadata: None,
+                files: USER,
+            }),
             SettingsPageItem::SettingItem(SettingItem {
                 title: "默认显示完整文件",
                 description: "新打开的文件差异是否显示完整文件，而非仅显示更改",
@@ -8921,8 +8975,8 @@ fn version_control_page() -> SettingsPage {
             git_blame_view_section(),
             branch_picker_section(),
             stash_picker_section(),
+            commit_view_section(),
             git_graph_section(),
-            file_diff_section(),
             git_hunks_section(),
         ],
     }

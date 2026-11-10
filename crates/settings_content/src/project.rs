@@ -669,6 +669,8 @@ pub struct GitSettings {
     pub branch_picker: Option<BranchPickerSettingsContent>,
     /// 贮藏选择器设置
     pub stash_picker: Option<StashPickerSettings>,
+    /// 提交视图设置
+    pub commit_view: Option<CommitViewSettingsContent>,
     /// 文件差异设置
     pub file_diff: Option<FileDiffSettingsContent>,
     /// 区块在编辑器中的视觉显示方式
@@ -891,6 +893,20 @@ pub struct StashPickerSettings {
     ///
     /// 默认值：relative
     pub date_style: Option<GitDateStyle>,
+}
+
+#[with_fallible_options]
+#[derive(Clone, Copy, PartialEq, Debug, Default, Serialize, Deserialize, JsonSchema, MergeFrom)]
+#[serde(rename_all = "snake_case")]
+pub struct CommitViewSettingsContent {
+    /// 新打开的提交视图是否显示完整提交描述
+    ///
+    /// 默认值：false
+    pub expand_description: Option<bool>,
+    /// 新打开的提交视图是否展开所有更改文件
+    ///
+    /// 默认值：true
+    pub expand_files: Option<bool>,
 }
 
 #[with_fallible_options]

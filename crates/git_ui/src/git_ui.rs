@@ -503,7 +503,7 @@ impl RenameBranchModal {
             {
                 Ok(Ok(_)) => Ok(()),
                 Ok(Err(error)) => Err(error),
-                Err(_) => Err(anyhow!("Operation was canceled")),
+                Err(_) => Err(anyhow!("操作已取消")),
             }
         })
         .detach_and_prompt_err("重命名分支失败", window, cx, |_, _, _| None);

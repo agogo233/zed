@@ -1945,7 +1945,7 @@ impl Item for NotebookEditor {
             let file_content = serde_json::to_string(&json)?;
 
             let notebook = nbformat::parse_notebook(&file_content)
-                .context("Failed to parse notebook")
+                .context("解析笔记本失败")
                 .and_then(upgrade_notebook)?;
 
             this.update_in(cx, |this, window, cx| {
@@ -2040,7 +2040,7 @@ fn upgrade_notebook(notebook: nbformat::Notebook) -> anyhow::Result<nbformat::v4
         }
         nbformat::Notebook::Legacy(notebook) => nbformat::upgrade_legacy_notebook(notebook),
         nbformat::Notebook::V3(notebook) => nbformat::upgrade_v3_notebook(notebook),
-        _ => anyhow::bail!("Unsupported notebook format"),
+        _ => anyhow::bail!("不支持的笔记本格式"),
     }
 }
 

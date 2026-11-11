@@ -155,14 +155,14 @@ actions!(
 #[action(namespace = git)]
 #[serde(deny_unknown_fields)]
 pub struct RenameBranch {
-    /// The branch to rename.
+    /// 要重命名的分支
     ///
-    /// Default: the current branch.
+    /// 默认值：当前分支
     #[serde(default)]
     pub branch: Option<String>,
 }
 
-/// Trim. Then replace ` `  with `-`.
+/// 去除首尾空白，再将空格替换为 `-`
 pub fn normalize_branch_name(query: &str) -> String {
     query.trim().replace(' ', "-")
 }

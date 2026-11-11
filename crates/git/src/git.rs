@@ -162,6 +162,11 @@ pub struct RenameBranch {
     pub branch: Option<String>,
 }
 
+/// Trim. Then replace ` `  with `-`.
+pub fn normalize_branch_name(query: &str) -> String {
+    query.trim().replace(' ', "-")
+}
+
 /// 将文件恢复到上次提交的状态，丢弃本地更改
 #[derive(Clone, Debug, Default, PartialEq, Deserialize, JsonSchema, Action)]
 #[action(namespace = git, deprecated_aliases = ["editor::RevertFile"])]
@@ -375,6 +380,13 @@ impl From<Oid> for usize {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_normalize_branch_name() {
+        assert_eq!(normalize_branch_name(" branch-name "), "branch-name");
+        assert_eq!(normalize_branch_name("branch name"), "branch-name");
+        assert_eq!(normalize_branch_name("  branch  name  "), "branch--name");
+    }
 
     #[test]
     fn parses_short_sha1_oid_by_padding_trailing_nibbles() {

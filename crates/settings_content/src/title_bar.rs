@@ -81,9 +81,39 @@ impl From<String> for WindowButtonLayoutContent {
     }
 }
 
+#[derive(
+    Copy,
+    Clone,
+    Debug,
+    PartialEq,
+    Eq,
+    Serialize,
+    Deserialize,
+    JsonSchema,
+    MergeFrom,
+    strum::VariantArray,
+    strum::VariantNames,
+)]
+#[serde(rename_all = "snake_case")]
+pub enum TitleBarVisibility {
+    /// 始终显示标题栏
+    #[strum(serialize = "始终")]
+    Always,
+    /// 从不显示标题栏
+    #[strum(serialize = "从不")]
+    Never,
+    /// 显示标题栏，但在全屏时隐藏
+    #[strum(serialize = "全屏时隐藏")]
+    HideInFullScreen,
+}
+
 #[with_fallible_options]
 #[derive(Clone, PartialEq, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Debug)]
 pub struct TitleBarSettingsContent {
+    /// 何时显示标题栏
+    ///
+    /// 默认值：always
+    pub show: Option<TitleBarVisibility>,
     /// 是否在标题栏的分支图标上显示 Git 状态指示器。
     /// 启用后，分支图标将更改以反映当前仓库
     /// 状态（例如已修改、已添加、已删除或冲突）。
